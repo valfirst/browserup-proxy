@@ -189,7 +189,7 @@ public class AdvancedHostResolverCacheTest {
         assertNotNull("Collection of resolved addresses should never be null", addresses);
         assertEquals("Expected to find no addresses for " + fakeAddress, 0, addresses.size());
 
-        assertTrue("Expected extremely fast DNS lookup time for " + fakeAddress + " after setting eternal negative cache TTL. Cached lookup time: " + cachedLookupNs + "ns.", cachedLookupNs <= TimeUnit.NANOSECONDS.convert(10, TimeUnit.MILLISECONDS));
+        assertTrue("Expected extremely fast DNS lookup time for " + fakeAddress + " after setting eternal negative cache TTL. Cached lookup time: " + cachedLookupNs + "ns.", cachedLookupNs <= TimeUnit.MILLISECONDS.convert(10, TimeUnit.MILLISECONDS));
     }
 
     @Test
@@ -220,6 +220,6 @@ public class AdvancedHostResolverCacheTest {
         assertNotNull("Collection of resolved addresses should never be null", addresses);
         assertNotEquals("Expected to find addresses for www.msn.com", 0, addresses.size());
 
-        assertTrue("Expected extremely fast DNS lookup time for www.msn.com after setting eternal negative cache TTL. Cached lookup time: " + cachedLookupNs + "ns.", cachedLookupNs <= TimeUnit.NANOSECONDS.convert(10, TimeUnit.MILLISECONDS));
+        assertTrue("Expected extremely fast DNS lookup time for www.msn.com after setting eternal negative cache TTL. Cached lookup time: " + cachedLookupNs + "ns.", cachedLookupNs <= TimeUnit.MILLISECONDS.convert(10, TimeUnit.MILLISECONDS));
     }
 }

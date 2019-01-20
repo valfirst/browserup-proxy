@@ -1,3 +1,6 @@
+plugins {
+    id 'groovy'
+}
 
 dependencies {
     compile project(':mitm')

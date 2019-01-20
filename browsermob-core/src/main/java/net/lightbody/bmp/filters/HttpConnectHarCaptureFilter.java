@@ -69,7 +69,7 @@ public class HttpConnectHarCaptureFilter extends HttpsAwareFiltersAdapter implem
 
     private volatile long connectionQueuedNanos;
     private volatile long connectionStartedNanos;
-    private volatile long connectionSucceededTimeNanos;
+    private volatile long connectionFinishedTimeNanos;
     private volatile long sendStartedNanos;
     private volatile long sendFinishedNanos;
 
@@ -150,52 +150,46 @@ public class HttpConnectHarCaptureFilter extends HttpsAwareFiltersAdapter implem
 
     @Override
     public void proxyToServerResolutionFailed(String hostAndPort) {
+        // record the amount of time we attempted to resolve the hostname
+        if (dnsResolutionStartedNanos > 0L) {
+            dnsResolutionFinishedNanos = System.nanoTime();
+        }
+        
         // since this is a CONNECT, which is not handled by the HarCaptureFilter, we need to create and populate the
         // entire HarEntry and add it to this har.
         HarEntry harEntry = createHarEntryForFailedCONNECT(HarCaptureUtil.getResolutionFailedErrorMessage(hostAndPort));
         har.getLog().getEntries().add(harEntry);
-
-        // record the amount of time we attempted to resolve the hostname in the HarTiming object
-        if (dnsResolutionStartedNanos > 0L) {
-            harEntry.getTimings().setDns(
-                Math.toIntExact(
-                    TimeUnit.MILLISECONDS.convert(
-                        System.nanoTime() - dnsResolutionStartedNanos, TimeUnit.NANOSECONDS)));
-        }
 
         httpConnectTimes.remove(clientAddress);
     }
 
     @Override
     public void proxyToServerConnectionFailed() {
+        // record the amount of time we attempted to connect
+        if (connectionStartedNanos > 0L) {
+            connectionFinishedTimeNanos = System.nanoTime();
+        }
+
         // since this is a CONNECT, which is not handled by the HarCaptureFilter, we need to create and populate the
         // entire HarEntry and add it to this har.
         HarEntry harEntry = createHarEntryForFailedCONNECT(HarCaptureUtil.getConnectionFailedErrorMessage());
         har.getLog().getEntries().add(harEntry);
-
-        // record the amount of time we attempted to connect in the HarTimings object
-        if (connectionStartedNanos > 0L) {
-            harEntry.getTimings().setConnect(
-                Math.toIntExact(
-                    TimeUnit.MILLISECONDS.convert(
-                        System.nanoTime() - connectionStartedNanos, TimeUnit.NANOSECONDS)));
-        }
 
         httpConnectTimes.remove(clientAddress);
     }
 
     @Override
     public void proxyToServerConnectionSucceeded(ChannelHandlerContext serverCtx) {
-        this.connectionSucceededTimeNanos = System.nanoTime();
+        this.connectionFinishedTimeNanos = System.nanoTime();
 
         if (connectionStartedNanos > 0L) {
-            httpConnectTiming.setConnectTimeNanos(connectionSucceededTimeNanos - connectionStartedNanos);
+            httpConnectTiming.setConnectTimeNanos(connectionFinishedTimeNanos - connectionStartedNanos);
         } else {
             httpConnectTiming.setConnectTimeNanos(0L);
         }
 
         if (sslHandshakeStartedNanos > 0L) {
-            httpConnectTiming.setSslHandshakeTimeNanos(connectionSucceededTimeNanos - sslHandshakeStartedNanos);
+            httpConnectTiming.setSslHandshakeTimeNanos(connectionFinishedTimeNanos - sslHandshakeStartedNanos);
         } else {
             httpConnectTiming.setSslHandshakeTimeNanos(0L);
         }
@@ -208,11 +202,11 @@ public class HttpConnectHarCaptureFilter extends HttpsAwareFiltersAdapter implem
 
     @Override
     public void serverToProxyResponseTimedOut() {
-        HarEntry harEntry = createHarEntryForFailedCONNECT(HarCaptureUtil.getResponseTimedOutErrorMessage());
-        har.getLog().getEntries().add(harEntry);
-
         // include this timeout time in the HarTimings object
         long timeoutTimestampNanos = System.nanoTime();
+
+        HarEntry harEntry = createHarEntryForFailedCONNECT(HarCaptureUtil.getResponseTimedOutErrorMessage());
+        har.getLog().getEntries().add(harEntry);
 
         // if the proxy started to send the request but has not yet finished, we are currently "sending"
         if (sendStartedNanos > 0L && sendFinishedNanos == 0L) {
@@ -291,66 +285,69 @@ public class HttpConnectHarCaptureFilter extends HttpsAwareFiltersAdapter implem
     }
 
     /**
-     * Populates timing information in the specified harEntry for failed rquests. Populates as much timing information
-     * as possible, up to the point of failure.
+     * Populates timing information in the specified harEntry for failed requests.
+     * Populates as much timing information as possible, up to the point of failure.
      *
      * @param harEntry HAR entry to populate timing information in
      */
     private void populateTimingsForFailedCONNECT(HarEntry harEntry) {
         HarTiming timings = harEntry.getTimings();
 
+
+        // Per HAR spec, "The send, wait and receive timings are not optional and must have non-negative values."
+        // Blocked, DNS, Connect, and SSL values should be -1 if not applicable to the current request.
+        int blockedMillis = -1;
+        int dnsMillis = -1;
+        int connectMillis = -1;
+        int sslMillis = -1;
+        int sendMillis = 0;
+        int waitMillis = 0;
+        int receiveMillis = 0;
+
         if (connectionQueuedNanos > 0L && dnsResolutionStartedNanos > 0L) {
-            timings.setBlocked(
-                Math.toIntExact(
-                    TimeUnit.MILLISECONDS.convert(
-                        dnsResolutionStartedNanos - connectionQueuedNanos, TimeUnit.NANOSECONDS)));
+            blockedMillis = Math.toIntExact(TimeUnit.MILLISECONDS.convert(
+                dnsResolutionStartedNanos - connectionQueuedNanos, TimeUnit.NANOSECONDS));
         }
-
         if (dnsResolutionStartedNanos > 0L && dnsResolutionFinishedNanos > 0L) {
-            timings.setDns(
-                Math.toIntExact(
-                    TimeUnit.MILLISECONDS.convert(
-                        dnsResolutionFinishedNanos - dnsResolutionStartedNanos, TimeUnit.NANOSECONDS)));
+            dnsMillis = Math.toIntExact(TimeUnit.MILLISECONDS.convert(
+                dnsResolutionFinishedNanos - dnsResolutionStartedNanos, TimeUnit.NANOSECONDS));
         }
-
-        if (connectionStartedNanos > 0L && connectionSucceededTimeNanos > 0L) {
-            timings.setConnect(
-                Math.toIntExact(
-                    TimeUnit.MILLISECONDS.convert(
-                        connectionSucceededTimeNanos - connectionStartedNanos, TimeUnit.NANOSECONDS)));
+        if (connectionStartedNanos > 0L && connectionFinishedTimeNanos > 0L) {
+            connectMillis = Math.toIntExact(TimeUnit.MILLISECONDS.convert(
+                connectionFinishedTimeNanos - connectionStartedNanos, TimeUnit.NANOSECONDS));
 
             if (sslHandshakeStartedNanos > 0L) {
-                timings.setSsl(
-                    Math.toIntExact(
-                        TimeUnit.MILLISECONDS.convert(
-                            connectionSucceededTimeNanos - this.sslHandshakeStartedNanos, TimeUnit.NANOSECONDS)));
+                sslMillis = Math.toIntExact(TimeUnit.MILLISECONDS.convert(
+                    connectionFinishedTimeNanos - this.sslHandshakeStartedNanos, TimeUnit.NANOSECONDS));
             }
         }
-
         if (sendStartedNanos > 0L && sendFinishedNanos >= 0L) {
-            timings.setSend(
-                Math.toIntExact(
-                    TimeUnit.MILLISECONDS.convert(
-                        sendFinishedNanos - sendStartedNanos, TimeUnit.NANOSECONDS)));
+            sendMillis = Math.toIntExact(TimeUnit.MILLISECONDS.convert(
+                sendFinishedNanos - sendStartedNanos, TimeUnit.NANOSECONDS));
         }
-
         if (sendFinishedNanos > 0L && responseReceiveStartedNanos >= 0L) {
-            timings.setWait(
-                Math.toIntExact(
-                    TimeUnit.MILLISECONDS.convert(
-                        responseReceiveStartedNanos - sendFinishedNanos, TimeUnit.NANOSECONDS)));
+            waitMillis = Math.toIntExact(TimeUnit.MILLISECONDS.convert(
+                responseReceiveStartedNanos - sendFinishedNanos, TimeUnit.NANOSECONDS));
         }
 
         // since this method is for HTTP CONNECT failures only, we can't populate a "received" time, since that would
         // require the CONNECT to be successful, in which case this method wouldn't be called.
+
+        timings.setBlocked(blockedMillis);
+        timings.setDns(dnsMillis);
+        timings.setConnect(connectMillis);
+        timings.setSsl(sslMillis);
+        timings.setSend(sendMillis);
+        timings.setWait(waitMillis);
+        timings.setReceive(receiveMillis);
     }
 
     /**
-     * Creates a {@link HarEntry} for a failed CONNECT request. Initializes and populates the entry, including the
-     * {@link HarRequest}, {@link HarResponse}, and {@link HarTiming}. (Note: only successful timing information is
-     * populated in the timings object; the calling method must populate the timing information for the final, failed
-     * step. For example, if DNS resolution failed, this method will populate the network 'blocked' time, but not the DNS
-     * time.) Populates the specified errorMessage in the {@link HarResponse}'s error field.
+     * Creates a {@link HarEntry} for a failed CONNECT request.
+     * Initializes and populates the entry, including the
+     * {@link HarRequest}, {@link HarResponse}, and {@link HarTiming}.
+     * Populates as much timing information as possible in the {@link HarEntry} for failed requests.
+     * Populates the specified errorMessage in the {@link HarResponse}'s error field.
      *
      * @param errorMessage error message to place in the har response
      * @return a new HAR entry

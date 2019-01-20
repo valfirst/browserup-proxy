@@ -220,7 +220,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
             // The HTTP CONNECT to the proxy server establishes the SSL connection to the remote server, but the
             // HTTP CONNECT is not recorded in a separate HarEntry (except in case of error). Instead, the ssl and
             // connect times are recorded in the first request between the client and remote server after the HTTP CONNECT.
-            captureConnectTiming();
+            captureSuccessfulConnectTiming();
         }
 
         if (httpObject instanceof HttpContent) {
@@ -278,15 +278,14 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
 
     @Override
     public void serverToProxyResponseTimedOut() {
+        // include this timeout time in the HarTimings object
+        long timeoutTimestampNanos = System.nanoTime();
+
         // replace any existing HarResponse that was created if the server sent a partial response
         HarResponse response = HarCaptureUtil.createHarResponseForFailure();
         harEntry.setResponse(response);
 
         response.setAdditionalField ("_errorMessage", HarCaptureUtil.getResponseTimedOutErrorMessage());
-
-
-        // include this timeout time in the HarTimings object
-        long timeoutTimestampNanos = System.nanoTime();
 
         // if the proxy started to send the request but has not yet finished, we are currently "sending"
         if (sendStartedNanos > 0L && sendFinishedNanos == 0L) {
@@ -631,7 +630,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
     /**
      * Populates ssl and connect timing info in the HAR if an entry for this client and server exist in the cache.
      */
-    protected void captureConnectTiming() {
+    private void captureSuccessfulConnectTiming() {
         HttpConnectTiming httpConnectTiming = HttpConnectHarCaptureFilter.consumeConnectTimingForConnection(clientAddress);
         if (httpConnectTiming != null) {
             harEntry.getTimings().setSsl(
@@ -695,6 +694,8 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
 
     @Override
     public void proxyToServerResolutionFailed(String hostAndPort) {
+        // TODO Is there ever a case where proxyToServerResolutionFailed happens here, and NOT over in HttpConnectHarCaptureFilter?
+
         HarResponse response = HarCaptureUtil.createHarResponseForFailure();
         harEntry.setResponse(response);
 
@@ -707,6 +708,10 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
                     TimeUnit.MILLISECONDS.convert(
                         System.nanoTime() - dnsResolutionStartedNanos, TimeUnit.NANOSECONDS)));
         }
+        // Per HAR spec, "The send, wait and receive timings are not optional and must have non-negative values."
+        harEntry.getTimings().setSend(0);
+        harEntry.getTimings().setWait(0);
+        harEntry.getTimings().setReceive(0);
     }
 
     @Override

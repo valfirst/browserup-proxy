@@ -146,9 +146,8 @@ public class ProxyResource {
         proxy.setHarCaptureTypes(captureTypes);
 
         String captureCookies = request.param("captureCookies");
-        if (proxy instanceof BrowserMobProxyServer && Boolean.parseBoolean(captureCookies)) {
-            BrowserMobProxyServer browserMobProxyServer = (BrowserMobProxyServer) proxy;
-            browserMobProxyServer.enableHarCaptureTypes(CaptureType.getCookieCaptureTypes());
+        if (Boolean.parseBoolean(captureCookies)) {
+            proxy.enableHarCaptureTypes(CaptureType.getCookieCaptureTypes());
         }
 
         if (oldHar != null) {
@@ -169,6 +168,32 @@ public class ProxyResource {
         String pageRef = request.param("pageRef");
         String pageTitle = request.param("pageTitle");
         proxy.newPage(pageRef, pageTitle);
+
+        return Reply.saying().ok();
+    }
+
+    @Post
+    @At("/:port/har/commands/endPage")
+    public Reply<?> endPage(@Named("port") int port, Request<String> request) {
+        BrowserMobProxyServer proxy = proxyManager.get(port);
+        if (proxy == null) {
+            return Reply.saying().notFound();
+        }
+
+        proxy.endPage();
+
+        return Reply.saying().ok();
+    }
+
+    @Post
+    @At("/:port/har/commands/endHar")
+    public Reply<?> endHar(@Named("port") int port, Request<String> request) {
+        BrowserMobProxyServer proxy = proxyManager.get(port);
+        if (proxy == null) {
+            return Reply.saying().notFound();
+        }
+
+        proxy.endHar();
 
         return Reply.saying().ok();
     }

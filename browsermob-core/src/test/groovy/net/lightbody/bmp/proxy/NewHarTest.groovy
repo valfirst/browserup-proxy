@@ -7,9 +7,8 @@ import de.sstoehr.harreader.model.Har
 import de.sstoehr.harreader.model.HarContent
 import de.sstoehr.harreader.model.HarCookie
 import de.sstoehr.harreader.model.HarEntry
-import de.sstoehr.harreader.model.HarNameValuePair
 import de.sstoehr.harreader.model.HarResponse
-import de.sstoehr.harreader.model.HarTimings
+import de.sstoehr.harreader.model.HarTiming
 import net.lightbody.bmp.filters.util.HarCaptureUtil
 import net.lightbody.bmp.proxy.dns.AdvancedHostResolver
 import net.lightbody.bmp.proxy.test.util.MockServerTest
@@ -99,7 +98,7 @@ class NewHarTest extends MockServerTest {
         assertFalse("HAR entries should exist", har.getLog().getEntries().isEmpty());
 
         HarEntry entry = Iterables.get(har.getLog().getEntries(), 0);
-        assertThat("Expected at least 1 second DNS delay", entry.getTimings().getDns(), greaterThanOrEqualTo(1000L));
+        assertThat("Expected at least 1 second DNS delay", entry.getTimings().getDns(), greaterThanOrEqualTo(1000));
     }
 
     @Test
@@ -178,10 +177,10 @@ class NewHarTest extends MockServerTest {
 
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()))
 
-        List<HarNameValuePair> headers = har.getLog().getEntries().first().response.headers
+        headers = har.getLog().getEntries().first().response.headers
         assertThat("Expected to find headers in the HAR", headers, not(empty()))
 
-        HarNameValuePair header = headers.find { it.name == "Mock-Header" }
+        header = headers.find { it.name == "Mock-Header" }
         assertNotNull("Expected to find header with name Mock-Header in HAR", header)
         assertEquals("Incorrect header value for Mock-Header", "mock value", header.value)
     }
@@ -297,7 +296,7 @@ class NewHarTest extends MockServerTest {
 
             assertEquals("Expected to capture body content in HAR", "success", content.text)
 
-            assertThat("Expected HAR page timing onLoad value to be populated", har.log.pages.last().pageTimings.onLoad, greaterThan(0L))
+            assertThat("Expected HAR page timing onLoad value to be populated", har.log.pages.last().pageTimings.onLoad, greaterThan(0))
         }
 
         harEmptyAfterEnd: {
@@ -642,28 +641,36 @@ class NewHarTest extends MockServerTest {
         HarResponse harResponse = har.log.entries[0].response
         assertNotNull("No HAR response found", harResponse)
 
-        assertEquals("Error in HAR response did not match expected DNS failure error message", HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address"), harResponse.error)
+        assertEquals("Error in HAR response did not match expected DNS failure error message", HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address"), harResponse.additional.get("_errorMessage"))
         assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.status)
         assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.httpVersion)
-        assertEquals("Expected default value for headersSize for failed request", -1L, harResponse.headersSize)
-        assertEquals("Expected default value for bodySize for failed request", -1L, harResponse.bodySize)
+        assertEquals("Expected default value for headersSize for failed request", -1, harResponse.headersSize)
+        assertEquals("Expected default value for bodySize for failed request", -1, harResponse.bodySize)
 
-        HarTimings harTimings = har.log.entries[0].timings
+        HarTiming harTimings = har.log.entries[0].timings
         assertNotNull("No HAR timings found", harTimings)
 
-        assertThat("Expected dns time to be populated after dns resolution failure", harTimings.getDns(TimeUnit.NANOSECONDS), greaterThan(0L))
+        assertThat("Expected dns time to be populated after dns resolution failure", harTimings.getDns(), greaterThanOrEqualTo(0))  // nanos can be so small as to register 0ms here. 999,999 nanos converts to 0 ms.
 
-        assertEquals("Expected HAR timings to contain default values after DNS failure", -1L, harTimings.getConnect(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", -1L, harTimings.getSsl(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", 0L, harTimings.getSend(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", 0L, harTimings.getWait(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", 0L, harTimings.getReceive(TimeUnit.NANOSECONDS))
+        assertEquals("Expected HAR timings to contain default values after DNS failure", -1, harTimings.getConnect())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", -1, harTimings.getSsl())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", 0, harTimings.getSend())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", 0, harTimings.getWait())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", 0, harTimings.getReceive())
     }
 
     @Test
     void testHttpsDnsFailureCapturedInHar() {
         AdvancedHostResolver mockFailingResolver = mock(AdvancedHostResolver)
-        when(mockFailingResolver.resolve("www.doesnotexist.address")).thenReturn([])
+        //when(mockFailingResolver.resolve("www.doesnotexist.address")).thenReturn([])
+        when(mockFailingResolver.resolve("www.doesnotexist.address")).then(new Answer<Collection<InetAddress>>() {
+            @Override
+            public Collection<InetAddress> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                // So that we get a > 0ms result for DNS timing
+                TimeUnit.MILLISECONDS.sleep(100);
+                return Collections.emptyList();
+            }
+        });
 
         proxy = new BrowserMobProxyServer();
         proxy.setHostNameResolver(mockFailingResolver)
@@ -690,22 +697,22 @@ class NewHarTest extends MockServerTest {
         HarResponse harResponse = har.log.entries[0].response
         assertNotNull("No HAR response found", harResponse)
 
-        assertEquals("Error in HAR response did not match expected DNS failure error message", HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address:443"), harResponse.error)
+        assertEquals("Error in HAR response did not match expected DNS failure error message", HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address:443"), harResponse.additional.get("_errorMessage"))
         assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.status)
         assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.httpVersion)
-        assertEquals("Expected default value for headersSize for failed request", -1L, harResponse.headersSize)
-        assertEquals("Expected default value for bodySize for failed request", -1L, harResponse.bodySize)
+        assertEquals("Expected default value for headersSize for failed request", -1, harResponse.headersSize)
+        assertEquals("Expected default value for bodySize for failed request", -1, harResponse.bodySize)
 
-        HarTimings harTimings = har.log.entries[0].timings
+        HarTiming harTimings = har.log.entries[0].timings
         assertNotNull("No HAR timings found", harTimings)
 
-        assertThat("Expected dns time to be populated after dns resolution failure", harTimings.getDns(TimeUnit.NANOSECONDS), greaterThan(0L))
+        assertThat("Expected dns time to be populated after dns resolution failure", harTimings.getDns(), greaterThanOrEqualTo(0))   // nanos can be so small as to register 0ms here. 999,999 nanos converts to 0 ms.
 
-        assertEquals("Expected HAR timings to contain default values after DNS failure", -1L, harTimings.getConnect(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", -1L, harTimings.getSsl(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", 0L, harTimings.getSend(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", 0L, harTimings.getWait(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after DNS failure", 0L, harTimings.getReceive(TimeUnit.NANOSECONDS))
+        assertEquals("Expected HAR timings to contain default values after DNS failure", -1, harTimings.getConnect())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", -1, harTimings.getSsl())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", 0, harTimings.getSend())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", 0, harTimings.getWait())
+        assertEquals("Expected HAR timings to contain default values after DNS failure", 0, harTimings.getReceive())
     }
 
     @Test
@@ -738,21 +745,21 @@ class NewHarTest extends MockServerTest {
         HarResponse harResponse = har.log.entries[0].response
         assertNotNull("No HAR response found", harResponse)
 
-        assertEquals("Error in HAR response did not match expected connection failure error message", HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.error)
+        assertEquals("Error in HAR response did not match expected connection failure error message", HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.additional.get("_errorMessage"))
         assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.status)
         assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.httpVersion)
-        assertEquals("Expected default value for headersSize for failed request", -1L, harResponse.headersSize)
-        assertEquals("Expected default value for bodySize for failed request", -1L, harResponse.bodySize)
+        assertEquals("Expected default value for headersSize for failed request", -1, harResponse.headersSize)
+        assertEquals("Expected default value for bodySize for failed request", -1, harResponse.bodySize)
 
-        HarTimings harTimings = har.log.entries[0].timings
+        HarTiming harTimings = har.log.entries[0].timings
         assertNotNull("No HAR timings found", harTimings)
 
-        assertThat("Expected dns time to be populated after connection failure", harTimings.getDns(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected connect time to be populated after connection failure", harTimings.getConnect(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertEquals("Expected HAR timings to contain default values after connection failure", -1L, harTimings.getSsl(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after connection failure", 0L, harTimings.getSend(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after connection failure", 0L, harTimings.getWait(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after connection failure", 0L, harTimings.getReceive(TimeUnit.NANOSECONDS))
+        assertThat("Expected dns time to be populated after connection failure", harTimings.getDns(), greaterThanOrEqualTo(0))  // nanos can be so small as to register 0ms here. 999,999 nanos converts to 0 ms.
+        assertThat("Expected connect time to be populated after connection failure", harTimings.getConnect(), greaterThan(0))
+        assertEquals("Expected HAR timings to contain default values after connection failure", -1, harTimings.getSsl())
+        assertEquals("Expected HAR timings to contain default values after connection failure", 0, harTimings.getSend())
+        assertEquals("Expected HAR timings to contain default values after connection failure", 0, harTimings.getWait())
+        assertEquals("Expected HAR timings to contain default values after connection failure", 0, harTimings.getReceive())
     }
 
     @Test
@@ -785,21 +792,21 @@ class NewHarTest extends MockServerTest {
         HarResponse harResponse = har.log.entries[0].response
         assertNotNull("No HAR response found", harResponse)
 
-        assertEquals("Error in HAR response did not match expected connection failure error message", HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.error)
+        assertEquals("Error in HAR response did not match expected connection failure error message", HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.additional.get("_errorMessage"))
         assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.status)
         assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.httpVersion)
-        assertEquals("Expected default value for headersSize for failed request", -1L, harResponse.headersSize)
-        assertEquals("Expected default value for bodySize for failed request", -1L, harResponse.bodySize)
+        assertEquals("Expected default value for headersSize for failed request", -1, harResponse.headersSize)
+        assertEquals("Expected default value for bodySize for failed request", -1, harResponse.bodySize)
 
-        HarTimings harTimings = har.log.entries[0].timings
+        HarTiming harTimings = har.log.entries[0].timings
         assertNotNull("No HAR timings found", harTimings)
 
-        assertThat("Expected dns time to be populated after connection failure", harTimings.getDns(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected connect time to be populated after connection failure", harTimings.getConnect(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertEquals("Expected HAR timings to contain default values after connection failure", -1L, harTimings.getSsl(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after connection failure", 0L, harTimings.getSend(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after connection failure", 0L, harTimings.getWait(TimeUnit.NANOSECONDS))
-        assertEquals("Expected HAR timings to contain default values after connection failure", 0L, harTimings.getReceive(TimeUnit.NANOSECONDS))
+        assertThat("Expected dns time to be populated after connection failure", harTimings.getDns(), greaterThanOrEqualTo(0))  // nanos can be so small as to register 0ms here. 999,999 nanos converts to 0 ms.
+        assertThat("Expected connect time to be populated after connection failure", harTimings.getConnect(), greaterThan(0))
+        assertEquals("Expected HAR timings to contain default values after connection failure", -1, harTimings.getSsl())
+        assertEquals("Expected HAR timings to contain default values after connection failure", 0, harTimings.getSend())
+        assertEquals("Expected HAR timings to contain default values after connection failure", 0, harTimings.getWait())
+        assertEquals("Expected HAR timings to contain default values after connection failure", 0, harTimings.getReceive())
     }
 
     @Test
@@ -840,25 +847,26 @@ class NewHarTest extends MockServerTest {
         HarResponse harResponse = har.log.entries[0].response
         assertNotNull("No HAR response found", harResponse)
 
-        assertEquals("Error in HAR response did not match expected response timeout error message", HarCaptureUtil.getResponseTimedOutErrorMessage(), harResponse.error)
+        assertEquals("Error in HAR response did not match expected response timeout error message", HarCaptureUtil.getResponseTimedOutErrorMessage(), harResponse.additional.get("_errorMessage"))
         assertEquals("Expected HTTP status code of 0 for response timeout", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.status)
         assertEquals("Expected unknown HTTP version for response timeout", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.httpVersion)
-        assertEquals("Expected default value for headersSize for response timeout", -1L, harResponse.headersSize)
-        assertEquals("Expected default value for bodySize for response timeout", -1L, harResponse.bodySize)
+        assertEquals("Expected default value for headersSize for response timeout", -1, harResponse.headersSize)
+        assertEquals("Expected default value for bodySize for response timeout", -1, harResponse.bodySize)
 
-        HarTimings harTimings = har.log.entries[0].timings
+        HarTiming harTimings = har.log.entries[0].timings
         assertNotNull("No HAR timings found", harTimings)
 
-        assertEquals("Expected ssl timing to contain default value", -1L, harTimings.getSsl(TimeUnit.NANOSECONDS))
+        assertEquals("Expected ssl timing to contain default value", -1, harTimings.getSsl())
 
         // this timeout was caused by a failure of the server to respond, so dns, connect, send, and wait should all be populated,
         // but receive should not be populated since no response was received.
-        assertThat("Expected dns time to be populated", harTimings.getDns(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected connect time to be populated", harTimings.getConnect(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected send time to be populated", harTimings.getSend(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected wait time to be populated", harTimings.getWait(TimeUnit.NANOSECONDS), greaterThan(0L))
+        assertThat("Expected dns time to be populated", harTimings.getDns(), greaterThanOrEqualTo(0))  // nanos can be so small as to register 0ms here. 999,999 nanos converts to 0 ms.
+        // Because we have millisecond granularity, these timing tests don't distinguish "0" versus "a tiny bit more than 0".
+        assertThat("Expected connect time to be populated", harTimings.getConnect(), greaterThanOrEqualTo(0))
+        assertThat("Expected send time to be populated", harTimings.getSend(), greaterThanOrEqualTo(0))
+        assertThat("Expected wait time to be populated", harTimings.getWait(), greaterThanOrEqualTo(0))
 
-        assertEquals("Expected receive time to not be populated", 0L, harTimings.getReceive(TimeUnit.NANOSECONDS))
+        assertEquals("Expected receive time to not be populated", 0, harTimings.getReceive())
     }
 
     @Test
@@ -900,25 +908,26 @@ class NewHarTest extends MockServerTest {
         HarResponse harResponse = har.log.entries[0].response
         assertNotNull("No HAR response found", harResponse)
 
-        assertEquals("Error in HAR response did not match expected response timeout error message", HarCaptureUtil.RESPONSE_TIMED_OUT_ERROR_MESSAGE, harResponse.error)
+        assertEquals("Error in HAR response did not match expected response timeout error message", HarCaptureUtil.RESPONSE_TIMED_OUT_ERROR_MESSAGE, harResponse.additional.get("_errorMessage"))
         assertEquals("Expected HTTP status code of 0 for response timeout", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.status)
         assertEquals("Expected unknown HTTP version for response timeout", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.httpVersion)
-        assertEquals("Expected default value for headersSize for response timeout", -1L, harResponse.headersSize)
-        assertEquals("Expected default value for bodySize for response timeout", -1L, harResponse.bodySize)
+        assertEquals("Expected default value for headersSize for response timeout", -1, harResponse.headersSize)
+        assertEquals("Expected default value for bodySize for response timeout", -1, harResponse.bodySize)
 
-        HarTimings harTimings = har.log.entries[0].timings
+        HarTiming harTimings = har.log.entries[0].timings
         assertNotNull("No HAR timings found", harTimings)
 
-        assertThat("Expected ssl timing to be populated", harTimings.getSsl(TimeUnit.NANOSECONDS), greaterThan(0L))
+        assertThat("Expected ssl timing to be populated", harTimings.getSsl(), greaterThan(0))
 
         // this timeout was caused by a failure of the server to respond, so dns, connect, send, and wait should all be populated,
         // but receive should not be populated since no response was received.
-        assertThat("Expected dns time to be populated", harTimings.getDns(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected connect time to be populated", harTimings.getConnect(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected send time to be populated", harTimings.getSend(TimeUnit.NANOSECONDS), greaterThan(0L))
-        assertThat("Expected wait time to be populated", harTimings.getWait(TimeUnit.NANOSECONDS), greaterThan(0L))
+        assertThat("Expected dns time to be populated", harTimings.getDns(), greaterThanOrEqualTo(0)) // nanos can be so small as to register 0ms here. 999,999 nanos converts to 0 ms.
+        // Because we have millisecond granularity, these timing tests don't distinguish "0" versus "a tiny bit more than 0".
+        assertThat("Expected connect time to be populated", harTimings.getConnect(), greaterThanOrEqualTo(0))
+        assertThat("Expected send time to be populated", harTimings.getSend(), greaterThanOrEqualTo(0))
+        assertThat("Expected wait time to be populated", harTimings.getWait(), greaterThanOrEqualTo(0))
 
-        assertEquals("Expected receive time to not be populated", 0L, harTimings.getReceive(TimeUnit.NANOSECONDS))
+        assertEquals("Expected receive time to not be populated", 0, harTimings.getReceive())
     }
 
     @Test
