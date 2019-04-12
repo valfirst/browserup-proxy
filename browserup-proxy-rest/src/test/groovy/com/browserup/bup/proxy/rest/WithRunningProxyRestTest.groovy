@@ -19,7 +19,6 @@ import org.apache.http.HttpHeaders
 import org.apache.http.HttpStatus
 import org.awaitility.Awaitility
 import org.awaitility.Duration
-import org.eclipse.jetty.http.HttpMethods
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.junit.After
@@ -85,12 +84,12 @@ class WithRunningProxyRestTest {
 
         LOG.debug("BrowserUp Proxy server is started successfully")
 
-        targetMockedServer = new ClientAndServer(0)
+        //targetMockedServer = new ClientAndServer(0)
 
     }
 
     HTTPBuilder getTargetServerClient() {
-        def http = new HTTPBuilder("http://localhost:${targetMockedServer.port}")
+        def http = new HTTPBuilder("http://localhost:4567")
         http.setProxy('localhost', proxy.port, 'http')
         http
     }
@@ -143,14 +142,14 @@ class WithRunningProxyRestTest {
     }
 
     protected void mockTargetServerResponse(String url, String responseBody, Delay delay=Delay.milliseconds(0)) {
-        targetMockedServer.when(request()
-                .withMethod(HttpMethods.GET)
-                .withPath("/${url}"),
-                Times.exactly(1))
-                .respond(response()
-                .withStatusCode(HttpStatus.SC_OK)
-                .withDelay(delay)
-                .withHeader(new Header(HttpHeaders.CONTENT_TYPE, 'text/plain'))
-                .withBody(responseBody))
+//        targetMockedServer.when(request()
+//                .withMethod("GET")
+//                .withPath("/${url}"),
+//                Times.exactly(1))
+//                .respond(response()
+//                .withStatusCode(HttpStatus.SC_OK)
+//                .withDelay(delay)
+//                .withHeader(new Header(HttpHeaders.CONTENT_TYPE, 'text/plain'))
+//                .withBody(responseBody))
     }
 }
