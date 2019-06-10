@@ -35,6 +35,8 @@ class EntriesAssertStatusEqualsRestTest extends BaseRestTest {
     void getBadRequestIfStatusValidButUrlPatternIsInvalid() {
         proxyManager.get()[0].newHar()
 
+        def port = restServer.connectors[0].localPort
+
         sendGetToProxyServer { req ->
             uri.path = fullUrlPath
             uri.query = [urlPattern: '[', status: HttpStatus.SC_OK]

@@ -1,6 +1,7 @@
 package com.browserup.bup.proxy.rest
 
 import com.browserup.bup.BrowserUpProxyServer
+import com.browserup.bup.FooResource
 import com.browserup.bup.proxy.ProxyManager
 import com.browserup.bup.proxy.bricks.ProxyResource
 import com.browserup.bup.proxy.guice.ConfigModule
@@ -10,6 +11,10 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 import com.google.inject.servlet.GuiceServletContextListener
 import com.google.sitebricks.SitebricksModule
+import com.google.sitebricks.SitebricksServletModule
+import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
+
+//import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import org.apache.http.HttpHeaders
@@ -54,6 +59,19 @@ class WithRunningProxyRestTest {
             @Override
             protected void configureSitebricks() {
                 scan(ProxyResource.class.getPackage())
+            }
+
+            @Override
+            protected SitebricksServletModule servletModule() {
+                return new SitebricksServletModule() {
+                    @Override
+                    protected void configureCustomServlets() {
+                        bind(FooResource)
+                        bind(GuiceContainer)
+
+                        serve("/toserve/*").with(GuiceContainer.class)
+                    }
+                }
             }
         })
 
