@@ -68,9 +68,10 @@ dependencies {
     implementation 'com.google.inject:guice:4.2.2'
     implementation 'com.google.inject.extensions:guice-servlet:4.2.2'
     implementation 'com.google.inject.extensions:guice-multibindings:4.2.2'
-    implementation('com.google.sitebricks:sitebricks:0.8.11') {
-        exclude(module: 'validation-api')
-    }
+    implementation('com.google.sitebricks:sitebricks:0.8.11')
+
+    implementation('javax.validation:validation-api:2.0.1.Final')
+
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
     implementation "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
@@ -101,7 +102,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.2.4'
     testImplementation 'org.seleniumhq.selenium:selenium-api:3.4.0'
     testImplementation 'org.awaitility:awaitility:4.0.2'
-    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.24.1'
+    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.26.0'
 }
 
 task createVersionProperties() {
