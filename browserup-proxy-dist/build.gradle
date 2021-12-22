@@ -87,7 +87,7 @@ dependencies {
 applicationName = 'browserup-proxy'
 mainClassName = 'com.browserup.bup.proxy.Main'
 
-def mitmproxyLinuxURL = 'https://mitmproxy-linux.s3.us-east-2.amazonaws.com/mitmdump'.toURL()
+def mitmproxyLinuxURL = 'https://mitmproxy-linux.s3.us-east-2.amazonaws.com/mitmdump'.toURL() // Returns HTTP 403
 def mitmproxyWindowsURL = 'https://mitmproxy-windows.s3.us-east-2.amazonaws.com/mitmdump.exe'.toURL()
 
 static void downloadFile(URL srcUrl, File dstFile) {
@@ -126,9 +126,10 @@ distributions {
             into ('ssl') {
                 from '../browserup-proxy-core/src/main/resources/sslSupport'
             }
+            /* Temporarily disable downloading of mitmproxy binaries due to HTTP 403 error
             from(downloadMitmproxyBinaries) {
                 into 'bin/mitmproxy'
-            }
+            }*/
         }
     }
 }
