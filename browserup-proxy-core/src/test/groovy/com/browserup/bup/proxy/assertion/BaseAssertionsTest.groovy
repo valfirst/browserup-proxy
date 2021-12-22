@@ -28,7 +28,7 @@ abstract class BaseAssertionsTest extends MockServerTest {
     protected static final Pattern URL_PATH_PATTERN = Pattern.compile(".*${URL_PATH}.*")
     protected static final int DEFAULT_RESPONSE_DELAY = 2000
     protected static final int FAST_RESPONSE_DELAY = 1000
-    protected static final int TIME_DELTA_MILLISECONDS = 100
+    protected static final int TIME_DELTA_MILLISECONDS = 500
 
     protected String url
     protected String mockedServerUrl
