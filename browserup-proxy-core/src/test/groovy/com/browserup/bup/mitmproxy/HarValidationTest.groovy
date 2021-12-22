@@ -11,12 +11,14 @@ import com.browserup.harreader.model.*
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
 
+@Ignore
 class HarValidationTest extends MockServerTest {
     private MitmProxyServer proxy
 

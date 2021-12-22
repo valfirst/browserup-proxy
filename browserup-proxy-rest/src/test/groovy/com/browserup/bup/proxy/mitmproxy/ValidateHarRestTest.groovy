@@ -9,11 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.Method
 import org.apache.http.entity.ContentType
+import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.junit.Assert.*
 
+@Ignore
 class ValidateHarRestTest extends BaseRestTest {
 
     @Override

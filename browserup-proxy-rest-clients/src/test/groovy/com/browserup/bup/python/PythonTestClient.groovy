@@ -20,6 +20,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
+@Ignore
 class PythonTestClient extends WithRunningProxyRestTest {
     private static final Logger LOG = LoggerFactory.getLogger(PythonTestClient)
 

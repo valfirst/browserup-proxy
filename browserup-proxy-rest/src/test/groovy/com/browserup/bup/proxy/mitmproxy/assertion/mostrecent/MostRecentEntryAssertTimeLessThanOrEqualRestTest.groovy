@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
+import org.junit.Ignore
 import org.junit.Test
 
 import static org.junit.Assert.*
 
+@Ignore
 class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     def successfulAssertionMilliseconds = SUCCESSFUL_ASSERTION_TIME_WITHIN
     def failedAssertionMilliseconds = FAILED_ASSERTION_TIME_WITHIN

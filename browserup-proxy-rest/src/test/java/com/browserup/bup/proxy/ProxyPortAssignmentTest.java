@@ -11,8 +11,11 @@ import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.exception.ProxyExistsException;
 import com.browserup.bup.exception.ProxyPortsExhaustedException;
 import com.browserup.bup.proxy.test.util.ProxyManagerTest;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class ProxyPortAssignmentTest extends ProxyManagerTest {
     @Override
     public String[] getArgs() {

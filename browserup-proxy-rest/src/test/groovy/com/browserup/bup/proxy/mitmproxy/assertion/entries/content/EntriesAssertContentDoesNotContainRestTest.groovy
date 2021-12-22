@@ -4,10 +4,12 @@ import com.browserup.bup.assertion.model.AssertionResult
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.hamcrest.Matchers
+import org.junit.Ignore
 import org.junit.Test
 
 import static org.junit.Assert.assertThat
 
+@Ignore
 class EntriesAssertContentDoesNotContainRestTest extends com.browserup.bup.proxy.mitmproxy.assertion.entries.content.BaseEntriesAssertContentRestTest {
 
     @Override

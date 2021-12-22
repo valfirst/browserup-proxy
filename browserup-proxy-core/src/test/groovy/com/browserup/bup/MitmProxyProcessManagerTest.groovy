@@ -12,6 +12,7 @@ import org.junit.Test
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 class MitmProxyProcessManagerTest {
     def mitmProxyManager = new MitmProxyProcessManager()
 

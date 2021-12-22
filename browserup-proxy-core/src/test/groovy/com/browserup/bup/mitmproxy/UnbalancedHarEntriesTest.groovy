@@ -12,6 +12,7 @@ import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.awaitility.Awaitility
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Test
 
 import java.util.concurrent.TimeUnit
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertNotEquals
 /**
  * These tests use mocked server with long delay to verify behavior of 'unbalanced' har entries, where there might be request-only, response-only or HAR entry with both request and response, depending on when 'clean har' is called during request/response/reporting process.
  */
+@Ignore
 class UnbalancedHarEntriesTest extends MockServerTest {
     private static final def DEFAULT_HAR_RESPONSE = new HarResponse()
     private static final def DEFAULT_HAR_REQUEST = new HarRequest()

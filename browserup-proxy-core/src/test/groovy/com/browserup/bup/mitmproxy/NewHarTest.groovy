@@ -18,6 +18,7 @@ import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Test
 
 import java.text.SimpleDateFormat
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.when
 /**
  * HAR tests using the new interface. When the legacy interface is retired, these tests should be combined with the tests currently in HarTest.
  */
+@Ignore
 class NewHarTest extends MockServerTest {
     private MitmProxyServer proxy
 

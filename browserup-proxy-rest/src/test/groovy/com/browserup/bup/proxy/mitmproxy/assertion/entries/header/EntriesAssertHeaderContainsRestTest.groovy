@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
+import org.junit.Ignore
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertThat
 
+@Ignore
 class EntriesAssertHeaderContainsRestTest extends com.browserup.bup.proxy.mitmproxy.assertion.entries.header.BaseEntriesAssertHeaderRestTest {
 
     @Override

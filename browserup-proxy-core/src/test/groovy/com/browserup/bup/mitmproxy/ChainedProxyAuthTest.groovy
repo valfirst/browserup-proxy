@@ -25,6 +25,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
+@Ignore
 class ChainedProxyAuthTest extends MockServerTest {
     MitmProxyServer proxy
 

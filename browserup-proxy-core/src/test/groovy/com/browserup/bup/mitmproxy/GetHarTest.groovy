@@ -17,6 +17,7 @@ import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
@@ -25,6 +26,7 @@ import static org.hamcrest.Matchers.not
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertThat
 
+@Ignore
 class GetHarTest extends MockServerTest {
     private MitmProxyServer proxy
 

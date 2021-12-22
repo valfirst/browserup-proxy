@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
+import org.junit.Ignore
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertThat
 
+@Ignore
 class EntriesAssertContentMatchesRestTest extends com.browserup.bup.proxy.mitmproxy.assertion.entries.content.BaseEntriesAssertContentRestTest {
     protected static final String CONTENT_PATTERN_TO_MATCH_BOTH = ".*${RESPONSE_COMMON_PART}.*"
     protected static final String CONTENT_PATTERN_TO_MATCH_FIRST = ".*${FIRST_RESPONSE}.*"

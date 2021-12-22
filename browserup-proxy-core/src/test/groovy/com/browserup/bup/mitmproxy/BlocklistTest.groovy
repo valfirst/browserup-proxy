@@ -11,6 +11,7 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
+import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertThat
 
+@Ignore
 class BlocklistTest extends MockServerTest {
     MitmProxyServer proxy
 
