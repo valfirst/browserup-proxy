@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class MitmProxyProcessManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(MitmProxyProcessManager.class);
   private static final String MITMPROXY_BINARY_PATH_PROPERTY = "MITMPROXY_BINARY_PATH";
-  private static final String MITMPROXY_HOME_PATH = System.getProperty("user.home") + "/.browserup-mitmproxy";
+  private static final String MITMPROXY_HOME_PATH = "/usr/local/bin";
   private static final String MITMPROXY_DEFAULT_BINARY_PATH = MITMPROXY_HOME_PATH + "/" + getMitmproxyBinaryFileName();
 
   public enum MitmProxyLoggingLevel {
@@ -128,7 +128,8 @@ public class MitmProxyProcessManager {
 
     if (startedProcess != null) {
       Process process = startedProcess.getProcess();
-      process.children().forEach(ProcessHandle::destroy);
+      // This code is not Java 8 compatible:
+      // process.children().forEach(ProcessHandle::destroy);
       process.destroy();
       Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !process.isAlive());
     }
