@@ -19,6 +19,7 @@ resolve {
     prettyPrint = 'TRUE'
     openApiFile = file("src/main/resources/openapi-config.json")
     classpath = sourceSets.main.runtimeClasspath
+    buildClasspath = classpath
     readerClass = "com.browserup.bup.rest.openapi.CustomOpenApiReader"
     resourcePackages = ['com.browserup.bup.rest.resource']
     outputPath = "$buildDir/openapi"
