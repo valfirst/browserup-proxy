@@ -10,7 +10,6 @@ import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import com.github.tomakehurst.wiremock.matching.AbsentPattern
 import com.github.tomakehurst.wiremock.matching.EqualToPattern
-import com.github.tomakehurst.wiremock.matching.StringValuePattern
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
 import org.junit.Ignore

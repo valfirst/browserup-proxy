@@ -4,7 +4,6 @@ import com.browserup.bup.proxy.CaptureType
 import com.browserup.bup.proxy.assertion.BaseAssertionsTest
 import com.github.tomakehurst.wiremock.http.HttpHeader
 import com.github.tomakehurst.wiremock.http.HttpHeaders
-import org.apache.http.HttpStatus
 import org.junit.Before
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get

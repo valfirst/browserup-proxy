@@ -11,7 +11,6 @@ import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import com.github.tomakehurst.wiremock.matching.AbsentPattern
 import com.github.tomakehurst.wiremock.matching.EqualToPattern
-import com.github.tomakehurst.wiremock.matching.StringValuePattern
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
 import org.junit.Test
@@ -23,7 +22,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching
 import static com.github.tomakehurst.wiremock.client.WireMock.verify
-import static com.github.tomakehurst.wiremock.http.HttpHeader.absent
 import static org.junit.Assert.assertEquals
 
 @org.junit.Ignore

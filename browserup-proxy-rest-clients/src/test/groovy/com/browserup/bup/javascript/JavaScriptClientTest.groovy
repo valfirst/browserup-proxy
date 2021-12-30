@@ -16,7 +16,6 @@ import org.testcontainers.Testcontainers
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.images.builder.ImageFromDockerfile
 
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 

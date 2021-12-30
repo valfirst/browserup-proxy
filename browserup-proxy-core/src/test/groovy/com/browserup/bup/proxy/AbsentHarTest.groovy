@@ -7,7 +7,6 @@ package com.browserup.bup.proxy
 import com.browserup.bup.BrowserUpProxyServer
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
-import org.apache.http.HttpStatus
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.CloseableHttpClient
 import org.hamcrest.Matchers

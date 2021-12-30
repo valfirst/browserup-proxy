@@ -8,7 +8,6 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import java.util.ArrayList;
 
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
     private static final String PARAMETER_NAME_ATTRIBUTE = "paramName";

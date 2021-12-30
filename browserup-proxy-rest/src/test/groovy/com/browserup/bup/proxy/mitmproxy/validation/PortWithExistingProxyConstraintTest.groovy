@@ -1,9 +1,7 @@
 package com.browserup.bup.proxy.mitmproxy.validation
 
-import com.browserup.bup.BrowserUpProxyServer
 import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.MitmProxyManager
-import com.browserup.bup.proxy.ProxyManager
 import com.browserup.bup.rest.validation.PortWithExistingProxyConstraint
 import org.junit.Assert
 import org.junit.Test

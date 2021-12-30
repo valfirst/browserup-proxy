@@ -4,10 +4,7 @@
 
 package com.browserup.bup.mitmproxy
 
-import com.browserup.bup.BrowserUpProxyServer
 import com.browserup.bup.MitmProxyServer
-import com.browserup.bup.mitmproxy.addons.AddonsManagerAddOn
-import com.browserup.bup.mitmproxy.addons.ProxyManagerAddOn
 import com.browserup.bup.proxy.auth.AuthType
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
@@ -18,12 +15,10 @@ import org.junit.Ignore
 import org.junit.Test
 import org.littleshoot.proxy.HttpProxyServer
 import org.littleshoot.proxy.ProxyAuthenticator
-import org.littleshoot.proxy.extras.SelfSignedSslEngineSource
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
 
 @Ignore
 class ChainedProxyAuthTest extends MockServerTest {

@@ -9,7 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
-import com.browserup.bup.util.HttpUtil;
+
 import com.browserup.bup.util.BrowserUpHttpUtil;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.impl.ProxyUtils;

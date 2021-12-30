@@ -4,18 +4,12 @@
 
 package com.browserup.bup.mitmproxy
 
-import com.browserup.bup.BrowserUpProxy
-import com.browserup.bup.BrowserUpProxyServer
 import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.CaptureType
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import com.browserup.harreader.model.Har
-import com.github.tomakehurst.wiremock.http.GenericHttpUriRequest
-import org.apache.http.HttpHost
-import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
-import org.apache.http.impl.client.HttpClientBuilder
 import org.junit.After
 import org.junit.Ignore
 import org.junit.Test

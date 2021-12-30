@@ -1,9 +1,7 @@
 package com.browserup.bup.rest.validation.mapper.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ArgumentConstraintsErrors {
     private String name = "";

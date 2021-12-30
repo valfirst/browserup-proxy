@@ -6,7 +6,6 @@ package com.browserup.bup.util;
 
 import com.google.common.net.HostAndPort;
 import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 
 import java.net.URI;

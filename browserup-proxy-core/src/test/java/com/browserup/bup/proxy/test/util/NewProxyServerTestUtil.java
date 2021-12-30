@@ -8,18 +8,12 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 import org.apache.http.HttpHost;
 import org.apache.http.client.CookieStore;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 public class NewProxyServerTestUtil {
     /**

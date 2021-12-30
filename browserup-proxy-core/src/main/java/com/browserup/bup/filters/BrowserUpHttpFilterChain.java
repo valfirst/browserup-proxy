@@ -14,7 +14,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import com.browserup.bup.BrowserUpProxyServer;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
-import org.littleshoot.proxy.HttpFiltersSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

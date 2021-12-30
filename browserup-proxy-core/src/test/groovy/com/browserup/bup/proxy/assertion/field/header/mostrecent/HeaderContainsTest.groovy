@@ -5,9 +5,6 @@ import org.junit.Test
 
 import java.util.regex.Pattern
 
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-
 class HeaderContainsTest extends HeaderBaseTest {
     private static final Pattern URL_PATTERN = Pattern.compile(".*${URL_PATH}.*")
 

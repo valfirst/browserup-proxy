@@ -24,11 +24,9 @@ import org.junit.Test
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
-import static com.browserup.bup.mitmproxy.MitmProxyProcessManager.MitmProxyLoggingLevel.*
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import static org.mockito.ArgumentMatchers.eq
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 

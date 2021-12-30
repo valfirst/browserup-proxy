@@ -13,11 +13,9 @@ import org.junit.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.testcontainers.Testcontainers
-import org.testcontainers.containers.Container
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.images.builder.ImageFromDockerfile
 
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 

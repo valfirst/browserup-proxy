@@ -23,8 +23,6 @@ import org.apache.http.client.methods.HttpGet
 import org.junit.After
 import org.junit.Test
 
-import java.nio.channels.Channel
-
 import static com.browserup.bup.filters.HttpsAwareFiltersAdapter.*
 import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor

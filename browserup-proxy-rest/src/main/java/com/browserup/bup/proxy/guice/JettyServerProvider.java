@@ -4,9 +4,7 @@
 
 package com.browserup.bup.proxy.guice;
 
-import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.proxy.MitmProxyManager;
-import com.browserup.bup.proxy.ProxyManager;
 import com.browserup.bup.rest.validation.mapper.ConstraintViolationExceptionMapper;
 import com.browserup.bup.rest.filter.LoggingFilter;
 import com.google.inject.Inject;

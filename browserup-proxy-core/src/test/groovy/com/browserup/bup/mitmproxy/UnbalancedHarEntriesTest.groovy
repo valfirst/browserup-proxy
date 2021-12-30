@@ -10,7 +10,6 @@ import com.browserup.harreader.model.HarRequest
 import com.browserup.harreader.model.HarResponse
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
-import org.awaitility.Awaitility
 import org.junit.After
 import org.junit.Ignore
 import org.junit.Test

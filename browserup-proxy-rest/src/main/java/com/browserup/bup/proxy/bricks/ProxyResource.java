@@ -9,7 +9,6 @@ import com.browserup.bup.exception.ProxyExistsException;
 import com.browserup.bup.exception.ProxyPortsExhaustedException;
 import com.browserup.bup.exception.UnsupportedCharsetException;
 import com.browserup.bup.filters.JavascriptRequestResponseFilter;
-import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager.MitmProxyLoggingLevel;
 import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.MitmProxyManager;

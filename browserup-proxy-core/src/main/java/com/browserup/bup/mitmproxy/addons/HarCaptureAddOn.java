@@ -1,7 +1,6 @@
 package com.browserup.bup.mitmproxy.addons;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Optional;
 
 public class HarCaptureAddOn extends AbstractAddon {

@@ -8,8 +8,6 @@ import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.proxy.MitmProxyManager;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.browserup.bup.BrowserUpProxyServer;
-import com.browserup.bup.proxy.ProxyManager;
 import com.browserup.bup.proxy.guice.ConfigModule;
 import org.junit.After;
 import org.junit.Before;

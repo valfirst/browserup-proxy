@@ -2,10 +2,7 @@ package com.browserup.bup.proxy.assertion.field.content
 
 import com.browserup.bup.proxy.CaptureType
 import com.browserup.bup.proxy.assertion.BaseAssertionsTest
-import com.github.tomakehurst.wiremock.matching.EqualToPattern
 import org.apache.http.HttpHeaders
-import org.apache.http.HttpStatus
-import org.eclipse.jetty.http.HttpHeader
 import org.junit.Before
 import java.util.regex.Pattern
 

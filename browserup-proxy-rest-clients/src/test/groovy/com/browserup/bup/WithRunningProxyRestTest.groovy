@@ -8,7 +8,6 @@ package com.browserup.bup
  * Modifications Copyright (c) 2019 BrowserUp, Inc.
  */
 
-import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.MitmProxyManager
 import com.browserup.bup.proxy.bricks.ProxyResource
 import com.browserup.bup.proxy.guice.ConfigModule

@@ -7,7 +7,6 @@ import com.browserup.harreader.model.HarEntry;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class MostRecentHarEntrySupplier extends HarEntriesSupplier {
 

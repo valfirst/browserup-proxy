@@ -15,7 +15,7 @@ import com.browserup.bup.mitm.manager.ImpersonatingMitmManager;
 import com.browserup.bup.mitm.tools.BouncyCastleSecurityProviderTool;
 import com.browserup.bup.mitm.tools.DefaultSecurityProviderTool;
 import com.browserup.bup.mitm.util.MitmConstants;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

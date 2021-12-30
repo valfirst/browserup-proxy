@@ -4,7 +4,6 @@
 
 package com.browserup.bup.mitm.tools;
 
-import com.google.common.net.InetAddresses;
 import com.browserup.bup.mitm.CertificateAndKey;
 import com.browserup.bup.mitm.CertificateInfo;
 import com.browserup.bup.mitm.exception.CertificateCreationException;

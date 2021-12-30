@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
-import org.littleshoot.proxy.HttpFiltersAdapter;
+
 import org.littleshoot.proxy.impl.ProxyUtils;
 
 import static com.browserup.bup.filters.HttpsAwareFiltersAdapter.*;

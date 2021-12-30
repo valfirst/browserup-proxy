@@ -6,31 +6,15 @@ package com.browserup.bup.proxy
 
 import com.browserup.bup.BrowserUpProxy
 import com.browserup.bup.BrowserUpProxyServer
-import com.browserup.bup.filters.util.HarCaptureUtil
-import com.browserup.bup.proxy.dns.AdvancedHostResolver
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import com.browserup.harreader.model.*
-import com.github.tomakehurst.wiremock.client.WireMock
-import com.google.common.collect.Iterables
-import org.apache.http.client.config.RequestConfig
-import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
-import org.hamcrest.Matcher
-import org.hamcrest.core.Every
 import org.junit.After
 import org.junit.Test
-import org.mockito.invocation.InvocationOnMock
-import org.mockito.stubbing.Answer
-
-import java.text.SimpleDateFormat
-import java.util.concurrent.TimeUnit
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
-import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
 
 @org.junit.Ignore
 class HarValidationTest extends MockServerTest {

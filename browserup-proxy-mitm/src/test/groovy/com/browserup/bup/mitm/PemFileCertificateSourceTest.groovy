@@ -5,7 +5,6 @@
 package com.browserup.bup.mitm
 
 import com.browserup.bup.mitm.exception.ImportException
-import com.browserup.bup.mitm.test.util.CertificateTestUtil
 import com.browserup.bup.mitm.util.EncryptionUtil
 import org.junit.Before
 import org.junit.Rule

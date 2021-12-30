@@ -4,10 +4,8 @@
 
 package com.browserup.bup.proxy.mitmproxy
 
-import com.browserup.bup.BrowserUpProxyServer
 import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.MitmProxyManager
-import com.browserup.bup.proxy.ProxyManager
 import com.browserup.bup.proxy.bricks.ProxyResource
 import com.browserup.bup.proxy.guice.ConfigModule
 import com.browserup.bup.proxy.guice.JettyModule

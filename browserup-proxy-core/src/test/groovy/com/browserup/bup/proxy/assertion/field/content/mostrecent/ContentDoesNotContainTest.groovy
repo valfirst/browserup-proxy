@@ -2,9 +2,6 @@ package com.browserup.bup.proxy.assertion.field.content.mostrecent
 
 import org.junit.Test
 
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-
 class ContentDoesNotContainTest extends MostRecentContentBaseTest {
 
     @Test
