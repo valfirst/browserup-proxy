@@ -28,7 +28,7 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'signing'
 
-    group = 'com.github.valfirst'
+    group = 'com.github.valfirst.browserup-proxy'
     version = '3.0.0-SNAPSHOT'
 
     sourceCompatibility=1.8
