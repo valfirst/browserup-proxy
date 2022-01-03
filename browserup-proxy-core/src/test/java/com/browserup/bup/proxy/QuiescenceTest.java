@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 package com.browserup.bup.proxy;
 
 import com.browserup.bup.proxy.test.util.NewProxyServerTest;

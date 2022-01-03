@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 package com.browserup.bup.assertion.supplier;
 
 import com.browserup.harreader.model.Har;

@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 package com.browserup.bup.mitm.trustmanager;
 
 import io.netty.util.internal.EmptyArrays;

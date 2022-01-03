@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 package com.browserup.bup.filters.util;
 
 import com.browserup.harreader.model.HarResponse;

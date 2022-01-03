@@ -1,6 +1,5 @@
 package com.browserup.bup.rest.validation.util;
 /*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
  * Original from:
  * https://github.com/hibernate/hibernate-validator/blob/master/engine/src/main/java/org/hibernate/validator/internal/engine/messageinterpolation/util/InterpolationHelper.java
  */

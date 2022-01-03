@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 plugins {
     id 'java-library'
     id 'groovy'
@@ -31,13 +27,13 @@ uploadArchives {
             pom.project {
                 name 'browserup-proxy-rest'
                 description 'BrowserUp Proxy - REST'
-                url 'https://github.com/browserup/browserup-proxy'
+                url 'https://github.com/valfirst/browserup-proxy'
                 packaging 'jar'
 
                 scm {
-                    connection 'scm:git:git@github.com:browserup/browserup-proxy.git'
-                    developerConnection 'scm:git:git@github.com:browserup/browserup-proxy.git'
-                    url 'https://github.com/browserup/browserup-proxy/tree/master/browserup-proxy-rest'
+                    connection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    developerConnection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    url 'https://github.com/valfirst/browserup-proxy/tree/master/browserup-proxy-rest'
                 }
 
                 licenses {
@@ -50,9 +46,9 @@ uploadArchives {
 
                 developers {
                     developer {
-                        id 'browserup'
-                        name 'BrowserUp, Inc.'
-                        email 'developers@browserup.com'
+                        id 'valfirst'
+                        name 'Valery Yatsynovich'
+                        email 'valeryyatsynovich@gmail.com'
                     }
                 }
             }

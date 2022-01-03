@@ -1,12 +1,4 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 package com.browserup.bup
-
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
 
 import com.browserup.bup.proxy.MitmProxyManager
 import com.browserup.bup.proxy.bricks.ProxyResource

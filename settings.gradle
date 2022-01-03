@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 include 'browserup-proxy-core'
 include 'browserup-proxy-dist'
 include 'browserup-proxy-rest'

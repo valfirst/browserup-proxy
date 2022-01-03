@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 package com.browserup.bup.mitm
 
 import com.browserup.bup.mitm.test.util.CertificateTestUtil

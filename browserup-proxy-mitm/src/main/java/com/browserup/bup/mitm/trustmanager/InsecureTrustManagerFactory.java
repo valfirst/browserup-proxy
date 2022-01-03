@@ -14,11 +14,7 @@
  * under the License.
  */
 
- /*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
-package com.browserup.bup.mitm.trustmanager;
+ package com.browserup.bup.mitm.trustmanager;
 
 import io.netty.handler.ssl.util.SimpleTrustManagerFactory;
 

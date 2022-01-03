@@ -68,7 +68,7 @@ Then configure your HTTP client to use a proxy running at the specified port.
 **Using with Selenium?** See the [Using with Selenium](#using-with-selenium) section.
 
 ### Getting started: Standalone
-To run in standalone mode from the command line, first download the latest release from the [releases page](https://github.com/browserup/browserup-proxy/releases), or [build the latest from source](#building-the-latest-from-source).
+To run in standalone mode from the command line, first download the latest release from the [releases page](https://github.com/valfirst/browserup-proxy/releases), or [build the latest from source](#building-the-latest-from-source).
 
 Start the REST API:
 ```sh

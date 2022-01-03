@@ -1,7 +1,3 @@
-/*
- * Modifications Copyright (c) 2019 BrowserUp, Inc.
- */
-
 plugins {
     id 'application'
 }
@@ -32,12 +28,12 @@ uploadArchives {
             pom('distribution').project {
                 name 'browserup-proxy'
                 description 'BrowserUp Proxy'
-                url 'https://github.com/browserup/browserup-proxy'
+                url 'https://github.com/valfirst/browserup-proxy'
 
                 scm {
-                    connection 'scm:git:git@github.com:browserup/browserup-proxy.git'
-                    developerConnection 'scm:git:git@github.com:browserup/browserup-proxy.git'
-                    url 'https://github.com/browserup/browserup-proxy'
+                    connection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    developerConnection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    url 'https://github.com/valfirst/browserup-proxy'
                 }
 
                 licenses {
@@ -50,9 +46,9 @@ uploadArchives {
 
                 developers {
                     developer {
-                        id 'browserup'
-                        name 'BrowserUp, Inc.'
-                        email 'developers@browserup.com'
+                        id 'valfirst'
+                        name 'Valery Yatsynovich'
+                        email 'valeryyatsynovich@gmail.com'
                     }
                 }
             }
