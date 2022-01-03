@@ -312,5 +312,10 @@ class FilterChainTest extends MockServerTest {
         void proxyToServerConnectionSucceeded(ChannelHandlerContext serverCtx) {
             throw new RuntimeException("Throwing exception from filter")
         }
+
+        @Override
+        boolean proxyToServerAllowMitm() {
+            throw new RuntimeException("Throwing exception from filter")
+        }
     }
 }
