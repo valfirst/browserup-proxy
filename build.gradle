@@ -45,6 +45,7 @@ subprojects {
         slf4jVersion = '1.7.32'
         swaggerVersion = '2.1.12'
         guavaVersion = '31.0.1-jre'
+        hamcrestVersion = '2.2'
     }
 
     repositories {
