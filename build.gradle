@@ -38,7 +38,7 @@ subprojects {
         guiceVersion = '4.2.3'
         jacksonVersion = '2.13.2'
         javassistVersion = '3.28.0-GA'
-        jettyVersion = '9.4.45.v20220203'
+        jettyVersion = '9.4.46.v20220331'
         log4jVersion = '2.17.2'
         nettyVersion = '4.1.75.Final'
         littleProxyVersion = '2.0.7'
