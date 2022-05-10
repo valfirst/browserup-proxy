@@ -1,8 +1,39 @@
 # Changelog
 
 # [2.1.5]
-- Upgrade to an actively maintained, [LittleProxy](https://github.com/LittleProxy/LittleProxy) fork
-- Upgrade to LittleProxy 2.0.9
+- Bump Log4J from `2.17.1` to `2.17.2`
+- Bump Jackson from `2.13.1` to `2.13.2`
+- Bump Awaitility from `4.1.1` to `4.2.0`
+- Bump Guava from `31.0.1-jre` to `31.1-jre`
+- Bump Swagger from `2.1.13` to `2.2.0`
+- Bump Jetty from `9.4.35.v20201120` to `9.4.46.v20220331`
+- Bump Netty from `4.1.74.Final` to `4.1.77.Final`
+- Upgrade to LittleProxy `2.0.9`
+- Upgrade to an actively maintained [LittleProxy](https://github.com/LittleProxy/LittleProxy) fork
+- Bump Selenium from `3.141.59` to `4.1.4`
+
+# [2.1.4]
+- Bump SLF4J from `1.7.32` to `1.7.36`
+- Bump Netty from `4.1.72.Final` to `4.1.74.Final`
+- Bump dnsjava from `3.4.3` to `3.5.0`
+- Bump Swagger from `2.1.12` to `2.1.13`
+
+# [2.1.3] - The first release from this fork.
+### Maven group is `com.github.valfirst.browserup-proxy`
+#### The reason of forking can be found [here]https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034.
+TBD
+
+# [2.1.2]
+TBD
+
+# [2.1.1]
+TBD
+
+# [2.1.0]
+TBD
+
+# [2.0.1]
+TBD
 
 # [2.0.0]
 - Performance, Page and Network assertions. The proxy now lets you "assert" over the REST API about the recent HTTP traffic. If you are familiar with HAR files, this lets you skip handling them directly for most use-cases. Some highlights (See the rest in: https://github.com/valfirst/browserup-proxy/commit/889aeda6d27b05b50714b754f6e43b3a600e6d9b):
