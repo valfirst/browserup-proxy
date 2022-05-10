@@ -20,7 +20,7 @@
 
 # [2.1.3] - The first release from this fork.
 ### Maven group is `com.github.valfirst.browserup-proxy`
-#### The reason of forking can be found [here]https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034.
+#### The reason of forking can be found [here](https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034).
 TBD
 
 # [2.1.2]
