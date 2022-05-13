@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import com.browserup.bup.mitm.manager.ImpersonatingMitmManager;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -80,6 +81,67 @@ public class LittleProxyIntegrationTest {
 
         try (CloseableHttpClient httpClient = getNewHttpClient(proxyServer.getListenAddress().getPort())) {
             try (CloseableHttpResponse response = httpClient.execute(new HttpGet("https://www.google.com"))) {
+                assertEquals("Expected to receive an HTTP 200 from http://www.google.com", 200, response.getStatusLine().getStatusCode());
+
+                EntityUtils.consume(response.getEntity());
+            }
+        }
+
+        Thread.sleep(500);
+
+        assertTrue("Expected HttpFilters to successfully intercept the HTTP GET request", interceptedGetRequest.get());
+        assertTrue("Expected HttpFilters to successfully intercept the server's response to the HTTP GET", interceptedGetResponse.get());
+
+        proxyServer.abort();
+    }
+
+    @Test
+    public void testLittleProxyMitmHttp1_0() throws IOException, InterruptedException {
+        final AtomicBoolean interceptedGetRequest = new AtomicBoolean();
+        final AtomicBoolean interceptedGetResponse = new AtomicBoolean();
+
+        HttpFiltersSource filtersSource = new HttpFiltersSourceAdapter() {
+            @Override
+            public HttpFilters filterRequest(HttpRequest originalRequest) {
+                return new HttpFiltersAdapter(originalRequest) {
+                    @Override
+                    public HttpResponse proxyToServerRequest(HttpObject httpObject) {
+                        if (httpObject instanceof HttpRequest) {
+                            HttpRequest httpRequest = (HttpRequest) httpObject;
+                            if (httpRequest.getMethod().equals(HttpMethod.GET)) {
+                                interceptedGetRequest.set(true);
+                            }
+                        }
+
+                        return super.proxyToServerRequest(httpObject);
+                    }
+
+                    @Override
+                    public HttpObject serverToProxyResponse(HttpObject httpObject) {
+                        if (httpObject instanceof HttpResponse) {
+                            HttpResponse httpResponse = (HttpResponse) httpObject;
+                            if (httpResponse.getStatus().code() == 200) {
+                                interceptedGetResponse.set(true);
+                            }
+                        }
+                        return super.serverToProxyResponse(httpObject);
+                    }
+                };
+            }
+        };
+
+        ImpersonatingMitmManager mitmManager = ImpersonatingMitmManager.builder().build();
+
+        HttpProxyServer proxyServer = DefaultHttpProxyServer.bootstrap()
+                .withPort(0)
+                .withManInTheMiddle(mitmManager)
+                .withFiltersSource(filtersSource)
+                .start();
+
+        try (CloseableHttpClient httpClient = getNewHttpClient(proxyServer.getListenAddress().getPort())) {
+            HttpGet httpGet = new HttpGet("https://www.google.com");
+            httpGet.setProtocolVersion(HttpVersion.HTTP_1_0);
+            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
                 assertEquals("Expected to receive an HTTP 200 from http://www.google.com", 200, response.getStatusLine().getStatusCode());
 
                 EntityUtils.consume(response.getEntity());
