@@ -46,7 +46,7 @@ BrowserUp [load tests your website with *real browsers*]((https://browserup.com/
 To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-core` dependency to your pom:
 ```xml
     <dependency>
-        <groupId>com.browserup</groupId>
+        <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-core</artifactId>
         <version>3.0.0</version>
         <scope>test</scope>
@@ -195,7 +195,7 @@ BrowserUp Proxy separates the Embedded Mode and REST API into two modules. If yo
 If you're using Java and Selenium, the easiest way to get started is to embed the project directly in your test. First, you'll need to make sure that all the dependencies are imported in to the project. You can find them in the *lib* directory. Or, if you're using Maven, you can add this to your pom:
 ```xml
     <dependency>
-        <groupId>com.browserup</groupId>
+        <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-core</artifactId>
         <version>1.0.0/version>
         <scope>test</scope>
@@ -363,7 +363,7 @@ Also you can use gradle wrapper:
 When you build the latest code from source, you'll have access to the latest snapshot release. To use the SNAPSHOT version in your code, modify the version in your maven pom:
 ```xml
     <dependency>
-        <groupId>com.browserup</groupId>
+        <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-core</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <scope>test</scope>
