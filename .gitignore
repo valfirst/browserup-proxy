@@ -76,7 +76,9 @@ fabric.properties
 
 # Eclipse
 
+.project
 .metadata
+.classpath
 bin/
 tmp/
 *.tmp
