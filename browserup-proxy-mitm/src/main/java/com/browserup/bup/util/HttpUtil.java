@@ -2,6 +2,7 @@ package com.browserup.bup.util;
 
 import com.google.common.net.HostAndPort;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 
 import java.net.URI;
@@ -32,12 +33,7 @@ public class HttpUtil {
             }
         }
 
-        // if there was no host in the URI, attempt to grab the host from the Host header
-        if (host == null || host.isEmpty()) {
-            host = parseHostHeader(httpRequest, false);
-        }
-
-        return host;
+        return parseHost(host, httpRequest, false);
     }
 
     /**
@@ -48,15 +44,16 @@ public class HttpUtil {
      * @return host and port of the request
      */
     public static String getHostAndPortFromRequest(HttpRequest httpRequest) {
+        String host = null;
         if (startsWithHttpOrHttps(httpRequest.uri())) {
             try {
-                return getHostAndPortFromUri(httpRequest.uri());
+                host = getHostAndPortFromUri(httpRequest.uri());
             } catch (URISyntaxException e) {
                 // the URI could not be parsed, so return the host and port in the Host header
             }
         }
 
-        return parseHostHeader(httpRequest, true);
+        return parseHost(host, httpRequest, true);
     }
 
     /**
@@ -97,6 +94,20 @@ public class HttpUtil {
         }
     }
 
+    private static String parseHost(String host, HttpRequest httpRequest, boolean includePort) {
+        // if there was no host in the URI, attempt to grab the host from the Host header
+        if (isEmpty(host)) {
+            host = parseHostHeader(httpRequest, includePort);
+        }
+
+        // if there was not a Host header, and the method is CONNECT, use that as the host
+        if (isEmpty(host)) {
+            host = hostFromConnect(httpRequest, includePort);
+        }
+
+        return host;
+    }
+
     /**
      * Retrieves the host and, optionally, the port from the specified request's Host header.
      *
@@ -119,5 +130,27 @@ public class HttpUtil {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Retrieves the host and, optionally, the port from the specified request's URI if the method is CONNECT.
+     *
+     * @param httpRequest HTTP request
+     * @param includePort when true, include the port
+     * @return the host and, optionally, the port specified in the request's URI
+     */
+    private static String hostFromConnect(HttpRequest httpRequest, boolean includePort) {
+        if (HttpMethod.CONNECT.equals(httpRequest.method())) {
+            if (includePort) {
+                return httpRequest.uri();
+            }
+            HostAndPort parsedHostAndPort = HostAndPort.fromString(httpRequest.uri());
+            return parsedHostAndPort.getHost();
+        }
+        return null;
+    }
+
+    private static boolean isEmpty(String str) {
+        return str == null || str.isEmpty();
     }
 }

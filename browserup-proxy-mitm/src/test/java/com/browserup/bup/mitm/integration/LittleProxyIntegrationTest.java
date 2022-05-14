@@ -6,6 +6,8 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import com.browserup.bup.mitm.manager.ImpersonatingMitmManager;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpVersion;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -37,6 +39,16 @@ import static org.junit.Assert.assertTrue;
 public class LittleProxyIntegrationTest {
     @Test
     public void testLittleProxyMitm() throws IOException, InterruptedException {
+        testLittleProxyMitm(null);
+    }
+
+    @Test
+    public void testLittleProxyMitmHttp1_0() throws IOException, InterruptedException {
+        testLittleProxyMitm(HttpVersion.HTTP_1_0);
+    }
+
+    private void testLittleProxyMitm(ProtocolVersion protocolVersion) throws IOException, InterruptedException
+    {
         final AtomicBoolean interceptedGetRequest = new AtomicBoolean();
         final AtomicBoolean interceptedGetResponse = new AtomicBoolean();
 
@@ -79,7 +91,9 @@ public class LittleProxyIntegrationTest {
                 .start();
 
         try (CloseableHttpClient httpClient = getNewHttpClient(proxyServer.getListenAddress().getPort())) {
-            try (CloseableHttpResponse response = httpClient.execute(new HttpGet("https://www.google.com"))) {
+            HttpGet httpGet = new HttpGet("https://www.google.com");
+            httpGet.setProtocolVersion(protocolVersion);
+            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
                 assertEquals("Expected to receive an HTTP 200 from http://www.google.com", 200, response.getStatusLine().getStatusCode());
 
                 EntityUtils.consume(response.getEntity());
