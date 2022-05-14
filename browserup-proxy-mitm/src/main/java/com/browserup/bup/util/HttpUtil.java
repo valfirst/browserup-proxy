@@ -33,17 +33,7 @@ public class HttpUtil {
             }
         }
 
-        // if there was no host in the URI, attempt to grab the host from the Host header
-        if (host == null || host.isEmpty()) {
-            host = parseHostHeader(httpRequest, false);
-        }
-
-        // if there was not a Host header, and the method is CONNECT, use that as the host
-        if (host == null || host.isEmpty()) {
-            host = hostFromConnect(httpRequest, false);
-        }
-
-        return host;
+        return parseHost(host, httpRequest, false);
     }
 
     /**
@@ -63,17 +53,7 @@ public class HttpUtil {
             }
         }
 
-        // if there was no host in the URI, attempt to grab the host from the Host header
-        if (host == null || host.isEmpty()) {
-            host = parseHostHeader(httpRequest, true);
-        }
-
-        // if there was not Host header, and the method is CONNECT, use that as the host
-        if (host == null || host.isEmpty()) {
-            host = hostFromConnect(httpRequest, true);
-        }
-
-        return host;
+        return parseHost(host, httpRequest, true);
     }
 
     /**
@@ -114,6 +94,20 @@ public class HttpUtil {
         }
     }
 
+    private static String parseHost(String host, HttpRequest httpRequest, boolean includePort) {
+        // if there was no host in the URI, attempt to grab the host from the Host header
+        if (isEmpty(host)) {
+            host = parseHostHeader(httpRequest, includePort);
+        }
+
+        // if there was not a Host header, and the method is CONNECT, use that as the host
+        if (isEmpty(host)) {
+            host = hostFromConnect(httpRequest, includePort);
+        }
+
+        return host;
+    }
+
     /**
      * Retrieves the host and, optionally, the port from the specified request's Host header.
      *
@@ -149,12 +143,14 @@ public class HttpUtil {
         if (HttpMethod.CONNECT.equals(httpRequest.method())) {
             if (includePort) {
                 return httpRequest.uri();
-            } else {
-                HostAndPort parsedHostAndPort = HostAndPort.fromString(httpRequest.uri());
-                return parsedHostAndPort.getHost();
             }
-        } else {
-            return null;
+            HostAndPort parsedHostAndPort = HostAndPort.fromString(httpRequest.uri());
+            return parsedHostAndPort.getHost();
         }
+        return null;
+    }
+
+    private static boolean isEmpty(String str) {
+        return str == null || str.isEmpty();
     }
 }
