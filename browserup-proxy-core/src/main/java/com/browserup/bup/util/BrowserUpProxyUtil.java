@@ -1,7 +1,6 @@
 package com.browserup.bup.util;
 
 import com.browserup.harreader.model.HarTiming;
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * General utility class for functionality and classes used mostly internally by BrowserUp Proxy.
@@ -37,12 +37,7 @@ public class BrowserUpProxyUtil {
     /**
      * Singleton version string loader.
      */
-    private static final Supplier<String> version = Suppliers.memoize(new Supplier<String>() {
-        @Override
-        public String get() {
-            return readVersionFileOnClasspath();
-        }
-    });
+    private static final Supplier<String> version = Suppliers.memoize(BrowserUpProxyUtil::readVersionFileOnClasspath);
 
     /**
      * Copies {@link HarEntry} and {@link HarPage} references from the specified har to a new har copy, up to and including

@@ -1,6 +1,5 @@
 package com.browserup.bup.mitm;
 
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.browserup.bup.mitm.keys.KeyGenerator;
 import com.browserup.bup.mitm.keys.RSAKeyGenerator;
@@ -19,6 +18,7 @@ import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.function.Supplier;
 
 /**
  * A {@link CertificateAndKeySource} that dynamically generates a CA root certificate and private key. The certificate

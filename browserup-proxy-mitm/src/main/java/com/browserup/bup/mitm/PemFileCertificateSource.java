@@ -1,6 +1,5 @@
 package com.browserup.bup.mitm;
 
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.browserup.bup.mitm.tools.DefaultSecurityProviderTool;
 import com.browserup.bup.mitm.tools.SecurityProviderTool;
@@ -12,6 +11,7 @@ import java.io.File;
 import java.io.StringReader;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.function.Supplier;
 
 /**
  * Loads impersonation materials from two separate, PEM-encoded files: a CA root certificate and its corresponding
