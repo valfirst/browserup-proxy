@@ -16,7 +16,9 @@ import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
-import static org.hamcrest.Matchers.isEmptyOrNullString
+import static org.hamcrest.Matchers.emptyOrNullString
+import static org.hamcrest.Matchers.is
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
@@ -60,7 +62,7 @@ class AllowlistTest extends MockServerTest {
             assertEquals("Did not receive allowlist status code in response", 500, response.getStatusLine().getStatusCode())
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent())
-            assertThat("Expected allowlist response to contain 0-length body", responseBody, isEmptyOrNullString())
+            assertThat("Expected allowlist response to contain 0-length body", responseBody, is(emptyOrNullString()))
         }
     }
 
@@ -82,7 +84,7 @@ class AllowlistTest extends MockServerTest {
             assertEquals("Did not receive allowlist status code in response", 500, response.getStatusLine().getStatusCode())
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent())
-            assertThat("Expected allowlist response to contain 0-length body", responseBody, isEmptyOrNullString())
+            assertThat("Expected allowlist response to contain 0-length body", responseBody, is(emptyOrNullString()))
         }
     }
 
@@ -150,7 +152,7 @@ class AllowlistTest extends MockServerTest {
             assertEquals("Did not receive allowlist status code in response", 500, nonAllowlistedResponse.getStatusLine().getStatusCode())
 
             String nonAllowlistedResponseBody = NewProxyServerTestUtil.toStringAndClose(nonAllowlistedResponse.getEntity().getContent())
-            assertThat("Expected allowlist response to contain 0-length body", nonAllowlistedResponseBody, isEmptyOrNullString())
+            assertThat("Expected allowlist response to contain 0-length body", nonAllowlistedResponseBody, is(emptyOrNullString()))
 
             CloseableHttpResponse allowlistedResponse = it.execute(new HttpGet("http://localhost:${mockServerPort}/allowlistedresource"))
             assertEquals("Did not receive expected response from mock server for allowlisted url", 200, allowlistedResponse.getStatusLine().getStatusCode())
@@ -182,7 +184,7 @@ class AllowlistTest extends MockServerTest {
             assertEquals("Did not receive allowlist status code in response", 500, nonAllowlistedResponse.getStatusLine().getStatusCode())
 
             String nonAllowlistedResponseBody = NewProxyServerTestUtil.toStringAndClose(nonAllowlistedResponse.getEntity().getContent())
-            assertThat("Expected allowlist response to contain 0-length body", nonAllowlistedResponseBody, isEmptyOrNullString())
+            assertThat("Expected allowlist response to contain 0-length body", nonAllowlistedResponseBody, is(emptyOrNullString()))
 
             CloseableHttpResponse allowlistedResponse = it.execute(new HttpGet("https://localhost:${mockServerHttpsPort}/allowlistedresource"))
             assertEquals("Did not receive expected response from mock server for allowlisted url", 200, allowlistedResponse.getStatusLine().getStatusCode())

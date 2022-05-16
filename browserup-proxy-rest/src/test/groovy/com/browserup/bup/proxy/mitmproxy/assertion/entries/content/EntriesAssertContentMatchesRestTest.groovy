@@ -8,8 +8,8 @@ import org.hamcrest.Matchers
 import org.junit.Ignore
 import org.junit.Test
 
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertThat
 
 @Ignore
 class EntriesAssertContentMatchesRestTest extends com.browserup.bup.proxy.mitmproxy.assertion.entries.content.BaseEntriesAssertContentRestTest {

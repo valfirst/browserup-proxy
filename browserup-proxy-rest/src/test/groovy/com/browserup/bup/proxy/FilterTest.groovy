@@ -20,8 +20,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import static org.hamcrest.Matchers.endsWith
 import static org.hamcrest.Matchers.greaterThanOrEqualTo
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertThat
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.fail
 import static org.junit.Assume.assumeThat

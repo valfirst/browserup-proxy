@@ -8,6 +8,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -349,7 +350,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
     protected void captureQueryParameters(HttpRequest httpRequest) {
         // capture query parameters. it is safe to assume the query string is UTF-8, since it "should" be in US-ASCII (a subset of UTF-8),
         // but sometimes does include UTF-8 characters.
-        QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.getUri(), StandardCharsets.UTF_8);
+        QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.uri(), StandardCharsets.UTF_8);
 
         try {
             queryStringDecoder.parameters().forEach((key, value) -> value.forEach(val -> {
@@ -361,8 +362,8 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
         } catch (IllegalArgumentException e) {
             // QueryStringDecoder will throw an IllegalArgumentException if it cannot interpret a query string. rather than cause the entire request to
             // fail by propagating the exception, simply skip the query parameter capture.
-            harEntry.setComment("Unable to decode query parameters on URI: " + httpRequest.getUri());
-            log.info("Unable to decode query parameters on URI: " + httpRequest.getUri(), e);
+            harEntry.setComment("Unable to decode query parameters on URI: " + httpRequest.uri());
+            log.info("Unable to decode query parameters on URI: " + httpRequest.uri(), e);
         }
     }
 
@@ -419,9 +420,9 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
             return;
         }
 
-        String contentType = HttpHeaders.getHeader(httpRequest, HttpHeaderNames.CONTENT_TYPE);
+        String contentType = httpRequest.headers().get(HttpHeaderNames.CONTENT_TYPE);
         if (contentType == null) {
-            log.warn("No content type specified in request to {}. Content will be treated as {}", httpRequest.getUri(), BrowserUpHttpUtil.UNKNOWN_CONTENT_TYPE);
+            log.warn("No content type specified in request to {}. Content will be treated as {}", httpRequest.uri(), BrowserUpHttpUtil.UNKNOWN_CONTENT_TYPE);
             contentType = BrowserUpHttpUtil.UNKNOWN_CONTENT_TYPE;
         }
 
@@ -431,7 +432,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
         postData.setMimeType(contentType);
 
         boolean urlEncoded;
-        urlEncoded = contentType.startsWith(HttpHeaders.Values.APPLICATION_X_WWW_FORM_URLENCODED);
+        urlEncoded = contentType.startsWith(HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString());
 
         Charset charset;
         try {
@@ -477,9 +478,9 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
         // force binary if the content encoding is not supported
         boolean forceBinary = false;
 
-        String contentType = HttpHeaders.getHeader(httpResponse, HttpHeaderNames.CONTENT_TYPE);
+        String contentType = httpResponse.headers().get(HttpHeaderNames.CONTENT_TYPE);
         if (contentType == null) {
-            log.warn("No content type specified in response from {}. Content will be treated as {}", originalRequest.getUri(), BrowserUpHttpUtil.UNKNOWN_CONTENT_TYPE);
+            log.warn("No content type specified in response from {}. Content will be treated as {}", originalRequest.uri(), BrowserUpHttpUtil.UNKNOWN_CONTENT_TYPE);
             contentType = BrowserUpHttpUtil.UNKNOWN_CONTENT_TYPE;
         }
 
@@ -500,7 +501,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
         if (charset == null) {
             // no charset specified, so use the default -- but log a message since this might not encode the data correctly
             charset = BrowserUpHttpUtil.DEFAULT_HTTP_CHARSET;
-            log.debug("No charset specified; using charset {} to decode contents from {}", charset, originalRequest.getUri());
+            log.debug("No charset specified; using charset {} to decode contents from {}", charset, originalRequest.uri());
         }
 
         if (!forceBinary && BrowserUpHttpUtil.hasTextualContent(contentType)) {
@@ -539,7 +540,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
     }
 
     protected void captureResponseMimeType(HttpResponse httpResponse) {
-        String contentType = HttpHeaders.getHeader(httpResponse, HttpHeaderNames.CONTENT_TYPE);
+        String contentType = httpResponse.headers().get(HttpHeaderNames.CONTENT_TYPE);
         // don't set the mimeType to null, since mimeType is a required field
         if (contentType != null) {
             harEntry.getResponse().getContent().setMimeType(contentType);
@@ -605,7 +606,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
     }
 
     protected void captureRedirectUrl(HttpResponse httpResponse) {
-        String locationHeaderValue = HttpHeaders.getHeader(httpResponse, HttpHeaderNames.LOCATION);
+        String locationHeaderValue = httpResponse.headers().get(HttpHeaderNames.LOCATION);
         if (locationHeaderValue != null) {
             harEntry.getResponse().setRedirectURL(locationHeaderValue);
         }
@@ -668,7 +669,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
                 log.trace("Unable to find cached IP address for host: {}. IP address in HAR entry will be blank.", serverHost);
             }
         } else {
-            log.warn("Unable to identify host from request uri: {}", httpRequest.getUri());
+            log.warn("Unable to identify host from request uri: {}", httpRequest.uri());
         }
     }
 

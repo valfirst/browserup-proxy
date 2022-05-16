@@ -25,9 +25,9 @@ public class HttpUtil {
         // try to use the URI from the request first, if the URI starts with http:// or https://. checking for http/https avoids confusing
         // java's URI class when the request is for a malformed URL like '//some-resource'.
         String host = null;
-        if (startsWithHttpOrHttps(httpRequest.getUri())) {
+        if (startsWithHttpOrHttps(httpRequest.uri())) {
             try {
-                URI uri = new URI(httpRequest.getUri());
+                URI uri = new URI(httpRequest.uri());
                 host = uri.getHost();
             } catch (URISyntaxException e) {
             }

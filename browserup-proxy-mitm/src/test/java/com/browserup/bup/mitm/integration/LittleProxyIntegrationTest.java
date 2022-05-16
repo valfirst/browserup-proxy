@@ -10,11 +10,12 @@ import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.littleshoot.proxy.HttpFilters;
@@ -60,7 +61,7 @@ public class LittleProxyIntegrationTest {
                     public HttpResponse proxyToServerRequest(HttpObject httpObject) {
                         if (httpObject instanceof HttpRequest) {
                             HttpRequest httpRequest = (HttpRequest) httpObject;
-                            if (httpRequest.getMethod().equals(HttpMethod.GET)) {
+                            if (httpRequest.method().equals(HttpMethod.GET)) {
                                 interceptedGetRequest.set(true);
                             }
                         }
@@ -72,7 +73,7 @@ public class LittleProxyIntegrationTest {
                     public HttpObject serverToProxyResponse(HttpObject httpObject) {
                         if (httpObject instanceof HttpResponse) {
                             HttpResponse httpResponse = (HttpResponse) httpObject;
-                            if (httpResponse.getStatus().code() == 200) {
+                            if (httpResponse.status().code() == 200) {
                                 interceptedGetResponse.set(true);
                             }
                         }
@@ -115,7 +116,7 @@ public class LittleProxyIntegrationTest {
         try {
             // Trust all certs -- under no circumstances should this ever be used outside of testing
             SSLContext sslcontext = SSLContexts.custom()
-                    .useTLS()
+                    .setProtocol("TLS")
                     .loadTrustMaterial(null, new TrustStrategy() {
                         @Override
                         public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
@@ -126,7 +127,7 @@ public class LittleProxyIntegrationTest {
 
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
                     sslcontext,
-                    SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                    NoopHostnameVerifier.INSTANCE);
 
             CloseableHttpClient httpclient = HttpClients.custom()
                     .setSSLSocketFactory(sslsf)

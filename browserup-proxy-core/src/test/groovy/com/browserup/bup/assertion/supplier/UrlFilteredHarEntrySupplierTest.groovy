@@ -10,6 +10,8 @@ import org.junit.Test
 import java.time.Instant
 import java.util.regex.Pattern
 
+import static org.hamcrest.MatcherAssert.assertThat
+
 class UrlFilteredHarEntrySupplierTest {
 
     @Test
@@ -36,7 +38,7 @@ class UrlFilteredHarEntrySupplierTest {
         def supplier = new UrlFilteredHarEntriesSupplier(har, urlPattern)
         def result = supplier.get()
 
-        Assert.assertThat("Expected to get ${maxIndexToBeFiltered} entries", result, Matchers.hasSize(maxIndexToBeFiltered))
+        assertThat("Expected to get ${maxIndexToBeFiltered} entries", result, Matchers.hasSize(maxIndexToBeFiltered))
         result.each {
             Assert.assertTrue("Expected that found entry can be matched using url pattern",
                     urlPattern.matcher(it.request.url).matches())
@@ -64,6 +66,6 @@ class UrlFilteredHarEntrySupplierTest {
         def supplier = new UrlFilteredHarEntriesSupplier(har, urlPattern)
         def result = supplier.get()
 
-        Assert.assertThat("Expected to get empty array", result, Matchers.hasSize(0))
+        assertThat("Expected to get empty array", result, Matchers.hasSize(0))
     }
 }

@@ -7,7 +7,7 @@ import org.hamcrest.Matchers
 import org.junit.Ignore
 import org.junit.Test
 
-import static org.junit.Assert.assertThat
+import static org.hamcrest.MatcherAssert.assertThat
 
 @Ignore
 class EntriesAssertContentContainsRestTest extends BaseEntriesAssertContentRestTest {

@@ -15,6 +15,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.ok
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 
 @org.junit.Ignore
