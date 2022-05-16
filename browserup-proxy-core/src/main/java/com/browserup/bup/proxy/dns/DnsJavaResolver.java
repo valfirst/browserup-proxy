@@ -134,7 +134,7 @@ public class DnsJavaResolver extends AbstractHostNameRemapper implements Advance
                     addrList.add(resolvedAddress);
                 } catch (UnknownHostException e) {
                     // this should never happen, unless there is a bug in dnsjava
-                    log.warn("dnsjava resolver returned an invalid InetAddress for host: " + host, e);
+                    log.warn("dnsjava resolver returned an invalid InetAddress for host: {}", host, e);
                 }
             }
         });

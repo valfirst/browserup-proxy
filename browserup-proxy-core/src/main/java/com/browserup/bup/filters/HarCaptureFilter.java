@@ -363,7 +363,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
             // QueryStringDecoder will throw an IllegalArgumentException if it cannot interpret a query string. rather than cause the entire request to
             // fail by propagating the exception, simply skip the query parameter capture.
             harEntry.setComment("Unable to decode query parameters on URI: " + httpRequest.uri());
-            log.info("Unable to decode query parameters on URI: " + httpRequest.uri(), e);
+            log.info("Unable to decode query parameters on URI: {}", httpRequest.uri(), e);
         }
     }
 

@@ -13,7 +13,6 @@ import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.tuple.Pair.of;
 
 public class ProxyManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MitmProxyProcessManager.class);
     private static final String SUCCESSFUL_HEALTH_CHECK_BODY = "OK";
 
     private final AddonsManagerClient addonsManagerClient;

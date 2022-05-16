@@ -108,7 +108,7 @@ public class ProxyManager {
                             proxy.stop();
                         }
                     } catch (Exception ex) {
-                        LOG.warn("Error while stopping an expired proxy on port " + removal.getKey(), ex);
+                        LOG.warn("Error while stopping an expired proxy on port {}", removal.getKey(), ex);
                     }
                 }
             };
@@ -163,7 +163,7 @@ public class ProxyManager {
                 InetSocketAddress chainedProxyAddress = BrowserUpProxyUtil.inetSocketAddressFromString(upstreamHttpProxy);
                 proxy.setChainedProxy(chainedProxyAddress);
             } catch (URISyntaxException e) {
-                LOG.error("Invalid upstream http proxy specified: " + upstreamHttpProxy + ". Must use host:port format.");
+                LOG.error("Invalid upstream http proxy specified: {}. Must use host:port format.", upstreamHttpProxy);
                 throw new RuntimeException("Invalid upstream http proxy");
             }
 
@@ -180,7 +180,7 @@ public class ProxyManager {
             try {
                 clientBindAddress = InetAddress.getByName(bindAddr);
             } catch (UnknownHostException e) {
-                LOG.error("Unable to bind proxy to address: " + bindAddr + "; proxy will not be created.", e);
+                LOG.error("Unable to bind proxy to address: {}; proxy will not be created.", bindAddr, e);
 
                 throw new RuntimeException("Unable to bind proxy to address: ", e);
             }
@@ -192,7 +192,7 @@ public class ProxyManager {
             try {
                 serverInetAddress = InetAddress.getByName(serverBindAddr);
             } catch (UnknownHostException e) {
-                LOG.error("Unable to bind proxy to server address: " + serverBindAddr + "; proxy will not be created.", e);
+                LOG.error("Unable to bind proxy to server address: {}; proxy will not be created.", serverBindAddr, e);
 
                 throw new RuntimeException("Unable to bind proxy to server address: ", e);
             }

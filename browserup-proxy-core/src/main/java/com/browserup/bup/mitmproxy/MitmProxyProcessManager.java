@@ -179,7 +179,7 @@ public class MitmProxyProcessManager {
   private void startProxy(int port, List<AbstractAddon> addons) {
     List<String> command = createCommand(port, addons);
 
-    LOGGER.info("Starting proxy using command: " + String.join(" ", command));
+    LOGGER.info("Starting proxy using command: {}", String.join(" ", command));
 
     ProcessExecutor processExecutor = createProcessExecutor(command);
     try {
@@ -228,7 +228,7 @@ public class MitmProxyProcessManager {
   }
 
   private void handleHealthCheckFailure() {
-    LOGGER.error("MitmProxy might not started properly, healthcheck failed for port: " + this.proxyPort);
+    LOGGER.error("MitmProxy might not started properly, healthcheck failed for port: {}", this.proxyPort);
     if (startedProcess == null) return;
 
     if (startedProcess.getProcess().isAlive()) {
@@ -265,7 +265,7 @@ public class MitmProxyProcessManager {
             .redirectOutput(new LogOutputStream() {
               @Override
               protected void processLine(String line) {
-                LOGGER.debug(logPrefix + line);
+                LOGGER.debug("{}{}", logPrefix, line);
                 proxyLog.append(line).append("\n");
               }
             });

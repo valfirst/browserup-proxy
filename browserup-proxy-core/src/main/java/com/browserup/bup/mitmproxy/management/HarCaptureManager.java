@@ -44,7 +44,7 @@ public class HarCaptureManager {
                             add(of("cleanHar", valueOf(cleanHar)));
                         }},
                         HarResponse.class);
-        LOGGER.info("Parsing HAR from file: " + response.path);
+        LOGGER.info("Parsing HAR from file: {}", response.path);
         return parseHar(response.path);
     }
 
