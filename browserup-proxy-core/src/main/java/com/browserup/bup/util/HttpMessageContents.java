@@ -116,7 +116,7 @@ public class HttpMessageContents {
     public Charset getCharset() throws java.nio.charset.UnsupportedCharsetException {
         String contentTypeHeader = getContentType();
 
-        Charset charset = null;
+        Charset charset;
         try {
             charset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(contentTypeHeader);
         } catch (UnsupportedCharsetException e) {

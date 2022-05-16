@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class DefaultMapperFactory implements MapperFactory {
 
+    @Override
     public ObjectMapper instance(HarReaderMode mode) {
         ObjectMapper mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();

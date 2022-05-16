@@ -74,16 +74,13 @@ public class QuiescenceTest extends NewProxyServerTest {
 
         final AtomicBoolean requestCompleted = new AtomicBoolean(false);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
-                    client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiescenceunsuccessful"));
+        new Thread(() -> {
+            try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
+                client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiescenceunsuccessful"));
 
-                    requestCompleted.set(true);
-                } catch (IOException e) {
-                    // ignore any exceptions -- we don't expect this call to complete
-                }
+                requestCompleted.set(true);
+            } catch (IOException e) {
+                // ignore any exceptions -- we don't expect this call to complete
             }
         }).start();
 
@@ -280,23 +277,20 @@ public class QuiescenceTest extends NewProxyServerTest {
         final AtomicInteger firstResponseStatusCode = new AtomicInteger();
         final AtomicBoolean secondRequestCompleted = new AtomicBoolean(false);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
-                    HttpResponse response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiesence2s"));
-                    EntityUtils.consumeQuietly(response.getEntity());
+        new Thread(() -> {
+            try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
+                HttpResponse response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiesence2s"));
+                EntityUtils.consumeQuietly(response.getEntity());
 
-                    firstResponseStatusCode.set(response.getStatusLine().getStatusCode());
+                firstResponseStatusCode.set(response.getStatusLine().getStatusCode());
 
-                    Thread.sleep(1000);
+                Thread.sleep(1000);
 
-                    response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiesence5s"));
-                    EntityUtils.consumeQuietly(response.getEntity());
+                response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiesence5s"));
+                EntityUtils.consumeQuietly(response.getEntity());
 
-                    secondRequestCompleted.set(true);
-                } catch (IOException | InterruptedException e) {
-                }
+                secondRequestCompleted.set(true);
+            } catch (IOException | InterruptedException e) {
             }
         }).start();
 

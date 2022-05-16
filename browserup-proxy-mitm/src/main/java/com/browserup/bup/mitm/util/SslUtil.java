@@ -111,8 +111,8 @@ public class SslUtil {
 
         if (peerCertificates != null && peerCertificates.length > 0) {
             Certificate peerCertificate = peerCertificates[0];
-            if (peerCertificate != null && peerCertificate instanceof X509Certificate) {
-                return (X509Certificate) peerCertificates[0];
+            if (peerCertificate instanceof X509Certificate) {
+                return (X509Certificate) peerCertificate;
             }
         }
 

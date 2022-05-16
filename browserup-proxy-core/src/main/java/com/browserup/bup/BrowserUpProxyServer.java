@@ -70,7 +70,6 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import org.apache.commons.lang3.StringUtils;
-import org.littleshoot.proxy.ChainedProxy;
 import org.littleshoot.proxy.ChainedProxyAdapter;
 import org.littleshoot.proxy.ChainedProxyManager;
 import org.littleshoot.proxy.HttpFilters;
@@ -80,7 +79,6 @@ import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.HttpProxyServerBootstrap;
 import org.littleshoot.proxy.MitmManager;
 import org.littleshoot.proxy.extras.SelfSignedSslEngineSource;
-import org.littleshoot.proxy.impl.ClientDetails;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 import org.littleshoot.proxy.impl.ProxyUtils;
 import org.littleshoot.proxy.impl.ThreadPoolConfiguration;
@@ -101,7 +99,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -390,64 +387,61 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
             // chained proxy after the proxy is started.
             bootstrappedWithDefaultChainedProxy.set(true);
 
-            bootstrap.withChainProxyManager(new ChainedProxyManager() {
-                @Override
-                public void lookupChainedProxies(HttpRequest httpRequest, Queue<ChainedProxy> chainedProxies, ClientDetails clientDetails) {
-                    final InetSocketAddress upstreamProxy = upstreamProxyAddress;
+            bootstrap.withChainProxyManager((httpRequest, chainedProxies, clientDetails) -> {
+                final InetSocketAddress upstreamProxy = upstreamProxyAddress;
 
-                    if (upstreamProxy != null) {
+                if (upstreamProxy != null) {
 
-                        final boolean useEncryption = upstreamProxyHTTPS;
-                        final List<String> nonProxyHosts = upstreamProxyNonProxyHosts;
+                    final boolean useEncryption = upstreamProxyHTTPS;
+                    final List<String> nonProxyHosts = upstreamProxyNonProxyHosts;
 
-                        // skip upstream proxy configuration because the host is defined as proxy exception / non proxy hosts
-                        // therefore we need to cast it to an URL
-                        URL url = null;
-                        try {
-                            url = new URL(httpRequest.uri());
-                        } catch (MalformedURLException e) {
-                            log.error("The requested URL is not valid.", e);
-                        }
+                    // skip upstream proxy configuration because the host is defined as proxy exception / non proxy hosts
+                    // therefore we need to cast it to an URL
+                    URL url = null;
+                    try {
+                        url = new URL(httpRequest.uri());
+                    } catch (MalformedURLException e) {
+                        log.error("The requested URL is not valid.", e);
+                    }
 
-                        final URL finalUrl = url; // need for lambda expression.
-                        // note that we have to transform the wildcard like *.example.com to a valid regex
-                        if (nonProxyHosts != null && finalUrl != null && nonProxyHosts.stream().anyMatch(nph -> finalUrl.getHost().matches(nph.trim().replace("*", ".*?")))) {
-                            chainedProxies.add(ChainedProxyAdapter.FALLBACK_TO_DIRECT_CONNECTION);
-                        } else {
-                            chainedProxies.add(new ChainedProxyAdapter() {
-                                @Override
-                                public InetSocketAddress getChainedProxyAddress() {
-                                    return upstreamProxy;
-                                }
+                    final URL finalUrl = url; // need for lambda expression.
+                    // note that we have to transform the wildcard like *.example.com to a valid regex
+                    if (nonProxyHosts != null && finalUrl != null && nonProxyHosts.stream().anyMatch(nph -> finalUrl.getHost().matches(nph.trim().replace("*", ".*?")))) {
+                        chainedProxies.add(ChainedProxyAdapter.FALLBACK_TO_DIRECT_CONNECTION);
+                    } else {
+                        chainedProxies.add(new ChainedProxyAdapter() {
+                            @Override
+                            public InetSocketAddress getChainedProxyAddress() {
+                                return upstreamProxy;
+                            }
 
-                                @Override
-                                public void filterRequest(HttpObject httpObject) {
-                                    String chainedProxyAuth = chainedProxyCredentials;
-                                    if (chainedProxyAuth != null) {
-                                        if (httpObject instanceof HttpRequest) {
-                                            if (ProxyUtils.isCONNECT(httpObject) || !((HttpRequest) httpObject).uri().startsWith("/")) {
-                                                ((HttpRequest) httpObject).headers().add(HttpHeaderNames.PROXY_AUTHORIZATION, "Basic " + chainedProxyAuth);
-                                            }
+                            @Override
+                            public void filterRequest(HttpObject httpObject) {
+                                String chainedProxyAuth = chainedProxyCredentials;
+                                if (chainedProxyAuth != null) {
+                                    if (httpObject instanceof HttpRequest) {
+                                        if (ProxyUtils.isCONNECT(httpObject) || !((HttpRequest) httpObject).uri().startsWith("/")) {
+                                            ((HttpRequest) httpObject).headers().add(HttpHeaderNames.PROXY_AUTHORIZATION, "Basic " + chainedProxyAuth);
                                         }
                                     }
                                 }
+                            }
 
-                                @Override
-                                public boolean requiresEncryption() {
-                                    return useEncryption;
-                                }
+                            @Override
+                            public boolean requiresEncryption() {
+                                return useEncryption;
+                            }
 
-                                @Override
-                                public SSLEngine newSslEngine() {
-                                    if (useEncryption) {
-                                        return new SelfSignedSslEngineSource(
-                                                true, false).newSslEngine();
-                                    } else {
-                                        return null;
-                                    }
+                            @Override
+                            public SSLEngine newSslEngine() {
+                                if (useEncryption) {
+                                    return new SelfSignedSslEngineSource(
+                                            true, false).newSslEngine();
+                                } else {
+                                    return null;
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 }
             });

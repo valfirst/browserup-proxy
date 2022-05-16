@@ -74,13 +74,8 @@ public class AdvancedHostResolverTest {
     public void testResolveIPv4AndIPv6Addresses() {
         assumeTrue("Skipping test because IPv6 is not enabled", ipv6Enabled);
 
-        boolean foundIPv4 = false;
         Collection<InetAddress> addresses = resolver.resolve("www.google.com");
-        for (InetAddress address : addresses) {
-            if (address.getClass() == Inet4Address.class) {
-                foundIPv4 = true;
-            }
-        }
+        boolean foundIPv4 = addresses.stream().anyMatch(address -> address.getClass() == Inet4Address.class);
 
         assertTrue("Expected to find at least one IPv4 address for www.google.com", foundIPv4);
 

@@ -11,6 +11,7 @@ public class NamedImpl implements Named {
         this.value = value == null ? "name" : value;
     }
 
+    @Override
     public String value() {
         return this.value;
     }
@@ -33,6 +34,7 @@ public class NamedImpl implements Named {
         return "@" + Named.class.getName() + "(value=" + value + ")";
     }
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Named.class;
     }

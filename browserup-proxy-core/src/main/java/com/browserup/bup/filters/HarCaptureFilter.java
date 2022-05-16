@@ -455,14 +455,12 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
 
             ImmutableList.Builder<HarPostDataParam> paramBuilder = ImmutableList.builder();
 
-            queryStringDecoder.parameters().forEach((key, value1) -> {
-                value1.forEach(value -> {
-                    HarPostDataParam harPostDataParam = new HarPostDataParam();
-                    harPostDataParam.setName(key);
-                    harPostDataParam.setValue(value);
-                    paramBuilder.add(harPostDataParam);
-                });
-            });
+            queryStringDecoder.parameters().forEach((key, value1) -> value1.forEach(value -> {
+                HarPostDataParam harPostDataParam = new HarPostDataParam();
+                harPostDataParam.setName(key);
+                harPostDataParam.setValue(value);
+                paramBuilder.add(harPostDataParam);
+            }));
 
             harEntry.getRequest().getPostData().setParams(paramBuilder.build());
         } else {

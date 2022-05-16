@@ -43,7 +43,6 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -249,12 +248,8 @@ public class ImpersonatingMitmManager implements MitmManager {
      */
     private SslContext getHostnameImpersonatingSslContext(final String hostnameToImpersonate, final SSLSession sslSession) {
         try {
-            return sslContextCache.get(hostnameToImpersonate, new Callable<SslContext>() {
-                @Override
-                public SslContext call() throws Exception {
-                    return createImpersonatingSslContext(sslSession, hostnameToImpersonate);
-                }
-            });
+            return sslContextCache.get(hostnameToImpersonate,
+                    () -> createImpersonatingSslContext(sslSession, hostnameToImpersonate));
         } catch (ExecutionException e) {
             throw new SslContextInitializationException("An error occurred while impersonating the remote host: " + hostnameToImpersonate, e);
         }

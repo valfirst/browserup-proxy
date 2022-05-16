@@ -6,7 +6,6 @@ import com.google.common.collect.Iterables;
 import com.browserup.bup.proxy.test.util.TestConstants;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.net.InetAddress;
@@ -63,7 +62,7 @@ public class ChainedHostResolverTest {
         ChainedHostResolver chainResolver = new ChainedHostResolver(ImmutableList.of(firstResolver, secondResolver));
 
         when(firstResolver.resolve("1.1.1.1")).thenReturn(TestConstants.addressOnesList);
-        when(secondResolver.resolve("1.1.1.1")).thenReturn(Collections.<InetAddress>emptyList());
+        when(secondResolver.resolve("1.1.1.1")).thenReturn(Collections.emptyList());
 
         Collection<InetAddress> results = chainResolver.resolve("1.1.1.1");
         assertNotNull("Resolver should not return null results", results);
@@ -75,7 +74,7 @@ public class ChainedHostResolverTest {
         reset(firstResolver);
         reset(secondResolver);
 
-        when(firstResolver.resolve("2.2.2.2")).thenReturn(Collections.<InetAddress>emptyList());
+        when(firstResolver.resolve("2.2.2.2")).thenReturn(Collections.emptyList());
         when(secondResolver.resolve("2.2.2.2")).thenReturn(TestConstants.addressTwosList);
 
         results = chainResolver.resolve("2.2.2.2");
@@ -115,38 +114,27 @@ public class ChainedHostResolverTest {
         final AtomicLong secondResolverCacheClearFinishedTime = new AtomicLong(0);
 
         // set up the second resolver to sleep for a few seconds when a clearDNSCache() call is made
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
-                secondResolverClearingCache.set(true);
+        doAnswer((Answer<Void>) invocationOnMock -> {
+            secondResolverClearingCache.set(true);
 
-                Thread.sleep(4000);
+            Thread.sleep(4000);
 
-                secondResolverCacheClearFinishedTime.set(System.nanoTime());
+            secondResolverCacheClearFinishedTime.set(System.nanoTime());
 
-                return null;
-            }
+            return null;
         }).when(secondResolver).clearDNSCache();
 
         // track the time the first resolver starts resolving the address, to make sure it is AFTER the DNS cache clear time
         final AtomicLong firstResolverStartedResolvingTime = new AtomicLong(0);
 
         // set up the first resolver to capture the time it starts resolving the address
-        when(firstResolver.resolve("1.1.1.1")).then(new Answer<Collection<InetAddress>>() {
-            @Override
-            public Collection<InetAddress> answer(InvocationOnMock invocationOnMock) throws Throwable {
-                firstResolverStartedResolvingTime.set(System.nanoTime());
-                return TestConstants.addressOnesList;
-            }
+        when(firstResolver.resolve("1.1.1.1")).then((Answer<Collection<InetAddress>>) invocationOnMock -> {
+            firstResolverStartedResolvingTime.set(System.nanoTime());
+            return TestConstants.addressOnesList;
         });
 
         // run the DNS cache clear in a separate thread, so it will be running (and sleeping) when we test the resolve() method
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                chainResolver.clearDNSCache();
-            }
-        }).start();
+        new Thread(chainResolver::clearDNSCache).start();
 
         // wait for the clearDNSCache() call to start executing
         Thread.sleep(1000);

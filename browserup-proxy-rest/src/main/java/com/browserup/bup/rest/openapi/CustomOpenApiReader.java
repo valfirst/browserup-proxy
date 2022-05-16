@@ -51,11 +51,9 @@ public class CustomOpenApiReader extends Reader {
                 .findFirst()
                 .map(path -> ((Path) path).value())
                 .flatMap(this::createOperationIdPrefixByPathAnnotation)
-                .map(operationIdPrefix -> {
-                    return operationIdPrefix.equals(method.getName()) ?
-                            method.getName() :
-                            operationIdPrefix + StringUtils.capitalize(method.getName());
-                })
+                .map(operationIdPrefix -> operationIdPrefix.equals(method.getName()) ?
+                        method.getName() :
+                        operationIdPrefix + StringUtils.capitalize(method.getName()))
                 .ifPresent(operation::setOperationId);
 
         return operation;

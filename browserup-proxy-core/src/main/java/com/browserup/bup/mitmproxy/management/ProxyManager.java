@@ -2,8 +2,6 @@ package com.browserup.bup.mitmproxy.management;
 
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -136,7 +134,7 @@ public class ProxyManager {
     }
 
     public Boolean callHealthCheck() {
-        String result = "";
+        String result;
         try {
             result = addonsManagerClient.
                     getRequestToAddonsManager(
