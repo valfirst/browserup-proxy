@@ -133,14 +133,16 @@ public class ServerResponseCaptureFilter extends HttpFiltersAdapter {
                 fullResponseContents = BrowserUpHttpUtil.decompressGZIPContents(getRawResponseContents());
                 decompressionSuccessful = true;
             } catch (RuntimeException e) {
-                log.warn("Failed to decompress response with encoding type " + contentEncoding + " when decoding request from " + originalRequest.uri(), e);
+                log.warn("Failed to decompress response with encoding type {} when decoding request from {}",
+                        contentEncoding, originalRequest.uri(), e);
             }
         } else if (contentEncoding.equals(BROTLI_COMPRESSION)) {
             try {
                 fullResponseContents = BrowserUpHttpUtil.decompressBrotliContents(getRawResponseContents());
                 decompressionSuccessful = true;
             } catch (RuntimeException e) {
-                log.warn("Failed to decompress response with encoding type " + contentEncoding + " when decoding request from " + originalRequest.uri(), e);
+                log.warn("Failed to decompress response with encoding type {} when decoding request from {}",
+                        contentEncoding, originalRequest.uri(), e);
             }
         } else {
             log.warn("Cannot decode unsupported content encoding type {}", contentEncoding);

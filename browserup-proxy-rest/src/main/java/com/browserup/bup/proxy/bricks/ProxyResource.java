@@ -141,7 +141,7 @@ public class ProxyResource {
     @Get
     @At("/:port/har")
     public Reply<?> getHar(@Named("port") int port, Request request) {
-        LOG.info("GET /" + port + "/har");
+        LOG.info("GET /{}/har", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -156,7 +156,7 @@ public class ProxyResource {
     @Put
     @At("/:port/har")
     public Reply<?> newHar(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/har");
+        LOG.info("PUT /{}/har", port);
         LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
@@ -198,7 +198,7 @@ public class ProxyResource {
     @Put
     @At("/:port/har/pageRef")
     public Reply<?> setPage(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/har/pageRef");
+        LOG.info("PUT /{}/har/pageRef", port);
         LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
@@ -215,7 +215,7 @@ public class ProxyResource {
     @Post
     @At("/:port/har/commands/endPage")
     public Reply<?> endPage(@Named("port") int port, Request request) {
-        LOG.info("POST /" + port + "/commands/endPage");
+        LOG.info("POST /{}/commands/endPage", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -229,7 +229,7 @@ public class ProxyResource {
     @Post
     @At("/:port/har/commands/endHar")
     public Reply<?> endHar(@Named("port") int port, Request request) {
-        LOG.info("POST /" + port + "/commands/endHar");
+        LOG.info("POST /{}/commands/endHar", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -243,7 +243,7 @@ public class ProxyResource {
     @Get
     @At("/:port/blocklist")
     public Reply<?> getBlocklist(@Named("port") int port, Request request) {
-        LOG.info("GET /" + port + "/blocklist");
+        LOG.info("GET /{}/blocklist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -255,7 +255,7 @@ public class ProxyResource {
     @Put
     @At("/:port/blocklist")
     public Reply<?> blocklist(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/blocklist");
+        LOG.info("PUT /{}/blocklist", port);
         LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
@@ -273,7 +273,7 @@ public class ProxyResource {
     @Delete
     @At("/:port/blocklist")
     public Reply<?> clearBlocklist(@Named("port") int port, Request request) {
-        LOG.info("DELETE /" + port + "/blocklist");
+        LOG.info("DELETE /{}/blocklist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -286,7 +286,7 @@ public class ProxyResource {
     @Get
     @At("/:port/allowlist")
     public Reply<?> getAllowlist(@Named("port") int port, Request request) {
-        LOG.info("GET /" + port + "/allowlist");
+        LOG.info("GET /{}/allowlist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -298,7 +298,7 @@ public class ProxyResource {
     @Put
     @At("/:port/allowlist")
     public Reply<?> allowlist(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/allowlist");
+        LOG.info("PUT /{}/allowlist", port);
         LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
@@ -315,7 +315,7 @@ public class ProxyResource {
     @Delete
     @At("/:port/allowlist")
     public Reply<?> clearAllowlist(@Named("port") int port, Request request) {
-        LOG.info("DELETE /" + port + "/allowlist");
+        LOG.info("DELETE /{}/allowlist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -328,7 +328,7 @@ public class ProxyResource {
     @Post
     @At("/:port/auth/basic/:domain")
     public Reply<?> autoBasicAuth(@Named("port") int port, @Named("domain") String domain, Request request) {
-        LOG.info("POST /" + port + "/auth/basic/" + domain);
+        LOG.info("POST /{}/auth/basic/{}", port, domain);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -343,7 +343,7 @@ public class ProxyResource {
     @Post
     @At("/:port/headers")
     public Reply<?> updateHeaders(@Named("port") int port, Request request) {
-        LOG.info("POST /" + port + "/headers");
+        LOG.info("POST /{}/headers", port);
 
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
@@ -358,7 +358,7 @@ public class ProxyResource {
     @Post
     @At("/:port/filter/request")
     public Reply<?> addRequestFilter(@Named("port") int port, Request request) throws IOException, ScriptException {
-        LOG.info("POST /" + port + "/filter/request");
+        LOG.info("POST /{}/filter/request", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -377,7 +377,7 @@ public class ProxyResource {
     @Post
     @At("/:port/filter/response")
     public Reply<?> addResponseFilter(@Named("port") int port, Request request) throws IOException, ScriptException {
-        LOG.info("POST /" + port + "/filter/response");
+        LOG.info("POST /{}/filter/response", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -396,7 +396,7 @@ public class ProxyResource {
     @Put
     @At("/:port/limit")
     public Reply<?> limit(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/limit");
+        LOG.info("PUT /{}/limit", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -481,7 +481,7 @@ public class ProxyResource {
     @Put
     @At("/:port/timeout")
     public Reply<?> timeout(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/timeout");
+        LOG.info("PUT /{}/timeout", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -530,7 +530,7 @@ public class ProxyResource {
     @Delete
     @At("/:port")
     public Reply<?> delete(@Named("port") int port) {
-        LOG.info("DELETE /" + port);
+        LOG.info("DELETE /{}", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -543,7 +543,7 @@ public class ProxyResource {
     @Post
     @At("/:port/hosts")
     public Reply<?> remapHosts(@Named("port") int port, Request request) {
-        LOG.info("POST /" + port + "/hosts");
+        LOG.info("POST /{}/hosts", port);
         LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
@@ -566,7 +566,7 @@ public class ProxyResource {
     @Put
     @At("/:port/wait")
     public Reply<?> wait(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/wait");
+        LOG.info("PUT /{}/wait", port);
         LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
@@ -582,7 +582,7 @@ public class ProxyResource {
     @Delete
     @At("/:port/dns/cache")
     public Reply<?> clearDnsCache(@Named("port") int port) {
-        LOG.info("DELETE /" + port + "/dns/cache");
+        LOG.info("DELETE /{}/dns/cache", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -595,7 +595,7 @@ public class ProxyResource {
     @Put
     @At("/:port/rewrite")
     public Reply<?> rewriteUrl(@Named("port") int port, Request request) {
-        LOG.info("PUT /" + port + "/rewrite");
+        LOG.info("PUT /{}/rewrite", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();
@@ -610,7 +610,7 @@ public class ProxyResource {
     @Delete
     @At("/:port/rewrite")
     public Reply<?> clearRewriteRules(@Named("port") int port, Request request) {
-        LOG.info("DELETE /" + port + "/rewrite");
+        LOG.info("DELETE /{}/rewrite", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
             return Reply.saying().notFound();

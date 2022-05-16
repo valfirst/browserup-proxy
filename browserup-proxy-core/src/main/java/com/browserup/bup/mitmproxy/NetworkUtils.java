@@ -9,8 +9,6 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
 public class NetworkUtils {
-  private static final Logger log = LoggerFactory
-    .getLogger(HttpConnectHarCaptureFilter.class);
 
   public static boolean isPortAvailable(int port) {
     try (ServerSocket ss = new ServerSocket(port); DatagramSocket ds = new DatagramSocket(port)) {
