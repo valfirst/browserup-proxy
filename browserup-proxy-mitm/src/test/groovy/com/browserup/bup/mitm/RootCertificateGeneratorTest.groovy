@@ -9,11 +9,12 @@ import org.junit.rules.TemporaryFolder
 import java.time.Instant
 
 import static org.hamcrest.Matchers.greaterThan
-import static org.hamcrest.Matchers.isEmptyOrNullString
+import static org.hamcrest.Matchers.emptyOrNullString
+import static org.hamcrest.Matchers.is
 import static org.hamcrest.Matchers.not
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertThat
 
 class RootCertificateGeneratorTest {
     @Rule
@@ -81,10 +82,10 @@ class RootCertificateGeneratorTest {
         String pemEncodedPrivateKey = generator.encodePrivateKeyAsPem("password")
 
         // trivial verification that something was written to the string
-        assertThat("Expected string containing PEM-encoded private key to contain characters", pemEncodedPrivateKey, not(isEmptyOrNullString()))
+        assertThat("Expected string containing PEM-encoded private key to contain characters", pemEncodedPrivateKey, not(is(emptyOrNullString())))
 
         String pemEncodedCertificate = generator.encodeRootCertificateAsPem()
-        assertThat("Expected string containing PEM-encoded certificate to contain characters", pemEncodedCertificate , not(isEmptyOrNullString()))
+        assertThat("Expected string containing PEM-encoded certificate to contain characters", pemEncodedCertificate , not(is(emptyOrNullString())))
     }
 
 }

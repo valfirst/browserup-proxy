@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -127,19 +128,19 @@ public class ServerResponseCaptureFilter extends HttpFiltersAdapter {
     }
 
     protected void decompressContents() {
-        if (contentEncoding.equals(HttpHeaders.Values.GZIP)) {
+        if (contentEncoding.equals(HttpHeaderValues.GZIP.toString())) {
             try {
                 fullResponseContents = BrowserUpHttpUtil.decompressGZIPContents(getRawResponseContents());
                 decompressionSuccessful = true;
             } catch (RuntimeException e) {
-                log.warn("Failed to decompress response with encoding type " + contentEncoding + " when decoding request from " + originalRequest.getUri(), e);
+                log.warn("Failed to decompress response with encoding type " + contentEncoding + " when decoding request from " + originalRequest.uri(), e);
             }
         } else if (contentEncoding.equals(BROTLI_COMPRESSION)) {
             try {
                 fullResponseContents = BrowserUpHttpUtil.decompressBrotliContents(getRawResponseContents());
                 decompressionSuccessful = true;
             } catch (RuntimeException e) {
-                log.warn("Failed to decompress response with encoding type " + contentEncoding + " when decoding request from " + originalRequest.getUri(), e);
+                log.warn("Failed to decompress response with encoding type " + contentEncoding + " when decoding request from " + originalRequest.uri(), e);
             }
         } else {
             log.warn("Cannot decode unsupported content encoding type {}", contentEncoding);
@@ -147,7 +148,7 @@ public class ServerResponseCaptureFilter extends HttpFiltersAdapter {
     }
 
     protected void captureContentEncoding(HttpResponse httpResponse) {
-        contentEncoding = HttpHeaders.getHeader(httpResponse, HttpHeaderNames.CONTENT_ENCODING);
+        contentEncoding = httpResponse.headers().get(HttpHeaderNames.CONTENT_ENCODING);
     }
 
     protected void captureTrailingHeaders(LastHttpContent lastContent) {

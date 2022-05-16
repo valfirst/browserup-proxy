@@ -4,7 +4,7 @@ package com.browserup.bup.proxy.assertion.field.content.filtered
 import org.hamcrest.Matchers
 import org.junit.Test
 
-import static org.junit.Assert.assertThat
+import static org.hamcrest.MatcherAssert.assertThat
 
 class ContentLengthLessThanOrEqualTest extends FilteredContentBaseTest {
     private static final String BIG_BODY = (1..10).collect { 'big body' }.join(' ')

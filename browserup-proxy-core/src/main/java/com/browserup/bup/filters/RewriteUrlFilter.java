@@ -2,7 +2,6 @@ package com.browserup.bup.filters;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -118,7 +117,7 @@ public class RewriteUrlFilter extends HttpsAwareFiltersAdapter {
                     } else {
                         // only modify the Host header if it already exists
                         if (httpRequest.headers().contains(HttpHeaderNames.HOST)) {
-                            HttpHeaders.setHost(httpRequest, modifiedHostAndPort);
+                            httpRequest.headers().set(HttpHeaderNames.HOST, modifiedHostAndPort);
                         }
                     }
                 }

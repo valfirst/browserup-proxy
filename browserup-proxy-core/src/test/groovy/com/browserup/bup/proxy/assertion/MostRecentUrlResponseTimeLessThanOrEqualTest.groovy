@@ -9,6 +9,7 @@ import java.util.regex.Pattern
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching
 import static com.github.tomakehurst.wiremock.client.WireMock.verify
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 
 class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertionsTest {

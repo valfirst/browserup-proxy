@@ -16,10 +16,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.ok
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertThat
 
 @org.junit.Ignore
 class DefaultStepIdTest extends MockServerTest {

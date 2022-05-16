@@ -5,7 +5,7 @@ import com.google.common.io.ByteStreams;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -41,13 +41,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @org.junit.Ignore
@@ -86,7 +86,7 @@ public class InterceptorTest extends MockServerTest {
 
                             HttpRequest httpRequest = (HttpRequest) httpObject;
 
-                            if (httpRequest.getMethod().equals(HttpMethod.GET) && httpRequest.uri().contains("/shortcircuit204")) {
+                            if (httpRequest.method().equals(HttpMethod.GET) && httpRequest.uri().contains("/shortcircuit204")) {
                                 HttpResponse httpResponse = new DefaultHttpResponse(httpRequest.protocolVersion(), HttpResponseStatus.NO_CONTENT);
 
                                 shortCircuitFired.set(true);
@@ -150,7 +150,7 @@ public class InterceptorTest extends MockServerTest {
                 get(urlEqualTo(url)).
                         willReturn(ok().
                                 withBody("success").
-                                withHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=utf-8")));
+                                withHeader(HttpHeaderNames.CONTENT_TYPE.toString(), "text/plain; charset=utf-8")));
 
         proxy = new BrowserUpProxyServer();
         proxy.start();
@@ -269,7 +269,7 @@ public class InterceptorTest extends MockServerTest {
                 get(urlEqualTo(url)).
                         willReturn(ok().
                                 withBody(originalBytes).
-                                withHeader(HttpHeaders.Names.CONTENT_TYPE, "application/octet-stream")));
+                                withHeader(HttpHeaderNames.CONTENT_TYPE.toString(), "application/octet-stream")));
 
         proxy = new BrowserUpProxyServer();
         proxy.start();
@@ -304,7 +304,7 @@ public class InterceptorTest extends MockServerTest {
                 get(urlEqualTo(url)).
                         willReturn(ok().
                                 withBody(originalText).
-                                withHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=utf-8")));
+                                withHeader(HttpHeaderNames.CONTENT_TYPE.toString(), "text/plain; charset=utf-8")));
 
         proxy = new BrowserUpProxyServer();
         proxy.start();
@@ -340,7 +340,7 @@ public class InterceptorTest extends MockServerTest {
                 get(urlEqualTo(url)).
                         willReturn(ok().
                                 withBody(originalText).
-                                withHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=utf-8")));
+                                withHeader(HttpHeaderNames.CONTENT_TYPE.toString(), "text/plain; charset=utf-8")));
 
         proxy = new BrowserUpProxyServer();
         proxy.setTrustAllServers(true);
@@ -373,7 +373,7 @@ public class InterceptorTest extends MockServerTest {
         stubFor(
                 head(urlMatching(url)).
                         willReturn(ok().
-                                withHeader(HttpHeaders.Names.CONTENT_TYPE, "application/octet-stream")));
+                                withHeader(HttpHeaderNames.CONTENT_TYPE.toString(), "application/octet-stream")));
 
         proxy = new BrowserUpProxyServer();
         proxy.start();
@@ -477,9 +477,9 @@ public class InterceptorTest extends MockServerTest {
         proxy.addRequestFilter(new RequestFilter() {
             @Override
             public HttpResponse filterRequest(HttpRequest request, HttpMessageContents contents, HttpMessageInfo messageInfo) {
-                if (request.getMethod().equals(HttpMethod.CONNECT)) {
+                if (request.method().equals(HttpMethod.CONNECT)) {
                     connectRequestFilterFired.set(true);
-                } else if (request.getMethod().equals(HttpMethod.GET)) {
+                } else if (request.method().equals(HttpMethod.GET)) {
                     getRequestFilterFired.set(true);
                 }
                 return null;
@@ -540,7 +540,7 @@ public class InterceptorTest extends MockServerTest {
                 get(urlMatching(url)).
                         willReturn(ok().
                                 withBody(originalText).
-                                withHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=utf-8")));
+                                withHeader(HttpHeaderNames.CONTENT_TYPE.toString(), "text/plain; charset=utf-8")));
 
         proxy = new BrowserUpProxyServer();
         proxy.start();

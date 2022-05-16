@@ -2,7 +2,6 @@ package com.browserup.bup.util;
 
 import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaders;
 import com.browserup.bup.exception.UnsupportedCharsetException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +96,7 @@ public class HttpMessageContents {
      * @return the message's content type
      */
     public String getContentType() {
-        String contentTypeHeader = HttpHeaders.getHeader(httpMessage, HttpHeaderNames.CONTENT_TYPE);
+        String contentTypeHeader = httpMessage.headers().get(HttpHeaderNames.CONTENT_TYPE);
         if (contentTypeHeader == null || contentTypeHeader.isEmpty()) {
             return BrowserUpHttpUtil.UNKNOWN_CONTENT_TYPE;
         } else {

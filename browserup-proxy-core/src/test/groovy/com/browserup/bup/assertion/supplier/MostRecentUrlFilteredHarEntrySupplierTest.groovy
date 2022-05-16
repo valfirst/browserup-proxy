@@ -4,11 +4,14 @@ import com.browserup.harreader.model.Har
 import com.browserup.harreader.model.HarEntry
 import com.browserup.harreader.model.HarRequest
 import org.hamcrest.Matchers
-import org.junit.Assert;
 import org.junit.Test
 
 import java.time.Instant
 import java.util.regex.Pattern;
+
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 
 class MostRecentUrlFilteredHarEntrySupplierTest {
 
@@ -36,8 +39,8 @@ class MostRecentUrlFilteredHarEntrySupplierTest {
         def supplier = new MostRecentUrlFilteredHarEntrySupplier(har, Pattern.compile(urlPattern))
         def result = supplier.get()
 
-        Assert.assertThat("Expected to get one entry", result, Matchers.hasSize(1))
-        Assert.assertEquals("", result.get(0).request.url, "http://abc${mostRecentUrlIndex}.com".toString())
+        assertThat("Expected to get one entry", result, Matchers.hasSize(1))
+        assertEquals("", result.get(0).request.url, "http://abc${mostRecentUrlIndex}.com".toString())
     }
 
     @Test
@@ -57,7 +60,7 @@ class MostRecentUrlFilteredHarEntrySupplierTest {
         def supplier = new MostRecentUrlFilteredHarEntrySupplier(har, Pattern.compile(urlPattern))
         def result = supplier.get()
 
-        Assert.assertNotNull("Expected to get empty list", result)
-        Assert.assertThat("Expected to get no entries", result, Matchers.hasSize(0))
+        assertNotNull("Expected to get empty list", result)
+        assertThat("Expected to get no entries", result, Matchers.hasSize(0))
     }
 }

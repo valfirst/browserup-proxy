@@ -17,9 +17,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.ok
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertThat
 import static org.junit.Assert.assertTrue
 
 abstract class BaseAssertionsTest extends MockServerTest {

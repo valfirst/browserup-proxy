@@ -12,8 +12,8 @@ import org.junit.Test
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.hamcrest.Matchers.empty
 import static org.hamcrest.Matchers.not
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertThat
 
 @org.junit.Ignore
 class GetHarTest extends MockServerTest {

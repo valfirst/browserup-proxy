@@ -14,10 +14,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.ok
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
-import static org.hamcrest.Matchers.isEmptyOrNullString
+import static org.hamcrest.Matchers.emptyOrNullString
+import static org.hamcrest.Matchers.is
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertThat
 
 @org.junit.Ignore
 class BlocklistTest extends MockServerTest {
@@ -43,7 +44,7 @@ class BlocklistTest extends MockServerTest {
             assertEquals("Did not receive blocklisted status code in response", 405, response.getStatusLine().getStatusCode())
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent())
-            assertThat("Expected blocklisted response to contain 0-length body", responseBody, isEmptyOrNullString())
+            assertThat("Expected blocklisted response to contain 0-length body", responseBody, is(emptyOrNullString()))
         }
     }
 
@@ -60,7 +61,7 @@ class BlocklistTest extends MockServerTest {
             assertEquals("Did not receive blocklisted status code in response", 405, response.getStatusLine().getStatusCode())
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent())
-            assertThat("Expected blocklisted response to contain 0-length body", responseBody, isEmptyOrNullString())
+            assertThat("Expected blocklisted response to contain 0-length body", responseBody, is(emptyOrNullString()))
         }
 
         def har = proxy.getHar()
@@ -87,7 +88,7 @@ class BlocklistTest extends MockServerTest {
             assertEquals("Did not receive blocklisted status code in response", 405, response.getStatusLine().getStatusCode())
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent())
-            assertThat("Expected blocklisted response to contain 0-length body", responseBody, isEmptyOrNullString())
+            assertThat("Expected blocklisted response to contain 0-length body", responseBody, is(emptyOrNullString()))
         }
     }
 
@@ -116,7 +117,7 @@ class BlocklistTest extends MockServerTest {
             assertEquals("Did not receive blocklisted status code in response", 405, blocklistedResourceResponse.getStatusLine().getStatusCode())
 
             String blocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(blocklistedResourceResponse.getEntity().getContent())
-            assertThat("Expected blocklisted response to contain 0-length body", blocklistedResponseBody, isEmptyOrNullString())
+            assertThat("Expected blocklisted response to contain 0-length body", blocklistedResponseBody, is(emptyOrNullString()))
         }
     }
 
@@ -146,7 +147,7 @@ class BlocklistTest extends MockServerTest {
             assertEquals("Did not receive blocklisted status code in response", 405, blocklistedResourceResponse.getStatusLine().getStatusCode())
 
             String blocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(blocklistedResourceResponse.getEntity().getContent())
-            assertThat("Expected blocklisted response to contain 0-length body", blocklistedResponseBody, isEmptyOrNullString())
+            assertThat("Expected blocklisted response to contain 0-length body", blocklistedResponseBody, is(emptyOrNullString()))
         }
     }
 
@@ -167,7 +168,7 @@ class BlocklistTest extends MockServerTest {
             assertEquals("Did not receive blocklisted status code in response", 405, blocklistedResourceResponse.getStatusLine().getStatusCode())
 
             String blocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(blocklistedResourceResponse.getEntity().getContent())
-            assertThat("Expected blocklisted response to contain 0-length body", blocklistedResponseBody, isEmptyOrNullString())
+            assertThat("Expected blocklisted response to contain 0-length body", blocklistedResponseBody, is(emptyOrNullString()))
         }
     }
 

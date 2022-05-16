@@ -22,7 +22,8 @@ import org.junit.After
 import org.junit.Test
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
-import static org.hamcrest.Matchers.isEmptyOrNullString
+import static org.hamcrest.Matchers.emptyOrNullString
+import static org.hamcrest.Matchers.is
 
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
@@ -41,11 +42,11 @@ import static org.hamcrest.Matchers.greaterThan
 import static org.hamcrest.Matchers.greaterThanOrEqualTo
 import static org.hamcrest.Matchers.hasSize
 import static org.hamcrest.Matchers.not
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertThat
 import static org.junit.Assert.assertTrue
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
@@ -933,7 +934,7 @@ class NewHarTest extends MockServerTest {
             assertEquals("Did not receive blacklisted status code in response", 405, response.getStatusLine().getStatusCode())
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent())
-            assertThat("Expected blacklisted response to contain 0-length body", responseBody, isEmptyOrNullString())
+            assertThat("Expected blacklisted response to contain 0-length body", responseBody, is(emptyOrNullString()))
         }
 
         Thread.sleep(500)
@@ -967,7 +968,7 @@ class NewHarTest extends MockServerTest {
             assertEquals("Did not receive blacklisted status code in response", 405, response.getStatusLine().getStatusCode())
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent())
-            assertThat("Expected blacklisted response to contain 0-length body", responseBody, isEmptyOrNullString())
+            assertThat("Expected blacklisted response to contain 0-length body", responseBody, is(emptyOrNullString()))
         }
 
         Thread.sleep(500)

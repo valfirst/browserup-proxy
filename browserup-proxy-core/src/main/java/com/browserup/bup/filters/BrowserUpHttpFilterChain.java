@@ -2,11 +2,12 @@ package com.browserup.bup.filters;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
+
 import com.browserup.bup.BrowserUpProxyServer;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
@@ -51,9 +52,9 @@ public class BrowserUpHttpFilterChain extends HttpFiltersAdapter {
     @Override
     public HttpResponse clientToProxyRequest(HttpObject httpObject) {
         if (proxyServer.isStopped()) {
-            log.warn("Aborting request to {} because proxy is stopped", originalRequest.getUri());
-            HttpResponse abortedResponse = new DefaultFullHttpResponse(originalRequest.getProtocolVersion(), HttpResponseStatus.SERVICE_UNAVAILABLE);
-            HttpHeaders.setContentLength(abortedResponse, 0L);
+            log.warn("Aborting request to {} because proxy is stopped", originalRequest.uri());
+            HttpResponse abortedResponse = new DefaultFullHttpResponse(originalRequest.protocolVersion(), HttpResponseStatus.SERVICE_UNAVAILABLE);
+            HttpUtil.setContentLength(abortedResponse, 0L);
             return abortedResponse;
         }
 

@@ -4,7 +4,7 @@ package com.browserup.bup.proxy.assertion.field.header.filtered
 import org.hamcrest.Matchers
 import org.junit.Test
 
-import static org.junit.Assert.assertThat
+import static org.hamcrest.MatcherAssert.assertThat
 
 class HeaderContainsTest extends FilteredHeaderBaseTest {
 
