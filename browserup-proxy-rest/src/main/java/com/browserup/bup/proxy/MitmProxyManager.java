@@ -9,7 +9,6 @@ import com.browserup.bup.util.BrowserUpProxyUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -48,15 +47,13 @@ public class MitmProxyManager {
     // Initialize-on-demand a single thread executor that will create a daemon thread to clean up expired proxies. Since the resulting executor
     // is a singleton, there will at most one thread to service all ProxyManager instances.
     private static class ScheduledExecutorHolder {
-        private static final ScheduledExecutorService expiredProxyCleanupExecutor = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread thread = Executors.defaultThreadFactory().newThread(r);
-                thread.setName("expired-proxy-cleanup-thread");
-                thread.setDaemon(true);
-                return thread;
-            }
-        });
+        private static final ScheduledExecutorService expiredProxyCleanupExecutor = Executors.newSingleThreadScheduledExecutor(
+                r -> {
+                    Thread thread = Executors.defaultThreadFactory().newThread(r);
+                    thread.setName("expired-proxy-cleanup-thread");
+                    thread.setDaemon(true);
+                    return thread;
+                });
     }
 
     // static inner class to prevent leaking ProxyManager instances to the cleanup task
@@ -66,7 +63,7 @@ public class MitmProxyManager {
         private final WeakReference<Cache<Integer, MitmProxyServer>> proxyCache;
 
         public ProxyCleanupTask(Cache<Integer, MitmProxyServer> cache) {
-            this.proxyCache = new WeakReference<Cache<Integer, MitmProxyServer>>(cache);
+            this.proxyCache = new WeakReference<>(cache);
         }
 
         @Override
@@ -95,17 +92,15 @@ public class MitmProxyManager {
         this.lastPort = maxPort;
         if (ttl > 0) {
             // proxies should be evicted after the specified ttl, so set up an evicting cache and a listener to stop the proxies when they're evicted
-            RemovalListener<Integer, MitmProxyServer> removalListener = new RemovalListener<Integer, MitmProxyServer>() {
-                public void onRemoval(RemovalNotification<Integer, MitmProxyServer> removal) {
-                    try {
-                        MitmProxyServer proxy = removal.getValue();
-                        if (proxy != null) {
-                            LOG.info("Expiring ProxyServer on port {} after {} seconds without activity", proxy.getPort(), ttl);
-                            proxy.stop();
-                        }
-                    } catch (Exception ex) {
-                        LOG.warn("Error while stopping an expired proxy on port {}", removal.getKey(), ex);
+            RemovalListener<Integer, MitmProxyServer> removalListener = removal -> {
+                try {
+                    MitmProxyServer proxy = removal.getValue();
+                    if (proxy != null) {
+                        LOG.info("Expiring ProxyServer on port {} after {} seconds without activity", proxy.getPort(), ttl);
+                        proxy.stop();
                     }
+                } catch (Exception ex) {
+                    LOG.warn("Error while stopping an expired proxy on port {}", removal.getKey(), ex);
                 }
             };
 
@@ -120,7 +115,7 @@ public class MitmProxyManager {
             ScheduledExecutorHolder.expiredProxyCleanupExecutor.scheduleWithFixedDelay(new ProxyCleanupTask(proxyCache),
                     EXPIRED_PROXY_CLEANUP_INTERVAL_SECONDS, EXPIRED_PROXY_CLEANUP_INTERVAL_SECONDS, TimeUnit.SECONDS);
         } else {
-            this.proxies = new ConcurrentHashMap<Integer, MitmProxyServer>();
+            this.proxies = new ConcurrentHashMap<>();
             // nothing to timeout, so no Cache
             this.proxyCache = null;
         }

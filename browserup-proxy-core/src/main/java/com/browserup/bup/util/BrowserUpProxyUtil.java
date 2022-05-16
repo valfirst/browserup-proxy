@@ -58,7 +58,7 @@ public class BrowserUpProxyUtil {
         }
 
         // collect the page refs that need to be copied to new har copy.
-        Set<String> pageRefsToCopy = new HashSet<String>();
+        Set<String> pageRefsToCopy = new HashSet<>();
 
         for (HarPage page : har.getLog().getPages()) {
             pageRefsToCopy.add(page.getId());

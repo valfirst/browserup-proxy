@@ -27,8 +27,6 @@ import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
@@ -117,12 +115,7 @@ public class LittleProxyIntegrationTest {
             // Trust all certs -- under no circumstances should this ever be used outside of testing
             SSLContext sslcontext = SSLContexts.custom()
                     .setProtocol("TLS")
-                    .loadTrustMaterial(null, new TrustStrategy() {
-                        @Override
-                        public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                            return true;
-                        }
-                    })
+                    .loadTrustMaterial(null, (TrustStrategy) (chain, authType) -> true)
                     .build();
 
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(

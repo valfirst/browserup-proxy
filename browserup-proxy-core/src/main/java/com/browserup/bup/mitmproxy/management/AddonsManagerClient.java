@@ -74,9 +74,7 @@ public class AddonsManagerClient {
                 .addPathSegment(addOnPath)
                 .addPathSegment(operation);
 
-        queryParams.forEach(p -> {
-            builder.addQueryParameter(p.getKey(), p.getValue());
-        });
+        queryParams.forEach(p -> builder.addQueryParameter(p.getKey(), p.getValue()));
 
         return builder.build();
     }

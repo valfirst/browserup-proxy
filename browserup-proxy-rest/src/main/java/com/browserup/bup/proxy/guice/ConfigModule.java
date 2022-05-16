@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.Module;
-import com.google.inject.Provider;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -99,15 +98,12 @@ public class ConfigModule implements Module {
         binder.bind(Key.get(Integer.class, new NamedImpl("ttl"))).toInstance(ttlSpec.value(options));
 
         // bind an ObjectMapper provider that uses the system time zone instead of UTC by default
-        binder.bind(ObjectMapper.class).toProvider(new Provider<ObjectMapper>() {
-            @Override
-            public ObjectMapper get() {
-                ObjectMapper objectMapper = new ObjectMapper();
+        binder.bind(ObjectMapper.class).toProvider(() -> {
+            ObjectMapper objectMapper = new ObjectMapper();
 
-                objectMapper.setTimeZone(TimeZone.getDefault());
+            objectMapper.setTimeZone(TimeZone.getDefault());
 
-                return objectMapper;
-            }
+            return objectMapper;
         });
     }
 }

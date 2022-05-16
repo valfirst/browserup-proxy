@@ -83,7 +83,7 @@ public class ProxyResource {
         String proxyPassword = request.param("proxyPassword");
         boolean upstreamProxyHttps = "true".equals(request.param("proxyHTTPS"));
 
-        Hashtable<String, String> options = new Hashtable<String, String>();
+        Hashtable<String, String> options = new Hashtable<>();
 
         // If the upstream proxy is specified via query params that should override any default system level proxy.
         String upstreamHttpProxy = null;
@@ -147,7 +147,7 @@ public class ProxyResource {
             return Reply.saying().notFound();
         }
 
-        Boolean cleanHar = "true".equals(request.param("cleanHar"));
+        boolean cleanHar = "true".equals(request.param("cleanHar"));
         Har har = proxy.getHar(cleanHar);
 
         return Reply.with(har).as(Json.class);
@@ -170,7 +170,7 @@ public class ProxyResource {
         String captureHeaders = request.param("captureHeaders");
         String captureContent = request.param("captureContent");
         String captureBinaryContent = request.param("captureBinaryContent");
-        Set<CaptureType> captureTypes = new HashSet<CaptureType>();
+        Set<CaptureType> captureTypes = new HashSet<>();
         if (Boolean.parseBoolean(captureHeaders)) {
             captureTypes.addAll(CaptureType.getHeaderCaptureTypes());
         }
@@ -183,9 +183,8 @@ public class ProxyResource {
         proxy.setHarCaptureTypes(captureTypes);
 
         String captureCookies = request.param("captureCookies");
-        if (proxy instanceof MitmProxyServer && Boolean.parseBoolean(captureCookies)) {
-            MitmProxyServer MitmProxyServer = (MitmProxyServer) proxy;
-            MitmProxyServer.enableHarCaptureTypes(CaptureType.getCookieCaptureTypes());
+        if (Boolean.parseBoolean(captureCookies)) {
+            proxy.enableHarCaptureTypes(CaptureType.getCookieCaptureTypes());
         }
 
         if (oldHar != null) {
@@ -405,7 +404,7 @@ public class ProxyResource {
         String upstreamKbps = request.param("upstreamKbps");
         if (upstreamKbps != null) {
             try {
-                long upstreamBytesPerSecond = Integer.parseInt(upstreamKbps) * 1024;
+                long upstreamBytesPerSecond = Long.parseLong(upstreamKbps) * 1024;
                 proxy.setWriteBandwidthLimit(upstreamBytesPerSecond);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid upstreamKbps value");
@@ -426,7 +425,7 @@ public class ProxyResource {
         String downstreamKbps = request.param("downstreamKbps");
         if (downstreamKbps != null) {
             try {
-                long downstreamBytesPerSecond = Integer.parseInt(downstreamKbps) * 1024;
+                long downstreamBytesPerSecond = Long.parseLong(downstreamKbps) * 1024;
                 proxy.setReadBandwidthLimit(downstreamBytesPerSecond);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid downstreamKbps value");
@@ -678,7 +677,7 @@ public class ProxyResource {
 
     private String getEntityBodyFromRequest(Request request) throws IOException {
         String contentTypeHeader = request.header("Content-Type");
-        Charset charset = null;
+        Charset charset;
         try {
             charset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(contentTypeHeader);
         } catch (UnsupportedCharsetException e) {

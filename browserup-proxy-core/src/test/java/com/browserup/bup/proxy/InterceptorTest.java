@@ -13,14 +13,10 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import com.browserup.bup.BrowserUpProxy;
 import com.browserup.bup.BrowserUpProxyServer;
-import com.browserup.bup.filters.RequestFilter;
 import com.browserup.bup.filters.RequestFilterAdapter;
-import com.browserup.bup.filters.ResponseFilter;
 import com.browserup.bup.filters.ResponseFilterAdapter;
 import com.browserup.bup.proxy.test.util.MockServerTest;
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
-import com.browserup.bup.util.HttpMessageContents;
-import com.browserup.bup.util.HttpMessageInfo;
 import com.browserup.bup.util.HttpObjectUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -196,17 +192,14 @@ public class InterceptorTest extends MockServerTest {
         proxy = new BrowserUpProxyServer();
         proxy.start();
 
-        proxy.addRequestFilter(new RequestFilter() {
-            @Override
-            public HttpResponse filterRequest(HttpRequest request, HttpMessageContents contents, HttpMessageInfo messageInfo) {
-                if (contents.isText()) {
-                    if (contents.getTextContents().equals(originalText)) {
-                        contents.setTextContents(newText);
-                    }
+        proxy.addRequestFilter((request, contents, messageInfo) -> {
+            if (contents.isText()) {
+                if (contents.getTextContents().equals(originalText)) {
+                    contents.setTextContents(newText);
                 }
-
-                return null;
             }
+
+            return null;
         });
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
@@ -441,12 +434,9 @@ public class InterceptorTest extends MockServerTest {
             return null;
         }, 0));
 
-        proxy.addFirstHttpFilterFactory(new ResponseFilterAdapter.FilterSource(new ResponseFilter() {
-            @Override
-            public void filterResponse(HttpResponse response, HttpMessageContents contents, HttpMessageInfo messageInfo) {
-                if (contents == null) {
-                    responseContentsNull.set(true);
-                }
+        proxy.addFirstHttpFilterFactory(new ResponseFilterAdapter.FilterSource((response, contents, messageInfo) -> {
+            if (contents == null) {
+                responseContentsNull.set(true);
             }
         }, 0));
 
@@ -474,16 +464,13 @@ public class InterceptorTest extends MockServerTest {
         final AtomicBoolean connectRequestFilterFired = new AtomicBoolean(false);
         final AtomicBoolean getRequestFilterFired = new AtomicBoolean(false);
 
-        proxy.addRequestFilter(new RequestFilter() {
-            @Override
-            public HttpResponse filterRequest(HttpRequest request, HttpMessageContents contents, HttpMessageInfo messageInfo) {
-                if (request.method().equals(HttpMethod.CONNECT)) {
-                    connectRequestFilterFired.set(true);
-                } else if (request.method().equals(HttpMethod.GET)) {
-                    getRequestFilterFired.set(true);
-                }
-                return null;
+        proxy.addRequestFilter((request, contents, messageInfo) -> {
+            if (request.method().equals(HttpMethod.CONNECT)) {
+                connectRequestFilterFired.set(true);
+            } else if (request.method().equals(HttpMethod.GET)) {
+                getRequestFilterFired.set(true);
             }
+            return null;
         });
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
@@ -514,12 +501,7 @@ public class InterceptorTest extends MockServerTest {
 
         final AtomicBoolean responseFilterFired = new AtomicBoolean(false);
 
-        proxy.addResponseFilter(new ResponseFilter() {
-            @Override
-            public void filterResponse(HttpResponse response, HttpMessageContents contents, HttpMessageInfo messageInfo) {
-                responseFilterFired.set(true);
-            }
-        });
+        proxy.addResponseFilter((response, contents, messageInfo) -> responseFilterFired.set(true));
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/mitmdisabled"));

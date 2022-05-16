@@ -1,9 +1,5 @@
 package com.browserup.bup.mitmproxy;
 
-import com.browserup.bup.filters.HttpConnectHarCaptureFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
