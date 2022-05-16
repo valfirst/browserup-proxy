@@ -1,6 +1,5 @@
 package com.browserup.bup.mitm.util;
 
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.io.CharStreams;
 import io.netty.handler.ssl.OpenSsl;
@@ -28,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Utility for creating SSLContexts.
@@ -47,24 +47,21 @@ public class SslUtil {
      * If OpenSsl is not available, retrieves the default ciphers enabled on java SSLContexts. If the enabled JDK cipher
      * list cannot be read, returns the list provided by {@link #getBuiltInCipherList()}.
      */
-    private static final Supplier<List<String>> defaultCipherList = Suppliers.memoize(new Supplier<List<String>>() {
-        @Override
-        public List<String> get() {
-            List<String> ciphers;
-            if (OpenSsl.isAvailable()) {
-                // TODO: consider switching to the list of all available ciphers using OpenSsl.availableCipherSuites()
+    private static final Supplier<List<String>> defaultCipherList = Suppliers.memoize(() -> {
+        List<String> ciphers;
+        if (OpenSsl.isAvailable()) {
+            // TODO: consider switching to the list of all available ciphers using OpenSsl.availableCipherSuites()
+            ciphers = getBuiltInCipherList();
+        } else {
+            ciphers = getEnabledJdkCipherSuites();
+
+            if (ciphers.isEmpty()) {
+                // could not retrieve the list of enabled ciphers from the JDK SSLContext, so use the hard-coded list
                 ciphers = getBuiltInCipherList();
-            } else {
-                ciphers = getEnabledJdkCipherSuites();
-
-                if (ciphers.isEmpty()) {
-                    // could not retrieve the list of enabled ciphers from the JDK SSLContext, so use the hard-coded list
-                    ciphers = getBuiltInCipherList();
-                }
             }
-
-            return ciphers;
         }
+
+        return ciphers;
     });
 
     /**

@@ -1,6 +1,5 @@
 package com.browserup.bup.mitm;
 
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.browserup.bup.mitm.exception.CertificateSourceException;
 import com.browserup.bup.mitm.tools.DefaultSecurityProviderTool;
@@ -15,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.KeyStore;
+import java.util.function.Supplier;
 
 /**
  * Loads a KeyStore from a file or classpath resource. If configured with a File object, attempts to load the KeyStore
