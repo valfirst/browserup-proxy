@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased]
+
 # [2.1.5]
 - Bump Log4J from `2.17.1` to `2.17.2`
 - Bump Jackson from `2.13.1` to `2.13.3`
