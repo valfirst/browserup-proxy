@@ -2,7 +2,7 @@
 
 # [2.1.5]
 - Bump Log4J from `2.17.1` to `2.17.2`
-- Bump Jackson from `2.13.1` to `2.13.2`
+- Bump Jackson from `2.13.1` to `2.13.3`
 - Bump Awaitility from `4.1.1` to `4.2.0`
 - Bump Guava from `31.0.1-jre` to `31.1-jre`
 - Bump Swagger from `2.1.13` to `2.2.0`
@@ -11,6 +11,10 @@
 - Upgrade to LittleProxy `2.0.9`
 - Upgrade to an actively maintained [LittleProxy](https://github.com/LittleProxy/LittleProxy) fork
 - Bump Selenium from `3.141.59` to `4.1.4`
+- Use the `CONNECT` method URI as host detection fallback
+- Bump dnsjava from `3.5.0` to `3.5.1`
+- Drop Javassist dependency: Javassist dependency was added in order to improve Netty performance, however Netty dropped Javassist support a long time ago
+- Optimize logging performance
 
 # [2.1.4]
 - Bump SLF4J from `1.7.32` to `1.7.36`
