@@ -1,3 +1,5 @@
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.valfirst.browserup-proxy/browserup-proxy.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.valfirst.browserup-proxy)
+
 ### This fork is created in order to keep alive [BrowserUp Proxy](https://github.com/browserup/browserup-proxy) which maintenance was officially [discontinued](https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034):
 
 > We have moved our business over to the BrowserUp fork of the mitmproxy. It is available [here](https://github.com/browserup/mitmproxy) 
