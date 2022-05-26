@@ -128,6 +128,15 @@ public class HarLog {
     }
 
     /**
+     * Search the entire log for the most recent entry.
+     *
+     * @return <code>HarEntry</code> for the most recently requested URL.
+     */
+    public Optional<HarEntry> findMostRecentEntry() {
+        return getEntries().stream().max(Comparator.comparing(HarEntry::getStartedDateTime));
+    }
+
+    /**
      * Search the entire log for the most recent entry whose request URL matches the given <code>url</code>.
      *
      * @param url Regular expression match of URL to find.
