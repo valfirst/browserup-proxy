@@ -2,6 +2,7 @@ package com.browserup.harreader.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -59,5 +60,15 @@ public class Har {
 
     public void writeTo(File file) throws IOException {
         OBJECT_MAPPER.writeValue(file, this);
+    }
+
+    /**
+     * <p>Deep copy a {@code Har} using serialization.</p>
+     * @return Deep copy of this object
+     * @throws IOException if a low-level I/O problem occurs
+     */
+    public Har deepCopy() throws IOException {
+        byte[] bytes = OBJECT_MAPPER.writeValueAsBytes(this);
+        return OBJECT_MAPPER.readValue(bytes, Har.class);
     }
 }
