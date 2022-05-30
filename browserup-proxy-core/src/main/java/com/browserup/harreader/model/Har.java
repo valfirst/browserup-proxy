@@ -2,7 +2,6 @@ package com.browserup.harreader.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -60,6 +59,16 @@ public class Har {
 
     public void writeTo(File file) throws IOException {
         OBJECT_MAPPER.writeValue(file, this);
+    }
+
+    /**
+     * Serialize HAR as a byte array. It's functionally equivalent to calling {@link #writeTo(OutputStream)} with
+     * {@link java.io.ByteArrayOutputStream} and getting bytes, but more efficient. Encoding used will be UTF-8.
+     * @return Serialized HAR as a byte array
+     * @throws IOException if a low-level I/O problem occurs
+     */
+    public byte[] asBytes() throws IOException {
+        return OBJECT_MAPPER.writeValueAsBytes(this);
     }
 
     /**
