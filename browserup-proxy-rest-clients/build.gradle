@@ -87,10 +87,6 @@ clients.each { client ->
     if (postProcessor) tasks.getByName("openApiGenerate${lang}Client").doLast(postProcessor)
 }
 
-test {
-    testLogging.showStandardStreams = true
-}
-
 task openApiGenerateClients(dependsOn: resolve) {
     clients.each { c ->
         dependsOn "openApiGenerate${c.language}Client"

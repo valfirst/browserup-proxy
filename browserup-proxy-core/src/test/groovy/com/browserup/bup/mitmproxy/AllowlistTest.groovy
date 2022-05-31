@@ -12,7 +12,6 @@ import io.netty.handler.codec.http.HttpVersion
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
-import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
@@ -23,7 +22,6 @@ import static org.junit.Assert.*
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-@Ignore
 class AllowlistTest extends MockServerTest {
     MitmProxyServer proxy
 

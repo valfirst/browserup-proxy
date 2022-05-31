@@ -7,7 +7,6 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import com.browserup.harreader.model.Har
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
-import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
@@ -16,7 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.Matchers.not
 import static org.junit.Assert.assertEquals
 
-@Ignore
 class GetHarTest extends MockServerTest {
     private MitmProxyServer proxy
 

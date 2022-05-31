@@ -7,7 +7,6 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import org.apache.http.HttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
-import org.junit.Ignore
 import org.junit.Test
 
 import java.util.concurrent.TimeUnit
@@ -16,7 +15,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
-@Ignore
 class LatencyTest extends MockServerTest {
     private MitmProxyServer proxy
 

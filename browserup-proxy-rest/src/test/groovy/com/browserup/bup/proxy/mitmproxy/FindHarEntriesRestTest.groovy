@@ -8,7 +8,6 @@ import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.Method
 import org.apache.http.entity.ContentType
 import org.hamcrest.Matchers
-import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
@@ -16,7 +15,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 
-@Ignore
 class FindHarEntriesRestTest extends BaseRestTest {
 
     @Override

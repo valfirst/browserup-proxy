@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
-import org.junit.Ignore
 import org.junit.Test
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 
-@Ignore
 class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntriesAssertContentRestTest {
     protected static final Integer FIRST_CONTENT_SIZE = FIRST_RESPONSE.bytes.length
     protected static final Integer SECOND_CONTENT_SIZE = SECOND_RESPONSE.bytes.length

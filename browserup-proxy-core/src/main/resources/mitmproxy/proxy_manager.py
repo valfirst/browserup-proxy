@@ -12,6 +12,7 @@ import json
 import base64
 import typing
 import tempfile
+from typing import Optional
 
 from datetime import datetime
 from datetime import timezone
@@ -25,15 +26,25 @@ from mitmproxy import version
 from mitmproxy.utils import strutils
 from mitmproxy.net.http import cookies
 
-
 class ProxyManagerResource:
 
     def addon_path(self):
         return "proxy_manager"
 
     def __init__(self, harDumpAddOn):
-        ctx.options.connection_idle_seconds = -1
-        ctx.options.dns_resolving_delay_ms = -1
+        ctx.options.add_option(
+            name = "connection_idle_seconds",
+            typespec = int,
+            default = -1,
+            help = "Connection idle timeout in seconds",
+        )
+        ctx.options.add_option(
+            name = "dns_resolving_delay_ms",
+            typespec = int,
+            default = -1,
+            help = "DNS resolution timeout in milliseconds",
+        )
+
 
     def on_get(self, req, resp, method_name):
         getattr(self, "on_" + method_name)(req, resp)

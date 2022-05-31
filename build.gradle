@@ -73,4 +73,15 @@ subprojects {
             sign configurations.archives
         }
     }
+
+    test {
+        testLogging {
+            outputs.upToDateWhen {false}
+            showStandardStreams = true
+        }
+        def mitmproxyBinaryPath = project.findProperty('MITMPROXY_BINARY_PATH')
+        if (mitmproxyBinaryPath) {
+            systemProperty "MITMPROXY_BINARY_PATH", mitmproxyBinaryPath
+        }
+    }
 }

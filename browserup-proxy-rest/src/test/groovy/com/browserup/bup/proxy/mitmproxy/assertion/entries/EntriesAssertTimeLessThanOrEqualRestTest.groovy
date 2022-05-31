@@ -6,13 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
-import org.junit.Ignore
 import org.junit.Test
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 
-@Ignore
 class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     def responseBody = 'success'
     def url = 'some-url'
