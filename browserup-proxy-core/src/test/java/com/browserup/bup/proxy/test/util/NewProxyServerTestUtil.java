@@ -4,9 +4,14 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 import org.apache.http.HttpHost;
 import org.apache.http.client.CookieStore;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContexts;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -34,29 +39,23 @@ public class NewProxyServerTestUtil {
     public static CloseableHttpClient getNewHttpClient(int proxyPort, CookieStore cookieStore) {
         try {
             // Trust all certs -- under no circumstances should this ever be used outside of testing
-//            SSLContext sslcontext = SSLContexts.custom()
-//                    .useTLS()
-//                    .loadTrustMaterial(null, new TrustStrategy() {
-//                        @Override
-//                        public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-//                            return true;
-//                        }
-//                    })
-//                    .build();
-//
-//            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
-//                    sslcontext,
-//                    SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            SSLContext sslcontext = SSLContexts.custom()
+                    .setProtocol("TLS")
+                    .loadTrustMaterial(null, (TrustStrategy) (chain, authType) -> true)
+                    .build();
 
-            CloseableHttpClient httpclient = HttpClients.custom()
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                    sslcontext,
+                    NoopHostnameVerifier.INSTANCE);
+
+            return HttpClients.custom()
+                    .setSSLSocketFactory(sslsf)
                     .setDefaultCookieStore(cookieStore)
                     .setProxy(new HttpHost("127.0.0.1", proxyPort))
                     // disable decompressing content, since some tests want uncompressed content for testing purposes
                     .disableContentCompression()
                     .disableAutomaticRetries()
                     .build();
-
-            return httpclient;
         } catch (Exception e) {
             throw new RuntimeException("Unable to create new HTTP client", e);
         }

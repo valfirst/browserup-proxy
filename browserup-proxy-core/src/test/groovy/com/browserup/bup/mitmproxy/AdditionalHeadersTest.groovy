@@ -7,13 +7,11 @@ import com.github.tomakehurst.wiremock.matching.AbsentPattern
 import com.github.tomakehurst.wiremock.matching.EqualToPattern
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
-import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.junit.Assert.assertEquals
 
-@Ignore
 class AdditionalHeadersTest extends MockServerTest {
 
     MitmProxyServer proxy

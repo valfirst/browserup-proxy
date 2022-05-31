@@ -8,14 +8,12 @@ import com.github.tomakehurst.wiremock.http.HttpHeader
 import com.github.tomakehurst.wiremock.http.HttpHeaders
 import groovyx.net.http.HttpResponseDecorator
 import org.hamcrest.Matchers
-import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 
-@Ignore
 class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
     def responseBody = 'success'
     def urlOfMostRecentRequest = 'url-most-recent'

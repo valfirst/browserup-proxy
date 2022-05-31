@@ -24,6 +24,16 @@ jobs:
         distribution: 'temurin'
         cache: 'gradle'
 
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+        cache: 'pip'
+
+    - name: Install Python packages
+      run: pip install -r requirements.txt
+
     - name: Build with Gradle
       run: |
-        ./gradlew build
+        export MITMPROXY_BINARY_PATH=$(type -aP mitmdump | xargs dirname )
+        ./gradlew build -PMITMPROXY_BINARY_PATH="$MITMPROXY_BINARY_PATH"

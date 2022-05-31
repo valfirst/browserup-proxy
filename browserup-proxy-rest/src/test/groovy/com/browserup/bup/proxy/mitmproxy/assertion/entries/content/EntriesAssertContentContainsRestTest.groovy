@@ -4,12 +4,10 @@ import com.browserup.bup.assertion.model.AssertionResult
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.hamcrest.Matchers
-import org.junit.Ignore
 import org.junit.Test
 
 import static org.hamcrest.MatcherAssert.assertThat
 
-@Ignore
 class EntriesAssertContentContainsRestTest extends BaseEntriesAssertContentRestTest {
 
     @Override

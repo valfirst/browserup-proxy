@@ -1,0 +1,4 @@
+mitmproxy==5.3.0
+markupsafe==2.0.1
+python-dateutil
+falcon

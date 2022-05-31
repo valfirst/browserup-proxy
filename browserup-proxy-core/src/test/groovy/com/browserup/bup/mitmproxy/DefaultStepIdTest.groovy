@@ -8,7 +8,6 @@ import org.apache.http.impl.client.CloseableHttpClient
 import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 import static com.browserup.bup.proxy.test.util.NewProxyServerTestUtil.toStringAndClose
@@ -16,7 +15,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 
-@Ignore
 class DefaultStepIdTest extends MockServerTest {
     private static final String SUCCESSFUL_RESPONSE_BODY = "success"
     private static final String FIRST_URL = "first-url"

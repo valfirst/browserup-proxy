@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
-import org.junit.Ignore
 import org.junit.Test
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 
-@Ignore
 class EntriesAssertHeaderMatchesRestTest extends com.browserup.bup.proxy.mitmproxy.assertion.entries.header.BaseEntriesAssertHeaderRestTest {
     protected static final String HEADER_NAME_PATTERN_TO_MATCH_FIRST = ".*${FIRST_HEADER_NAME}.*"
     protected static final String HEADER_NAME_PATTERN_TO_MATCH_BOTH = ".*${COMMON_HEADER_NAME}.*"

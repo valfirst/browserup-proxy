@@ -6,14 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovyx.net.http.HttpResponseDecorator
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
-import org.junit.Ignore
 import org.junit.Test
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 
-@Ignore
 class EntriesAssertStatusRedirectionRestTest extends BaseRestTest {
     def urlOfMostRecentRequest = 'url-most-recent'
     def urlOfOldRequest = 'url-old'
