@@ -77,5 +77,5 @@ dependencies {
     testImplementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.11'
     testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
-    testImplementation 'org.mockito:mockito-core:4.6.0'
+    testImplementation 'org.mockito:mockito-core:4.6.1'
 }
