@@ -56,7 +56,7 @@ def get_resources():
 
 
 def start_falcon(resources):
-    app = falcon.API()
+    app = falcon.App()
     for resource in resources:
         app.add_route("/" + resource.addon_path() + "/{method_name}", resource)
 

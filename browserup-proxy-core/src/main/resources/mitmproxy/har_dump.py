@@ -104,7 +104,7 @@ class HarDumpAddonResource:
 
         resp.status = falcon.HTTP_200
         resp.content_type = falcon.MEDIA_JSON
-        resp.body = json.dumps({
+        resp.text = json.dumps({
             "path": har_file.name,
             "json": filtered_har
         }, ensure_ascii=False)
@@ -118,7 +118,7 @@ class HarDumpAddonResource:
         har_file = self.harDumpAddOn.save_har(har)
 
         resp.status = falcon.HTTP_200
-        resp.body = json.dumps({
+        resp.text = json.dumps({
             "path": har_file.name,
             "json": har
         }, ensure_ascii=False)
@@ -129,7 +129,7 @@ class HarDumpAddonResource:
         har_file = self.harDumpAddOn.save_har(har)
 
         resp.status = falcon.HTTP_200
-        resp.body = json.dumps({
+        resp.text = json.dumps({
             "path": har_file.name,
             "json": har
         }, ensure_ascii=False)
@@ -143,7 +143,7 @@ class HarDumpAddonResource:
         har_file = self.harDumpAddOn.save_har(har)
 
         resp.status = falcon.HTTP_200
-        resp.body = json.dumps({
+        resp.text = json.dumps({
             "path": har_file.name,
             "json": har
         }, ensure_ascii=False)
@@ -154,7 +154,7 @@ class HarDumpAddonResource:
         har_file = self.harDumpAddOn.save_har(har)
 
         resp.status = falcon.HTTP_200
-        resp.body = json.dumps({
+        resp.text = json.dumps({
             "path": har_file.name,
             "json": har
         }, ensure_ascii=False)
@@ -171,7 +171,7 @@ class HarDumpAddonResource:
 
             if not hasattr(HarCaptureTypes, ct):
                 resp.status = falcon.HTTP_400
-                resp.body = "Invalid HAR Capture type"
+                resp.text = "Invalid HAR Capture type"
                 return
 
             capture_types_parsed.append(HarCaptureTypes[ct])
