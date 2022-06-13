@@ -1,6 +1,5 @@
 package com.browserup.bup.util;
 
-import com.google.common.io.BaseEncoding;
 import com.google.common.net.HostAndPort;
 import com.google.common.net.MediaType;
 import org.brotli.dec.BrotliInputStream;
@@ -21,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -331,6 +331,6 @@ public class BrowserUpHttpUtil {
         // using UTF-8, which is the modern de facto standard, and which retains compatibility with US_ASCII for ASCII characters,
         // as required by RFC 7616, section 3: http://tools.ietf.org/html/rfc7617#section-3
         byte[] credentialsAsUtf8Bytes = credentialsToEncode.getBytes(StandardCharsets.UTF_8);
-        return BaseEncoding.base64().encode(credentialsAsUtf8Bytes);
+        return Base64.getEncoder().encodeToString(credentialsAsUtf8Bytes);
     }
 }
