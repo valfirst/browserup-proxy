@@ -77,7 +77,7 @@ public class Har {
      * @throws IOException if a low-level I/O problem occurs
      */
     public Har deepCopy() throws IOException {
-        byte[] bytes = OBJECT_MAPPER.writeValueAsBytes(this);
+        byte[] bytes = this.asBytes();
         return OBJECT_MAPPER.readValue(bytes, Har.class);
     }
 }
