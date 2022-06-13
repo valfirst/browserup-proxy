@@ -1,7 +1,6 @@
 package com.browserup.bup.filters;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.BaseEncoding;
 import com.browserup.harreader.model.HarHeader;
 import com.browserup.harreader.model.HttpMethod;
 import io.netty.buffer.ByteBuf;
@@ -39,6 +38,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -506,7 +506,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
             String text = BrowserUpHttpUtil.getContentAsString(fullMessage, charset);
             harEntry.getResponse().getContent().setText(text);
         } else if (dataToCapture.contains(CaptureType.RESPONSE_BINARY_CONTENT)) {
-            harEntry.getResponse().getContent().setText(BaseEncoding.base64().encode(fullMessage));
+            harEntry.getResponse().getContent().setText(Base64.getEncoder().encodeToString(fullMessage));
             harEntry.getResponse().getContent().setEncoding("base64");
         }
 
