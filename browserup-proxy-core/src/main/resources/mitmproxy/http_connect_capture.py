@@ -257,7 +257,9 @@ class HttpConnectCaptureAddOn:
 
     @staticmethod
     def get_original_exception(flow_error):
-        result = flow_error.cause
+        result = flow_error
+        if hasattr(result, 'cause') and result.cause:
+            result = result.cause
         while True:
             if hasattr(result, '__cause__') and result.__cause__:
                 result = result.__cause__

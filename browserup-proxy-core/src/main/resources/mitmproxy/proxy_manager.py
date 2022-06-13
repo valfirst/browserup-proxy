@@ -71,10 +71,15 @@ class ProxyManagerResource:
     def on_set_upstream_proxy_authorization(self, req, resp):
         credentials = req.get_param('credentials')
         if credentials is not None:
+            if "upstream_proxy_credentials" not in ctx.options:
+                ctx.options.add_option("upstream_proxy_credentials", Optional[str], None, "upstream_proxy_credentials")
             ctx.options.upstream_proxy_credentials = credentials
 
     def on_set_chained_proxy_non_proxy_hosts(self, req, resp):
         non_proxy_hosts = req.get_param('nonProxyHosts')
+
+        if "upstream_proxy_exception_hosts" not in ctx.options:
+            ctx.options.add_option("upstream_proxy_exception_hosts", typing.Sequence[str], [], "upstream_proxy_exception_hosts")
 
         if non_proxy_hosts is not None:
             non_proxy_hosts_parsed = non_proxy_hosts.strip("[]").split(",")
