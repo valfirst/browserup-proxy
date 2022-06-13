@@ -50,7 +50,7 @@ class ProxyManagerResource:
         getattr(self, "on_" + method_name)(req, resp)
 
     def on_health_check(self, req, resp):
-        resp.body = 'OK'
+        resp.text = 'OK'
         resp.status = falcon.HTTP_200
 
     def on_trust_all(self, req, resp):

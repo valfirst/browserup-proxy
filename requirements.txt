@@ -1,4 +1,4 @@
 mitmproxy==6.0.2
 markupsafe==2.0.1
 python-dateutil
-falcon
+falcon >= 3
