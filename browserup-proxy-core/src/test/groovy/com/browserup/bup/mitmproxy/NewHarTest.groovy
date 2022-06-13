@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when
 /**
  * HAR tests using the new interface. When the legacy interface is retired, these tests should be combined with the tests currently in HarTest.
  */
-@Ignore
 class NewHarTest extends MockServerTest {
     private MitmProxyServer proxy
 
@@ -41,6 +40,7 @@ class NewHarTest extends MockServerTest {
         }
     }
 
+    @Ignore("proxy_manager.py doesn't take into account set 'dns_resolving_delay_ms'")
     @Test
     void testDnsTimingPopulatedIfNoDnsResolutionDelaySpecified() {
         def stubUrl = "/testDnsTimingPopulated"
@@ -74,6 +74,7 @@ class NewHarTest extends MockServerTest {
         verify(1, getRequestedFor(urlEqualTo(stubUrl)))
     }
 
+    @Ignore("proxy_manager.py doesn't take into account set 'dns_resolving_delay_ms'")
     @Test
     void testDnsTimingPopulatedIfDnsResolutionDelaySpecified() {
         def stubUrl = "/testDnsTimingPopulated"
@@ -676,12 +677,14 @@ class NewHarTest extends MockServerTest {
         verify(1, getRequestedFor(urlMatching(stubUrl)))
     }
 
+    @Ignore("com.browserup.bup.MitmProxyServer.setHostNameResolver is not implemented")
     @Test
     void testHttpDnsFailureCapturedInHar() {
         AdvancedHostResolver mockFailingResolver = mock(AdvancedHostResolver)
         when(mockFailingResolver.resolve("www.doesnotexist.address")).thenReturn([])
 
         proxy = new MitmProxyServer()
+        proxy.setHostNameResolver(mockFailingResolver)
         proxy.start()
 
         proxy.newHar()
@@ -726,6 +729,7 @@ class NewHarTest extends MockServerTest {
         assertNotNull(har.log.entries[0].time)
     }
 
+    @Ignore("com.browserup.bup.MitmProxyServer.setHostNameResolver is not implemented")
     @Test
     void testHttpsDnsFailureCapturedInHar() {
         AdvancedHostResolver mockFailingResolver = mock(AdvancedHostResolver)
@@ -777,6 +781,7 @@ class NewHarTest extends MockServerTest {
         assertNotNull(har.log.entries[0].time)
     }
 
+    @Ignore("To investigate: serverIPAddress is not set in HAR")
     @Test
     void testHttpConnectTimeoutCapturedInHar() {
         proxy = new MitmProxyServer()
@@ -827,6 +832,7 @@ class NewHarTest extends MockServerTest {
         assertNotNull(har.log.entries[0].time)
     }
 
+    @Ignore("To investigate: serverIPAddress is not set in HAR")
     @Test
     void testHttpsConnectTimeoutCapturedInHar() {
         proxy = new MitmProxyServer()
@@ -877,6 +883,7 @@ class NewHarTest extends MockServerTest {
         assertTrue(har.log.entries[0].time > 0)
     }
 
+    @Ignore("proxy_manager.py doesn't take into account set 'connection_timeout_idle'")
     @Test
     void testHttpResponseTimeoutCapturedInHar() {
         def stubUrl = "/testResponseTimeoutCapturedInHar"
@@ -937,6 +944,7 @@ class NewHarTest extends MockServerTest {
         assertTrue(har.log.entries[0].time > 0)
     }
 
+    @Ignore("proxy_manager.py doesn't take into account set 'connection_timeout_idle'")
     @Test
     void testHttpsResponseTimeoutCapturedInHar() {
         def stubUrl = "/testResponseTimeoutCapturedInHar"
