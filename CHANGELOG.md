@@ -1,6 +1,29 @@
 # Changelog
 
-# [Unreleased]
+# [2.2.0]
+
+## Added
+- Add ability to get deep copy of HAR object (https://github.com/valfirst/browserup-proxy/pull/85)
+- Add ability to find the most recent entry in HAR: `HarLog#findMostRecentEntry()` (https://github.com/valfirst/browserup-proxy/pull/86)
+- Add ability to convert HAR to byte array (https://github.com/valfirst/browserup-proxy/pull/90)
+
+## Changed
+### Dependencies
+- Bump `mitmproxy` from `5.3.0` to `6.0.2` (https://github.com/valfirst/browserup-proxy/pull/94)
+- Bump `okhttp` from `4.9.3` to `4.10.0` (https://github.com/valfirst/browserup-proxy/pull/100)
+
+## Fixed
+- Make sure default values from HAR entities satisfies specification (https://github.com/valfirst/browserup-proxy/pull/84)
+
+  http://www.softwareishard.com/blog/har-12-spec/#request:
+  - headersSize [number] - Set to -1 if the info is not available.
+  - bodySize [number] - Set to -1 if the info is not available.
+
+  http://www.softwareishard.com/blog/har-12-spec/#response:
+  - headersSize [number]* - Set to -1 if the info is not available.
+  - bodySize [number] - Set to -1 if the info is not available.
+
+- Fix `Falcon` deprecation warnings (https://github.com/valfirst/browserup-proxy/pull/101)
 
 # [2.1.5]
 - Bump Log4J from `2.17.1` to `2.17.2`
@@ -81,6 +104,6 @@ TBD
 - Import a new, better HAR reader from https://github.com/sdstoehr/har-reader
 - Extend the har reader with filtering/finding capabilities
 - Modify every existing file by adding a header to ensure compliance with Apache License
-- Rename our fork to our own name, BrowserUp, as we will be investing in it heavily. 
+- Rename our fork to our own name, BrowserUp, as we will be investing in it heavily.
     We have no relation to BrowserMob, which was a company acquired by Neustar in 2010.
 - Updates to the Readme to remove legacy proxyserver information

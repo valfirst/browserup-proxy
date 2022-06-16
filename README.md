@@ -2,22 +2,22 @@
 
 ### This fork is created in order to keep alive [BrowserUp Proxy](https://github.com/browserup/browserup-proxy) which maintenance was officially [discontinued](https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034):
 
-> We have moved our business over to the BrowserUp fork of the mitmproxy. It is available [here](https://github.com/browserup/mitmproxy) 
-> 
+> We have moved our business over to the BrowserUp fork of the mitmproxy. It is available [here](https://github.com/browserup/mitmproxy)
+>
 > The reasons:
-> 
+>
 > After multiple tries, we could not make the current architecture support websockets and http/2. without a massive rewrite. HTTP/3 will complicate things even further.
-> 
+>
 > mitm proxy is great! The upstream maintainers are awesome. We have, and hope to continue to make code contributions.
-> 
+>
 > * It has HTTP/2 Support
-> 
+>
 > * It has Websocket Support
-> 
+>
 > * Our fork adds a REST API, and uses OpenAPI to generate Clients in many languages: Java, Ruby, Python, Javascript, so you can access the proxy from many languages.
-> 
+>
 > * Our fork generates a HAR with websocket and HTTP/2 traffic included
-> 
+>
 > * Our fork adds traffic verification capabilties (like assertions) against the HAR
 
 -----------------------------
@@ -36,12 +36,12 @@ command line as a standalone proxy, start with [Standalone](#getting-started-sta
 
 #### About BrowserUp
 
-The cloud has made machine-hours cheap. Spending **thousands** in labor costs painfully correlating HTTP scripts to 
+The cloud has made machine-hours cheap. Spending **thousands** in labor costs painfully correlating HTTP scripts to
 optimize machine costs doesn't make sense when an hour of 96 core cloud time costs *under a dollar.*
 
 BrowserUp [load tests your website with *real browsers*]((https://browserup.com/)) using the same page objects you wrote for your integration tests.
 
-[Email us](mailto:hello@browserup.com) for a demo. 
+[Email us](mailto:hello@browserup.com) for a demo.
 
 
 ### Getting started: Embedded Mode
@@ -50,7 +50,7 @@ To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-co
     <dependency>
         <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-core</artifactId>
-        <version>2.1.5</version>
+        <version>2.2.0</version>
         <scope>test</scope>
     </dependency>
 ```
@@ -126,7 +126,7 @@ Once that is done, a new proxy will be available on the port returned. All you h
 Description |  HTTP method | Request path | Request parameters
 --- | :---: | :---: | ---
 Get a list of ports attached to `ProxyServer` instances managed by `ProxyManager` | GET | */proxy* ||
-Creates a new proxy to run requests off of | POST | */proxy* | <p>*port* - Integer, The specific port to start the proxy service on. Optional, default is generated and returned in response.</p><p>*proxyUsername* - String, The username to use to authenticate with the chained proxy. Optional, default to null.</p><p>*proxyPassword* - String, The password to use to authenticate with the chained proxy. Optional, default to null.</p><p>*bindAddress* - String, If running BrowserUp Proxy in a multi-homed environment, specify a desired bind address. Optional, default to "0.0.0.0".</p><p>*serverBindAddress* - String, If running BrowserUp Proxy in a multi-homed environment, specify a desired server bind address. Optional, default to "0.0.0.0".</p><p>*useEcc* - Boolean. True, Uses Elliptic Curve Cryptography for certificate impersonation. Optional, default to "false".</p><p>*trustAllServers* - Boolean. True, Disables verification of all upstream servers' SSL certificates. All upstream servers will be trusted, even if they do not present valid certificates signed by certification authorities in the JDK's trust store. Optional, default to "false".</p>| 
+Creates a new proxy to run requests off of | POST | */proxy* | <p>*port* - Integer, The specific port to start the proxy service on. Optional, default is generated and returned in response.</p><p>*proxyUsername* - String, The username to use to authenticate with the chained proxy. Optional, default to null.</p><p>*proxyPassword* - String, The password to use to authenticate with the chained proxy. Optional, default to null.</p><p>*bindAddress* - String, If running BrowserUp Proxy in a multi-homed environment, specify a desired bind address. Optional, default to "0.0.0.0".</p><p>*serverBindAddress* - String, If running BrowserUp Proxy in a multi-homed environment, specify a desired server bind address. Optional, default to "0.0.0.0".</p><p>*useEcc* - Boolean. True, Uses Elliptic Curve Cryptography for certificate impersonation. Optional, default to "false".</p><p>*trustAllServers* - Boolean. True, Disables verification of all upstream servers' SSL certificates. All upstream servers will be trusted, even if they do not present valid certificates signed by certification authorities in the JDK's trust store. Optional, default to "false".</p>|
 <a name="harcreate">Creates a new HAR</a> attached to the proxy and returns the HAR content if there was a previous HAR. *[port]* in request path it is port where your proxy was started | PUT |*/proxy/[port]/har* |<p>*captureHeaders* - Boolean, capture headers or not. Optional, default to "false".</p><p>*captureCookies* - Boolean, capture cookies or not. Optional, default to "false".</p><p>*captureContent* - Boolean, capture content bodies or not. Optional, default to "false".</p><p>*captureBinaryContent* - Boolean, capture binary content or not. Optional, default to "false".</p><p>*initialPageRef* - The string name of The first page ref that should be used in the HAR. Optional, default to "Page 1".</p><p>*initialPageTitle* - The title of first HAR page. Optional, default to *initialPageRef*.</p>
 Starts a new page on the existing HAR. *[port]* in request path it is port where your proxy was started | PUT | */proxy/[port]/har/pageRef* |<p>*pageRef* - The string name of the first page ref that should be used in the HAR. Optional, default to "Page N" where N is the next page number.</p><p>*pageTitle* - The title of new HAR page. Optional, default to `pageRef`.</p>
 Shuts down the proxy and closes the port. *[port]* in request path it is port where your proxy was started | DELETE | */proxy/[port]* ||
@@ -367,11 +367,11 @@ When you build the latest code from source, you'll have access to the latest sna
     <dependency>
         <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-core</artifactId>
-        <version>2.1.6-SNAPSHOT</version>
+        <version>2.2.1-SNAPSHOT</version>
         <scope>test</scope>
     </dependency>
 ```
 Or for gradle:
 ```yml
-testImplementation 'com.browserup:browserup-proxy-core:2.1.6-SNAPSHOT'
+testImplementation 'com.browserup:browserup-proxy-core:2.2.1-SNAPSHOT'
 ```
