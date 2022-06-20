@@ -42,7 +42,7 @@ subprojects {
         nettyVersion = '4.1.77.Final'
         littleProxyVersion = '2.0.9'
         slf4jVersion = '1.7.36'
-        swaggerVersion = '2.2.0'
+        swaggerVersion = '2.2.1'
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
     }
