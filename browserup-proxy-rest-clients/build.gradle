@@ -7,7 +7,7 @@ plugins {
 
 ext {
     jerseyVersion = '2.32'
-    seleniumVersion = '4.2.2'
+    seleniumVersion = '4.3.0'
 }
 
 resolve {

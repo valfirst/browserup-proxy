@@ -53,7 +53,7 @@ uploadArchives {
 }
 
 ext {
-    seleniumVersion = '4.2.2'
+    seleniumVersion = '4.3.0'
 }
 
 dependencies {
