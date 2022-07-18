@@ -50,7 +50,7 @@ To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-co
     <dependency>
         <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-core</artifactId>
-        <version>2.2.0</version>
+        <version>2.2.1</version>
         <scope>test</scope>
     </dependency>
 ```
@@ -367,11 +367,11 @@ When you build the latest code from source, you'll have access to the latest sna
     <dependency>
         <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-core</artifactId>
-        <version>2.2.1-SNAPSHOT</version>
+        <version>2.2.1</version>
         <scope>test</scope>
     </dependency>
 ```
 Or for gradle:
 ```yml
-testImplementation 'com.browserup:browserup-proxy-core:2.2.1-SNAPSHOT'
+testImplementation 'com.browserup:browserup-proxy-core:2.2.1'
 ```

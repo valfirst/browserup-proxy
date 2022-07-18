@@ -1,6 +1,12 @@
 # Changelog
 
-# [Unreleased]
+# [2.2.1]
+## Changed
+### Dependencies
+- Bump Selenium from `4.1.4` to `4.2.2` (https://github.com/valfirst/browserup-proxy/pull/99)
+- Bump Swagger from `2.2.0` to `2.2.1` (https://github.com/valfirst/browserup-proxy/pull/106)
+- Bump Netty from `4.1.77.Final` to `4.1.79.Final` (https://github.com/valfirst/browserup-proxy/pull/107, https://github.com/valfirst/browserup-proxy/pull/114)
+- Bump Jetty from `9.4.46.v20220331` to `9.4.48.v20220622` (https://github.com/valfirst/browserup-proxy/pull/108)
 
 # [2.2.0]
 
