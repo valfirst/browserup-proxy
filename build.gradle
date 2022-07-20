@@ -29,7 +29,7 @@ subprojects {
     sourceCompatibility=1.8
 
     ext {
-        bcpVersion = '1.70'
+        bcpVersion = '1.71'
         guiceVersion = '4.2.3'
         jacksonVersion = '2.13.3'
         jerseyVersion = '2.32'
