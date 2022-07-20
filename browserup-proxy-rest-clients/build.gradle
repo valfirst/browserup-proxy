@@ -5,11 +5,6 @@ plugins {
     id 'org.openapi.generator' version '4.3.1'
 }
 
-ext {
-    jerseyVersion = '2.32'
-    seleniumVersion = '4.3.0'
-}
-
 resolve {
     outputFileName = 'openapi'
     outputFormat = 'YAML'
@@ -135,7 +130,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:4.6.1'
     testImplementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
     testImplementation 'org.awaitility:awaitility:4.2.0'
-    testImplementation 'xyz.rogfam:littleproxy:2.0.10'
+    testImplementation "xyz.rogfam:littleproxy:${littleProxyVersion}"
     testImplementation 'com.github.tomakehurst:wiremock-jre8:2.33.2'
     testImplementation 'org.testcontainers:testcontainers:1.17.3'
 }

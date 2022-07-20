@@ -5,11 +5,6 @@ plugins {
 
 archivesBaseName = 'browserup-proxy-rest'
 
-ext {
-    jerseyVersion = '2.32'
-    seleniumVersion = '4.3.0'
-}
-
 uploadArchives {
     repositories {
         mavenDeployer {

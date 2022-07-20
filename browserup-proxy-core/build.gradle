@@ -52,10 +52,6 @@ uploadArchives {
     }
 }
 
-ext {
-    seleniumVersion = '4.3.0'
-}
-
 dependencies {
     api "io.netty:netty-all:${nettyVersion}"
     api("xyz.rogfam:littleproxy:${littleProxyVersion}") {
