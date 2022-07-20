@@ -55,8 +55,8 @@ uploadArchives {
 dependencies {
     implementation "com.google.guava:guava:${guavaVersion}"
 
-    implementation "org.bouncycastle:bcpkix-jdk15on:${bcpVersion}"
-    implementation "org.bouncycastle:bcprov-jdk15on:${bcpVersion}"
+    implementation "org.bouncycastle:bcpkix-jdk18on:${bcpVersion}"
+    implementation "org.bouncycastle:bcprov-jdk18on:${bcpVersion}"
 
     implementation "io.netty:netty-all:${nettyVersion}"
     implementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
