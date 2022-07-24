@@ -41,6 +41,7 @@ subprojects {
         swaggerVersion = '2.2.1'
         guavaVersion = '31.1-jre'
         seleniumVersion = '4.3.0'
+        groovyVersion = '4.0.4'
         hamcrestVersion = '2.2'
     }
 
