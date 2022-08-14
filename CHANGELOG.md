@@ -1,6 +1,7 @@
 # Changelog
 
 # [Unreleased - 2.2.2-SNAPSHOT]
+- Upgrade to LittleProxy `2.0.11` (incl. fix for a memory leak)
 
 # [2.2.1]
 ## Changed
