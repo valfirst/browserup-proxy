@@ -46,13 +46,14 @@ BrowserUp [load tests your website with *real browsers*]((https://browserup.com/
 
 ### Getting started: Embedded Mode
 To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-core` dependency to your pom:
+
 ```xml
-    <dependency>
-        <groupId>com.github.valfirst.browserup-proxy</groupId>
-        <artifactId>browserup-proxy-core</artifactId>
-        <version>2.2.2</version>
-        <scope>test</scope>
-    </dependency>
+<dependency>
+    <groupId>com.github.valfirst.browserup-proxy</groupId>
+    <artifactId>browserup-proxy-core</artifactId>
+    <version>2.2.2</version>
+    <scope>test</scope>
+</dependency>
 ```
 
 Start the proxy:
@@ -363,15 +364,18 @@ Also you can use gradle wrapper:
     `[~]$ ./gradlew build --info`
 
 When you build the latest code from source, you'll have access to the latest snapshot release. To use the SNAPSHOT version in your code, modify the version in your maven pom:
+
 ```xml
-    <dependency>
-        <groupId>com.github.valfirst.browserup-proxy</groupId>
-        <artifactId>browserup-proxy-core</artifactId>
-        <version>2.2.2</version>
-        <scope>test</scope>
-    </dependency>
+<dependency>
+    <groupId>com.github.valfirst.browserup-proxy</groupId>
+    <artifactId>browserup-proxy-core</artifactId>
+    <version>2.2.3-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
 ```
+
 Or for gradle:
-```yml
-testImplementation 'com.browserup:browserup-proxy-core:2.2.2'
+
+```gradle
+testImplementation 'com.browserup:browserup-proxy-core:2.2.3-SNAPSHOT'
 ```
