@@ -6,10 +6,9 @@
 ## Changed
 ### Dependencies
 - Bump Selenium from `4.2.2` to `4.3.0` (https://github.com/valfirst/browserup-proxy/pull/110)
-- Bump LittleProxy from `2.0.9` to `2.0.11` (https://github.com/valfirst/browserup-proxy/pull/115, https://github.com/valfirst/browserup-proxy/pull/122)
+- Bump LittleProxy from `2.0.9` to `2.0.11` (https://github.com/valfirst/browserup-proxy/pull/115, https://github.com/valfirst/browserup-proxy/pull/122) (incl. fix for a memory leak)
 - Bump Bouncy Castle from `1.70` to `1.71` (https://github.com/valfirst/browserup-proxy/pull/117)
 - Bump Swagger from `2.2.1` to `2.2.2` (https://github.com/valfirst/browserup-proxy/pull/119)
-
 
 # [2.2.1]
 ## Changed
