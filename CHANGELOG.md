@@ -1,6 +1,16 @@
 # Changelog
 
-# [Unreleased - 2.2.3-SNAPSHOT]
+# [2.2.3]
+## Changed
+### Dependencies
+- Bump Selenium from `4.3.0` to `4.4.0` (https://github.com/valfirst/browserup-proxy/pull/123)
+- Bump Bouncy Castle from `1.71` to `1.71.1` (https://github.com/valfirst/browserup-proxy/pull/127)
+- Bump Netty from `4.1.79.Final` to `4.1.82.Final` (https://github.com/valfirst/browserup-proxy/pull/128, https://github.com/valfirst/browserup-proxy/pull/132, , https://github.com/valfirst/browserup-proxy/pull/136)
+- Bump Jackson from `2.13.3` to `2.13.4` (https://github.com/valfirst/browserup-proxy/pull/129)
+- Bump SLF4J from `1.7.36` to `2.0.1` (https://github.com/valfirst/browserup-proxy/pull/138)
+- Bump Log4J from `2.18.0` to `2.19.0` (https://github.com/valfirst/browserup-proxy/pull/134)
+- Switch to Log4j SLF4J 2.0 API binding to Log4j 2 Core (https://github.com/valfirst/browserup-proxy/pull/140)
+- Bump Jetty from `9.4.48.v20220622` to `9.4.49.v20220914` (https://github.com/valfirst/browserup-proxy/pull/141)
 
 # [2.2.2]
 ## Changed
