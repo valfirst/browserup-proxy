@@ -40,7 +40,7 @@ subprojects {
         slf4jVersion = '2.0.2'
         swaggerVersion = '2.2.2'
         guavaVersion = '31.1-jre'
-        seleniumVersion = '4.4.0'
+        seleniumVersion = '4.5.0'
         hamcrestVersion = '2.2'
     }
 
