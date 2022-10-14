@@ -1,5 +1,9 @@
 package com.browserup.harreader;
 
+/**
+ * @deprecated Use {@link de.sstoehr.harreader.HarReaderMode}
+ */
+@Deprecated
 public enum HarReaderMode {
 
     /**
