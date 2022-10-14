@@ -6,7 +6,11 @@ import com.browserup.harreader.HarReaderMode;
 
 import java.util.Date;
 
-public class DefaultMapperFactory implements MapperFactory {
+/**
+ * @deprecated Use {@link de.sstoehr.harreader.jackson.DefaultMapperFactory}
+ */
+@Deprecated
+public class DefaultMapperFactory extends de.sstoehr.harreader.jackson.DefaultMapperFactory implements MapperFactory {
 
     @Override
     public ObjectMapper instance(HarReaderMode mode) {

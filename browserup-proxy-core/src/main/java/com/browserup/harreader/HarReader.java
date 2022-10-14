@@ -8,6 +8,10 @@ import com.browserup.harreader.model.Har;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @deprecated Use {@link de.sstoehr.harreader.HarReader}
+ */
+@Deprecated
 public class HarReader {
 
     private final MapperFactory mapperFactory;
