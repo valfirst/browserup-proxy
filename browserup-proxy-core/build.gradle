@@ -63,7 +63,7 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     implementation 'org.awaitility:awaitility:4.2.0'
-    implementation platform('com.fasterxml.jackson:jackson-bom:2.13.4')
+    implementation platform('com.fasterxml.jackson:jackson-bom:2.13.4.20221013')
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
