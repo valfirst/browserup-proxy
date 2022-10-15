@@ -1,6 +1,35 @@
 # Changelog
 
-# [Unreleased - 2.2.4-SNAPSHOT]
+# [2.2.4]
+## Changed
+### Dependencies
+- Bump SLF4J from `2.0.1` to `2.0.3` (https://github.com/valfirst/browserup-proxy/pull/143, https://github.com/valfirst/browserup-proxy/pull/147)
+- Bump Bouncy Castle from `1.71.1` to `1.72` (https://github.com/valfirst/browserup-proxy/pull/148)
+- Bump Swagger from `2.2.2` to `2.2.3` (https://github.com/valfirst/browserup-proxy/pull/146)
+- Bump LittleProxy from `2.0.11` to `2.0.13` (https://github.com/valfirst/browserup-proxy/pull/150)
+- Bump Selenium from `4.4.0` to `4.5.0` (https://github.com/valfirst/browserup-proxy/pull/145)
+- Revise Jackson dependencies (https://github.com/valfirst/browserup-proxy/pull/153)
+- Bump Netty from `4.1.82.Final` to `4.1.84.Final` (https://github.com/valfirst/browserup-proxy/pull/156)
+- Bump Jakson BOM from `2.13.4` to `2.13.4.20221013` (https://github.com/valfirst/browserup-proxy/pull/155)
+
+## Deprecated
+- Start deprecating copy-pasted HAR reader logic (https://github.com/valfirst/browserup-proxy/pull/154) \
+  \
+  At some point the full copy of HAR reader library (https://github.com/sdstoehr/har-reader) was added to BrowserUp proxy: browserup#38. That was not a good solution, since the fixes from the original library are not added back, the copy adds extra maintenance effort, etc. The best strategy here is to propose custom changes to the original implementation step by step. \
+  This commit starts the deprecation process of copy-pasted as-is HAR reader entities.
+  Deprecated entity                                                      | Replacement
+  ---------------------------------------------------------------------- | ------------------------------------------------------------------
+  `com.browserup.harreader.HarReader`                                    | `de.sstoehr.harreader.HarReader`
+  `com.browserup.harreader.HarReaderException`                           | `de.sstoehr.harreader.HarReaderException`
+  `com.browserup.harreader.HarReaderMode`                                | `de.sstoehr.harreader.HarReaderMode`
+  `com.browserup.harreader.jackson.DefaultMapperFactory`                 | `de.sstoehr.harreader.jackson.DefaultMapperFactory`
+  `com.browserup.harreader.jackson.ExceptionIgnoringDateDeserializer`    | `de.sstoehr.harreader.jackson.ExceptionIgnoringDateDeserializer`
+  `com.browserup.harreader.jackson.ExceptionIgnoringIntegerDeserializer` | `de.sstoehr.harreader.jackson.ExceptionIgnoringIntegerDeserializer`
+  `com.browserup.harreader.jackson.MapperFactory`                        | `de.sstoehr.harreader.jackson.MapperFactory`
+  `com.browserup.harreader.model.HarHeader`                              | `de.sstoehr.harreader.model.HarHeader`
+  `com.browserup.harreader.model.HarPageTiming`                          | `de.sstoehr.harreader.model.HarPageTiming`
+  `com.browserup.harreader.model.HarQueryParam`                          | `de.sstoehr.harreader.model.HarQueryParam`
+
 
 # [2.2.3]
 ## Changed
