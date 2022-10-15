@@ -57,6 +57,7 @@ dependencies {
     api("xyz.rogfam:littleproxy:${littleProxyVersion}") {
         exclude(group: 'io.netty', module: 'netty-all')
     }
+    api 'de.sstoehr:har-reader:2.2.1'
 
     implementation project(':browserup-proxy-mitm')
 
@@ -80,7 +81,6 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     implementation 'org.zeroturnaround:zt-exec:1.12'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    implementation 'de.sstoehr:har-reader:2.2.1'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.13'
     testImplementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
