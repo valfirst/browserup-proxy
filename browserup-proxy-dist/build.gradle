@@ -110,7 +110,7 @@ task downloadMitmproxyBinaries {
 
 distributions {
     main {
-        baseName = 'browserup-proxy'
+        distributionBaseName = 'browserup-proxy'
         contents {
             from '../LICENSE'
             from '../README.md'
