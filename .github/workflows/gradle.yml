@@ -34,7 +34,9 @@ jobs:
         cache: 'pip'
 
     - name: Install Python packages
-      run: pip install -r requirements.txt
+      run: |
+        pip install wheel
+        pip install -r requirements.txt
 
     - name: Build with Gradle
       run: |
