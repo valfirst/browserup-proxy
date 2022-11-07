@@ -72,7 +72,7 @@ clients.each { client ->
         apiPackage = Constants.apiPackage
         modelPackage = Constants.modelPackage
         invokerPackage = "browserup.invoker"
-        systemProperties = [
+        globalProperties = [
                 modelDocs: 'false'
         ]
         skipValidateSpec = true
