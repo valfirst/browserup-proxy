@@ -1,6 +1,13 @@
 # Changelog
 
-# [Unreleased - 2.2.5-SNAPSHOT]
+# [2.2.5]
+## Changed
+### Dependencies
+- Bump Swagger from `2.2.3` to `2.2.4` (https://github.com/valfirst/browserup-proxy/pull/157, https://github.com/valfirst/browserup-proxy/pull/162)
+- Bump Jakson BOM from `2.13.4.20221013` to `2.14.0` (https://github.com/valfirst/browserup-proxy/pull/167)
+
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/pull/160) Downgrade Netty from `4.1.84.Final` to `4.1.82.Final` (https://github.com/valfirst/browserup-proxy/pull/170)
 
 # [2.2.4]
 ## Changed
