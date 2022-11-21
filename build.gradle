@@ -32,7 +32,7 @@ subprojects {
         bcpVersion = '1.72'
         guiceVersion = '4.2.3'
         jerseyVersion = '2.32'
-        jettyVersion = '9.4.49.v20220914'
+        jettyVersion = '11.0.12'
         log4jVersion = '2.19.0'
         nettyVersion = '4.1.82.Final'
         littleProxyVersion = '2.0.13'
