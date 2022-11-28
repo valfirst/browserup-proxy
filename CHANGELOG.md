@@ -1,11 +1,19 @@
 # Changelog
 
-# [Unreleased - 2.2.6-SNAPSHOT]
+# [2.2.6]
+## Changed
+### Dependencies
+- Bump Swagger from `2.2.6` to `2.2.7` (https://github.com/valfirst/browserup-proxy/pull/173)
+- Bump dnsjava from `3.5.1` to `3.5.2` (https://github.com/valfirst/browserup-proxy/pull/176)
+- Bump SLF4J from `2.0.3` to `2.0.4` (https://github.com/valfirst/browserup-proxy/pull/174, https://github.com/valfirst/browserup-proxy/pull/179)
+
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/pull/177) Don't use Jackson BOM as explicit dependency (https://github.com/valfirst/browserup-proxy/pull/178)
 
 # [2.2.5]
 ## Changed
 ### Dependencies
-- Bump Swagger from `2.2.3` to `2.2.4` (https://github.com/valfirst/browserup-proxy/pull/157, https://github.com/valfirst/browserup-proxy/pull/162)
+- Bump Swagger from `2.2.3` to `2.2.6` (https://github.com/valfirst/browserup-proxy/pull/157, https://github.com/valfirst/browserup-proxy/pull/162)
 - Bump Jakson BOM from `2.13.4.20221013` to `2.14.0` (https://github.com/valfirst/browserup-proxy/pull/167)
 
 ## Fixed
