@@ -81,7 +81,7 @@ dependencies {
     implementation 'org.zeroturnaround:zt-exec:1.12'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.codehaus.groovy:groovy-all:3.0.13'
+    testImplementation 'org.codehaus.groovy:groovy-all:3.0.14'
     testImplementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
