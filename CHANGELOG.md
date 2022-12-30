@@ -1,13 +1,21 @@
 # Changelog
 
-# [Unreleased - 2.2.7-SNAPSHOT]
+# [2.2.7]
+## Changed
+### Dependencies
+- Bump Selenium from `4.5.0` to `4.7.2` (https://github.com/valfirst/browserup-proxy/pull/164, https://github.com/valfirst/browserup-proxy/pull/189)
+- Bump LittleProxy from `2.0.13` to `2.0.15` (https://github.com/valfirst/browserup-proxy/pull/180, https://github.com/valfirst/browserup-proxy/pull/188)
+- Bump httpclient from `4.5.13` to `4.5.14` (https://github.com/valfirst/browserup-proxy/pull/182)
+- Bump Jetty from `9.4.49.v20220914` to `9.4.50.v20221201` (https://github.com/valfirst/browserup-proxy/pull/184)
+- Bump SLF4J from `2.0.5` to `2.0.6` (https://github.com/valfirst/browserup-proxy/pull/187)
+- Bump Netty from `4.1.82.Final` to `4.1.86.Final` (https://github.com/valfirst/browserup-proxy/pull/190)
 
 # [2.2.6]
 ## Changed
 ### Dependencies
 - Bump Swagger from `2.2.6` to `2.2.7` (https://github.com/valfirst/browserup-proxy/pull/173)
 - Bump dnsjava from `3.5.1` to `3.5.2` (https://github.com/valfirst/browserup-proxy/pull/176)
-- Bump SLF4J from `2.0.3` to `2.0.4` (https://github.com/valfirst/browserup-proxy/pull/174, https://github.com/valfirst/browserup-proxy/pull/179)
+- Bump SLF4J from `2.0.3` to `2.0.5` (https://github.com/valfirst/browserup-proxy/pull/174, https://github.com/valfirst/browserup-proxy/pull/179)
 
 ## Fixed
 - (Fixes https://github.com/valfirst/browserup-proxy/pull/177) Don't use Jackson BOM as explicit dependency (https://github.com/valfirst/browserup-proxy/pull/178)
