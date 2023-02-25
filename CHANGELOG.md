@@ -1,6 +1,13 @@
 # Changelog
 
-# [Unreleased - 2.2.8-SNAPSHOT]
+# [2.2.8]
+## Changed
+### Dependencies
+- Bump Swagger from `2.2.7` to `2.2.8` (https://github.com/valfirst/browserup-proxy/pull/194)
+- Bump Netty from `4.1.86.Final` to `4.1.89.Final` (https://github.com/valfirst/browserup-proxy/pull/196, https://github.com/valfirst/browserup-proxy/pull/203, https://github.com/valfirst/browserup-proxy/pull/204)
+- Bump Jackson from `2.14.1` to `2.14.2` (https://github.com/valfirst/browserup-proxy/pull/198)
+- Bump Selenium from `4.7.2` to `4.8.1` (https://github.com/valfirst/browserup-proxy/pull/197, https://github.com/valfirst/browserup-proxy/pull/205)
+- Bump Log4J from `2.19.0` to `2.20.0` (https://github.com/valfirst/browserup-proxy/pull/134)
 
 # [2.2.7]
 ## Changed
