@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.valfirst.browserup-proxy/browserup-proxy.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.valfirst.browserup-proxy)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.valfirst.browserup-proxy/browserup-proxy.svg)](https://central.sonatype.com/search?namespace=com.github.valfirst.browserup-proxy)
 
 ### This fork is created in order to keep alive [BrowserUp Proxy](https://github.com/browserup/browserup-proxy) which maintenance was officially [discontinued](https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034):
 
