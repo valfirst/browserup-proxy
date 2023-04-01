@@ -36,7 +36,7 @@ subprojects {
         jettyVersion = '9.4.51.v20230217'
         log4jVersion = '2.20.0'
         nettyVersion = '4.1.90.Final'
-        littleProxyVersion = '2.0.16'
+        littleProxyVersion = '2.0.17'
         slf4jVersion = '2.0.7'
         swaggerVersion = '2.2.9'
         guavaVersion = '31.1-jre'
