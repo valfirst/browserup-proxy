@@ -1,6 +1,14 @@
 # Changelog
 
-# [Unreleased - 2.2.10-SNAPSHOT]
+# [2.2.10]
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.0.16` to `2.0.17` (https://github.com/valfirst/browserup-proxy/pull/218)
+- Bump Netty from `4.1.90.Final` to `4.1.92.Final` (https://github.com/valfirst/browserup-proxy/pull/219, https://github.com/valfirst/browserup-proxy/pull/228)
+- Bump `okhttp` from `4.10.0` to `4.11.0` (https://github.com/valfirst/browserup-proxy/pull/227)
+- Bump Bouncy Castle from `1.72` to `1.73` (https://github.com/valfirst/browserup-proxy/pull/222)
+- Bump Jackson from `2.14.2` to `2.15.0` (https://github.com/valfirst/browserup-proxy/pull/226)
+- Bump Selenium from `4.8.2` to `4.9.0` (https://github.com/valfirst/browserup-proxy/pull/216, https://github.com/valfirst/browserup-proxy/pull/227)
 
 # [2.2.9]
 ## Changed

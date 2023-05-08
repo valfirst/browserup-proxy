@@ -17,14 +17,14 @@ To use MITM with standalone LittleProxy, add a dependency on the `mitm` module i
     <dependency>
         <groupId>xyz.rogfam</groupId>
         <artifactId>littleproxy</artifactId>
-        <version>2.0.16</version>
+        <version>2.0.17</version>
     </dependency>
 
     <!-- new dependency on the MITM module -->
     <dependency>
         <groupId>com.github.valfirst.browserup-proxy</groupId>
         <artifactId>browserup-proxy-mitm</artifactId>
-        <version>2.2.9</version>
+        <version>2.2.10</version>
     </dependency>
 ```
 
