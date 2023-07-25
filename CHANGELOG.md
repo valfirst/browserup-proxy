@@ -1,6 +1,16 @@
 # Changelog
 
-# [Unreleased - 2.2.11-SNAPSHOT]
+# [2.2.11]
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.0.17` to `2.0.19` (https://github.com/valfirst/browserup-proxy/pull/235, https://github.com/valfirst/browserup-proxy/pull/253)
+- Bump Netty from `4.1.92.Final` to `4.1.95.Final` (https://github.com/valfirst/browserup-proxy/pull/236, https://github.com/valfirst/browserup-proxy/pull/246, https://github.com/valfirst/browserup-proxy/pull/252)
+- Bump Swagger from `2.2.9` to `2.2.15` (https://github.com/valfirst/browserup-proxy/pull/231, https://github.com/valfirst/browserup-proxy/pull/237, https://github.com/valfirst/browserup-proxy/pull/242, https://github.com/valfirst/browserup-proxy/pull/245, https://github.com/valfirst/browserup-proxy/pull/250)
+- Bump Jersey from `2.32` to `2.40` (https://github.com/valfirst/browserup-proxy/pull/255)
+- Bump Bouncy Castle from `1.73` to `1.75` (https://github.com/valfirst/browserup-proxy/pull/243, https://github.com/valfirst/browserup-proxy/pull/247)
+- Bump Jackson from `2.15.0` to `2.15.2` (https://github.com/valfirst/browserup-proxy/pull/233, https://github.com/valfirst/browserup-proxy/pull/238)
+- Bump Guava from `31.1-jre` to `32.1.1-jre` (https://github.com/valfirst/browserup-proxy/pull/234, https://github.com/valfirst/browserup-proxy/pull/241, https://github.com/valfirst/browserup-proxy/pull/249)
+- Bump Selenium from `4.9.0` to `4.10.0` (https://github.com/valfirst/browserup-proxy/pull/229, https://github.com/valfirst/browserup-proxy/pull/240)
 
 # [2.2.10]
 ## Changed
