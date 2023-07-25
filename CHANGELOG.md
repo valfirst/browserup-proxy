@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 2.2.12-SNAPSHOT]
+
 # [2.2.11]
 ## Changed
 ### Dependencies
