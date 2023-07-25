@@ -193,7 +193,7 @@ public class MitmProxyProcessManager {
   private void waitForReady() {
     try {
       Awaitility.await()
-              .atMost(5, TimeUnit.SECONDS)
+              .atMost(15, TimeUnit.SECONDS)
               .until(this.proxyManager::callHealthCheck);
     } catch (ConditionTimeoutException ex) {
       handleHealthCheckFailure();
