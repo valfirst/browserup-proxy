@@ -44,6 +44,17 @@ subprojects {
         hamcrestVersion = '2.2'
     }
 
+    // Workaround for Guava: https://github.com/google/guava/releases/tag/v32.1.0
+    sourceSets.all {
+        configurations.getByName(runtimeClasspathConfigurationName) {
+            attributes.attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+        }
+        configurations.getByName(compileClasspathConfigurationName) {
+            attributes.attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+        }
+    }
+    // End of workaround for Guava
+
     repositories {
         mavenCentral()
         jcenter()
