@@ -29,7 +29,7 @@ uploadArchives {
                 scm {
                     connection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
                     developerConnection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
-                    url 'https://github.com/valfirst/browserup-proxy/tree/master/browserup-proxy-mitm'
+                    url 'https://github.com/valfirst/browserup-proxy/tree/main/browserup-proxy-mitm'
                 }
 
                 licenses {
