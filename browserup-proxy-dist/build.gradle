@@ -60,10 +60,6 @@ dependencies {
     implementation project(':browserup-proxy-core')
     implementation project(':browserup-proxy-rest')
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
     implementation "com.google.inject:guice:${guiceVersion}"
     implementation "com.google.inject.extensions:guice-servlet:${guiceVersion}"
     implementation "com.google.inject.extensions:guice-multibindings:${guiceVersion}"
@@ -74,7 +70,7 @@ dependencies {
     implementation "io.netty:netty-all:${nettyVersion}"
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
-    implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
     implementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
     implementation "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
 }
@@ -114,7 +110,7 @@ task downloadMitmproxyBinaries {
 
 distributions {
     main {
-        baseName = 'browserup-proxy'
+        distributionBaseName = 'browserup-proxy'
         contents {
             from '../LICENSE'
             from '../README.md'

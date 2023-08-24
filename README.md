@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.valfirst.browserup-proxy/browserup-proxy.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.valfirst.browserup-proxy)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.valfirst.browserup-proxy/browserup-proxy.svg)](https://central.sonatype.com/search?namespace=com.github.valfirst.browserup-proxy)
 
 ### This fork is created in order to keep alive [BrowserUp Proxy](https://github.com/browserup/browserup-proxy) which maintenance was officially [discontinued](https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034):
 
@@ -27,7 +27,7 @@
 The BrowserUp Proxy allows you to manipulate HTTP requests and responses, capture HTTP content, and export performance data as a [HAR file](http://www.softwareishard.com/blog/har-12-spec/).
 BrowserUp Proxy works well as a standalone proxy server, but it is especially useful when embedded in Selenium tests.
 
-BrowserUp Proxy is forked from [BrowserMobProxy](https://github.com/lightbody/browsermob-proxy) and is powered by [LittleProxy](https://github.com/mrog/LittleProxy).
+BrowserUp Proxy is forked from [BrowserMobProxy](https://github.com/lightbody/browsermob-proxy) and is powered by [LittleProxy](https://github.com/LittleProxy/LittleProxy).
 See [changelog](CHANGELOG.md) for updates.
 
 If you're running BrowserUp Proxy within a Java application or Selenium test, get started with [Embedded Mode](#getting-started-embedded-mode). If you want to run BUP from the
@@ -46,13 +46,14 @@ BrowserUp [load tests your website with *real browsers*]((https://browserup.com/
 
 ### Getting started: Embedded Mode
 To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-core` dependency to your pom:
+
 ```xml
-    <dependency>
-        <groupId>com.github.valfirst.browserup-proxy</groupId>
-        <artifactId>browserup-proxy-core</artifactId>
-        <version>2.2.1</version>
-        <scope>test</scope>
-    </dependency>
+<dependency>
+    <groupId>com.github.valfirst.browserup-proxy</groupId>
+    <artifactId>browserup-proxy-core</artifactId>
+    <version>2.2.11</version>
+    <scope>test</scope>
+</dependency>
 ```
 
 Start the proxy:
@@ -363,15 +364,18 @@ Also you can use gradle wrapper:
     `[~]$ ./gradlew build --info`
 
 When you build the latest code from source, you'll have access to the latest snapshot release. To use the SNAPSHOT version in your code, modify the version in your maven pom:
+
 ```xml
-    <dependency>
-        <groupId>com.github.valfirst.browserup-proxy</groupId>
-        <artifactId>browserup-proxy-core</artifactId>
-        <version>2.2.1</version>
-        <scope>test</scope>
-    </dependency>
+<dependency>
+    <groupId>com.github.valfirst.browserup-proxy</groupId>
+    <artifactId>browserup-proxy-core</artifactId>
+    <version>2.2.12-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
 ```
+
 Or for gradle:
-```yml
-testImplementation 'com.browserup:browserup-proxy-core:2.2.1'
+
+```gradle
+testImplementation 'com.browserup:browserup-proxy-core:2.2.12-SNAPSHOT'
 ```

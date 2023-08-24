@@ -24,26 +24,37 @@ subprojects {
     apply plugin: 'signing'
 
     group = 'com.github.valfirst.browserup-proxy'
-    version = '2.2.2-SNAPSHOT'
+    version = '2.2.12-SNAPSHOT'
 
     sourceCompatibility=1.8
 
     ext {
-        bcpVersion = '1.71'
+        bcpVersion = '1.76'
         guiceVersion = '4.2.3'
-        jacksonVersion = '2.13.3'
-        jerseyVersion = '2.32'
-        jettyVersion = '9.4.48.v20220622'
-        log4jVersion = '2.18.0'
-        nettyVersion = '4.1.79.Final'
-        littleProxyVersion = '2.0.10'
-        slf4jVersion = '1.7.36'
-        swaggerVersion = '2.2.1'
-        guavaVersion = '31.1-jre'
-        seleniumVersion = '4.3.0'
-        groovyVersion = '4.0.4'
+        jacksonVersion = '2.15.2'
+        jerseyVersion = '2.40'
+        jettyVersion = '9.4.51.v20230217'
+        log4jVersion = '2.20.0'
+        nettyVersion = '4.1.96.Final'
+        littleProxyVersion = '2.0.19'
+        slf4jVersion = '2.0.7'
+        swaggerVersion = '2.2.15'
+        guavaVersion = '32.1.2-jre'
+        seleniumVersion = '4.11.0'
+        groovyVersion = '4.0.14'
         hamcrestVersion = '2.2'
     }
+
+    // Workaround for Guava: https://github.com/google/guava/releases/tag/v32.1.0
+    sourceSets.all {
+        configurations.getByName(runtimeClasspathConfigurationName) {
+            attributes.attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+        }
+        configurations.getByName(compileClasspathConfigurationName) {
+            attributes.attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+        }
+    }
+    // End of workaround for Guava
 
     repositories {
         mavenCentral()

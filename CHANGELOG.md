@@ -1,6 +1,127 @@
 # Changelog
 
-# [Unreleased - 2.2.2-SNAPSHOT]
+# [Unreleased - 2.2.12-SNAPSHOT]
+
+# [2.2.11]
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.0.17` to `2.0.19` (https://github.com/valfirst/browserup-proxy/pull/235, https://github.com/valfirst/browserup-proxy/pull/253)
+- Bump Netty from `4.1.92.Final` to `4.1.95.Final` (https://github.com/valfirst/browserup-proxy/pull/236, https://github.com/valfirst/browserup-proxy/pull/246, https://github.com/valfirst/browserup-proxy/pull/252)
+- Bump Swagger from `2.2.9` to `2.2.15` (https://github.com/valfirst/browserup-proxy/pull/231, https://github.com/valfirst/browserup-proxy/pull/237, https://github.com/valfirst/browserup-proxy/pull/242, https://github.com/valfirst/browserup-proxy/pull/245, https://github.com/valfirst/browserup-proxy/pull/250)
+- Bump Jersey from `2.32` to `2.40` (https://github.com/valfirst/browserup-proxy/pull/255)
+- Bump Bouncy Castle from `1.73` to `1.75` (https://github.com/valfirst/browserup-proxy/pull/243, https://github.com/valfirst/browserup-proxy/pull/247)
+- Bump Jackson from `2.15.0` to `2.15.2` (https://github.com/valfirst/browserup-proxy/pull/233, https://github.com/valfirst/browserup-proxy/pull/238)
+- Bump Guava from `31.1-jre` to `32.1.1-jre` (https://github.com/valfirst/browserup-proxy/pull/234, https://github.com/valfirst/browserup-proxy/pull/241, https://github.com/valfirst/browserup-proxy/pull/249)
+- Bump Selenium from `4.9.0` to `4.10.0` (https://github.com/valfirst/browserup-proxy/pull/229, https://github.com/valfirst/browserup-proxy/pull/240)
+
+# [2.2.10]
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.0.16` to `2.0.17` (https://github.com/valfirst/browserup-proxy/pull/218)
+- Bump Netty from `4.1.90.Final` to `4.1.92.Final` (https://github.com/valfirst/browserup-proxy/pull/219, https://github.com/valfirst/browserup-proxy/pull/228)
+- Bump `okhttp` from `4.10.0` to `4.11.0` (https://github.com/valfirst/browserup-proxy/pull/227)
+- Bump Bouncy Castle from `1.72` to `1.73` (https://github.com/valfirst/browserup-proxy/pull/222)
+- Bump Jackson from `2.14.2` to `2.15.0` (https://github.com/valfirst/browserup-proxy/pull/226)
+- Bump Selenium from `4.8.2` to `4.9.0` (https://github.com/valfirst/browserup-proxy/pull/216, https://github.com/valfirst/browserup-proxy/pull/227)
+
+# [2.2.9]
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.0.15` to `2.0.16` (https://github.com/valfirst/browserup-proxy/pull/207)
+- Bump Jetty from `9.4.50.v20221201` to `9.4.51.v20230217` (https://github.com/valfirst/browserup-proxy/pull/208)
+- Bump Swagger from `2.2.8` to `2.2.9` (https://github.com/valfirst/browserup-proxy/pull/212)
+- Bump SLF4J from `2.0.6` to `2.0.7` (https://github.com/valfirst/browserup-proxy/pull/214)
+- Bump Netty from `4.1.89.Final` to `4.1.90.Final` (https://github.com/valfirst/browserup-proxy/pull/213)
+- Bump Selenium from `4.8.1` to `4.8.2` (https://github.com/valfirst/browserup-proxy/pull/215)
+
+# [2.2.8]
+## Changed
+### Dependencies
+- Bump Swagger from `2.2.7` to `2.2.8` (https://github.com/valfirst/browserup-proxy/pull/194)
+- Bump Netty from `4.1.86.Final` to `4.1.89.Final` (https://github.com/valfirst/browserup-proxy/pull/196, https://github.com/valfirst/browserup-proxy/pull/203, https://github.com/valfirst/browserup-proxy/pull/204)
+- Bump Jackson from `2.14.1` to `2.14.2` (https://github.com/valfirst/browserup-proxy/pull/198)
+- Bump Selenium from `4.7.2` to `4.8.1` (https://github.com/valfirst/browserup-proxy/pull/197, https://github.com/valfirst/browserup-proxy/pull/205)
+- Bump Log4J from `2.19.0` to `2.20.0` (https://github.com/valfirst/browserup-proxy/pull/134)
+
+# [2.2.7]
+## Changed
+### Dependencies
+- Bump Selenium from `4.5.0` to `4.7.2` (https://github.com/valfirst/browserup-proxy/pull/164, https://github.com/valfirst/browserup-proxy/pull/189)
+- Bump LittleProxy from `2.0.13` to `2.0.15` (https://github.com/valfirst/browserup-proxy/pull/180, https://github.com/valfirst/browserup-proxy/pull/188)
+- Bump httpclient from `4.5.13` to `4.5.14` (https://github.com/valfirst/browserup-proxy/pull/182)
+- Bump Jetty from `9.4.49.v20220914` to `9.4.50.v20221201` (https://github.com/valfirst/browserup-proxy/pull/184)
+- Bump SLF4J from `2.0.5` to `2.0.6` (https://github.com/valfirst/browserup-proxy/pull/187)
+- Bump Netty from `4.1.82.Final` to `4.1.86.Final` (https://github.com/valfirst/browserup-proxy/pull/190)
+
+# [2.2.6]
+## Changed
+### Dependencies
+- Bump Swagger from `2.2.6` to `2.2.7` (https://github.com/valfirst/browserup-proxy/pull/173)
+- Bump dnsjava from `3.5.1` to `3.5.2` (https://github.com/valfirst/browserup-proxy/pull/176)
+- Bump SLF4J from `2.0.3` to `2.0.5` (https://github.com/valfirst/browserup-proxy/pull/174, https://github.com/valfirst/browserup-proxy/pull/179)
+
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/pull/177) Don't use Jackson BOM as explicit dependency (https://github.com/valfirst/browserup-proxy/pull/178)
+
+# [2.2.5]
+## Changed
+### Dependencies
+- Bump Swagger from `2.2.3` to `2.2.6` (https://github.com/valfirst/browserup-proxy/pull/157, https://github.com/valfirst/browserup-proxy/pull/162)
+- Bump Jakson BOM from `2.13.4.20221013` to `2.14.0` (https://github.com/valfirst/browserup-proxy/pull/167)
+
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/pull/160) Downgrade Netty from `4.1.84.Final` to `4.1.82.Final` (https://github.com/valfirst/browserup-proxy/pull/170)
+
+# [2.2.4]
+## Changed
+### Dependencies
+- Bump SLF4J from `2.0.1` to `2.0.3` (https://github.com/valfirst/browserup-proxy/pull/143, https://github.com/valfirst/browserup-proxy/pull/147)
+- Bump Bouncy Castle from `1.71.1` to `1.72` (https://github.com/valfirst/browserup-proxy/pull/148)
+- Bump Swagger from `2.2.2` to `2.2.3` (https://github.com/valfirst/browserup-proxy/pull/146)
+- Bump LittleProxy from `2.0.11` to `2.0.13` (https://github.com/valfirst/browserup-proxy/pull/150)
+- Bump Selenium from `4.4.0` to `4.5.0` (https://github.com/valfirst/browserup-proxy/pull/145)
+- Revise Jackson dependencies (https://github.com/valfirst/browserup-proxy/pull/153)
+- Bump Netty from `4.1.82.Final` to `4.1.84.Final` (https://github.com/valfirst/browserup-proxy/pull/156)
+- Bump Jakson BOM from `2.13.4` to `2.13.4.20221013` (https://github.com/valfirst/browserup-proxy/pull/155)
+
+## Deprecated
+- Start deprecating copy-pasted HAR reader logic (https://github.com/valfirst/browserup-proxy/pull/154) \
+  \
+  At some point the full copy of HAR reader library (https://github.com/sdstoehr/har-reader) was added to BrowserUp proxy: browserup#38. That was not a good solution, since the fixes from the original library are not added back, the copy adds extra maintenance effort, etc. The best strategy here is to propose custom changes to the original implementation step by step. \
+  This commit starts the deprecation process of copy-pasted as-is HAR reader entities.
+  Deprecated entity                                                      | Replacement
+  ---------------------------------------------------------------------- | ------------------------------------------------------------------
+  `com.browserup.harreader.HarReader`                                    | `de.sstoehr.harreader.HarReader`
+  `com.browserup.harreader.HarReaderException`                           | `de.sstoehr.harreader.HarReaderException`
+  `com.browserup.harreader.HarReaderMode`                                | `de.sstoehr.harreader.HarReaderMode`
+  `com.browserup.harreader.jackson.DefaultMapperFactory`                 | `de.sstoehr.harreader.jackson.DefaultMapperFactory`
+  `com.browserup.harreader.jackson.ExceptionIgnoringDateDeserializer`    | `de.sstoehr.harreader.jackson.ExceptionIgnoringDateDeserializer`
+  `com.browserup.harreader.jackson.ExceptionIgnoringIntegerDeserializer` | `de.sstoehr.harreader.jackson.ExceptionIgnoringIntegerDeserializer`
+  `com.browserup.harreader.jackson.MapperFactory`                        | `de.sstoehr.harreader.jackson.MapperFactory`
+  `com.browserup.harreader.model.HarHeader`                              | `de.sstoehr.harreader.model.HarHeader`
+  `com.browserup.harreader.model.HarPageTiming`                          | `de.sstoehr.harreader.model.HarPageTiming`
+  `com.browserup.harreader.model.HarQueryParam`                          | `de.sstoehr.harreader.model.HarQueryParam`
+
+
+# [2.2.3]
+## Changed
+### Dependencies
+- Bump Selenium from `4.3.0` to `4.4.0` (https://github.com/valfirst/browserup-proxy/pull/123)
+- Bump Bouncy Castle from `1.71` to `1.71.1` (https://github.com/valfirst/browserup-proxy/pull/127)
+- Bump Netty from `4.1.79.Final` to `4.1.82.Final` (https://github.com/valfirst/browserup-proxy/pull/128, https://github.com/valfirst/browserup-proxy/pull/132, , https://github.com/valfirst/browserup-proxy/pull/136)
+- Bump Jackson from `2.13.3` to `2.13.4` (https://github.com/valfirst/browserup-proxy/pull/129)
+- Bump SLF4J from `1.7.36` to `2.0.1` (https://github.com/valfirst/browserup-proxy/pull/138)
+- Bump Log4J from `2.18.0` to `2.19.0` (https://github.com/valfirst/browserup-proxy/pull/134)
+- Switch to Log4j SLF4J 2.0 API binding to Log4j 2 Core (https://github.com/valfirst/browserup-proxy/pull/140)
+- Bump Jetty from `9.4.48.v20220622` to `9.4.49.v20220914` (https://github.com/valfirst/browserup-proxy/pull/141)
+
+# [2.2.2]
+## Changed
+### Dependencies
+- Bump Selenium from `4.2.2` to `4.3.0` (https://github.com/valfirst/browserup-proxy/pull/110)
+- Bump LittleProxy from `2.0.9` to `2.0.11` (https://github.com/valfirst/browserup-proxy/pull/115, https://github.com/valfirst/browserup-proxy/pull/122) (incl. fix for a memory leak)
+- Bump Bouncy Castle from `1.70` to `1.71` (https://github.com/valfirst/browserup-proxy/pull/117)
+- Bump Swagger from `2.2.1` to `2.2.2` (https://github.com/valfirst/browserup-proxy/pull/119)
 
 # [2.2.1]
 ## Changed
