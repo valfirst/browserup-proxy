@@ -75,8 +75,11 @@ dependencies {
     implementation "org.bouncycastle:bcprov-jdk18on:${bcpVersion}"
     implementation 'org.brotli:dec:0.1.2'
     implementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
-    implementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
-    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
+
+    implementation platform("org.slf4j:slf4j-bom:${slf4jVersion}")
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'org.slf4j:jcl-over-slf4j'
+
     implementation "com.squareup.okhttp3:okhttp:4.11.0"
     implementation 'org.zeroturnaround:zt-exec:1.12'
     implementation 'org.apache.commons:commons-lang3:3.13.0'
