@@ -1,6 +1,13 @@
 # Changelog
 
-# [Unreleased - 2.2.12-SNAPSHOT]
+# [2.2.12]
+## Changed
+### Dependencies
+- Bump Netty from `4.1.95.Final` to `4.1.97.Final` (https://github.com/valfirst/browserup-proxy/pull/258, https://github.com/valfirst/browserup-proxy/pull/264)
+- Bump Bouncy Castle from `1.75` to `1.76` (https://github.com/valfirst/browserup-proxy/pull/256)
+- Bump Apache Commons Lang from `3.12.0` to `3.13.0` (https://github.com/valfirst/browserup-proxy/pull/257)
+- Bump Guava from `32.1.1-jre` to `32.1.2-jre` (https://github.com/valfirst/browserup-proxy/pull/260)
+- Bump Selenium from `4.10.0` to `4.11.0` (https://github.com/valfirst/browserup-proxy/pull/259)
 
 # [2.2.11]
 ## Changed
