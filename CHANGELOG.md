@@ -1,6 +1,11 @@
 # Changelog
 
-# [Unreleased - 2.2.13-SNAPSHOT]
+# [2.2.13]
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.0.19` to `2.0.20` (https://github.com/valfirst/browserup-proxy/pull/272)
+- Bump SLF4J from `2.0.7` to `2.0.9` (https://github.com/valfirst/browserup-proxy/pull/267)
+- Bump Selenium from `4.11.0` to `4.12.1` (https://github.com/valfirst/browserup-proxy/pull/265, https://github.com/valfirst/browserup-proxy/pull/271)
 
 # [2.2.12]
 ## Changed
