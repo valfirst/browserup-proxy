@@ -59,11 +59,8 @@ dependencies {
     implementation "org.bouncycastle:bcprov-jdk18on:${bcpVersion}"
 
     implementation "io.netty:netty-all:${nettyVersion}"
-
-    implementation platform("org.slf4j:slf4j-bom:${slf4jVersion}")
-    implementation 'org.slf4j:slf4j-api'
-    implementation 'org.slf4j:jcl-over-slf4j'
-
+    implementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
     implementation("xyz.rogfam:littleproxy:${littleProxyVersion}") {
         exclude(group: 'io.netty', module: 'netty-all')
     }

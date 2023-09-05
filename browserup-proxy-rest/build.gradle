@@ -67,10 +67,7 @@ dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
     implementation "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
-
-    implementation platform("org.slf4j:slf4j-bom:${slf4jVersion}")
-    implementation 'org.slf4j:jcl-over-slf4j'
-
+    implementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
     implementation 'org.apache.commons:commons-lang3:3.13.0'
 
     implementation "org.glassfish.jersey.containers:jersey-container-servlet-core:${jerseyVersion}"
