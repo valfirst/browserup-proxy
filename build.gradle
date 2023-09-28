@@ -35,7 +35,7 @@ subprojects {
         jerseyVersion = '2.40'
         jettyVersion = '9.4.51.v20230217'
         log4jVersion = '2.20.0'
-        nettyVersion = '4.1.98.Final'
+        nettyVersion = '4.1.99.Final'
         littleProxyVersion = '2.0.20'
         slf4jVersion = '2.0.9'
         swaggerVersion = '2.2.16'
