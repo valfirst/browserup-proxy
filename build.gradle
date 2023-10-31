@@ -33,7 +33,7 @@ subprojects {
         guiceVersion = '4.2.3'
         jacksonVersion = '2.15.3'
         jerseyVersion = '2.40'
-        jettyVersion = '9.4.53.v20231009'
+        jettyVersion = '11.0.18'
         log4jVersion = '2.21.1'
         nettyVersion = '4.1.100.Final'
         littleProxyVersion = '2.0.22'
