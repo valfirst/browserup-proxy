@@ -44,6 +44,14 @@ subprojects {
         hamcrestVersion = '2.2'
     }
 
+    dependencies {
+        modules {
+            module('commons-logging:commons-logging') {
+                replacedBy('org.slf4j:jcl-over-slf4j', 'Redirect commons-logging logs to SLF4J')
+            }
+        }
+    }
+
     // Workaround for Guava: https://github.com/google/guava/releases/tag/v32.1.0
     sourceSets.all {
         configurations.getByName(runtimeClasspathConfigurationName) {
