@@ -67,7 +67,6 @@ dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
     implementation "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
-    implementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
     implementation 'org.apache.commons:commons-lang3:3.13.0'
 
     implementation "org.glassfish.jersey.containers:jersey-container-servlet-core:${jerseyVersion}"
@@ -87,6 +86,7 @@ dependencies {
     testImplementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
+    testImplementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.19'
     testImplementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
     testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
