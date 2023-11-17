@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 2.2.16-SNAPSHOT]
+
 # [2.2.15]
 ## Changed
 - Use native Java to manage OS processes (https://github.com/valfirst/browserup-proxy/pull/306)

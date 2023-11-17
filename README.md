@@ -369,7 +369,7 @@ When you build the latest code from source, you'll have access to the latest sna
 <dependency>
     <groupId>com.github.valfirst.browserup-proxy</groupId>
     <artifactId>browserup-proxy-core</artifactId>
-    <version>2.2.15</version>
+    <version>2.2.16-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -377,5 +377,5 @@ When you build the latest code from source, you'll have access to the latest sna
 Or for gradle:
 
 ```gradle
-testImplementation 'com.browserup:browserup-proxy-core:2.2.15'
+testImplementation 'com.browserup:browserup-proxy-core:2.2.16-SNAPSHOT'
 ```
