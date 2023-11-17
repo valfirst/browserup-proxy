@@ -1,6 +1,24 @@
 # Changelog
 
-# [Unreleased - 2.2.15-SNAPSHOT]
+# [2.2.15]
+## Changed
+- Use native Java to manage OS processes (https://github.com/valfirst/browserup-proxy/pull/306)
+
+  `org.zeroturnaround:zt-exec` dependency is dropped.
+
+### Dependencies
+- Bump Netty from `4.1.100.Final` to `4.1.101.Final` (https://github.com/valfirst/browserup-proxy/pull/297)
+- Bump `okhttp` from `4.11.0` to `4.12.0` (https://github.com/valfirst/browserup-proxy/pull/290)
+- Bump Log4J from `2.20.0` to `2.21.1` (https://github.com/valfirst/browserup-proxy/pull/289, https://github.com/valfirst/browserup-proxy/pull/292)
+- Bump Swagger from `2.2.17` to `2.2.19` (https://github.com/valfirst/browserup-proxy/pull/291, https://github.com/valfirst/browserup-proxy/pull/296)
+- Bump dnsjava from `3.5.2` to `3.5.3` (https://github.com/valfirst/browserup-proxy/pull/298)
+- Bump Bouncy Castle from `1.76` to `1.77` (https://github.com/valfirst/browserup-proxy/pull/300)
+- Bump Jackson from `2.15.3` to `2.16.0` (https://github.com/valfirst/browserup-proxy/pull/299)
+
+## Fixed
+- Fix scope of `org.slf4j:jcl-over-slf4j` dependency: do not add it as `compile`-scope dependency (https://github.com/valfirst/browserup-proxy/pull/303)
+
+  Users should decide which logging framework to use and how to bridge Jakarta Commons Logging (JCL).
 
 # [2.2.14]
 ## Changed
