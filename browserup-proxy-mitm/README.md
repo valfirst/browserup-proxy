@@ -15,9 +15,9 @@ To use MITM with standalone LittleProxy, add a dependency on the `mitm` module i
 ```xml
     <!-- existing LittleProxy dependency -->
     <dependency>
-        <groupId>xyz.rogfam</groupId>
+        <groupId>io.github.littleproxy</groupId>
         <artifactId>littleproxy</artifactId>
-        <version>2.0.22</version>
+        <version>2.2.0</version>
     </dependency>
 
     <!-- new dependency on the MITM module -->
