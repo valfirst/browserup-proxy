@@ -60,7 +60,7 @@ dependencies {
 
     implementation "io.netty:netty-all:${nettyVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
-    implementation("xyz.rogfam:littleproxy:${littleProxyVersion}") {
+    implementation("io.github.littleproxy:littleproxy:${littleProxyVersion}") {
         exclude(group: 'io.netty', module: 'netty-all')
     }
 
