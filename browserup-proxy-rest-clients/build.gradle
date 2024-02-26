@@ -132,7 +132,7 @@ dependencies {
     testImplementation 'org.awaitility:awaitility:4.2.0'
     testImplementation "xyz.rogfam:littleproxy:${littleProxyVersion}"
     testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
-    testImplementation 'org.testcontainers:testcontainers:1.19.5'
+    testImplementation 'org.testcontainers:testcontainers:1.19.6'
 }
 
 openApiGenerateClients.mustRunAfter(resolve)
