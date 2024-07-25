@@ -1,6 +1,13 @@
 # Changelog
 
-# [Unreleased - 2.2.18-SNAPSHOT]
+# [2.2.18]
+## Changed
+### Dependencies
+- Bump Netty from `4.1.111.Final` to `4.1.112.Final` (https://github.com/valfirst/browserup-proxy/pull/381)
+- Bump dnsjava from `3.5.3` to `3.6.0` (https://github.com/valfirst/browserup-proxy/pull/385)
+- Bump Jackson from `2.17.1` to `2.17.2` (https://github.com/valfirst/browserup-proxy/pull/380)
+- Bump Apache Commons Lang from `3.14.0` to `3.15.0` (https://github.com/valfirst/browserup-proxy/pull/382)
+
 
 # [2.2.17]
 ## Changed
