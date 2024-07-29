@@ -70,7 +70,7 @@ dependencies {
 
     implementation "com.google.guava:guava:${guavaVersion}"
     implementation 'com.jcraft:jzlib:1.1.3'
-    implementation 'dnsjava:dnsjava:3.6.0'
+    implementation 'dnsjava:dnsjava:3.6.1'
     implementation "org.bouncycastle:bcpkix-jdk18on:${bcpVersion}"
     implementation "org.bouncycastle:bcprov-jdk18on:${bcpVersion}"
     implementation 'org.brotli:dec:0.1.2'
