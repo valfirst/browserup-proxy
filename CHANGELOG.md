@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 3.0.0-SNAPSHOT]
+
 # [2.2.19]
 ## Changed
 ### Dependencies
