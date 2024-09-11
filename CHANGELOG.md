@@ -1,6 +1,54 @@
 # Changelog
 
-# [Unreleased - 2.2.16-SNAPSHOT]
+# [Unreleased - 3.0.0-SNAPSHOT]
+
+# [2.2.19]
+## Changed
+### Dependencies
+- Bump Netty from `4.1.112.Final` to `4.1.113.Final` (https://github.com/valfirst/browserup-proxy/pull/404)
+- Bump SLF4J from `2.0.13` to `2.0.16` (https://github.com/valfirst/browserup-proxy/pull/393)
+- Bump Log4J from `2.23.1` to `2.24.0` (https://github.com/valfirst/browserup-proxy/pull/403)
+- Bump dnsjava from `3.6.0` to `3.6.1` (https://github.com/valfirst/browserup-proxy/pull/386)
+- Bump Apache Commons Lang from `3.15.0` to `3.17.0` (https://github.com/valfirst/browserup-proxy/pull/392, https://github.com/valfirst/browserup-proxy/pull/400)
+- Bump Swagger from `2.2.22` to `2.2.23` (https://github.com/valfirst/browserup-proxy/pull/398)
+- Bump Jetty from `9.4.54.v20240208` to `9.4.56.v20240826` (https://github.com/valfirst/browserup-proxy/pull/406)
+- Bump Jersey from `2.43` to `2.45` (https://github.com/valfirst/browserup-proxy/pull/390, https://github.com/valfirst/browserup-proxy/pull/405)
+- Bump Guava from `33.2.1-jre` to `33.3.0-jre` (https://github.com/valfirst/browserup-proxy/pull/396)
+- Bump Awaitility from `4.2.1` to `4.2.2` (https://github.com/valfirst/browserup-proxy/pull/395)
+
+# [2.2.18]
+## Changed
+### Dependencies
+- Bump Netty from `4.1.111.Final` to `4.1.112.Final` (https://github.com/valfirst/browserup-proxy/pull/381)
+- Bump dnsjava from `3.5.3` to `3.6.0` (https://github.com/valfirst/browserup-proxy/pull/385)
+- Bump Jackson from `2.17.1` to `2.17.2` (https://github.com/valfirst/browserup-proxy/pull/380)
+- Bump Apache Commons Lang from `3.14.0` to `3.15.0` (https://github.com/valfirst/browserup-proxy/pull/382)
+
+
+# [2.2.17]
+## Changed
+### Dependencies
+- Bump Netty from `4.1.107.Final` to `4.1.111.Final` (https://github.com/valfirst/browserup-proxy/pull/352, https://github.com/valfirst/browserup-proxy/pull/359, https://github.com/valfirst/browserup-proxy/pull/369, https://github.com/valfirst/browserup-proxy/pull/372)
+- Bump Bouncy Castle from `1.77` to `1.78.1` (https://github.com/valfirst/browserup-proxy/pull/356, https://github.com/valfirst/browserup-proxy/pull/360)
+- Bump SLF4J from `2.0.12` to `2.0.13` (https://github.com/valfirst/browserup-proxy/pull/358)
+- Bump Swagger from `2.2.20` to `2.2.22` (https://github.com/valfirst/browserup-proxy/pull/353, https://github.com/valfirst/browserup-proxy/pull/367)
+- Bump Jackson from `2.17.0` to `2.17.1` (https://github.com/valfirst/browserup-proxy/pull/362)
+- Bump Jetty from `9.4.53.v20231009` to `9.4.54.v20240208` (https://github.com/valfirst/browserup-proxy/pull/377)
+- Bump Jersey from `2.40` to `2.43` (https://github.com/valfirst/browserup-proxy/pull/357, https://github.com/valfirst/browserup-proxy/pull/378)
+- Bump Guava from `33.1.0-jre` to `33.2.1-jre` (https://github.com/valfirst/browserup-proxy/pull/363, https://github.com/valfirst/browserup-proxy/pull/372)
+
+# [2.2.16]
+## Changed
+### Dependencies
+- Bump HAR reader from `2.2.1` to `2.3.0` (https://github.com/valfirst/browserup-proxy/pull/309)
+- Bump Netty from `4.1.101.Final` to `4.1.107.Final` (https://github.com/valfirst/browserup-proxy/pull/319, https://github.com/valfirst/browserup-proxy/pull/330, https://github.com/valfirst/browserup-proxy/pull/338)
+- Bump SLF4J from `2.0.9` to `2.0.12` (https://github.com/valfirst/browserup-proxy/pull/326, https://github.com/valfirst/browserup-proxy/pull/328, , https://github.com/valfirst/browserup-proxy/pull/335)
+- Bump Log4J from `2.21.1` to `2.23.1` (https://github.com/valfirst/browserup-proxy/pull/308, https://github.com/valfirst/browserup-proxy/pull/327, https://github.com/valfirst/browserup-proxy/pull/340, , https://github.com/valfirst/browserup-proxy/pull/346)
+- Bump Swagger from `2.2.19` to `2.2.20` (https://github.com/valfirst/browserup-proxy/pull/323)
+- Bump Jackson from `2.16.0` to `2.17.0` (https://github.com/valfirst/browserup-proxy/pull/324, https://github.com/valfirst/browserup-proxy/pull/348, , https://github.com/valfirst/browserup-proxy/pull/350)
+- Bump Apache Commons Lang from `3.13.0` to `3.14.0` (https://github.com/valfirst/browserup-proxy/pull/257)
+- Bump Guava from `32.1.3-jre` to `33.1.0-jre` (https://github.com/valfirst/browserup-proxy/pull/322, https://github.com/valfirst/browserup-proxy/pull/351)
+- Bump Awaitility from `4.2.0` to `4.2.1` (https://github.com/valfirst/browserup-proxy/pull/349)
 
 # [2.2.15]
 ## Changed
