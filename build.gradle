@@ -26,7 +26,7 @@ subprojects {
     group = 'com.github.valfirst.browserup-proxy'
     version = '3.0.0-SNAPSHOT'
 
-    sourceCompatibility=1.8
+    sourceCompatibility=11
 
     ext {
         bcpVersion = '1.78.1'
