@@ -1,6 +1,18 @@
 # Changelog
 
-# [Unreleased - 2.2.19-SNAPSHOT]
+# [2.2.19]
+## Changed
+### Dependencies
+- Bump Netty from `4.1.112.Final` to `4.1.113.Final` (https://github.com/valfirst/browserup-proxy/pull/404)
+- Bump SLF4J from `2.0.13` to `2.0.16` (https://github.com/valfirst/browserup-proxy/pull/393)
+- Bump Log4J from `2.23.1` to `2.24.0` (https://github.com/valfirst/browserup-proxy/pull/403)
+- Bump dnsjava from `3.6.0` to `3.6.1` (https://github.com/valfirst/browserup-proxy/pull/386)
+- Bump Apache Commons Lang from `3.15.0` to `3.17.0` (https://github.com/valfirst/browserup-proxy/pull/392, https://github.com/valfirst/browserup-proxy/pull/400)
+- Bump Swagger from `2.2.22` to `2.2.23` (https://github.com/valfirst/browserup-proxy/pull/398)
+- Bump Jetty from `9.4.54.v20240208` to `9.4.56.v20240826` (https://github.com/valfirst/browserup-proxy/pull/406)
+- Bump Jersey from `2.43` to `2.45` (https://github.com/valfirst/browserup-proxy/pull/390, https://github.com/valfirst/browserup-proxy/pull/405)
+- Bump Guava from `33.2.1-jre` to `33.3.0-jre` (https://github.com/valfirst/browserup-proxy/pull/396)
+- Bump Awaitility from `4.2.1` to `4.2.2` (https://github.com/valfirst/browserup-proxy/pull/395)
 
 # [2.2.18]
 ## Changed

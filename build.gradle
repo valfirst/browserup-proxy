@@ -24,7 +24,7 @@ subprojects {
     apply plugin: 'signing'
 
     group = 'com.github.valfirst.browserup-proxy'
-    version = '2.2.19-SNAPSHOT'
+    version = '2.2.19'
 
     sourceCompatibility=1.8
 
