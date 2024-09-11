@@ -27,7 +27,10 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
-import static org.hamcrest.Matchers.*
+import static org.hamcrest.Matchers.empty
+import static org.hamcrest.Matchers.greaterThan
+import static org.hamcrest.Matchers.hasSize
+import static org.hamcrest.Matchers.not
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.*
 import static org.mockito.Mockito.mock
