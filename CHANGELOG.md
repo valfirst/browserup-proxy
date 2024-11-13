@@ -1,6 +1,11 @@
 # Changelog
 
 # [Unreleased - 3.0.0-SNAPSHOT]
+## Breaking chnages
+- Har log filtering logic is moved out of model class into a separate utility class
+  - `c.b.h.m.HarLog.findMostRecentEntry()` is replaced by `c.b.h.f.HarLogFilter.findMostRecentEntry(HarLog)`
+  - `c.b.h.m.HarLog.findMostRecentEntry(Pattern)` is replaced by `c.b.h.f.HarLogFilter.findMostRecentEntry(HarLog, Pattern)`
+  - `c.b.h.m.HarLog.findEntries(Pattern)` is replaced by `c.b.h.f.HarLogFilter.findEntries(HarLog, Pattern)`
 
 # [2.2.19]
 ## Changed
