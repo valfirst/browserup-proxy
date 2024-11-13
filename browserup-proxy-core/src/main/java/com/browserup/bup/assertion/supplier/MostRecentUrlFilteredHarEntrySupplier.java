@@ -1,5 +1,6 @@
 package com.browserup.bup.assertion.supplier;
 
+import com.browserup.harreader.filter.HarLogFilter;
 import com.browserup.harreader.model.Har;
 import com.browserup.harreader.model.HarEntry;
 
@@ -15,7 +16,7 @@ public class MostRecentUrlFilteredHarEntrySupplier extends UrlFilteredHarEntries
 
     @Override
     public List<HarEntry> get() {
-        return getHar().getLog().findMostRecentEntry(getPattern()).
+        return HarLogFilter.findMostRecentEntry(getHar().getLog(), getPattern()).
                 map(Collections::singletonList).
                 orElse(Collections.emptyList());
     }

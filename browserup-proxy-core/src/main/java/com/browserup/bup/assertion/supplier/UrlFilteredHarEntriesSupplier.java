@@ -1,6 +1,7 @@
 package com.browserup.bup.assertion.supplier;
 
 import com.browserup.bup.assertion.model.filter.AssertionUrlFilterInfo;
+import com.browserup.harreader.filter.HarLogFilter;
 import com.browserup.harreader.model.Har;
 import com.browserup.harreader.model.HarEntry;
 
@@ -17,7 +18,7 @@ public class UrlFilteredHarEntriesSupplier extends HarEntriesSupplier {
 
     @Override
     public List<HarEntry> get() {
-        return getHar().getLog().findEntries(pattern);
+        return HarLogFilter.findEntries(getHar().getLog(), pattern);
     }
 
     public Pattern getPattern() {
