@@ -1,10 +1,9 @@
 package com.browserup.bup.mitmproxy.management;
 
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.String.valueOf;
@@ -29,10 +28,10 @@ public class AuthBasicManager {
                 getRequestToAddonsManager(
                         "auth_basic",
                         "auth_authorization",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("domain", valueOf(domain)));
-                            add(of("base64EncodedCredentials", valueOf(base64EncodedCredentials)));
-                        }},
+                        List.of(
+                            of("domain", valueOf(domain)),
+                            of("base64EncodedCredentials", valueOf(base64EncodedCredentials))
+                        ),
                         Void.class);
     }
 
@@ -43,9 +42,9 @@ public class AuthBasicManager {
                 getRequestToAddonsManager(
                         "auth_basic",
                         "stop_authorization",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("domain", valueOf(domain)));
-                        }},
+                        List.of(
+                            of("domain", valueOf(domain))
+                        ),
                         Void.class);
     }
 

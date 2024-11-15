@@ -1,9 +1,8 @@
 package com.browserup.bup.mitmproxy.management;
 
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.valueOf;
@@ -29,9 +28,9 @@ public class LatencyManager {
                 getRequestToAddonsManager(
                         "latency",
                         "set_latency",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("latency", valueOf(latencyMs)));
-                        }},
+                        List.of(
+                            of("latency", valueOf(latencyMs))
+                        ),
                         Void.class);
     }
 

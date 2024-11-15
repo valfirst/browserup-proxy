@@ -6,11 +6,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.lang.String.valueOf;
@@ -37,10 +36,10 @@ public class BlockListManager {
                 getRequestToAddonsManager(
                         "blocklist",
                         "blocklist_requests",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("urlPattern", valueOf(urlPattern)));
-                            add(of("statusCode", valueOf(statusCode)));
-                        }},
+                        List.of(
+                            of("urlPattern", valueOf(urlPattern)),
+                            of("statusCode", valueOf(statusCode))
+                        ),
                         Void.class);
     }
 
@@ -53,11 +52,11 @@ public class BlockListManager {
                 getRequestToAddonsManager(
                         "blocklist",
                         "blocklist_requests",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("urlPattern", valueOf(urlPattern)));
-                            add(of("statusCode", valueOf(statusCode)));
-                            add(of("httpMethodPattern", valueOf(httpMethodPattern)));
-                        }},
+                        List.of(
+                            of("urlPattern", valueOf(urlPattern)),
+                            of("statusCode", valueOf(statusCode)),
+                            of("httpMethodPattern", valueOf(httpMethodPattern))
+                        ),
                         Void.class);
     }
 
