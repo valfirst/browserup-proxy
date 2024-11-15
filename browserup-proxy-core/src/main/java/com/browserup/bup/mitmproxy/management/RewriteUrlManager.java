@@ -33,9 +33,9 @@ public class RewriteUrlManager {
                 getRequestToAddonsManager(
                         "rewrite_url",
                         "rewrite_url",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of(pattern, valueOf(replace)));
-                        }},
+                        List.of(
+                            of(pattern, valueOf(replace))
+                        ),
                         Void.class);
     }
 
@@ -70,9 +70,9 @@ public class RewriteUrlManager {
                 getRequestToAddonsManager(
                         "rewrite_url",
                         "remove_rewrite_rule",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("pattern", valueOf(urlPattern)));
-                        }},
+                        List.of(
+                            of("pattern", valueOf(urlPattern))
+                        ),
                         Void.class);
     }
 

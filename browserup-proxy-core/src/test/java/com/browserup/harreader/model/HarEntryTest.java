@@ -7,19 +7,17 @@ import java.util.Date;
 
 public class HarEntryTest extends AbstractMapperTest<HarEntry> {
 
-    private final static Date EXPECTED_STARTED = new Date() {{
-        setTime(1388577600000L);
-    }};
-
     @Override
     public void testMapping() {
         HarEntry entry = map("{\"pageref\":\"aPageref\",\"startedDateTime\":\"2014-01-01T12:00:00\",\"time\":12345,"
         + "\"request\":{},\"response\":{},\"cache\":{},\"timings\":{},\"serverIPAddress\":\"1.2.3.4\",\"connection\":\"aConnection\","
         + "\"comment\":\"my comment\", \"_add\": \"additional info\"}", HarEntry.class);
 
+        Date expectedStarted = new Date(1388577600000L);
+
         Assert.assertNotNull(entry);
         Assert.assertEquals("aPageref", entry.getPageref());
-        Assert.assertEquals(EXPECTED_STARTED, entry.getStartedDateTime());
+        Assert.assertEquals(expectedStarted, entry.getStartedDateTime());
         Assert.assertEquals(12345, (int) entry.getTime());
         Assert.assertNotNull(entry.getRequest());
         Assert.assertNotNull(entry.getResponse());

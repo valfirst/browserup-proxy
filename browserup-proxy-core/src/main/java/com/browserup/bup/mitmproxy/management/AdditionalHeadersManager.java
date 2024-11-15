@@ -30,7 +30,7 @@ public class AdditionalHeadersManager {
 
         List<Pair<String, String>> params = headers.entrySet()
                 .stream()
-                .map(e -> Pair.of(e.getKey(), e.getValue()))
+                .map(e -> of(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
 
         addonsManagerClient.
@@ -50,9 +50,9 @@ public class AdditionalHeadersManager {
                 getRequestToAddonsManager(
                         "additional_headers",
                         "add_header",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of(name, valueOf(value)));
-                        }},
+                        List.of(
+                            of(name, valueOf(value))
+                        ),
                         Void.class);
     }
 
@@ -65,9 +65,9 @@ public class AdditionalHeadersManager {
                 getRequestToAddonsManager(
                         "additional_headers",
                         "remove_header",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("name", valueOf(name)));
-                        }},
+                        List.of(
+                            of("name", valueOf(name))
+                        ),
                         Void.class);
     }
 

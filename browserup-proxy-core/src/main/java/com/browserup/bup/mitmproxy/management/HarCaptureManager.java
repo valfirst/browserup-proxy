@@ -5,7 +5,6 @@ import com.browserup.bup.proxy.CaptureType;
 import com.browserup.harreader.model.Har;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +39,9 @@ public class HarCaptureManager {
                 getRequestToAddonsManager(
                         "har",
                         "get_har",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("cleanHar", valueOf(cleanHar)));
-                        }},
+                        List.of(
+                            of("cleanHar", valueOf(cleanHar))
+                        ),
                         HarResponse.class);
         LOGGER.info("Parsing HAR from file: {}", response.path);
         return parseHar(response.path);
@@ -63,10 +62,10 @@ public class HarCaptureManager {
                 getRequestToAddonsManager(
                         "har",
                         "new_har",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("pageRef", pageRef));
-                            add(of("pageTitle", pageTitle));
-                        }},
+                        List.of(
+                            of("pageRef", pageRef),
+                            of("pageTitle", pageTitle)
+                        ),
                         HarResponse.class);
         return parseHar(response.path);
     }
@@ -98,10 +97,10 @@ public class HarCaptureManager {
                 getRequestToAddonsManager(
                         "har",
                         "new_page",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("pageRef", valueOf(pageRef)));
-                            add(of("pageTitle", valueOf(pageTitle)));
-                        }},
+                        List.of(
+                            of("pageRef", valueOf(pageRef)),
+                            of("pageTitle", valueOf(pageTitle))
+                        ),
                         HarResponse.class);
         return parseHar(response.path);
     }
@@ -138,9 +137,9 @@ public class HarCaptureManager {
                 getRequestToAddonsManager(
                         "har",
                         "set_har_capture_types",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("captureTypes", valueOf(captureTypes)));
-                        }},
+                        List.of(
+                                of("captureTypes", valueOf(captureTypes))
+                        ),
                         Void.class);
     }
 

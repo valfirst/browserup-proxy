@@ -3,7 +3,6 @@ package com.browserup.bup.mitmproxy.management;
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import com.browserup.bup.proxy.Allowlist;
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,10 +34,10 @@ public class AllowListManager {
                 getRequestToAddonsManager(
                         "allowlist",
                         "allowlist_requests",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("urlPatterns", valueOf(urlPatterns)));
-                            add(of("statusCode", valueOf(statusCode)));
-                        }},
+                        List.of(
+                            of("urlPatterns", valueOf(urlPatterns)),
+                            of("statusCode", valueOf(statusCode))
+                        ),
                         Void.class);
     }
 
@@ -64,9 +63,9 @@ public class AllowListManager {
                     getRequestToAddonsManager(
                             "allowlist",
                             "add_allowlist_pattern",
-                            new ArrayList<Pair<String, String>>() {{
-                                add(of("urlPattern", valueOf(urlPattern)));
-                            }},
+                            List.of(
+                                of("urlPattern", valueOf(urlPattern))
+                            ),
                             Void.class);
         }
     }
@@ -80,9 +79,9 @@ public class AllowListManager {
                 getRequestToAddonsManager(
                         "allowlist",
                         "enable_empty_allowlist",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("statusCode", valueOf(statusCode)));
-                        }},
+                        List.of(
+                            of("statusCode", valueOf(statusCode))
+                        ),
                         Void.class);
     }
 
