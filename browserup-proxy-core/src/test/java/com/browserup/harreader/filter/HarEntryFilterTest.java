@@ -1,7 +1,6 @@
 package com.browserup.harreader.filter;
 
 import com.browserup.harreader.model.HarEntry;
-import com.browserup.harreader.model.HarRequest;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
@@ -13,6 +12,8 @@ import org.junit.runners.Parameterized;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import de.sstoehr.harreader.model.HarRequest;
 
 @RunWith(Parameterized.class)
 public class HarEntryFilterTest {

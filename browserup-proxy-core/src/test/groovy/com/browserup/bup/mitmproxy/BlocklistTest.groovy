@@ -62,7 +62,7 @@ class BlocklistTest extends MockServerTest {
         def har = proxy.getHar()
 
         assertFalse('Expected not to find blocklisted requests in har entries',
-                har.log.entries.any { it.request.url.contains('blocklisted')} )
+                har.log.entries.any { it.request.url?.contains('blocklisted')} )
     }
 
     @Test

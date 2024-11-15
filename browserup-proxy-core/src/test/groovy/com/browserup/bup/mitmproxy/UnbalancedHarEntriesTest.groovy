@@ -2,8 +2,8 @@ package com.browserup.bup.mitmproxy
 
 import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.test.util.MockServerTest
-import com.browserup.harreader.model.HarRequest
 import com.browserup.harreader.model.HarResponse
+import de.sstoehr.harreader.model.HarRequest
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.junit.After

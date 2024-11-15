@@ -9,6 +9,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 
 import de.sstoehr.harreader.model.HarPage;
+import de.sstoehr.harreader.model.HarRequest;
+
 import org.junit.Test;
 
 import java.util.ArrayList;

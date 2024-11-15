@@ -10,6 +10,7 @@ import de.sstoehr.harreader.model.HarCreatorBrowser
 import de.sstoehr.harreader.model.HarPage
 import de.sstoehr.harreader.model.HarPostData
 import de.sstoehr.harreader.model.HarPostDataParam
+import de.sstoehr.harreader.model.HarRequest
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
 import org.junit.Test
