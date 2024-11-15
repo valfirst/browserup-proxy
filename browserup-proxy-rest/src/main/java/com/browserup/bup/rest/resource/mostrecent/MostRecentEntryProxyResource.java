@@ -69,7 +69,7 @@ public class MostRecentEntryProxyResource {
             @Parameter(required = true, description = URL_PATTERN_DESCRIPTION) String urlPattern) {
         return proxyManager.get(port)
                 .findMostRecentEntry(Pattern.compile(urlPattern))
-                .orElse(new HarEntry());
+                .orElse(null);
     }
 
     @GET

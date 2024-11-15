@@ -6,6 +6,11 @@
   - `c.b.h.m.HarLog.findMostRecentEntry()` is replaced by `c.b.h.f.HarLogFilter.findMostRecentEntry(HarLog)`
   - `c.b.h.m.HarLog.findMostRecentEntry(Pattern)` is replaced by `c.b.h.f.HarLogFilter.findMostRecentEntry(HarLog, Pattern)`
   - `c.b.h.m.HarLog.findEntries(Pattern)` is replaced by `c.b.h.f.HarLogFilter.findEntries(HarLog, Pattern)`
+- [browserup-proxy-rest] Improved the result returned by `/proxy/{port}/har/mostRecentEntry` if no HAR entries are available:
+  &nbsp;             | Old behaviour                                        | New behaviour
+  ------------------ | ---------------------------------------------------- | -------------
+  **Status code**    | `200`                                                | `204`
+  **Response body**  | HAR entry with required fields having default values | No content
 
 # [2.2.19]
 ## Changed
