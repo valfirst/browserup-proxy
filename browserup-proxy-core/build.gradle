@@ -57,7 +57,7 @@ dependencies {
     api("io.github.littleproxy:littleproxy:${littleProxyVersion}") {
         exclude(group: 'io.netty', module: 'netty-all')
     }
-    api 'de.sstoehr:har-reader:2.4.0'
+    api 'de.sstoehr:har-reader:2.4.1'
 
     implementation project(':browserup-proxy-mitm')
 
