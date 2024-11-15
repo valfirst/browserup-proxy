@@ -18,7 +18,6 @@ import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import com.browserup.harreader.model.Har;
 import com.browserup.harreader.model.HarEntry;
-import com.browserup.harreader.model.HarResponse;
 import com.browserup.bup.exception.UnsupportedCharsetException;
 import com.browserup.bup.filters.support.HttpConnectTiming;
 import com.browserup.bup.filters.util.HarCaptureUtil;

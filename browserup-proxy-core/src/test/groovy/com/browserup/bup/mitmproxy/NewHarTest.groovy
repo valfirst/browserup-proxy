@@ -12,6 +12,7 @@ import com.google.common.collect.Iterables
 import de.sstoehr.harreader.model.HarContent
 import de.sstoehr.harreader.model.HarCookie
 import de.sstoehr.harreader.model.HarHeader
+import de.sstoehr.harreader.model.HarResponse
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.CloseableHttpResponse

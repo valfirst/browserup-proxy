@@ -3,6 +3,7 @@ package com.browserup.bup.filters;
 import com.google.common.cache.CacheBuilder;
 
 import de.sstoehr.harreader.model.HarRequest;
+import de.sstoehr.harreader.model.HarResponse;
 import de.sstoehr.harreader.model.HttpMethod;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
@@ -10,7 +11,6 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import com.browserup.harreader.model.Har;
 import com.browserup.harreader.model.HarEntry;
-import com.browserup.harreader.model.HarResponse;
 import com.browserup.harreader.model.HarTiming;
 import com.browserup.bup.filters.support.HttpConnectTiming;
 import com.browserup.bup.filters.util.HarCaptureUtil;

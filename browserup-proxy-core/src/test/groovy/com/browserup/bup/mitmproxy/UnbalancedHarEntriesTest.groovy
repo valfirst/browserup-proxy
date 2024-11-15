@@ -2,8 +2,8 @@ package com.browserup.bup.mitmproxy
 
 import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.test.util.MockServerTest
-import com.browserup.harreader.model.HarResponse
 import de.sstoehr.harreader.model.HarRequest
+import de.sstoehr.harreader.model.HarResponse
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
@@ -27,6 +27,10 @@ import static org.junit.Assert.assertNotEquals
 class UnbalancedHarEntriesTest extends MockServerTest {
     private static final def DEFAULT_HAR_RESPONSE = new HarResponse()
     private static final def DEFAULT_HAR_REQUEST = new HarRequest()
+
+    static {
+        DEFAULT_HAR_RESPONSE.setRedirectURL("")
+    }
 
     private MitmProxyServer proxy
 
