@@ -1,6 +1,7 @@
 package com.browserup.harreader.model;
 
 import com.fasterxml.jackson.annotation.*;
+import de.sstoehr.harreader.model.HarCache;
 
 import java.util.Date;
 import java.util.HashMap;

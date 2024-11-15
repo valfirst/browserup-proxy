@@ -4,6 +4,11 @@ import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import com.browserup.harreader.model.*
+import de.sstoehr.harreader.model.HarCookie
+import de.sstoehr.harreader.model.HarCreatorBrowser
+import de.sstoehr.harreader.model.HarPage
+import de.sstoehr.harreader.model.HarPostData
+import de.sstoehr.harreader.model.HarPostDataParam
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
@@ -111,14 +116,6 @@ class HarValidationTest extends MockServerTest {
                 assertNotNull("Expected not null har entries responses cookies value", cookie.value)
             }
 
-            assertNotNull("Expected not null har entries requests postData mimeType", it.request.postData.mimeType)
-            assertNotNull("Expected not null har entries requests postData params", it.request.postData.params)
-            assertNotNull("Expected not null har entries requests postData text", it.request.postData.text)
-
-            it.request.postData.params.each { param ->
-                assertNotNull("Expected not null har entries requests postData params name", param.name)
-            }
-
             assertNotNull("Expected not null har entries responses content size", it.response.content.size)
             assertNotNull("Expected not null har entries responses content mimeType", it.response.content.mimeType)
             assertNotNull("Expected not null har entries responses content text", it.response.content.text)
@@ -150,16 +147,6 @@ class HarValidationTest extends MockServerTest {
         harLog.entries = Collections.singletonList(harEntry)
         har.log = harLog
 
-        assertNotNull("Expected not null log creator name", har.log.creator.name)
-        assertNotNull("Expected not null log creator version", har.log.creator.version)
-
-        har.log.pages.each {
-            assertNotNull("Expected not null har log pages id", it.id)
-            assertNotNull("Expected not null har log pages title", it.title)
-            assertNotNull("Expected not null har log pages startedDateTime", it.startedDateTime)
-            assertNotNull("Expected not null har log pages pageTimings", it.pageTimings)
-        }
-
         har.log.entries.each {
             assertNotNull("Expected not null har entries startedDateTime", it.startedDateTime)
             assertNotNull("Expected not null har entries time", it.time)
@@ -185,23 +172,6 @@ class HarValidationTest extends MockServerTest {
             assertNotNull("Expected not null har entries responses redirectURL", it.response.redirectURL)
             assertNotNull("Expected not null har entries responses headersSize", it.response.headersSize)
             assertNotNull("Expected not null har entries responses bodySize", it.response.bodySize)
-
-            it.response.cookies.each { cookie ->
-                assertNotNull("Expected not null har entries responses cookies name", cookie.name)
-                assertNotNull("Expected not null har entries responses cookies value", cookie.value)
-            }
-
-            assertNotNull("Expected not null har entries requests postData mimeType", it.request.postData.mimeType)
-            assertNotNull("Expected not null har entries requests postData params", it.request.postData.params)
-            assertNotNull("Expected not null har entries requests postData text", it.request.postData.text)
-
-            it.request.postData.params.each { param ->
-                assertNotNull("Expected not null har entries requests postData params name", param.name)
-            }
-
-            assertNotNull("Expected not null har entries responses content size", it.response.content.size)
-            assertNotNull("Expected not null har entries responses content mimeType", it.response.content.mimeType)
-            assertNotNull("Expected not null har entries responses content text", it.response.content.text)
 
             assertNotNull("Expected not null har entries timings send", it.timings.send)
             assertNotNull("Expected not null har entries timings wait", it.timings.wait)

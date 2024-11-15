@@ -1,7 +1,7 @@
 package com.browserup.bup.filters;
 
 import com.google.common.cache.CacheBuilder;
-import com.browserup.harreader.model.HttpMethod;
+import de.sstoehr.harreader.model.HttpMethod;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;

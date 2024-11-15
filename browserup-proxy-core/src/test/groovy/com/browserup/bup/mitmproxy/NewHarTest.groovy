@@ -9,6 +9,9 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
 import com.browserup.harreader.model.*
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.google.common.collect.Iterables
+import de.sstoehr.harreader.model.HarContent
+import de.sstoehr.harreader.model.HarCookie
+import de.sstoehr.harreader.model.HarHeader
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.CloseableHttpResponse

@@ -11,6 +11,19 @@
   ------------------ | ---------------------------------------------------- | -------------
   **Status code**    | `200`                                                | `204`
   **Response body**  | HAR entry with required fields having default values | No content
+- Migrate to new harreader model API
+  - `c.b.h.m.HarCache` is replaced by `d.s.h.m.HarCache`
+  - `c.b.h.m.HarContent` is replaced by `d.s.h.m.HarContent`
+  - `c.b.h.m.HarCookie` is replaced by `d.s.h.m.HarCookie`
+  - `c.b.h.m.HarCreatorBrowser` is replaced by `d.s.h.m.HarCreatorBrowser`
+  - `c.b.h.m.HarHeader` is replaced by `d.s.h.m.HarHeader`
+  - `c.b.h.m.HarPage` is replaced by `d.s.h.m.HarPage`
+  - `c.b.h.m.HarPageTiming` is replaced by `d.s.h.m.HarPageTiming`
+  - `c.b.h.m.HarPostData` is replaced by `d.s.h.m.HarPostData`
+  - `c.b.h.m.HarPostDataParam` is replaced by `d.s.h.m.HarPostDataParam`
+  - `c.b.h.m.HarQueryParam` is replaced by `d.s.h.m.HarQueryParam`
+  - `c.b.h.m.HttpMethod` is replaced by `d.s.h.m.HttpMethod`
+  - `c.b.h.m.HttpStatus` is replaced by `d.s.h.m.HttpStatus`
 
 # [2.2.19]
 ## Changed

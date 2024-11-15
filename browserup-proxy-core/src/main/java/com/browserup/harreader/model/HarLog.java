@@ -2,6 +2,8 @@ package com.browserup.harreader.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.sstoehr.harreader.model.HarCreatorBrowser;
+import de.sstoehr.harreader.model.HarPage;
 
 import java.util.List;
 import java.util.Objects;

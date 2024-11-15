@@ -1,5 +1,6 @@
 package com.browserup.harreader.model;
 
+import de.sstoehr.harreader.model.HttpMethod;
 import org.junit.Assert;
 import org.junit.Test;
 

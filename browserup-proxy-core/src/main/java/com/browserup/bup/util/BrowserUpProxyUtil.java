@@ -8,8 +8,8 @@ import java.net.URISyntaxException;
 import com.browserup.harreader.model.Har;
 import com.browserup.harreader.model.HarEntry;
 import com.browserup.harreader.model.HarLog;
-import com.browserup.harreader.model.HarPage;
 import com.browserup.bup.mitm.exception.UncheckedIOException;
+import de.sstoehr.harreader.model.HarPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

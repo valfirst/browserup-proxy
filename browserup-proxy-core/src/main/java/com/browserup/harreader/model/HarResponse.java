@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.sstoehr.harreader.model.HarContent;
+import de.sstoehr.harreader.model.HarCookie;
+import de.sstoehr.harreader.model.HarHeader;
+import de.sstoehr.harreader.model.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

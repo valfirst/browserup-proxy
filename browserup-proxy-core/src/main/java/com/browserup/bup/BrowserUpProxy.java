@@ -11,6 +11,7 @@ import com.browserup.bup.proxy.dns.AdvancedHostResolver;
 import com.browserup.bup.util.HttpStatusClass;
 import com.browserup.harreader.model.Har;
 import com.browserup.harreader.model.HarEntry;
+import de.sstoehr.harreader.model.HarPageTiming;
 import org.littleshoot.proxy.HttpFiltersSource;
 import org.littleshoot.proxy.MitmManager;
 
@@ -210,7 +211,7 @@ public interface BrowserUpProxy {
     /**
      * Starts a new HAR page using the default page naming convention. The default page naming convention is "Page #", where "#" resets to 1
      * every time {@link #newHar()} or {@link #newHar(String)} is called, and increments on every subsequent call to {@link #newPage()} or
-     * {@link #newHar(String)}. Populates the {@link com.browserup.harreader.model.HarPageTiming#onLoad} value based on the amount of time
+     * {@link #newHar(String)}. Populates the {@link HarPageTiming#getOnLoad()} value based on the amount of time
      * the current page has been captured.
      *
      * @return the HAR as it existed immediately after ending the current page
@@ -220,7 +221,7 @@ public interface BrowserUpProxy {
 
     /**
      * Starts a new HAR page using the specified pageRef as the page name and the page title. Populates the
-     * {@link com.browserup.harreader.model.HarPageTiming#onLoad} value based on the amount of time the current page has been captured.
+     * {@link HarPageTiming#getOnLoad()} value based on the amount of time the current page has been captured.
      *
      * @param pageRef name of the new page
      * @return the HAR as it existed immediately after ending the current page
@@ -230,7 +231,7 @@ public interface BrowserUpProxy {
 
     /**
      * Starts a new HAR page using the specified pageRef as the page name and the pageTitle as the page title. Populates the
-     * {@link com.browserup.harreader.model.HarPageTiming#onLoad} value based on the amount of time the current page has been captured.
+     * {@link HarPageTiming#getOnLoad()} value based on the amount of time the current page has been captured.
      *
      * @param pageRef name of the new page
      * @param pageTitle title of the new page
@@ -240,7 +241,7 @@ public interface BrowserUpProxy {
     Har newPage(String pageRef, String pageTitle);
 
     /**
-     * Stops capturing traffic in the HAR. Populates the {@link com.browserup.harreader.model.HarPageTiming#onLoad} value for the current page
+     * Stops capturing traffic in the HAR. Populates the {@link HarPageTiming#getOnLoad()} value for the current page
      * based on the amount of time it has been captured.
      *
      * @return the existing HAR

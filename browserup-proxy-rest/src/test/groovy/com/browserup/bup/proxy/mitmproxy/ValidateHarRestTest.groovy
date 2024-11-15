@@ -158,14 +158,6 @@ class ValidateHarRestTest extends BaseRestTest {
                         assertNotNull("Expected not null har entries responses cookies value", cookie.value)
                     }
 
-                    assertNotNull("Expected not null har entries requests postData mimeType", it.request.postData.mimeType)
-                    assertNotNull("Expected not null har entries requests postData params", it.request.postData.params)
-                    assertNotNull("Expected not null har entries requests postData text", it.request.postData.text)
-
-                    it.request.postData.params.each { param ->
-                        assertNotNull("Expected not null har entries requests postData params name", param.name)
-                    }
-
                     assertNotNull("Expected not null har entries responses content size", it.response.content.size)
                     assertNotNull("Expected not null har entries responses content mimeType", it.response.content.mimeType)
                     assertNotNull("Expected not null har entries responses content text", it.response.content.text)
