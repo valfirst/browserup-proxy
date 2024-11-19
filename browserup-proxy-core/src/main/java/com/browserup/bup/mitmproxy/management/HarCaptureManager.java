@@ -126,6 +126,10 @@ public class HarCaptureManager {
             // mitmproxy writes HAR which does not follow specification: some mandatory fields are not initialized
             // thus it is needed to go through the object and patch to make sure it matches specification
             Optional.ofNullable(har).map(Har::getLog).map(HarLog::getEntries).ifPresent(es -> es.forEach(e -> {
+                de.sstoehr.harreader.model.HarRequest request = e.getRequest();
+                if (request.getUrl() == null) {
+                    request.setUrl("");
+                }
                 de.sstoehr.harreader.model.HarResponse response = e.getResponse();
                 if (response.getRedirectURL() == null) {
                     response.setRedirectURL("");

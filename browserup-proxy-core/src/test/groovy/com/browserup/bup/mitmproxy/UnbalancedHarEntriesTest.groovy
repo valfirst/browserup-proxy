@@ -29,6 +29,7 @@ class UnbalancedHarEntriesTest extends MockServerTest {
     private static final def DEFAULT_HAR_REQUEST = new HarRequest()
 
     static {
+        DEFAULT_HAR_REQUEST.setUrl("")
         DEFAULT_HAR_RESPONSE.setRedirectURL("")
     }
 
