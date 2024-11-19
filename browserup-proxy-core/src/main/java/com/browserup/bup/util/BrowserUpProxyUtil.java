@@ -1,6 +1,5 @@
 package com.browserup.bup.util;
 
-import com.browserup.harreader.model.HarTiming;
 import com.google.common.base.Suppliers;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -10,6 +9,8 @@ import com.browserup.harreader.model.HarEntry;
 import com.browserup.harreader.model.HarLog;
 import com.browserup.bup.mitm.exception.UncheckedIOException;
 import de.sstoehr.harreader.model.HarPage;
+import de.sstoehr.harreader.model.HarTiming;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,13 +135,13 @@ public class BrowserUpProxyUtil {
         return new InetSocketAddress(host, port);
     }
 
-    public static int getTotalElapsedTime(HarTiming timings) {
+    public static int getTotalElapsedTimeInMillis(HarTiming timings) {
         // getSsl() time purposely omitted here, because it is included in the getConnect() time
         return (timings.getBlocked() != -1 ? timings.getBlocked() : 0)
                 + (timings.getDns() != -1 ? timings.getDns() : 0)
                 + (timings.getConnect() != -1 ? timings.getConnect() : 0)
-                + (timings.getSend() != -1 ? timings.getSend() : 0)
-                + (timings.getWait() != -1 ? timings.getWait() : 0)
-                + (timings.getReceive() != -1 ? timings.getReceive() : 0);
+                + (timings.getSend() !=  null && timings.getSend() != -1 ? timings.getSend() : 0)
+                + (timings.getWait() !=  null && timings.getWait() != -1 ? timings.getWait() : 0)
+                + (timings.getReceive() !=  null && timings.getReceive() != -1 ? timings.getReceive() : 0);
     }
 }

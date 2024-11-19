@@ -26,6 +26,7 @@
   `com.browserup.harreader.model.HarQueryParam`                          | `de.sstoehr.harreader.model.HarQueryParam`
   `com.browserup.harreader.model.HarRequest`                             | `de.sstoehr.harreader.model.HarRequest`
   `com.browserup.harreader.model.HarResponse`                            | `de.sstoehr.harreader.model.HarResponse`
+  `com.browserup.harreader.model.HarTiming`                              | `de.sstoehr.harreader.model.HarTiming`
   `com.browserup.harreader.model.HttpMethod`                             | `de.sstoehr.harreader.model.HttpMethod`
   `com.browserup.harreader.model.HttpStatus`                             | `de.sstoehr.harreader.model.HttpStatus`
 

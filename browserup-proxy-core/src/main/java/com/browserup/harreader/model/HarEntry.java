@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import de.sstoehr.harreader.model.HarCache;
 import de.sstoehr.harreader.model.HarRequest;
 import de.sstoehr.harreader.model.HarResponse;
+import de.sstoehr.harreader.model.HarTiming;
 
 import java.util.Date;
 import java.util.HashMap;

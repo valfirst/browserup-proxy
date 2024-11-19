@@ -134,6 +134,16 @@ public class HarCaptureManager {
                 if (response.getRedirectURL() == null) {
                     response.setRedirectURL("");
                 }
+                de.sstoehr.harreader.model.HarTiming timings = e.getTimings();
+                if (timings.getSend() == null) {
+                    timings.setSend(0);
+                }
+                if (timings.getWait() == null) {
+                    timings.setWait(0);
+                }
+                if (timings.getReceive() == null) {
+                    timings.setReceive(0);
+                }
             }));
 
             return har;
