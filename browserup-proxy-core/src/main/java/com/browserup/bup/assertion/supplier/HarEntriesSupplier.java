@@ -2,10 +2,11 @@ package com.browserup.bup.assertion.supplier;
 
 import com.browserup.bup.assertion.model.filter.AssertionFilterInfo;
 import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarEntry;
 
 import java.util.List;
 import java.util.function.Supplier;
+
+import de.sstoehr.harreader.model.HarEntry;
 
 public abstract class HarEntriesSupplier implements Supplier<List<HarEntry>> {
     private final Har har;

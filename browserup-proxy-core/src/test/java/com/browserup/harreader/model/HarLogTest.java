@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
+import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarPage;
 import de.sstoehr.harreader.model.HarRequest;
 

@@ -3,13 +3,6 @@ package com.browserup.bup.mitmproxy
 import com.browserup.bup.MitmProxyServer
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
-import com.browserup.harreader.model.*
-import de.sstoehr.harreader.model.HarCookie
-import de.sstoehr.harreader.model.HarCreatorBrowser
-import de.sstoehr.harreader.model.HarPage
-import de.sstoehr.harreader.model.HarPostData
-import de.sstoehr.harreader.model.HarPostDataParam
-import de.sstoehr.harreader.model.HarRequest
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
@@ -52,7 +45,7 @@ class HarValidationTest extends MockServerTest {
         assertNotNull("Expected not null log creator version", har.log.creator.version)
 
         har.log.entries.each {
-            assertTrue(StringUtils.isNotEmpty(it.url))
+            assertTrue(it.additional._url != null && StringUtils.isNotEmpty(it.additional._url))
         }
         verify(1, getRequestedFor(urlMatching(stubUrl)))
     }

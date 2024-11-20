@@ -18,6 +18,7 @@
   `com.browserup.harreader.model.HarContent`                             | `de.sstoehr.harreader.model.HarContent`
   `com.browserup.harreader.model.HarCookie`                              | `de.sstoehr.harreader.model.HarCookie`
   `com.browserup.harreader.model.HarCreatorBrowser`                      | `de.sstoehr.harreader.model.HarCreatorBrowser`
+  `com.browserup.harreader.model.HarEntry`                               | `de.sstoehr.harreader.model.HarEntry`
   `com.browserup.harreader.model.HarHeader`                              | `de.sstoehr.harreader.model.HarHeader`
   `com.browserup.harreader.model.HarPage`                                | `de.sstoehr.harreader.model.HarPage`
   `com.browserup.harreader.model.HarPageTiming`                          | `de.sstoehr.harreader.model.HarPageTiming`

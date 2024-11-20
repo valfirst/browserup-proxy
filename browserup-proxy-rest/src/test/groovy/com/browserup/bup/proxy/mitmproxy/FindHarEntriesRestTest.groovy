@@ -1,9 +1,9 @@
 package com.browserup.bup.proxy.mitmproxy
 
 
-import com.browserup.harreader.model.HarEntry
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock
+import de.sstoehr.harreader.model.HarEntry
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.Method
 import org.apache.http.entity.ContentType

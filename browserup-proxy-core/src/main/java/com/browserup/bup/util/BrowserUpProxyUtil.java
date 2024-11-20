@@ -5,9 +5,9 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarEntry;
 import com.browserup.harreader.model.HarLog;
 import com.browserup.bup.mitm.exception.UncheckedIOException;
+
 import de.sstoehr.harreader.model.HarPage;
 import de.sstoehr.harreader.model.HarTiming;
 
@@ -41,9 +41,9 @@ public class BrowserUpProxyUtil {
     private static final Supplier<String> version = Suppliers.memoize(BrowserUpProxyUtil::readVersionFileOnClasspath);
 
     /**
-     * Copies {@link HarEntry} and {@link HarPage} references from the specified har to a new har copy, up to and including
-     * the specified pageRef. Does not perform a "deep copy", so any subsequent modification to the entries or pages will
-     * be reflected in the copied har.
+     * Copies {@link de.sstoehr.harreader.model.HarEntry} and {@link HarPage} references from the specified har to a
+     * new har copy, up to and including the specified pageRef. Does not perform a "deep copy", so any subsequent
+     * modification to the entries or pages will be reflected in the copied har.
      *
      * @param har existing har to copy
      * @param pageRef last page ID to copy
