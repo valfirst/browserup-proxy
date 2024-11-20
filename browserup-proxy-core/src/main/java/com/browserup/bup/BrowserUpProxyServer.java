@@ -58,12 +58,12 @@ import com.browserup.bup.util.BrowserUpHttpUtil;
 import com.browserup.bup.util.BrowserUpProxyUtil;
 import com.browserup.bup.util.HttpStatusClass;
 import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarLog;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import de.sstoehr.harreader.model.HarCreatorBrowser;
 import de.sstoehr.harreader.model.HarEntry;
+import de.sstoehr.harreader.model.HarLog;
 import de.sstoehr.harreader.model.HarPage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -585,8 +585,13 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
 
         harPageCount.set(0);
 
-        this.har = new Har();
         HarLog harLog = new HarLog();
+
+        // https://github.com/browserup/browserup-proxy/pull/341
+        harLog.setPages(new CopyOnWriteArrayList<>());
+        harLog.setEntries(new CopyOnWriteArrayList<>());
+
+        this.har = new Har();
         this.har.setLog(harLog);
         harLog.setCreator(HAR_CREATOR_VERSION);
 

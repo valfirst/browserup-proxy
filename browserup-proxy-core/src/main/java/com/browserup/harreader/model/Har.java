@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Objects;
 
+import de.sstoehr.harreader.model.HarLog;
+
 /**
  * Main HTTP Archive Class.
  * @see <a href="http://www.softwareishard.com/blog/har-12-spec/">speicification</a>

@@ -3,7 +3,6 @@ package com.browserup.bup.mitmproxy.management;
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import com.browserup.bup.proxy.CaptureType;
 import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarLog;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -16,6 +15,8 @@ import java.util.*;
 import static java.lang.String.valueOf;
 import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.tuple.Pair.of;
+
+import de.sstoehr.harreader.model.HarLog;
 
 public class HarCaptureManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(HarCaptureManager.class);

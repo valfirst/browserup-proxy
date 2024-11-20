@@ -1,7 +1,5 @@
 package com.browserup.harreader.filter;
 
-import com.browserup.harreader.model.HarLog;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +7,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import de.sstoehr.harreader.model.HarEntry;
+import de.sstoehr.harreader.model.HarLog;
 
 public final class HarLogFilter {
 

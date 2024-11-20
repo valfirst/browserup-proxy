@@ -20,6 +20,7 @@
   `com.browserup.harreader.model.HarCreatorBrowser`                      | `de.sstoehr.harreader.model.HarCreatorBrowser`
   `com.browserup.harreader.model.HarEntry`                               | `de.sstoehr.harreader.model.HarEntry`
   `com.browserup.harreader.model.HarHeader`                              | `de.sstoehr.harreader.model.HarHeader`
+  `com.browserup.harreader.model.HarLog`                                 | `de.sstoehr.harreader.model.HarLog`
   `com.browserup.harreader.model.HarPage`                                | `de.sstoehr.harreader.model.HarPage`
   `com.browserup.harreader.model.HarPageTiming`                          | `de.sstoehr.harreader.model.HarPageTiming`
   `com.browserup.harreader.model.HarPostData`                            | `de.sstoehr.harreader.model.HarPostData`

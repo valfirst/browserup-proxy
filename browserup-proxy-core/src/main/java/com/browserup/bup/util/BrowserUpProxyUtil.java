@@ -5,9 +5,9 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarLog;
 import com.browserup.bup.mitm.exception.UncheckedIOException;
 
+import de.sstoehr.harreader.model.HarLog;
 import de.sstoehr.harreader.model.HarPage;
 import de.sstoehr.harreader.model.HarTiming;
 

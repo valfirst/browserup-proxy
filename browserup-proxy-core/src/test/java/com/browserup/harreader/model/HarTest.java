@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.sstoehr.harreader.model.HarLog;
+
 public class HarTest extends AbstractMapperTest<Har>{
 
     @Test
