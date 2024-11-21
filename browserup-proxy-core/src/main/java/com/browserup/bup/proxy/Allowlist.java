@@ -2,7 +2,6 @@ package com.browserup.bup.proxy;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -42,16 +41,6 @@ public class Allowlist {
         this.patterns = Collections.emptyList();
         this.statusCode = statusCode;
         this.enabled = true;
-    }
-
-    /**
-     * @deprecated use {@link #Allowlist(java.util.Collection, int)}
-     * @param patterns String[] patterns
-     * @param statusCode int statusCode
-     */
-    @Deprecated
-    public Allowlist(String[] patterns, int statusCode) {
-        this(patterns == null ? null : Arrays.asList(patterns), statusCode);
     }
 
     /**
@@ -95,15 +84,6 @@ public class Allowlist {
      */
     public int getStatusCode() {
         return statusCode;
-    }
-
-    /**
-     * @deprecated use {@link #getStatusCode()}
-     * @return response code
-     */
-    @Deprecated
-    public int getResponseCode() {
-        return getStatusCode();
     }
 
     /**
