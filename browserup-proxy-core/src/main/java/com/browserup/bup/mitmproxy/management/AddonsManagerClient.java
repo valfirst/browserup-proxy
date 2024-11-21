@@ -81,15 +81,18 @@ public class AddonsManagerClient {
         String uri = String.format("http://%s:%d/%s/%s", host, port, addOnPath, operation);
         if (!queryParams.isEmpty()) {
             String query = queryParams.stream()
-                    .map(AddonsManagerClient::buildUriQueryPart)
+                    .map(pair -> buildUriQueryPart(pair.getKey(), pair.getValue()))
                     .collect(Collectors.joining("&"));
             uri = uri + "?" + query;
         }
         return URI.create(uri);
     }
 
-    private static String buildUriQueryPart(Pair<String, String> pair) {
-        return URLEncoder.encode(pair.getKey(), StandardCharsets.UTF_8) + "=" + URLEncoder.encode(pair.getValue(),
-                StandardCharsets.UTF_8);
+    private static String buildUriQueryPart(String name, String value) {
+        StringBuilder queryPart = new StringBuilder(URLEncoder.encode(name, StandardCharsets.UTF_8));
+        if (value != null) {
+            queryPart.append("=").append(URLEncoder.encode(value, StandardCharsets.UTF_8));
+        }
+        return queryPart.toString();
     }
 }
