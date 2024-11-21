@@ -1,22 +1,23 @@
 # Changelog
 
-# [Unreleased - 3.0.0-SNAPSHOT]
+# [3.0.0]
 ## Breaking chnages
+- Bump minimal required Java from 8 to 11 (https://github.com/valfirst/browserup-proxy/pull/407)
 
-- [browserup-proxy-rest] Improved the result returned by `/proxy/{port}/har/mostRecentEntry` if no HAR entries are available:
+- [browserup-proxy-rest] Improved the result returned by `/proxy/{port}/har/mostRecentEntry` if no HAR entries are available (https://github.com/valfirst/browserup-proxy/pull/434)):
   &nbsp;             | Old behaviour                                        | New behaviour
   ------------------ | ---------------------------------------------------- | -------------
   **Status code**    | `200`                                                | `204`
   **Response body**  | HAR entry with required fields having default values | No content
 
-- Har log filtering logic is moved out of model class into a separate utility class
+- Har log filtering logic is moved out of model class into a separate utility class (https://github.com/valfirst/browserup-proxy/pull/431)
   Removed method                                                      | Replacement
   ------------------------------------------------------------------- | ----------------------------------------------------------------------------------
   `com.browserup.harreader.model.HarLog#findMostRecentEntry()`        | `com.browserup.harreader.filter.HarLogFilter#findMostRecentEntry(HarLog)`
   `com.browserup.harreader.model.HarLog#findMostRecentEntry(Pattern)` | `com.browserup.harreader.filter.HarLogFilter#findMostRecentEntry(HarLog, Pattern)`
   `com.browserup.harreader.model.HarLog#findEntries(Pattern)`         | `com.browserup.harreader.filter.HarLogFilter#findEntries(HarLog, Pattern)`
 
-- Remove copy-pasted HAR models and migrate back to the [original model](https://github.com/sdstoehr/har-reader)
+- Remove copy-pasted HAR models and migrate back to the [original model](https://github.com/sdstoehr/har-reader) (https://github.com/valfirst/browserup-proxy/pull/430)
   Removed entity                                     | Replacement
   -------------------------------------------------- | ----------------------------------------------
   `com.browserup.harreader.model.Har`                | `de.sstoehr.harreader.model.Har`
@@ -38,7 +39,7 @@
   `com.browserup.harreader.model.HttpMethod`         | `de.sstoehr.harreader.model.HttpMethod`
   `com.browserup.harreader.model.HttpStatus`         | `de.sstoehr.harreader.model.HttpStatus`
 
-- Remove deprecated public API:
+- Remove deprecated public API (https://github.com/valfirst/browserup-proxy/pull/441, https://github.com/valfirst/browserup-proxy/pull/442):
   Removed                                                                         | Replacement
   ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------
   `com.browserup.bup.proxy.dns.DnsJavaResolver`                                   | `com.browserup.bup.proxy.dns.NativeResolver`
@@ -58,11 +59,23 @@
   `com.browserup.harreader.jackson.MapperFactory`                                 | `de.sstoehr.harreader.jackson.MapperFactory`
 
 
-- Remove internal APIs (it was not intended for external usage, but was public)
+- Remove internal APIs (it was not intended for external usage, but was public) (https://github.com/valfirst/browserup-proxy/pull/440)
   Removed entity                                               | Replacement
   ------------------------------------------------------------ | ----------------------------------------------
   `com.browserup.harreader.filter.HarEntriesFilter`            | `java.util.function.Predicate<HarEntry>`
   `com.browserup.harreader.filter.HarEntriesUrlPatternFilter`  | Not available, the logic was inlined
+
+## Changed
+### Dependencies
+- Bump HAR reader from `2.3.0` to `2.5.0` (https://github.com/valfirst/browserup-proxy/pull/432, https://github.com/valfirst/browserup-proxy/pull/436, https://github.com/valfirst/browserup-proxy/pull/439)
+- Bump LittleProxy from `2.0.22` to `2.3.2` (https://github.com/valfirst/browserup-proxy/pull/339, https://github.com/valfirst/browserup-proxy/pull/408, https://github.com/valfirst/browserup-proxy/pull/421, https://github.com/valfirst/browserup-proxy/pull/429)
+- Bump Netty from `4.1.113.Final` to `4.1.115.Final` (https://github.com/valfirst/browserup-proxy/pull/420, https://github.com/valfirst/browserup-proxy/pull/433)
+- Bump Log4J from `2.24.0` to `2.24.1` (https://github.com/valfirst/browserup-proxy/pull/415)
+- Bump Selenium from `4.13.0` to `4.25.0` (https://github.com/valfirst/browserup-proxy/pull/399, https://github.com/valfirst/browserup-proxy/pull/410)
+- Bump Jackson from `2.17.2` to `2.18.1` (https://github.com/valfirst/browserup-proxy/pull/412, https://github.com/valfirst/browserup-proxy/pull/425)
+- Bump Swagger from `2.2.23` to `2.2.26` (https://github.com/valfirst/browserup-proxy/pull/418, https://github.com/valfirst/browserup-proxy/pull/437)
+- Bump Guava from `33.3.0-jre` to `33.3.1-jre` (https://github.com/valfirst/browserup-proxy/pull/414)
+
 
 # [2.2.19]
 ## Changed
