@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 3.0.1-SNAPSHOT]
+
 # [3.0.0]
 ## Breaking chnages
 - Bump minimal required Java from 8 to 11 (https://github.com/valfirst/browserup-proxy/pull/407)
