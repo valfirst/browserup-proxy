@@ -7,13 +7,14 @@ import static org.junit.Assert.assertTrue;
 import java.time.Instant;
 import java.util.Date;
 
-import com.browserup.harreader.model.HarEntry;
-import com.browserup.harreader.model.HarLog;
-import com.browserup.harreader.model.HarRequest;
 import org.junit.Test;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
+
+import de.sstoehr.harreader.model.HarEntry;
+import de.sstoehr.harreader.model.HarLog;
+import de.sstoehr.harreader.model.HarRequest;
 
 public class HarLogFilterTest {
     @Test

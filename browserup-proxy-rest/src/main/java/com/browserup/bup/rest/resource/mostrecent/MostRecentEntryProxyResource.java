@@ -10,7 +10,8 @@ import com.browserup.bup.rest.validation.NotNullConstraint;
 import com.browserup.bup.rest.validation.PatternConstraint;
 import com.browserup.bup.rest.validation.PortWithExistingProxyConstraint;
 import com.browserup.bup.util.HttpStatusClass;
-import com.browserup.harreader.model.HarEntry;
+
+import de.sstoehr.harreader.model.HarEntry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

@@ -1,12 +1,13 @@
 package com.browserup.bup.assertion.supplier;
 
 import com.browserup.harreader.filter.HarLogFilter;
-import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarEntry;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import de.sstoehr.harreader.model.Har;
+import de.sstoehr.harreader.model.HarEntry;
 
 public class MostRecentUrlFilteredHarEntrySupplier extends UrlFilteredHarEntriesSupplier {
 

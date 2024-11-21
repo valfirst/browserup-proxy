@@ -2,7 +2,6 @@ package com.browserup.bup.mitmproxy.management;
 
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import com.browserup.bup.proxy.CaptureType;
-import com.browserup.harreader.model.Har;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -15,6 +14,9 @@ import java.util.*;
 import static java.lang.String.valueOf;
 import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.tuple.Pair.of;
+
+import de.sstoehr.harreader.model.Har;
+import de.sstoehr.harreader.model.HarLog;
 
 public class HarCaptureManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(HarCaptureManager.class);
@@ -119,13 +121,36 @@ public class HarCaptureManager {
     private Har parseHar(String filePath) {
         File harFile = new File(filePath);
 
-        Har har;
         try {
-            har = new ObjectMapper().readerFor(Har.class).readValue(harFile);
+            Har har = new ObjectMapper().readerFor(Har.class).readValue(harFile);
+
+            // mitmproxy writes HAR which does not follow specification: some mandatory fields are not initialized
+            // thus it is needed to go through the object and patch to make sure it matches specification
+            Optional.ofNullable(har).map(Har::getLog).map(HarLog::getEntries).ifPresent(es -> es.forEach(e -> {
+                de.sstoehr.harreader.model.HarRequest request = e.getRequest();
+                if (request.getUrl() == null) {
+                    request.setUrl("");
+                }
+                de.sstoehr.harreader.model.HarResponse response = e.getResponse();
+                if (response.getRedirectURL() == null) {
+                    response.setRedirectURL("");
+                }
+                de.sstoehr.harreader.model.HarTiming timings = e.getTimings();
+                if (timings.getSend() == null) {
+                    timings.setSend(0);
+                }
+                if (timings.getWait() == null) {
+                    timings.setWait(0);
+                }
+                if (timings.getReceive() == null) {
+                    timings.setReceive(0);
+                }
+            }));
+
+            return har;
         } catch (IOException e) {
             throw new RuntimeException("Couldn't read HAR file: " + harFile.getAbsolutePath(), e);
         }
-        return har;
     }
 
     public void setHarCaptureTypes(EnumSet<CaptureType> captureTypes) {

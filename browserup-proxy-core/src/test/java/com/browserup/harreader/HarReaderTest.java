@@ -1,10 +1,11 @@
 package com.browserup.harreader;
 
-import com.browserup.harreader.model.Har;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+
+import de.sstoehr.harreader.model.Har;
 
 public class HarReaderTest {
 

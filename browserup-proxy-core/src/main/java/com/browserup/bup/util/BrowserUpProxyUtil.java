@@ -1,15 +1,16 @@
 package com.browserup.bup.util;
 
-import com.browserup.harreader.model.HarTiming;
 import com.google.common.base.Suppliers;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarEntry;
-import com.browserup.harreader.model.HarLog;
-import com.browserup.harreader.model.HarPage;
 import com.browserup.bup.mitm.exception.UncheckedIOException;
+
+import de.sstoehr.harreader.model.Har;
+import de.sstoehr.harreader.model.HarLog;
+import de.sstoehr.harreader.model.HarPage;
+import de.sstoehr.harreader.model.HarTiming;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +41,9 @@ public class BrowserUpProxyUtil {
     private static final Supplier<String> version = Suppliers.memoize(BrowserUpProxyUtil::readVersionFileOnClasspath);
 
     /**
-     * Copies {@link HarEntry} and {@link HarPage} references from the specified har to a new har copy, up to and including
-     * the specified pageRef. Does not perform a "deep copy", so any subsequent modification to the entries or pages will
-     * be reflected in the copied har.
+     * Copies {@link de.sstoehr.harreader.model.HarEntry} and {@link HarPage} references from the specified har to a
+     * new har copy, up to and including the specified pageRef. Does not perform a "deep copy", so any subsequent
+     * modification to the entries or pages will be reflected in the copied har.
      *
      * @param har existing har to copy
      * @param pageRef last page ID to copy
@@ -134,13 +135,13 @@ public class BrowserUpProxyUtil {
         return new InetSocketAddress(host, port);
     }
 
-    public static int getTotalElapsedTime(HarTiming timings) {
+    public static int getTotalElapsedTimeInMillis(HarTiming timings) {
         // getSsl() time purposely omitted here, because it is included in the getConnect() time
         return (timings.getBlocked() != -1 ? timings.getBlocked() : 0)
                 + (timings.getDns() != -1 ? timings.getDns() : 0)
                 + (timings.getConnect() != -1 ? timings.getConnect() : 0)
-                + (timings.getSend() != -1 ? timings.getSend() : 0)
-                + (timings.getWait() != -1 ? timings.getWait() : 0)
-                + (timings.getReceive() != -1 ? timings.getReceive() : 0);
+                + (timings.getSend() !=  null && timings.getSend() != -1 ? timings.getSend() : 0)
+                + (timings.getWait() !=  null && timings.getWait() != -1 ? timings.getWait() : 0)
+                + (timings.getReceive() !=  null && timings.getReceive() != -1 ? timings.getReceive() : 0);
     }
 }

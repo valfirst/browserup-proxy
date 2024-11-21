@@ -1,6 +1,6 @@
 package com.browserup.bup.assertion
 
-import com.browserup.harreader.model.HarEntry
+import de.sstoehr.harreader.model.HarEntry
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,7 +1,8 @@
 package com.browserup.harreader.filter;
 
-import com.browserup.harreader.model.HarEntry;
 import java.util.regex.Pattern;
+
+import de.sstoehr.harreader.model.HarEntry;
 
 public class HarEntriesUrlPatternFilter implements HarEntriesFilter {
 

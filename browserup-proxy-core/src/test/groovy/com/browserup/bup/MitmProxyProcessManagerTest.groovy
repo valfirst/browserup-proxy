@@ -1,7 +1,7 @@
 package com.browserup.bup
 
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager
-import com.browserup.harreader.model.Har
+import de.sstoehr.harreader.model.Har
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import org.junit.After

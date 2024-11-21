@@ -1,7 +1,7 @@
 package com.browserup.bup.assertion.field.header;
 
 import com.browserup.bup.assertion.field.HarEntryPredicate;
-import com.browserup.harreader.model.HarHeader;
+import de.sstoehr.harreader.model.HarHeader;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,8 @@
 package com.browserup.harreader.filter;
 
-import com.browserup.harreader.model.HarEntry;
 import java.util.function.Predicate;
+
+import de.sstoehr.harreader.model.HarEntry;
 
 public interface HarEntriesFilter extends Predicate<HarEntry> {
 

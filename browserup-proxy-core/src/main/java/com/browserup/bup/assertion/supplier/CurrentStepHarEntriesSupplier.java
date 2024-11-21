@@ -1,10 +1,11 @@
 package com.browserup.bup.assertion.supplier;
 
 import com.browserup.bup.assertion.model.filter.AssertionFilterInfo;
-import com.browserup.harreader.model.Har;
-import com.browserup.harreader.model.HarEntry;
 
 import java.util.List;
+
+import de.sstoehr.harreader.model.Har;
+import de.sstoehr.harreader.model.HarEntry;
 
 public class CurrentStepHarEntriesSupplier extends HarEntriesSupplier {
     public CurrentStepHarEntriesSupplier(Har har) {
