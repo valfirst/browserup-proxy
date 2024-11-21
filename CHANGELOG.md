@@ -2,15 +2,20 @@
 
 # [Unreleased - 3.0.0-SNAPSHOT]
 ## Breaking chnages
-- Har log filtering logic is moved out of model class into a separate utility class
-  - `c.b.h.m.HarLog.findMostRecentEntry()` is replaced by `c.b.h.f.HarLogFilter.findMostRecentEntry(HarLog)`
-  - `c.b.h.m.HarLog.findMostRecentEntry(Pattern)` is replaced by `c.b.h.f.HarLogFilter.findMostRecentEntry(HarLog, Pattern)`
-  - `c.b.h.m.HarLog.findEntries(Pattern)` is replaced by `c.b.h.f.HarLogFilter.findEntries(HarLog, Pattern)`
+
 - [browserup-proxy-rest] Improved the result returned by `/proxy/{port}/har/mostRecentEntry` if no HAR entries are available:
   &nbsp;             | Old behaviour                                        | New behaviour
   ------------------ | ---------------------------------------------------- | -------------
   **Status code**    | `200`                                                | `204`
   **Response body**  | HAR entry with required fields having default values | No content
+
+- Har log filtering logic is moved out of model class into a separate utility class
+  Removed method                                                      | Replacement
+  ------------------------------------------------------------------- | ----------------------------------------------------------------------------------
+  `com.browserup.harreader.model.HarLog.findMostRecentEntry()`        | `com.browserup.harreader.filter.HarLogFilter.findMostRecentEntry(HarLog)`
+  `com.browserup.harreader.model.HarLog.findMostRecentEntry(Pattern)` | `com.browserup.harreader.filter.HarLogFilter.findMostRecentEntry(HarLog, Pattern)`
+  `com.browserup.harreader.model.HarLog.findEntries(Pattern)`         | `com.browserup.harreader.filter.HarLogFilter.findEntries(HarLog, Pattern)`
+
 - Remove copy-pasted HAR models and migrate back to the [original model](https://github.com/sdstoehr/har-reader)
   Removed entity                                     | Replacement
   -------------------------------------------------- | ----------------------------------------------
