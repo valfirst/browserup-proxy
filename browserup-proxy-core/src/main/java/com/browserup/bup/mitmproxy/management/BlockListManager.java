@@ -4,8 +4,6 @@ import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import com.browserup.bup.proxy.BlocklistEntry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -75,8 +73,7 @@ public class BlockListManager {
                 putRequestToAddonsManager(
                         "blocklist",
                         "set_block_list",
-                        Collections.emptyList(),
-                        RequestBody.create(serializedBlockList, MediaType.parse("application/json; charset=utf-8")),
+                        serializedBlockList,
                         Void.class);
     }
 
