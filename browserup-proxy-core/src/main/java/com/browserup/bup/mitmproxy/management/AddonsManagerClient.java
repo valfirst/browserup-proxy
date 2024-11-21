@@ -12,13 +12,14 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class AddonsManagerClient {
     private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final int port;
-    private final String host = "localhost";
 
     public AddonsManagerClient(int port) {
         this.port = port;
@@ -26,11 +27,12 @@ public class AddonsManagerClient {
 
     public <T> T putRequestToAddonsManager(String addOnPath,
                                         String operation,
-                                        List<Pair<String, String>> queryParams,
-                                        HttpRequest.BodyPublisher requestBody,
-                                        String contentType,
+                                        String requestBodyAsJson,
                                         Class<T> responseClass) {
-        return requestToAddonsManager(addOnPath, operation, queryParams, "PUT", requestBody, contentType,
+        return requestToAddonsManager(addOnPath, operation, List.of(),
+                requestBuilder -> requestBuilder
+                        .method("PUT", HttpRequest.BodyPublishers.ofString(requestBodyAsJson))
+                        .header("Content-Type", "application/json; charset=utf-8"),
                 responseClass);
     }
 
@@ -38,24 +40,21 @@ public class AddonsManagerClient {
                                         String operation,
                                         List<Pair<String, String>> queryParams,
                                         Class<T> responseClass) {
-        return requestToAddonsManager(addOnPath, operation, queryParams, "GET", null, null, responseClass);
+        return requestToAddonsManager(addOnPath, operation, queryParams,
+                requestBuilder -> requestBuilder
+                        .method("GET", HttpRequest.BodyPublishers.noBody()),
+                responseClass);
     }
 
-    public <T> T requestToAddonsManager(String addOnPath,
+    private <T> T requestToAddonsManager(String addOnPath,
                                         String operation,
                                         List<Pair<String, String>> queryParams,
-                                        String method,
-                                        HttpRequest.BodyPublisher requestBody,
-                                        String contentType,
+                                        Consumer<HttpRequest.Builder> requestConfigurer,
                                         Class<T> responseClass) {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(buildRequestUrl(addOnPath, operation, queryParams));
 
-        if (requestBody != null) {
-            requestBuilder.method(method, requestBody).header("Content-Type", contentType);
-        } else {
-            requestBuilder.method(method, HttpRequest.BodyPublishers.noBody());
-        }
+        requestConfigurer.accept(requestBuilder);
 
         HttpRequest request = requestBuilder.build();
 
@@ -66,19 +65,24 @@ public class AddonsManagerClient {
             throw new RuntimeException("Failed to request manager API", ex);
         }
 
+        if (responseClass.equals(Void.class)) {
+            return null;
+        }
+
+        if (responseClass.equals(String.class)) {
+            //noinspection unchecked
+            return (T) new String(response.body(), StandardCharsets.UTF_8);
+        }
+
         try {
-            if (responseClass.equals(Void.class)) return null;
-
-            if (responseClass.equals(String.class)) return (T) new String(response.body(), StandardCharsets.UTF_8);
-
-            return new ObjectMapper().readerFor(responseClass).readValue(Objects.requireNonNull(response.body()));
+            return objectMapper.readerFor(responseClass).readValue(Objects.requireNonNull(response.body()));
         } catch (IOException e) {
             throw new RuntimeException("Failed to parse response from manager API", e);
         }
     }
 
     private URI buildRequestUrl(String addOnPath, String operation, List<Pair<String, String>> queryParams) {
-        String uri = String.format("http://%s:%d/%s/%s", host, port, addOnPath, operation);
+        String uri = String.format("http://localhost:%d/%s/%s", port, addOnPath, operation);
         if (!queryParams.isEmpty()) {
             String query = queryParams.stream()
                     .map(pair -> buildUriQueryPart(pair.getKey(), pair.getValue()))

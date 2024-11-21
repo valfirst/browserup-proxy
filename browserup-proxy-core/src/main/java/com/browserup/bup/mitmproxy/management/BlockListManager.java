@@ -5,7 +5,6 @@ import com.browserup.bup.proxy.BlocklistEntry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.net.http.HttpRequest;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -74,9 +73,7 @@ public class BlockListManager {
                 putRequestToAddonsManager(
                         "blocklist",
                         "set_block_list",
-                        Collections.emptyList(),
-                        HttpRequest.BodyPublishers.ofString(serializedBlockList),
-                        "application/json; charset=utf-8",
+                        serializedBlockList,
                         Void.class);
     }
 
