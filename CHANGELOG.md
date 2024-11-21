@@ -12,9 +12,9 @@
 - Har log filtering logic is moved out of model class into a separate utility class
   Removed method                                                      | Replacement
   ------------------------------------------------------------------- | ----------------------------------------------------------------------------------
-  `com.browserup.harreader.model.HarLog.findMostRecentEntry()`        | `com.browserup.harreader.filter.HarLogFilter.findMostRecentEntry(HarLog)`
-  `com.browserup.harreader.model.HarLog.findMostRecentEntry(Pattern)` | `com.browserup.harreader.filter.HarLogFilter.findMostRecentEntry(HarLog, Pattern)`
-  `com.browserup.harreader.model.HarLog.findEntries(Pattern)`         | `com.browserup.harreader.filter.HarLogFilter.findEntries(HarLog, Pattern)`
+  `com.browserup.harreader.model.HarLog#findMostRecentEntry()`        | `com.browserup.harreader.filter.HarLogFilter#findMostRecentEntry(HarLog)`
+  `com.browserup.harreader.model.HarLog#findMostRecentEntry(Pattern)` | `com.browserup.harreader.filter.HarLogFilter#findMostRecentEntry(HarLog, Pattern)`
+  `com.browserup.harreader.model.HarLog#findEntries(Pattern)`         | `com.browserup.harreader.filter.HarLogFilter#findEntries(HarLog, Pattern)`
 
 - Remove copy-pasted HAR models and migrate back to the [original model](https://github.com/sdstoehr/har-reader)
   Removed entity                                     | Replacement
@@ -37,6 +37,19 @@
   `com.browserup.harreader.model.HarTiming`          | `de.sstoehr.harreader.model.HarTiming`
   `com.browserup.harreader.model.HttpMethod`         | `de.sstoehr.harreader.model.HttpMethod`
   `com.browserup.harreader.model.HttpStatus`         | `de.sstoehr.harreader.model.HttpStatus`
+
+- Remove deprecated public API:
+  Removed                                                                         | Replacement
+  ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------
+  `com.browserup.bup.proxy.dns.DnsJavaResolver`                                   | `com.browserup.bup.proxy.dns.NativeResolver`
+  `com.browserup.bup.client.ClientUtil#createDnsJavaResolver()`                   | `com.browserup.bup.client.ClientUtil#createNativeResolver`
+  `com.browserup.bup.client.ClientUtil#createDnsJavaWithNativeFallbackResolver()` | `com.browserup.bup.client.ClientUtil#createNativeCacheManipulatingResolver`
+  `com.browserup.bup.proxy.BlocklistEntry#getPattern()`                           | `com.browserup.bup.proxy.BlocklistEntry#getUrlPattern()`
+  `com.browserup.bup.proxy.BlocklistEntry#getMethod()`                            | `com.browserup.bup.proxy.BlocklistEntry#getHttpMethodPattern()`
+  `com.browserup.bup.proxy.BlocklistEntry#getResponseCode()`                      | `com.browserup.bup.proxy.BlocklistEntry#getStatusCode()`
+  `com.browserup.bup.proxy.Allowlist.Allowlist(java.lang.String[], int)`          | `com.browserup.bup.proxy.Allowlist.Allowlist(java.util.Collection<java.lang.String>, int)`
+  `com.browserup.bup.proxy.Allowlist#getResponseCode()`                           | `com.browserup.bup.proxy.Allowlist#getStatusCode()`
+
 
 - Remove internal APIs (it was not intended for external usage, but was public)
   Removed entity                                               | Replacement
