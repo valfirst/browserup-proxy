@@ -4,11 +4,11 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.google.common.collect.Iterables
 import com.browserup.bup.BrowserUpProxy
 import com.browserup.bup.BrowserUpProxyServer
-import com.browserup.harreader.model.Har
 import com.browserup.bup.filters.util.HarCaptureUtil
 import com.browserup.bup.proxy.dns.AdvancedHostResolver
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
+import de.sstoehr.harreader.model.Har
 import de.sstoehr.harreader.model.HarContent
 import de.sstoehr.harreader.model.HarCookie
 import de.sstoehr.harreader.model.HarEntry

@@ -1,7 +1,17 @@
 package com.browserup.bup.filters;
 
 import com.google.common.collect.ImmutableList;
-import de.sstoehr.harreader.model.*;
+
+import de.sstoehr.harreader.model.Har;
+import de.sstoehr.harreader.model.HarCookie;
+import de.sstoehr.harreader.model.HarEntry;
+import de.sstoehr.harreader.model.HarHeader;
+import de.sstoehr.harreader.model.HarPostData;
+import de.sstoehr.harreader.model.HarPostDataParam;
+import de.sstoehr.harreader.model.HarQueryParam;
+import de.sstoehr.harreader.model.HarRequest;
+import de.sstoehr.harreader.model.HarResponse;
+import de.sstoehr.harreader.model.HttpMethod;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpContent;
@@ -16,7 +26,6 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
-import com.browserup.harreader.model.Har;
 import com.browserup.bup.exception.UnsupportedCharsetException;
 import com.browserup.bup.filters.support.HttpConnectTiming;
 import com.browserup.bup.filters.util.HarCaptureUtil;

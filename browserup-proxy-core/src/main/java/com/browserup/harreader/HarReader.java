@@ -3,10 +3,11 @@ package com.browserup.harreader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.browserup.harreader.jackson.DefaultMapperFactory;
 import com.browserup.harreader.jackson.MapperFactory;
-import com.browserup.harreader.model.Har;
 
 import java.io.File;
 import java.io.IOException;
+
+import de.sstoehr.harreader.model.Har;
 
 /**
  * @deprecated Use {@link de.sstoehr.harreader.HarReader}

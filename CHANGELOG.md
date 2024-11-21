@@ -11,26 +11,27 @@
   ------------------ | ---------------------------------------------------- | -------------
   **Status code**    | `200`                                                | `204`
   **Response body**  | HAR entry with required fields having default values | No content
-- Remove copy-pasted HAR models and migrate back to the original model (https://github.com/sdstoehr/har-reader)
-  Removed entity                                                         | Replacement
-  ---------------------------------------------------------------------- | ------------------------------------------------------------------
-  `com.browserup.harreader.model.HarCache`                               | `de.sstoehr.harreader.model.HarCache`
-  `com.browserup.harreader.model.HarContent`                             | `de.sstoehr.harreader.model.HarContent`
-  `com.browserup.harreader.model.HarCookie`                              | `de.sstoehr.harreader.model.HarCookie`
-  `com.browserup.harreader.model.HarCreatorBrowser`                      | `de.sstoehr.harreader.model.HarCreatorBrowser`
-  `com.browserup.harreader.model.HarEntry`                               | `de.sstoehr.harreader.model.HarEntry`
-  `com.browserup.harreader.model.HarHeader`                              | `de.sstoehr.harreader.model.HarHeader`
-  `com.browserup.harreader.model.HarLog`                                 | `de.sstoehr.harreader.model.HarLog`
-  `com.browserup.harreader.model.HarPage`                                | `de.sstoehr.harreader.model.HarPage`
-  `com.browserup.harreader.model.HarPageTiming`                          | `de.sstoehr.harreader.model.HarPageTiming`
-  `com.browserup.harreader.model.HarPostData`                            | `de.sstoehr.harreader.model.HarPostData`
-  `com.browserup.harreader.model.HarPostDataParam`                       | `de.sstoehr.harreader.model.HarPostDataParam`
-  `com.browserup.harreader.model.HarQueryParam`                          | `de.sstoehr.harreader.model.HarQueryParam`
-  `com.browserup.harreader.model.HarRequest`                             | `de.sstoehr.harreader.model.HarRequest`
-  `com.browserup.harreader.model.HarResponse`                            | `de.sstoehr.harreader.model.HarResponse`
-  `com.browserup.harreader.model.HarTiming`                              | `de.sstoehr.harreader.model.HarTiming`
-  `com.browserup.harreader.model.HttpMethod`                             | `de.sstoehr.harreader.model.HttpMethod`
-  `com.browserup.harreader.model.HttpStatus`                             | `de.sstoehr.harreader.model.HttpStatus`
+- Remove copy-pasted HAR models and migrate back to the [original model](https://github.com/sdstoehr/har-reader)
+  Removed entity                                     | Replacement
+  -------------------------------------------------- | ----------------------------------------------
+  `com.browserup.harreader.model.Har`                | `de.sstoehr.harreader.model.Har`
+  `com.browserup.harreader.model.HarCache`           | `de.sstoehr.harreader.model.HarCache`
+  `com.browserup.harreader.model.HarContent`         | `de.sstoehr.harreader.model.HarContent`
+  `com.browserup.harreader.model.HarCookie`          | `de.sstoehr.harreader.model.HarCookie`
+  `com.browserup.harreader.model.HarCreatorBrowser`  | `de.sstoehr.harreader.model.HarCreatorBrowser`
+  `com.browserup.harreader.model.HarEntry`           | `de.sstoehr.harreader.model.HarEntry`
+  `com.browserup.harreader.model.HarHeader`          | `de.sstoehr.harreader.model.HarHeader`
+  `com.browserup.harreader.model.HarLog`             | `de.sstoehr.harreader.model.HarLog`
+  `com.browserup.harreader.model.HarPage`            | `de.sstoehr.harreader.model.HarPage`
+  `com.browserup.harreader.model.HarPageTiming`      | `de.sstoehr.harreader.model.HarPageTiming`
+  `com.browserup.harreader.model.HarPostData`        | `de.sstoehr.harreader.model.HarPostData`
+  `com.browserup.harreader.model.HarPostDataParam`   | `de.sstoehr.harreader.model.HarPostDataParam`
+  `com.browserup.harreader.model.HarQueryParam`      | `de.sstoehr.harreader.model.HarQueryParam`
+  `com.browserup.harreader.model.HarRequest`         | `de.sstoehr.harreader.model.HarRequest`
+  `com.browserup.harreader.model.HarResponse`        | `de.sstoehr.harreader.model.HarResponse`
+  `com.browserup.harreader.model.HarTiming`          | `de.sstoehr.harreader.model.HarTiming`
+  `com.browserup.harreader.model.HttpMethod`         | `de.sstoehr.harreader.model.HttpMethod`
+  `com.browserup.harreader.model.HttpStatus`         | `de.sstoehr.harreader.model.HttpStatus`
 
 # [2.2.19]
 ## Changed

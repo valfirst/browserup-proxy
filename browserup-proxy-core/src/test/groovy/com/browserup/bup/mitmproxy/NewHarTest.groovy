@@ -6,9 +6,9 @@ import com.browserup.bup.proxy.CaptureType
 import com.browserup.bup.proxy.dns.AdvancedHostResolver
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
-import com.browserup.harreader.model.*
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.google.common.collect.Iterables
+import de.sstoehr.harreader.model.Har
 import de.sstoehr.harreader.model.HarContent
 import de.sstoehr.harreader.model.HarCookie
 import de.sstoehr.harreader.model.HarEntry

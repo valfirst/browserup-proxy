@@ -10,7 +10,6 @@ import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.MitmProxyManager;
 import com.browserup.bup.proxy.auth.AuthType;
 import com.browserup.bup.util.BrowserUpHttpUtil;
-import com.browserup.harreader.model.Har;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.google.sitebricks.At;
@@ -45,6 +44,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
+
+import de.sstoehr.harreader.model.Har;
 
 @At("/proxy")
 @Service

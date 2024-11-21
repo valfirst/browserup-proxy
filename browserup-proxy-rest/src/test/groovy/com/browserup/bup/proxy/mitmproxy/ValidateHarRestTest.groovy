@@ -1,7 +1,7 @@
 package com.browserup.bup.proxy.mitmproxy
 
-import com.browserup.harreader.model.Har
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.sstoehr.harreader.model.Har
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.Method
 import org.apache.http.entity.ContentType

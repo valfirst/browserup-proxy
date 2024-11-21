@@ -57,10 +57,11 @@ import com.browserup.bup.proxy.dns.DelegatingHostResolver;
 import com.browserup.bup.util.BrowserUpHttpUtil;
 import com.browserup.bup.util.BrowserUpProxyUtil;
 import com.browserup.bup.util.HttpStatusClass;
-import com.browserup.harreader.model.Har;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
+
+import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarCreatorBrowser;
 import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarLog;

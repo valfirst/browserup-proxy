@@ -2,11 +2,11 @@ package com.browserup.bup.assertion.supplier;
 
 import com.browserup.bup.assertion.model.filter.AssertionUrlFilterInfo;
 import com.browserup.harreader.filter.HarLogFilter;
-import com.browserup.harreader.model.Har;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
+import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarEntry;
 
 public class UrlFilteredHarEntriesSupplier extends HarEntriesSupplier {

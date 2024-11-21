@@ -9,8 +9,8 @@ import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.auth.AuthType;
 import com.browserup.bup.proxy.dns.AdvancedHostResolver;
 import com.browserup.bup.util.HttpStatusClass;
-import com.browserup.harreader.model.Har;
 
+import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarPageTiming;
 import org.littleshoot.proxy.HttpFiltersSource;
