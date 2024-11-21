@@ -49,6 +49,13 @@
   `com.browserup.bup.proxy.BlocklistEntry#getResponseCode()`                      | `com.browserup.bup.proxy.BlocklistEntry#getStatusCode()`
   `com.browserup.bup.proxy.Allowlist.Allowlist(java.lang.String[], int)`          | `com.browserup.bup.proxy.Allowlist.Allowlist(java.util.Collection<java.lang.String>, int)`
   `com.browserup.bup.proxy.Allowlist#getResponseCode()`                           | `com.browserup.bup.proxy.Allowlist#getStatusCode()`
+  `com.browserup.harreader.HarReader`                                             | `de.sstoehr.harreader.HarReader`
+  `com.browserup.harreader.HarReaderException`                                    | `de.sstoehr.harreader.HarReaderException`
+  `com.browserup.harreader.HarReaderMode`                                         | `de.sstoehr.harreader.HarReaderMode`
+  `com.browserup.harreader.jackson.DefaultMapperFactory`                          | `de.sstoehr.harreader.jackson.DefaultMapperFactory`
+  `com.browserup.harreader.jackson.ExceptionIgnoringDateDeserializer`             | `de.sstoehr.harreader.jackson.ExceptionIgnoringDateDeserializer`
+  `com.browserup.harreader.jackson.ExceptionIgnoringIntegerDeserializer`          | `de.sstoehr.harreader.jackson.ExceptionIgnoringIntegerDeserializer`
+  `com.browserup.harreader.jackson.MapperFactory`                                 | `de.sstoehr.harreader.jackson.MapperFactory`
 
 
 - Remove internal APIs (it was not intended for external usage, but was public)
