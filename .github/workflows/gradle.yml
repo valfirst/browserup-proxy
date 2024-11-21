@@ -43,3 +43,9 @@ jobs:
       run: |
         export MITMPROXY_BINARY_PATH=$(type -aP mitmdump | xargs dirname )
         ./gradlew build -PMITMPROXY_BINARY_PATH="$MITMPROXY_BINARY_PATH"
+
+    - name: Unit tests
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        path: browserup-proxy-core/build/reports/tests

@@ -49,8 +49,7 @@ public class AddonsManagerClient {
                                         String contentType,
                                         Class<T> responseClass) {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(buildRequestUrl(addOnPath, operation, queryParams))
-                .method(method, requestBody);
+                .uri(buildRequestUrl(addOnPath, operation, queryParams));
 
         if (requestBody != null) {
             requestBuilder.method(method, requestBody).header("Content-Type", contentType);
