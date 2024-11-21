@@ -38,6 +38,12 @@
   `com.browserup.harreader.model.HttpMethod`         | `de.sstoehr.harreader.model.HttpMethod`
   `com.browserup.harreader.model.HttpStatus`         | `de.sstoehr.harreader.model.HttpStatus`
 
+- Remove internal APIs (it was not intended for external usage, but was public)
+  Removed entity                                               | Replacement
+  ------------------------------------------------------------ | ----------------------------------------------
+  `com.browserup.harreader.filter.HarEntriesFilter`            | `java.util.function.Predicate<HarEntry>`
+  `com.browserup.harreader.filter.HarEntriesUrlPatternFilter`  | Not available, the logic was inlined
+
 # [2.2.19]
 ## Changed
 ### Dependencies
