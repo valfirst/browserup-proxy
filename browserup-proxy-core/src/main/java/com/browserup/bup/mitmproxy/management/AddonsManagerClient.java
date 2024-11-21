@@ -5,7 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -78,14 +78,18 @@ public class AddonsManagerClient {
     }
 
     private URI buildRequestUrl(String addOnPath, String operation, List<Pair<String, String>> queryParams) {
-        String path = String.format("/%s/%s", addOnPath, operation);
-        String query = queryParams.stream()
-                                  .map(p -> p.getKey() + "=" + p.getValue())
-                                  .collect(Collectors.joining("&"));
-        try {
-            return new URI("http", null, host, port, path, query, null);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e.getMessage(), e);
+        String uri = String.format("http://%s:%d/%s/%s", host, port, addOnPath, operation);
+        if (!queryParams.isEmpty()) {
+            String query = queryParams.stream()
+                    .map(AddonsManagerClient::buildUriQueryPart)
+                    .collect(Collectors.joining("&"));
+            uri = uri + "?" + query;
         }
+        return URI.create(uri);
+    }
+
+    private static String buildUriQueryPart(Pair<String, String> pair) {
+        return URLEncoder.encode(pair.getKey(), StandardCharsets.UTF_8) + "=" + URLEncoder.encode(pair.getValue(),
+                StandardCharsets.UTF_8);
     }
 }
