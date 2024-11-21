@@ -213,7 +213,6 @@ public class MitmProxyProcessManager {
     }
   }
 
-  // @NotNull
   private ArrayList<String> createCommand(int port, List<AbstractAddon> addons) {
     ArrayList<String> command = new ArrayList<String>() {{
       add(getMitmproxyBinaryPath());
