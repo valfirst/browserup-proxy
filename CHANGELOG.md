@@ -6,7 +6,7 @@
 ## Breaking chnages
 - Bump minimal required Java from 8 to 11 (https://github.com/valfirst/browserup-proxy/pull/407)
 
-- [browserup-proxy-rest] Improved the result returned by `/proxy/{port}/har/mostRecentEntry` if no HAR entries are available (https://github.com/valfirst/browserup-proxy/pull/434)):
+- [browserup-proxy-rest] Improved the result returned by `/proxy/{port}/har/mostRecentEntry` if no HAR entries are available (https://github.com/valfirst/browserup-proxy/pull/434):
   &nbsp;             | Old behaviour                                        | New behaviour
   ------------------ | ---------------------------------------------------- | -------------
   **Status code**    | `200`                                                | `204`
@@ -40,6 +40,15 @@
   `com.browserup.harreader.model.HarTiming`          | `de.sstoehr.harreader.model.HarTiming`
   `com.browserup.harreader.model.HttpMethod`         | `de.sstoehr.harreader.model.HttpMethod`
   `com.browserup.harreader.model.HttpStatus`         | `de.sstoehr.harreader.model.HttpStatus`
+
+  Alongside the models, custom APIs were removed:
+  Removed                                                           | Replacement
+  ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------
+  `com.browserup.harreader.model.Har#writeTo(java.io.Writer)`       | `de.sstoehr.harreader.HarWriter#writeTo(java.io.Writer, de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#writeTo(java.io.OutputStream)` | `de.sstoehr.harreader.HarWriter#writeTo(java.io.OutputStream, de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#writeTo(java.io.File)`         | `de.sstoehr.harreader.HarWriter#writeTo((java.io.File, de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#asBytes()`                     | `de.sstoehr.harreader.HarWriter#writeAsBytes(de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#deepCopy()`                    | No direct replacement is avaialble, combination of `de.sstoehr.harreader.HarWriter` and `de.sstoehr.harreader.HarReader` invocations should be used instead
 
 - Remove deprecated public API (https://github.com/valfirst/browserup-proxy/pull/441, https://github.com/valfirst/browserup-proxy/pull/442):
   Removed                                                                         | Replacement
