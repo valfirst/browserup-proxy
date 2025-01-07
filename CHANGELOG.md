@@ -1,6 +1,17 @@
 # Changelog
 
-# [Unreleased - 3.0.1-SNAPSHOT]
+# [3.0.1]
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/issues/457) re-generate LittleProxy MITM certs for the next 10 years (https://github.com/valfirst/browserup-proxy/pull/458)
+
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.3.2` to `2.4.3` (https://github.com/valfirst/browserup-proxy/pull/449, https://github.com/valfirst/browserup-proxy/pull/456)
+- Bump Netty from `4.1.115.Final` to `4.1.116.Final` (https://github.com/valfirst/browserup-proxy/pull/453)
+- Bump Log4J from `2.24.1` to `2.24.3` (https://github.com/valfirst/browserup-proxy/pull/445, https://github.com/valfirst/browserup-proxy/pull/451)
+- Bump Selenium from `4.26.0` to `4.27.0` (https://github.com/valfirst/browserup-proxy/pull/448)
+- Bump Jackson from `2.18.1` to `2.18.2` (https://github.com/valfirst/browserup-proxy/pull/447)
+- Bump Guava from `33.3.1-jre` to `33.4.0-jre` (https://github.com/valfirst/browserup-proxy/pull/452)
 
 # [3.0.0]
 ## Breaking chnages
@@ -82,7 +93,7 @@
 - Bump LittleProxy from `2.0.22` to `2.3.2` (https://github.com/valfirst/browserup-proxy/pull/339, https://github.com/valfirst/browserup-proxy/pull/408, https://github.com/valfirst/browserup-proxy/pull/421, https://github.com/valfirst/browserup-proxy/pull/429)
 - Bump Netty from `4.1.113.Final` to `4.1.115.Final` (https://github.com/valfirst/browserup-proxy/pull/420, https://github.com/valfirst/browserup-proxy/pull/433)
 - Bump Log4J from `2.24.0` to `2.24.1` (https://github.com/valfirst/browserup-proxy/pull/415)
-- Bump Selenium from `4.13.0` to `4.25.0` (https://github.com/valfirst/browserup-proxy/pull/399, https://github.com/valfirst/browserup-proxy/pull/410)
+- Bump Selenium from `4.13.0` to `4.26.0` (https://github.com/valfirst/browserup-proxy/pull/399, https://github.com/valfirst/browserup-proxy/pull/410, https://github.com/valfirst/browserup-proxy/pull/427)
 - Bump Jackson from `2.17.2` to `2.18.1` (https://github.com/valfirst/browserup-proxy/pull/412, https://github.com/valfirst/browserup-proxy/pull/425)
 - Bump Swagger from `2.2.23` to `2.2.26` (https://github.com/valfirst/browserup-proxy/pull/418, https://github.com/valfirst/browserup-proxy/pull/437)
 - Bump Guava from `33.3.0-jre` to `33.3.1-jre` (https://github.com/valfirst/browserup-proxy/pull/414)
