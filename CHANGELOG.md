@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 3.0.2-SNAPSHOT]
+
 # [3.0.1]
 ## Fixed
 - (Fixes https://github.com/valfirst/browserup-proxy/issues/457) re-generate LittleProxy MITM certs for the next 10 years (https://github.com/valfirst/browserup-proxy/pull/458)
