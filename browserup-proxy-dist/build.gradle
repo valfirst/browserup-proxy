@@ -96,7 +96,7 @@ static void downloadFile(URL srcUrl, File dstFile) {
     }
 }
 
-task downloadMitmproxyBinaries {
+tasks.register('downloadMitmproxyBinaries') {
     File mitmproxyDir = file("$buildDir/mitmproxy")
     outputs.dir mitmproxyDir
     doLast {
