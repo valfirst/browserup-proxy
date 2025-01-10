@@ -27,10 +27,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId "${project.group}"
             artifactId "${archivesBaseName}"
-
             from components.java
-            artifact(sourcesJar)
-            artifact(javadocJar)
 
             pom {
                 name = archivesBaseName
