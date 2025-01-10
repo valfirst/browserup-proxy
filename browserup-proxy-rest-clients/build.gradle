@@ -82,7 +82,8 @@ clients.each { client ->
     if (postProcessor) tasks.getByName("openApiGenerate${lang}Client").doLast(postProcessor)
 }
 
-task openApiGenerateClients(dependsOn: resolve) {
+tasks.register('openApiGenerateClients') {
+    dependsOn resolve
     clients.each { c ->
         dependsOn "openApiGenerate${c.language}Client"
     }
