@@ -5,46 +5,54 @@ plugins {
 
 archivesBaseName = 'browserup-proxy-mitm'
 
-uploadArchives {
+publishing {
     repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
+        maven {
+            name 'Maven'
+            url project.version.endsWith("-SNAPSHOT") ?
+                'https://oss.sonatype.org/content/repositories/snapshots/' :
+                'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
             if (project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")) {
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                credentials {
+                    username "$ossrhUsername"
+                    password "$ossrhPassword"
                 }
             }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            groupId "${project.group}"
+            artifactId "${project.name}"
 
-            pom.project {
-                name 'browserup-proxy-mitm'
-                description 'BrowserUp Proxy - MITM'
-                url 'https://github.com/valfirst/browserup-proxy'
-                packaging 'jar'
+            from components.java
+            artifact(sourcesJar)
+            artifact(javadocJar)
+
+            pom {
+                name = archivesBaseName
+                description = 'BrowserUp Proxy - MITM'
+                url = 'https://github.com/valfirst/browserup-proxy'
+                packaging = 'jar'
 
                 scm {
-                    connection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
-                    developerConnection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
-                    url 'https://github.com/valfirst/browserup-proxy/tree/main/browserup-proxy-mitm'
+                    connection = 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    developerConnection = 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    url = 'https://github.com/valfirst/browserup-proxy/tree/main/browserup-proxy-mitm'
                 }
 
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution = 'repo'
                     }
                 }
-
                 developers {
                     developer {
-                        id 'valfirst'
-                        name 'Valery Yatsynovich'
-                        email 'valeryyatsynovich@gmail.com'
+                        id = 'valfirst'
+                        name = 'Valery Yatsynovich'
+                        email = 'valeryyatsynovich@gmail.com'
                     }
                 }
             }
