@@ -39,18 +39,9 @@ subprojects {
         maven { url "https://oss.sonatype.org/service/local/staging/deploy/maven2/" }
     }
 
-    tasks.register('javadocJar', Jar) {
-        classifier = 'javadoc'
-        from javadoc
-    }
-
-    tasks.register('sourcesJar', Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    artifacts {
-        archives javadocJar, sourcesJar
+    java {
+        withJavadocJar()
+        withSourcesJar()
     }
 
     signing {
