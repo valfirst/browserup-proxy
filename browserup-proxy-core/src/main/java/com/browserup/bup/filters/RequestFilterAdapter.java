@@ -55,7 +55,7 @@ public class RequestFilterAdapter extends HttpsAwareFiltersAdapter {
      * and sets a maximum request buffer size of 2 MiB.
      */
     public static class FilterSource extends HttpFiltersSourceAdapter {
-        private static final int DEFAULT_MAXIMUM_REQUEST_BUFFER_SIZE = 2097152;
+        public static final int DEFAULT_MAXIMUM_REQUEST_BUFFER_SIZE = 2097152;
 
         private final RequestFilter filter;
         private final int maximumRequestBufferSizeInBytes;

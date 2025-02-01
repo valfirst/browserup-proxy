@@ -59,10 +59,10 @@ public class ResponseFilterAdapter extends HttpsAwareFiltersAdapter implements M
 
     /**
      * A {@link HttpFiltersSourceAdapter} for {@link ResponseFilterAdapter}s. By default, this FilterSource enables HTTP message aggregation
-     * and sets a maximum response buffer size of 2 MiB.
+     * and sets a maximum response buffer size of 10 MiB.
      */
     public static class FilterSource extends HttpFiltersSourceAdapter {
-        private static final int DEFAULT_MAXIMUM_RESPONSE_BUFFER_SIZE = 10485760;
+        public static final int DEFAULT_MAXIMUM_RESPONSE_BUFFER_SIZE = 10485760;
 
         private final ResponseFilter filter;
         private final int maximumResponseBufferSizeInBytes;
