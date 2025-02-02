@@ -172,6 +172,16 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
     private final List<HttpFiltersSource> filterFactories = new CopyOnWriteArrayList<>();
 
     /**
+     * The default maximum buffer size when aggregating requests for filtering.
+     */
+    private final int maximumRequestBufferSizeInBytes;
+
+    /**
+     * The default maximum buffer size when aggregating responses for filtering.
+     */
+    private final int maximumResponseBufferSizeInBytes;
+
+    /**
      * List of rejected URL patterns
      */
     private volatile Collection<BlocklistEntry> blocklistEntries = new CopyOnWriteArrayList<>();
@@ -311,6 +321,19 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
     private volatile String chainedProxyCredentials;
 
     public BrowserUpProxyServer() {
+        this(RequestFilterAdapter.FilterSource.DEFAULT_MAXIMUM_REQUEST_BUFFER_SIZE,
+                ResponseFilterAdapter.FilterSource.DEFAULT_MAXIMUM_RESPONSE_BUFFER_SIZE);
+    }
+
+    /**
+     * Creates {@link BrowserUpProxyServer} with custom default size limits for requests and responses.
+     *
+     * @param maximumRequestBufferSizeInBytes  the default maximum buffer size when aggregating requests for filtering.
+     * @param maximumResponseBufferSizeInBytes the default maximum buffer size when aggregating responses for filtering.
+     */
+    public BrowserUpProxyServer(int maximumRequestBufferSizeInBytes, int maximumResponseBufferSizeInBytes) {
+        this.maximumRequestBufferSizeInBytes = maximumRequestBufferSizeInBytes;
+        this.maximumResponseBufferSizeInBytes = maximumResponseBufferSizeInBytes;
     }
 
     @Override
@@ -1076,23 +1099,27 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
     }
 
     /**
-     * <b>Note:</b> The current implementation of this method forces a maximum response size of 2 MiB. To adjust the maximum response size, or
-     * to disable aggregation (which disallows access to the {@link com.browserup.bup.util.HttpMessageContents}), you may add the filter source
-     * directly: <code>addFirstHttpFilterFactory(new ResponseFilterAdapter.FilterSource(filter, bufferSizeInBytes));</code>
+     * <b>Note:</b> The current implementation of this method forces a maximum response size of 10 MiB. To adjust the maximum response size, or
+     * to disable aggregation (which disallows access to the {@link com.browserup.bup.util.HttpMessageContents}),
+     * the filter source can be added directly:
+     * <code>addFirstHttpFilterFactory(new ResponseFilterAdapter.FilterSource(filter, bufferSizeInBytes));</code>
+     * or default maximum response size can be set via constructor {@link #BrowserUpProxyServer(int, int)}.
      */
     @Override
     public void addResponseFilter(ResponseFilter filter) {
-        addLastHttpFilterFactory(new ResponseFilterAdapter.FilterSource(filter));
+        addLastHttpFilterFactory(new ResponseFilterAdapter.FilterSource(filter, maximumResponseBufferSizeInBytes));
     }
 
     /**
      * <b>Note:</b> The current implementation of this method forces a maximum request size of 2 MiB. To adjust the maximum request size, or
-     * to disable aggregation (which disallows access to the {@link com.browserup.bup.util.HttpMessageContents}), you may add the filter source
-     * directly: <code>addFirstHttpFilterFactory(new RequestFilterAdapter.FilterSource(filter, bufferSizeInBytes));</code>
+     * to disable aggregation (which disallows access to the {@link com.browserup.bup.util.HttpMessageContents}),
+     * the filter source can be added directly:
+     * <code>addFirstHttpFilterFactory(new RequestFilterAdapter.FilterSource(filter, bufferSizeInBytes));</code>
+     * or default maximum request size can be set via constructor {@link #BrowserUpProxyServer(int, int)}.
      */
     @Override
     public void addRequestFilter(RequestFilter filter) {
-        addFirstHttpFilterFactory(new RequestFilterAdapter.FilterSource(filter));
+        addFirstHttpFilterFactory(new RequestFilterAdapter.FilterSource(filter, maximumRequestBufferSizeInBytes));
     }
 
     @Override
@@ -1548,6 +1575,16 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
                     } else {
                         return null;
                     }
+                }
+
+                @Override
+                public int getMaximumRequestBufferSizeInBytes() {
+                    return maximumRequestBufferSizeInBytes;
+                }
+
+                @Override
+                public int getMaximumResponseBufferSizeInBytes() {
+                    return maximumResponseBufferSizeInBytes;
                 }
             });
 
