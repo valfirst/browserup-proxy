@@ -34,16 +34,6 @@ If you're running BrowserUp Proxy within a Java application or Selenium test, ge
 command line as a standalone proxy, start with [Standalone](#getting-started-standalone).
 
 
-#### About BrowserUp
-
-The cloud has made machine-hours cheap. Spending **thousands** in labor costs painfully correlating HTTP scripts to
-optimize machine costs doesn't make sense when an hour of 96 core cloud time costs *under a dollar.*
-
-BrowserUp [load tests your website with *real browsers*]((https://browserup.com/)) using the same page objects you wrote for your integration tests.
-
-[Email us](mailto:hello@browserup.com) for a demo.
-
-
 ### Getting started: Embedded Mode
 To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-core` dependency to your pom:
 
