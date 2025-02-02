@@ -66,10 +66,10 @@ dependencies {
 
     implementation "com.google.inject:guice:${guiceVersion}"
     implementation "com.google.inject.extensions:guice-servlet:${guiceVersion}"
-    implementation "com.google.inject.extensions:guice-multibindings:${guiceVersion}"
     implementation('com.google.sitebricks:sitebricks:0.8.11') {
         exclude(group: 'org.jboss.netty', module: 'netty')
         exclude(module: 'validation-api')
+        exclude(group: 'com.google.inject.extensions', module: 'guice-multibindings')
     }
     implementation "io.netty:netty-all:${nettyVersion}"
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
