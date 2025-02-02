@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 3.1.1-SNAPSHOT]
+
 # [3.1.0]
 ## Added
 - Add ability to set custom default size limits for requests and responses (https://github.com/valfirst/browserup-proxy/pull/467)
