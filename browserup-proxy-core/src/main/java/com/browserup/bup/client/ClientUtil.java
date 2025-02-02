@@ -1,10 +1,7 @@
 package com.browserup.bup.client;
 
-import com.google.common.collect.ImmutableList;
 import com.browserup.bup.BrowserUpProxy;
 import com.browserup.bup.proxy.dns.AdvancedHostResolver;
-import com.browserup.bup.proxy.dns.ChainedHostResolver;
-import com.browserup.bup.proxy.dns.DnsJavaResolver;
 import com.browserup.bup.proxy.dns.NativeCacheManipulatingResolver;
 import com.browserup.bup.proxy.dns.NativeResolver;
 import org.openqa.selenium.Proxy;
@@ -18,8 +15,8 @@ import java.net.UnknownHostException;
  */
 public class ClientUtil {
     /**
-     * Creates a {@link com.browserup.bup.proxy.dns.NativeCacheManipulatingResolver} instance that can be used when
-     * calling {@link BrowserUpProxy#setHostNameResolver(com.browserup.bup.proxy.dns.AdvancedHostResolver)}.
+     * Creates a {@link NativeCacheManipulatingResolver} instance that can be used when
+     * calling {@link BrowserUpProxy#setHostNameResolver(AdvancedHostResolver)}.
      *
      * @return a new NativeCacheManipulatingResolver
      */
@@ -28,8 +25,8 @@ public class ClientUtil {
     }
 
     /**
-     * Creates a {@link com.browserup.bup.proxy.dns.NativeResolver} instance that <b>does not support cache manipulation</b> that can be used when
-     * calling {@link BrowserUpProxy#setHostNameResolver(com.browserup.bup.proxy.dns.AdvancedHostResolver)}.
+     * Creates a {@link NativeResolver} instance that <b>does not support cache manipulation</b> that can be used when
+     * calling {@link BrowserUpProxy#setHostNameResolver(AdvancedHostResolver)}.
      *
      * @return a new NativeResolver
      */
@@ -38,39 +35,14 @@ public class ClientUtil {
     }
 
     /**
-     * Creates a {@link com.browserup.bup.proxy.dns.DnsJavaResolver} instance that can be used when
-     * calling {@link BrowserUpProxy#setHostNameResolver(com.browserup.bup.proxy.dns.AdvancedHostResolver)}.
-     *
-     * @return a new DnsJavaResolver
-     * @deprecated The dnsjava resolver has been deprecated in favor of the standard JVM resolver and will be removed in BUP &gt;2.1.
-     */
-    @Deprecated
-    public static AdvancedHostResolver createDnsJavaResolver() {
-        return new DnsJavaResolver();
-    }
-
-    /**
-     * Creates a {@link com.browserup.bup.proxy.dns.ChainedHostResolver} instance that first attempts to resolve a hostname using a
-     * {@link com.browserup.bup.proxy.dns.DnsJavaResolver}, then uses {@link com.browserup.bup.proxy.dns.NativeCacheManipulatingResolver}.
-     * Can be used when calling {@link BrowserUpProxy#setHostNameResolver(com.browserup.bup.proxy.dns.AdvancedHostResolver)}.
-     *
-     * @return a new ChainedHostResolver that resolves addresses first using a DnsJavaResolver, then using a NativeCacheManipulatingResolver
-     * @deprecated The dnsjava resolver has been deprecated in favor of the standard JVM resolver and will be removed in BUP &gt;2.1.
-     */
-    @Deprecated
-    public static AdvancedHostResolver createDnsJavaWithNativeFallbackResolver() {
-        return new ChainedHostResolver(ImmutableList.of(new DnsJavaResolver(), new NativeCacheManipulatingResolver()));
-    }
-
-    /**
      * Creates a Selenium Proxy object from the BrowserUpProxy instance. The BrowserUpProxy must be started. Retrieves the address
      * of the Proxy using {@link #getConnectableAddress()}.
      *
      * @param browserUpProxy started BrowserUpProxy instance to read connection information from
      * @return a Selenium Proxy instance, configured to use the BrowserUpProxy instance as its proxy server
-     * @throws java.lang.IllegalStateException if the proxy has not been started.
+     * @throws IllegalStateException if the proxy has not been started.
      */
-    public static org.openqa.selenium.Proxy createSeleniumProxy(BrowserUpProxy browserUpProxy) {
+    public static Proxy createSeleniumProxy(BrowserUpProxy browserUpProxy) {
         return createSeleniumProxy(browserUpProxy, getConnectableAddress());
     }
 
@@ -81,9 +53,9 @@ public class ClientUtil {
      * @param browserUpProxy    started BrowserUpProxy instance to read the port from
      * @param connectableAddress the network address the Selenium Proxy will use to reach this BrowserUpProxy instance
      * @return a Selenium Proxy instance, configured to use the BrowserUpProxy instance as its proxy server
-     * @throws java.lang.IllegalStateException if the proxy has not been started.
+     * @throws IllegalStateException if the proxy has not been started.
      */
-    public static org.openqa.selenium.Proxy createSeleniumProxy(BrowserUpProxy browserUpProxy, InetAddress connectableAddress) {
+    public static Proxy createSeleniumProxy(BrowserUpProxy browserUpProxy, InetAddress connectableAddress) {
         return createSeleniumProxy(new InetSocketAddress(connectableAddress, browserUpProxy.getPort()));
     }
 
@@ -95,9 +67,9 @@ public class ClientUtil {
      * @param hostnameOrAddress the hostnameOrAddress or the String form of the address the Selenium Proxy will use to
      *                          reach its proxy server.
      * @return a Selenium Proxy instance, configured to use the BrowserUpProxy instance as its proxy server
-     * @throws java.lang.IllegalStateException if the proxy has not been started.
+     * @throws IllegalStateException if the proxy has not been started.
      */
-    public static org.openqa.selenium.Proxy createSeleniumProxy(BrowserUpProxy browserUpProxy, String hostnameOrAddress) {
+    public static Proxy createSeleniumProxy(BrowserUpProxy browserUpProxy, String hostnameOrAddress) {
         return createSeleniumProxy(hostnameOrAddress, browserUpProxy.getPort());
     }
 
@@ -108,7 +80,7 @@ public class ClientUtil {
      *                                  proxy server (the InetSocketAddress may be unresolved).
      * @return a Selenium Proxy instance, configured to use the specified address and port as its proxy server
      */
-    public static org.openqa.selenium.Proxy createSeleniumProxy(InetSocketAddress connectableAddressAndPort) {
+    public static Proxy createSeleniumProxy(InetSocketAddress connectableAddressAndPort) {
         return createSeleniumProxy(connectableAddressAndPort.getHostString(), connectableAddressAndPort.getPort());
     }
 
@@ -120,7 +92,7 @@ public class ClientUtil {
      * @param port              the port the Selenium Proxy will use to reach its proxy server.
      * @return a Selenium Proxy instance, configured to use the specified address and port as its proxy server
      */
-    public static org.openqa.selenium.Proxy createSeleniumProxy(String hostnameOrAddress, int port) {
+    public static Proxy createSeleniumProxy(String hostnameOrAddress, int port) {
         Proxy proxy = new Proxy();
         proxy.setProxyType(Proxy.ProxyType.MANUAL);
 

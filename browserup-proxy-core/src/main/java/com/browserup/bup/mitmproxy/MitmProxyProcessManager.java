@@ -5,7 +5,6 @@ import com.browserup.bup.mitmproxy.management.*;
 import org.apache.commons.lang3.SystemUtils;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -214,7 +213,6 @@ public class MitmProxyProcessManager {
     }
   }
 
-  @NotNull
   private ArrayList<String> createCommand(int port, List<AbstractAddon> addons) {
     ArrayList<String> command = new ArrayList<String>() {{
       add(getMitmproxyBinaryPath());

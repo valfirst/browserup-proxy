@@ -1,6 +1,6 @@
 package com.browserup.bup.filters.util;
 
-import com.browserup.harreader.model.HarResponse;
+import de.sstoehr.harreader.model.HarResponse;
 
 /**
  * Static utility methods for {@link com.browserup.bup.filters.HarCaptureFilter} and {@link com.browserup.bup.filters.HttpConnectHarCaptureFilter}.

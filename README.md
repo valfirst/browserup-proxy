@@ -34,16 +34,6 @@ If you're running BrowserUp Proxy within a Java application or Selenium test, ge
 command line as a standalone proxy, start with [Standalone](#getting-started-standalone).
 
 
-#### About BrowserUp
-
-The cloud has made machine-hours cheap. Spending **thousands** in labor costs painfully correlating HTTP scripts to
-optimize machine costs doesn't make sense when an hour of 96 core cloud time costs *under a dollar.*
-
-BrowserUp [load tests your website with *real browsers*]((https://browserup.com/)) using the same page objects you wrote for your integration tests.
-
-[Email us](mailto:hello@browserup.com) for a demo.
-
-
 ### Getting started: Embedded Mode
 To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-core` dependency to your pom:
 
@@ -51,7 +41,7 @@ To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-co
 <dependency>
     <groupId>com.github.valfirst.browserup-proxy</groupId>
     <artifactId>browserup-proxy-core</artifactId>
-    <version>2.2.19</version>
+    <version>3.0.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -369,7 +359,7 @@ When you build the latest code from source, you'll have access to the latest sna
 <dependency>
     <groupId>com.github.valfirst.browserup-proxy</groupId>
     <artifactId>browserup-proxy-core</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -377,5 +367,5 @@ When you build the latest code from source, you'll have access to the latest sna
 Or for gradle:
 
 ```gradle
-testImplementation 'com.browserup:browserup-proxy-core:3.0.0-SNAPSHOT'
+testImplementation 'com.browserup:browserup-proxy-core:3.0.2-SNAPSHOT'
 ```

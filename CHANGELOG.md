@@ -1,6 +1,105 @@
 # Changelog
 
-# [Unreleased - 3.0.0-SNAPSHOT]
+# [Unreleased - 3.0.2-SNAPSHOT]
+
+# [3.0.1]
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/issues/457) re-generate LittleProxy MITM certs for the next 10 years (https://github.com/valfirst/browserup-proxy/pull/458)
+
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.3.2` to `2.4.3` (https://github.com/valfirst/browserup-proxy/pull/449, https://github.com/valfirst/browserup-proxy/pull/456)
+- Bump Netty from `4.1.115.Final` to `4.1.116.Final` (https://github.com/valfirst/browserup-proxy/pull/453)
+- Bump Log4J from `2.24.1` to `2.24.3` (https://github.com/valfirst/browserup-proxy/pull/445, https://github.com/valfirst/browserup-proxy/pull/451)
+- Bump Selenium from `4.26.0` to `4.27.0` (https://github.com/valfirst/browserup-proxy/pull/448)
+- Bump Jackson from `2.18.1` to `2.18.2` (https://github.com/valfirst/browserup-proxy/pull/447)
+- Bump Guava from `33.3.1-jre` to `33.4.0-jre` (https://github.com/valfirst/browserup-proxy/pull/452)
+
+# [3.0.0]
+## Breaking chnages
+- Bump minimal required Java from 8 to 11 (https://github.com/valfirst/browserup-proxy/pull/407)
+
+- [browserup-proxy-rest] Improved the result returned by `/proxy/{port}/har/mostRecentEntry` if no HAR entries are available (https://github.com/valfirst/browserup-proxy/pull/434):
+  &nbsp;             | Old behaviour                                        | New behaviour
+  ------------------ | ---------------------------------------------------- | -------------
+  **Status code**    | `200`                                                | `204`
+  **Response body**  | HAR entry with required fields having default values | No content
+
+- Har log filtering logic is moved out of model class into a separate utility class (https://github.com/valfirst/browserup-proxy/pull/431)
+  Removed method                                                      | Replacement
+  ------------------------------------------------------------------- | ----------------------------------------------------------------------------------
+  `com.browserup.harreader.model.HarLog#findMostRecentEntry()`        | `com.browserup.harreader.filter.HarLogFilter#findMostRecentEntry(HarLog)`
+  `com.browserup.harreader.model.HarLog#findMostRecentEntry(Pattern)` | `com.browserup.harreader.filter.HarLogFilter#findMostRecentEntry(HarLog, Pattern)`
+  `com.browserup.harreader.model.HarLog#findEntries(Pattern)`         | `com.browserup.harreader.filter.HarLogFilter#findEntries(HarLog, Pattern)`
+
+- Remove copy-pasted HAR models and migrate back to the [original model](https://github.com/sdstoehr/har-reader) (https://github.com/valfirst/browserup-proxy/pull/430)
+  Removed entity                                     | Replacement
+  -------------------------------------------------- | ----------------------------------------------
+  `com.browserup.harreader.model.Har`                | `de.sstoehr.harreader.model.Har`
+  `com.browserup.harreader.model.HarCache`           | `de.sstoehr.harreader.model.HarCache`
+  `com.browserup.harreader.model.HarContent`         | `de.sstoehr.harreader.model.HarContent`
+  `com.browserup.harreader.model.HarCookie`          | `de.sstoehr.harreader.model.HarCookie`
+  `com.browserup.harreader.model.HarCreatorBrowser`  | `de.sstoehr.harreader.model.HarCreatorBrowser`
+  `com.browserup.harreader.model.HarEntry`           | `de.sstoehr.harreader.model.HarEntry`
+  `com.browserup.harreader.model.HarHeader`          | `de.sstoehr.harreader.model.HarHeader`
+  `com.browserup.harreader.model.HarLog`             | `de.sstoehr.harreader.model.HarLog`
+  `com.browserup.harreader.model.HarPage`            | `de.sstoehr.harreader.model.HarPage`
+  `com.browserup.harreader.model.HarPageTiming`      | `de.sstoehr.harreader.model.HarPageTiming`
+  `com.browserup.harreader.model.HarPostData`        | `de.sstoehr.harreader.model.HarPostData`
+  `com.browserup.harreader.model.HarPostDataParam`   | `de.sstoehr.harreader.model.HarPostDataParam`
+  `com.browserup.harreader.model.HarQueryParam`      | `de.sstoehr.harreader.model.HarQueryParam`
+  `com.browserup.harreader.model.HarRequest`         | `de.sstoehr.harreader.model.HarRequest`
+  `com.browserup.harreader.model.HarResponse`        | `de.sstoehr.harreader.model.HarResponse`
+  `com.browserup.harreader.model.HarTiming`          | `de.sstoehr.harreader.model.HarTiming`
+  `com.browserup.harreader.model.HttpMethod`         | `de.sstoehr.harreader.model.HttpMethod`
+  `com.browserup.harreader.model.HttpStatus`         | `de.sstoehr.harreader.model.HttpStatus`
+
+  Alongside the models, custom APIs were removed:
+  Removed                                                           | Replacement
+  ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------
+  `com.browserup.harreader.model.Har#writeTo(java.io.Writer)`       | `de.sstoehr.harreader.HarWriter#writeTo(java.io.Writer, de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#writeTo(java.io.OutputStream)` | `de.sstoehr.harreader.HarWriter#writeTo(java.io.OutputStream, de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#writeTo(java.io.File)`         | `de.sstoehr.harreader.HarWriter#writeTo((java.io.File, de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#asBytes()`                     | `de.sstoehr.harreader.HarWriter#writeAsBytes(de.sstoehr.harreader.model.Har)`
+  `com.browserup.harreader.model.Har#deepCopy()`                    | No direct replacement is avaialble, combination of `de.sstoehr.harreader.HarWriter` and `de.sstoehr.harreader.HarReader` invocations should be used instead
+
+- Remove deprecated public API (https://github.com/valfirst/browserup-proxy/pull/441, https://github.com/valfirst/browserup-proxy/pull/442):
+  Removed                                                                         | Replacement
+  ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------
+  `com.browserup.bup.proxy.dns.DnsJavaResolver`                                   | `com.browserup.bup.proxy.dns.NativeResolver`
+  `com.browserup.bup.client.ClientUtil#createDnsJavaResolver()`                   | `com.browserup.bup.client.ClientUtil#createNativeResolver`
+  `com.browserup.bup.client.ClientUtil#createDnsJavaWithNativeFallbackResolver()` | `com.browserup.bup.client.ClientUtil#createNativeCacheManipulatingResolver`
+  `com.browserup.bup.proxy.BlocklistEntry#getPattern()`                           | `com.browserup.bup.proxy.BlocklistEntry#getUrlPattern()`
+  `com.browserup.bup.proxy.BlocklistEntry#getMethod()`                            | `com.browserup.bup.proxy.BlocklistEntry#getHttpMethodPattern()`
+  `com.browserup.bup.proxy.BlocklistEntry#getResponseCode()`                      | `com.browserup.bup.proxy.BlocklistEntry#getStatusCode()`
+  `com.browserup.bup.proxy.Allowlist.Allowlist(java.lang.String[], int)`          | `com.browserup.bup.proxy.Allowlist.Allowlist(java.util.Collection<java.lang.String>, int)`
+  `com.browserup.bup.proxy.Allowlist#getResponseCode()`                           | `com.browserup.bup.proxy.Allowlist#getStatusCode()`
+  `com.browserup.harreader.HarReader`                                             | `de.sstoehr.harreader.HarReader`
+  `com.browserup.harreader.HarReaderException`                                    | `de.sstoehr.harreader.HarReaderException`
+  `com.browserup.harreader.HarReaderMode`                                         | `de.sstoehr.harreader.HarReaderMode`
+  `com.browserup.harreader.jackson.DefaultMapperFactory`                          | `de.sstoehr.harreader.jackson.DefaultMapperFactory`
+  `com.browserup.harreader.jackson.ExceptionIgnoringDateDeserializer`             | `de.sstoehr.harreader.jackson.ExceptionIgnoringDateDeserializer`
+  `com.browserup.harreader.jackson.ExceptionIgnoringIntegerDeserializer`          | `de.sstoehr.harreader.jackson.ExceptionIgnoringIntegerDeserializer`
+  `com.browserup.harreader.jackson.MapperFactory`                                 | `de.sstoehr.harreader.jackson.MapperFactory`
+
+
+- Remove internal APIs (it was not intended for external usage, but was public) (https://github.com/valfirst/browserup-proxy/pull/440)
+  Removed entity                                               | Replacement
+  ------------------------------------------------------------ | ----------------------------------------------
+  `com.browserup.harreader.filter.HarEntriesFilter`            | `java.util.function.Predicate<HarEntry>`
+  `com.browserup.harreader.filter.HarEntriesUrlPatternFilter`  | Not available, the logic was inlined
+
+## Changed
+### Dependencies
+- Bump HAR reader from `2.3.0` to `2.5.0` (https://github.com/valfirst/browserup-proxy/pull/432, https://github.com/valfirst/browserup-proxy/pull/436, https://github.com/valfirst/browserup-proxy/pull/439)
+- Bump LittleProxy from `2.0.22` to `2.3.2` (https://github.com/valfirst/browserup-proxy/pull/339, https://github.com/valfirst/browserup-proxy/pull/408, https://github.com/valfirst/browserup-proxy/pull/421, https://github.com/valfirst/browserup-proxy/pull/429)
+- Bump Netty from `4.1.113.Final` to `4.1.115.Final` (https://github.com/valfirst/browserup-proxy/pull/420, https://github.com/valfirst/browserup-proxy/pull/433)
+- Bump Log4J from `2.24.0` to `2.24.1` (https://github.com/valfirst/browserup-proxy/pull/415)
+- Bump Selenium from `4.13.0` to `4.26.0` (https://github.com/valfirst/browserup-proxy/pull/399, https://github.com/valfirst/browserup-proxy/pull/410, https://github.com/valfirst/browserup-proxy/pull/427)
+- Bump Jackson from `2.17.2` to `2.18.1` (https://github.com/valfirst/browserup-proxy/pull/412, https://github.com/valfirst/browserup-proxy/pull/425)
+- Bump Swagger from `2.2.23` to `2.2.26` (https://github.com/valfirst/browserup-proxy/pull/418, https://github.com/valfirst/browserup-proxy/pull/437)
+- Bump Guava from `33.3.0-jre` to `33.3.1-jre` (https://github.com/valfirst/browserup-proxy/pull/414)
+
 
 # [2.2.19]
 ## Changed

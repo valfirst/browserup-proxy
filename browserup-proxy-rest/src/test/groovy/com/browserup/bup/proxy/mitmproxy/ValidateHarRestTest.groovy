@@ -1,7 +1,7 @@
 package com.browserup.bup.proxy.mitmproxy
 
-import com.browserup.harreader.model.Har
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.sstoehr.harreader.model.Har
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.Method
 import org.apache.http.entity.ContentType
@@ -156,14 +156,6 @@ class ValidateHarRestTest extends BaseRestTest {
                     it.response.cookies.each { cookie ->
                         assertNotNull("Expected not null har entries responses cookies name", cookie.name)
                         assertNotNull("Expected not null har entries responses cookies value", cookie.value)
-                    }
-
-                    assertNotNull("Expected not null har entries requests postData mimeType", it.request.postData.mimeType)
-                    assertNotNull("Expected not null har entries requests postData params", it.request.postData.params)
-                    assertNotNull("Expected not null har entries requests postData text", it.request.postData.text)
-
-                    it.request.postData.params.each { param ->
-                        assertNotNull("Expected not null har entries requests postData params name", param.name)
                     }
 
                     assertNotNull("Expected not null har entries responses content size", it.response.content.size)

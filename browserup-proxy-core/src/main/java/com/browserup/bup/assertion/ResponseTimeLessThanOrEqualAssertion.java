@@ -1,9 +1,10 @@
 package com.browserup.bup.assertion;
 
 import com.browserup.bup.assertion.error.HarEntryAssertionError;
-import com.browserup.harreader.model.HarEntry;
 
 import java.util.Optional;
+
+import de.sstoehr.harreader.model.HarEntry;
 
 public class ResponseTimeLessThanOrEqualAssertion implements HarEntryAssertion {
     private final Long time;

@@ -13,8 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * An {@link com.browserup.bup.proxy.dns.AdvancedHostResolver} that provides native JVM lookup using {@link java.net.InetAddress}.
  * <b>This implementation does not provide any cache manipulation.</b> Attempting to manipulate the DNS cache will result in a DEBUG-level
- * log statement and will not raise an exception. The {@link com.browserup.bup.proxy.dns.DnsJavaResolver} provides support for cache
- * manipulation. If you absolutely need to manipulate the native JVM DNS cache, see
+ * log statement and will not raise an exception. If you absolutely need to manipulate the native JVM DNS cache, see
  * {@link com.browserup.bup.proxy.dns.NativeCacheManipulatingResolver} for details.
  */
 public class NativeResolver extends AbstractHostNameRemapper implements AdvancedHostResolver {

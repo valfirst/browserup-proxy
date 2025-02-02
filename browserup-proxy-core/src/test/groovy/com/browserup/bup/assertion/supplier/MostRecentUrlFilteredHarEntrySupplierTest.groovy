@@ -1,8 +1,8 @@
 package com.browserup.bup.assertion.supplier
 
-import com.browserup.harreader.model.Har
-import com.browserup.harreader.model.HarEntry
-import com.browserup.harreader.model.HarRequest
+import de.sstoehr.harreader.model.Har
+import de.sstoehr.harreader.model.HarEntry
+import de.sstoehr.harreader.model.HarRequest
 import org.hamcrest.Matchers
 import org.junit.Test
 

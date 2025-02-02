@@ -6,49 +6,53 @@ application {
     applicationDefaultJvmArgs = ['-DMITMPROXY_BINARY_PATH=mitmproxy/']
 }
 
-uploadArchives {
+archivesBaseName = 'browserup-proxy'
+
+publishing {
     repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
+        maven {
+            name 'Maven'
+            url project.version.endsWith("-SNAPSHOT") ?
+                'https://oss.sonatype.org/content/repositories/snapshots/' :
+                'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
             if (project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")) {
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                credentials {
+                    username "$ossrhUsername"
+                    password "$ossrhPassword"
                 }
             }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            groupId "${project.group}"
+            artifactId "${archivesBaseName}"
+            from components.java
 
-            addFilter('distribution') {artifact, file ->
-                file.name.contains('.zip') || file.name.contains('.tar')
-            }
-            pom('distribution').artifactId = 'browserup-proxy'
-            pom('distribution').project {
-                name 'browserup-proxy'
-                description 'BrowserUp Proxy'
-                url 'https://github.com/valfirst/browserup-proxy'
+            pom {
+                name = archivesBaseName
+                description = 'BrowserUp Proxy'
+                url = 'https://github.com/valfirst/browserup-proxy'
+                packaging = 'zip'
 
                 scm {
-                    connection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
-                    developerConnection 'scm:git:git@github.com:valfirst/browserup-proxy.git'
-                    url 'https://github.com/valfirst/browserup-proxy'
+                    connection = 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    developerConnection = 'scm:git:git@github.com:valfirst/browserup-proxy.git'
+                    url = 'https://github.com/valfirst/browserup-proxy'
                 }
 
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution = 'repo'
                     }
                 }
-
                 developers {
                     developer {
-                        id 'valfirst'
-                        name 'Valery Yatsynovich'
-                        email 'valeryyatsynovich@gmail.com'
+                        id = 'valfirst'
+                        name = 'Valery Yatsynovich'
+                        email = 'valeryyatsynovich@gmail.com'
                     }
                 }
             }
@@ -62,10 +66,10 @@ dependencies {
 
     implementation "com.google.inject:guice:${guiceVersion}"
     implementation "com.google.inject.extensions:guice-servlet:${guiceVersion}"
-    implementation "com.google.inject.extensions:guice-multibindings:${guiceVersion}"
     implementation('com.google.sitebricks:sitebricks:0.8.11') {
         exclude(group: 'org.jboss.netty', module: 'netty')
         exclude(module: 'validation-api')
+        exclude(group: 'com.google.inject.extensions', module: 'guice-multibindings')
     }
     implementation "io.netty:netty-all:${nettyVersion}"
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
@@ -89,7 +93,7 @@ static void downloadFile(URL srcUrl, File dstFile) {
     }
 }
 
-task downloadMitmproxyBinaries {
+tasks.register('downloadMitmproxyBinaries') {
     File mitmproxyDir = file("$buildDir/mitmproxy")
     outputs.dir mitmproxyDir
     doLast {

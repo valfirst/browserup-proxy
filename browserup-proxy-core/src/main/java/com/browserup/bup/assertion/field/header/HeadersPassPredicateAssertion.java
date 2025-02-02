@@ -2,7 +2,7 @@ package com.browserup.bup.assertion.field.header;
 
 import com.browserup.bup.assertion.field.FieldPassesPredicateAssertion;
 import com.browserup.bup.assertion.field.HarEntryAssertionFieldSupplier;
-import com.browserup.harreader.model.HarHeader;
+import de.sstoehr.harreader.model.HarHeader;
 
 import java.util.List;
 import java.util.function.Predicate;

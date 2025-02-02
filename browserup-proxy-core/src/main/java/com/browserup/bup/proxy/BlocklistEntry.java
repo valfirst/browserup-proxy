@@ -65,28 +65,4 @@ public class BlocklistEntry {
     public Pattern getHttpMethodPattern() {
         return httpMethodPattern;
     }
-
-    @Deprecated
-    /**
-     * @deprecated use {@link #getUrlPattern()}
-     */
-    public Pattern getPattern() {
-        return getUrlPattern();
-    }
-
-    @Deprecated
-    /**
-     * @deprecated use {@link #getStatusCode()}
-     */
-    public int getResponseCode() {
-        return getStatusCode();
-    }
-
-    @Deprecated
-    /**
-     * @deprecated use {@link #getHttpMethodPattern()}
-     */
-    public Pattern getMethod() {
-        return getHttpMethodPattern();
-    }
 }

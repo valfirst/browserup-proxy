@@ -1,7 +1,6 @@
 package com.browserup.bup.mitmproxy.management;
 
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -35,9 +34,9 @@ public class ProxyManager {
                 getRequestToAddonsManager(
                         "proxy_manager",
                         "trust_all",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("trustAll", valueOf(trustAll)));
-                        }},
+                        List.of(
+                            of("trustAll", valueOf(trustAll))
+                        ),
                         Void.class);
     }
 
@@ -50,9 +49,9 @@ public class ProxyManager {
                 getRequestToAddonsManager(
                         "proxy_manager",
                         "set_connection_timeout_idle",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("idleSeconds", valueOf(idleTimeoutSeconds)));
-                        }},
+                        List.of(
+                            of("idleSeconds", valueOf(idleTimeoutSeconds))
+                        ),
                         Void.class);
     }
 
@@ -65,9 +64,9 @@ public class ProxyManager {
                 getRequestToAddonsManager(
                         "proxy_manager",
                         "set_dns_resolving_delay_ms",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("delayMs", valueOf(delayMs)));
-                        }},
+                        List.of(
+                            of("delayMs", valueOf(delayMs))
+                        ),
                         Void.class);
     }
 
@@ -80,9 +79,9 @@ public class ProxyManager {
                 getRequestToAddonsManager(
                         "proxy_manager",
                         "set_upstream_proxy_authorization",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("credentials", valueOf(chainedProxyCredentials)));
-                        }},
+                        List.of(
+                            of("credentials", valueOf(chainedProxyCredentials))
+                        ),
                         Void.class);
     }
 
@@ -127,9 +126,9 @@ public class ProxyManager {
                 getRequestToAddonsManager(
                         "proxy_manager",
                         "set_chained_proxy_non_proxy_hosts",
-                        new ArrayList<Pair<String, String>>() {{
-                            add(of("nonProxyHosts", valueOf(upstreamNonProxyHosts)));
-                        }},
+                        List.of(
+                            of("nonProxyHosts", valueOf(upstreamNonProxyHosts))
+                        ),
                         Void.class);
     }
 
@@ -140,9 +139,9 @@ public class ProxyManager {
                     getRequestToAddonsManager(
                             "proxy_manager",
                             "health_check",
-                            new ArrayList<Pair<String, String>>() {{
-                                add(of("nonProxyHosts", valueOf(upstreamNonProxyHosts)));
-                            }},
+                            List.of(
+                                of("nonProxyHosts", valueOf(upstreamNonProxyHosts))
+                            ),
                             String.class);
         } catch (Exception ex) {
             return false;

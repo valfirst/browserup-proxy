@@ -10,7 +10,8 @@ import com.browserup.bup.rest.validation.NotNullConstraint;
 import com.browserup.bup.rest.validation.PatternConstraint;
 import com.browserup.bup.rest.validation.PortWithExistingProxyConstraint;
 import com.browserup.bup.util.HttpStatusClass;
-import com.browserup.harreader.model.HarEntry;
+
+import de.sstoehr.harreader.model.HarEntry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -69,7 +70,7 @@ public class MostRecentEntryProxyResource {
             @Parameter(required = true, description = URL_PATTERN_DESCRIPTION) String urlPattern) {
         return proxyManager.get(port)
                 .findMostRecentEntry(Pattern.compile(urlPattern))
-                .orElse(new HarEntry());
+                .orElse(null);
     }
 
     @GET
