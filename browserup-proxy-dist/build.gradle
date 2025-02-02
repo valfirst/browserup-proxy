@@ -1,5 +1,6 @@
 plugins {
     id 'application'
+    id 'signing'
 }
 
 application {
@@ -27,7 +28,14 @@ publishing {
         mavenJava(MavenPublication) {
             groupId "${project.group}"
             artifactId "${archivesBaseName}"
-            from components.java
+            afterEvaluate {
+                if (distZip.enabled) {
+                    artifact distZip
+                }
+                if (distTar.enabled) {
+                    artifact distTar
+                }
+            }
 
             pom {
                 name = archivesBaseName
@@ -57,6 +65,12 @@ publishing {
                 }
             }
         }
+    }
+}
+
+signing {
+    if (project.hasProperty('sign')) {
+        sign publishing.publications.mavenJava
     }
 }
 

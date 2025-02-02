@@ -1,6 +1,7 @@
 plugins {
     id 'groovy'
     id 'java-library'
+    id 'signing'
 }
 
 archivesBaseName = 'browserup-proxy-core'
@@ -54,6 +55,12 @@ publishing {
                 }
             }
         }
+    }
+}
+
+signing {
+    if (project.hasProperty('sign')) {
+        sign publishing.publications.mavenJava
     }
 }
 

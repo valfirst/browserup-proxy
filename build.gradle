@@ -2,7 +2,6 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'maven-publish'
-    apply plugin: 'signing'
 
     group = 'com.github.valfirst.browserup-proxy'
     version = '3.0.2-SNAPSHOT'
@@ -42,12 +41,6 @@ subprojects {
     java {
         withJavadocJar()
         withSourcesJar()
-    }
-
-    signing {
-        if (project.hasProperty("sign")) {
-            sign configurations.archives
-        }
     }
 
     artifacts {

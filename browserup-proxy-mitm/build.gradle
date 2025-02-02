@@ -1,6 +1,7 @@
 plugins {
-    id 'java-library'
     id 'groovy'
+    id 'java-library'
+    id 'signing'
 }
 
 archivesBaseName = 'browserup-proxy-mitm'
@@ -54,6 +55,12 @@ publishing {
                 }
             }
         }
+    }
+}
+
+signing {
+    if (project.hasProperty('sign')) {
+        sign publishing.publications.mavenJava
     }
 }
 
