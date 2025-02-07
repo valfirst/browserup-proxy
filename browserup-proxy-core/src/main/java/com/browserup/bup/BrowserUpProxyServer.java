@@ -494,7 +494,8 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
         String host = extractHost(httpRequest);
 
         // note that we have to transform the wildcard like *.example.com to a valid regex
-        return host != null && upstreamProxyNonProxyHosts.stream().anyMatch(nph -> host.matches(nph.trim().replace("*", ".*?")));
+        return host != null && upstreamProxyNonProxyHosts.stream()
+                .anyMatch(nph -> host.matches(nph.trim().replace(".", "\\.").replace("*", ".*?")));
     }
 
     @Nullable

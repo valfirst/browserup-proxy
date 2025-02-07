@@ -21,6 +21,8 @@ class BrowserUpProxyServerTest {
         assertThat(proxy.isNonProxyHost(request("https://foo.example.com")), equalTo(true));
         assertThat(proxy.isNonProxyHost(request("https://bar.example.com:443")), equalTo(true));
         assertThat(proxy.isNonProxyHost(request("https://example.com")), equalTo(false));
+        assertThat(proxy.isNonProxyHost(request("https://a.b.c.foo.example.com")), equalTo(true));
+        assertThat(proxy.isNonProxyHost(request("https://foo-example.com")), equalTo(false));
     }
 
     @Test
