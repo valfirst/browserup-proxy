@@ -503,13 +503,12 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
     private static String extractHost(HttpRequest httpRequest) {
         // skip upstream proxy configuration because the host is defined as proxy exception / non-proxy hosts
         // therefore we need to cast it to URL
-        URL url = null;
         try {
-            url = new URL(httpRequest.uri());
+            return new URL(httpRequest.uri()).getHost();
         } catch (MalformedURLException e) {
-            log.error("The requested URL is not valid.", e);
+            log.debug("The requested URL \"{}\" is not valid: {}", httpRequest.uri(), e.toString());
+            return httpRequest.uri().replaceFirst("(.+):\\d+", "$1");
         }
-        return url == null ? null : url.getHost();
     }
 
     @Override
