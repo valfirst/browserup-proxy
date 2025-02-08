@@ -80,11 +80,11 @@ dependencies {
     implementation "org.glassfish.jersey.inject:jersey-hk2:${jerseyVersion}"
     implementation "org.glassfish.jersey.ext:jersey-bean-validation:${jerseyVersion}"
 
-    implementation "io.swagger.core.v3:swagger-jaxrs2:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-core:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-integration:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-jaxrs2-servlet-initializer:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-models:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-jaxrs2-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-integration-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-jaxrs2-servlet-initializer-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
 
     testImplementation project(':browserup-proxy-mitm')
 
@@ -99,7 +99,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.15.2'
     testImplementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
     testImplementation 'org.awaitility:awaitility:4.2.2'
-    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
+    testImplementation 'org.wiremock:wiremock:3.0.4'
 }
 
 signing {

@@ -133,7 +133,7 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
     testImplementation 'org.awaitility:awaitility:4.2.2'
     testImplementation "io.github.littleproxy:littleproxy:${littleProxyVersion}"
-    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
+    testImplementation 'org.wiremock:wiremock:3.0.4'
     testImplementation 'org.testcontainers:testcontainers:1.20.4'
 }
 

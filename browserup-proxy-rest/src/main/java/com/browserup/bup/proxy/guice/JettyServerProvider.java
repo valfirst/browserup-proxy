@@ -13,6 +13,8 @@ import java.net.UnknownHostException;
 import java.util.EnumSet;
 
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import jakarta.servlet.DispatcherType;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -23,8 +25,6 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
-
-import javax.servlet.DispatcherType;
 
 public class JettyServerProvider implements Provider<Server> {
     public static final String OPENAPI_CONFIG_YAML = "openapi-config.yaml";
