@@ -1,6 +1,32 @@
 # Changelog
 
-# [Unreleased - 3.0.2-SNAPSHOT]
+# [Unreleased - 3.1.1-SNAPSHOT]
+
+# [3.1.0]
+## Added
+- Add ability to set custom default size limits for requests and responses (https://github.com/valfirst/browserup-proxy/pull/467)
+
+  New constructor: `BrowserUpProxyServer(int maximumRequestBufferSizeInBytes, int maximumResponseBufferSizeInBytes)`
+
+## Changed
+### Dependencies
+- Drop `jzlib` dependency (https://github.com/valfirst/browserup-proxy/pull/465)
+
+  Originally `jzlib` depdency was added to support defalte decompression, this library was optional in netty: https://github.com/lightbody/browsermob-proxy/pull/225/files.
+  Over time JDK zlib decompression support was added to netty: https://github.com/netty/netty/issues/1481.
+  And then this implemnetation became default: https://github.com/netty/netty/issues/4707.
+  It makes `jzlib` dependency redundant, as JDK based implementation is used now. If someone needs to use `jzlib` dependency, then it's required to set the corresponding netty flag and to add this library explicitly to the local project dependencies.
+
+- Drop `guice-multibindings` dependency (https://github.com/valfirst/browserup-proxy/pull/466)
+
+  Since Guice 4.2, multibindings support has moved to Guice core: https://github.com/google/guice/wiki/Guice42#changes-since-guice-42.
+
+- Bump Netty from `4.1.116.Final` to `4.1.117.Final` (https://github.com/valfirst/browserup-proxy/pull/463)
+- Bump Bouncy Castle from `1.79` to `1.80` (https://github.com/valfirst/browserup-proxy/pull/462)
+- Bump Selenium from `4.27.0` to `4.28.1` (https://github.com/valfirst/browserup-proxy/pull/464)
+- Bump Jetty from `9.4.56.v20240826` to `9.4.57.v20241219` (https://github.com/valfirst/browserup-proxy/pull/470)
+- Bump Jersey from `2.45` to `2.46` (https://github.com/valfirst/browserup-proxy/pull/469)
+- Bump Guice from 4.2.3 to 5.1.0 (https://github.com/valfirst/browserup-proxy/pull/468)
 
 # [3.0.1]
 ## Fixed
@@ -94,6 +120,7 @@
 - Bump HAR reader from `2.3.0` to `2.5.0` (https://github.com/valfirst/browserup-proxy/pull/432, https://github.com/valfirst/browserup-proxy/pull/436, https://github.com/valfirst/browserup-proxy/pull/439)
 - Bump LittleProxy from `2.0.22` to `2.3.2` (https://github.com/valfirst/browserup-proxy/pull/339, https://github.com/valfirst/browserup-proxy/pull/408, https://github.com/valfirst/browserup-proxy/pull/421, https://github.com/valfirst/browserup-proxy/pull/429)
 - Bump Netty from `4.1.113.Final` to `4.1.115.Final` (https://github.com/valfirst/browserup-proxy/pull/420, https://github.com/valfirst/browserup-proxy/pull/433)
+- Bump Bouncy Castle from `1.78.1` to `1.79` (https://github.com/valfirst/browserup-proxy/pull/426)
 - Bump Log4J from `2.24.0` to `2.24.1` (https://github.com/valfirst/browserup-proxy/pull/415)
 - Bump Selenium from `4.13.0` to `4.26.0` (https://github.com/valfirst/browserup-proxy/pull/399, https://github.com/valfirst/browserup-proxy/pull/410, https://github.com/valfirst/browserup-proxy/pull/427)
 - Bump Jackson from `2.17.2` to `2.18.1` (https://github.com/valfirst/browserup-proxy/pull/412, https://github.com/valfirst/browserup-proxy/pull/425)
