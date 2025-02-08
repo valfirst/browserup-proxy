@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 3.1.2-SNAPSHOT]
+
 # [3.1.1]
 ## Fixed
 - (Fixes https://github.com/valfirst/browserup-proxy/issues/472) Fix hostname resolving (https://github.com/valfirst/browserup-proxy/pull/473)
