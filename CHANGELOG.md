@@ -1,6 +1,12 @@
 # Changelog
 
-# [Unreleased - 3.1.1-SNAPSHOT]
+# [3.1.1]
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/issues/472) Fix hostname resolving (https://github.com/valfirst/browserup-proxy/pull/473)
+
+## Changed
+### Dependencies
+- Bump Guice from `5.1.0` to `6.0.0` (https://github.com/valfirst/browserup-proxy/pull/474)
 
 # [3.1.0]
 ## Added
