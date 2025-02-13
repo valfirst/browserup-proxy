@@ -1,26 +1,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.valfirst.browserup-proxy/browserup-proxy.svg)](https://central.sonatype.com/search?namespace=com.github.valfirst.browserup-proxy)
 
-### This fork is created in order to keep alive [BrowserUp Proxy](https://github.com/browserup/browserup-proxy) which maintenance was officially [discontinued](https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034):
-
-> We have moved our business over to the BrowserUp fork of the mitmproxy. It is available [here](https://github.com/browserup/mitmproxy)
->
-> The reasons:
->
-> After multiple tries, we could not make the current architecture support websockets and http/2. without a massive rewrite. HTTP/3 will complicate things even further.
->
-> mitm proxy is great! The upstream maintainers are awesome. We have, and hope to continue to make code contributions.
->
-> * It has HTTP/2 Support
->
-> * It has Websocket Support
->
-> * Our fork adds a REST API, and uses OpenAPI to generate Clients in many languages: Java, Ruby, Python, Javascript, so you can access the proxy from many languages.
->
-> * Our fork generates a HAR with websocket and HTTP/2 traffic included
->
-> * Our fork adds traffic verification capabilties (like assertions) against the HAR
-
------------------------------
+### This fork is created in order to keep alive [BrowserUp Proxy](https://github.com/browserup/browserup-proxy) which maintenance was officially [discontinued](https://github.com/browserup/browserup-proxy/issues/388#issuecomment-996277034).
 
 # BrowserUp Proxy
 
@@ -48,10 +28,10 @@ To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-co
 
 Start the proxy:
 ```java
-    BrowserUpProxy proxy = new BrowserUpProxyServer();
-    proxy.start();
-    int port = proxy.getPort(); // get the JVM-assigned port
-    // Selenium or HTTP client configuration goes here
+BrowserUpProxy proxy = new BrowserUpProxyServer();
+proxy.start();
+int port = proxy.getPort(); // get the JVM-assigned port
+// Selenium or HTTP client configuration goes here
 ```
 
 Then configure your HTTP client to use a proxy running at the specified port.
@@ -63,13 +43,13 @@ To run in standalone mode from the command line, first download the latest relea
 
 Start the REST API:
 ```sh
-    ./browserup-proxy -port 8080
+./browserup-proxy -port 8080
 ```
 
 Then create a proxy server instance:
 ```sh
-    curl -X POST http://localhost:8080/proxy
-    {"port":8081}
+curl -X POST http://localhost:8080/proxy
+{"port":8081}
 ```
 
 The "port" is the port of the newly-created proxy instance, so configure your HTTP client or web browser to use a proxy on the returned port.
@@ -187,21 +167,21 @@ BrowserUp Proxy separates the Embedded Mode and REST API into two modules. If yo
 
 If you're using Java and Selenium, the easiest way to get started is to embed the project directly in your test. First, you'll need to make sure that all the dependencies are imported in to the project. You can find them in the *lib* directory. Or, if you're using Maven, you can add this to your pom:
 ```xml
-    <dependency>
-        <groupId>com.github.valfirst.browserup-proxy</groupId>
-        <artifactId>browserup-proxy-core</artifactId>
-        <version>1.0.0/version>
-        <scope>test</scope>
-    </dependency>
+<dependency>
+    <groupId>com.github.valfirst.browserup-proxy</groupId>
+    <artifactId>browserup-proxy-core</artifactId>
+    <version>1.0.0/version>
+    <scope>test</scope>
+</dependency>
 ```
 
 Once done, you can start a proxy using `com.browserup.bup.BrowserUpProxy`:
 ```java
-    BrowserUpProxy proxy = new BrowserUpProxyServer();
-    proxy.start();
-    // get the JVM-assigned port and get to work!
-    int port = proxy.getPort();
-    //...
+BrowserUpProxy proxy = new BrowserUpProxyServer();
+proxy.start();
+// get the JVM-assigned port and get to work!
+int port = proxy.getPort();
+//...
 ```
 
 Consult the Javadocs on the `com.browserup.bup.BrowserUpProxy` class for the full API.
@@ -212,31 +192,31 @@ Consult the Javadocs on the `com.browserup.bup.BrowserUpProxy` class for the ful
 
 BrowserUp Proxy makes it easy to use a proxy in Selenium tests:
 ```java
-    // start the proxy
-    BrowserUpProxy proxy = new BrowserUpProxyServer();
-    proxy.start();
+// start the proxy
+BrowserUpProxy proxy = new BrowserUpProxyServer();
+proxy.start();
 
-    // get the Selenium proxy object
-    Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
+// get the Selenium proxy object
+Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
 
-    // configure it as a desired capability
-    DesiredCapabilities capabilities = new DesiredCapabilities();
-    capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
+// configure it as a desired capability
+DesiredCapabilities capabilities = new DesiredCapabilities();
+capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
-    // start the browser up
-    WebDriver driver = new FirefoxDriver(capabilities);
+// start the browser up
+WebDriver driver = new FirefoxDriver(capabilities);
 
-    // enable more detailed HAR capture, if desired (see CaptureType for the complete list)
-    proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
+// enable more detailed HAR capture, if desired (see CaptureType for the complete list)
+proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
 
-    // create a new HAR with the label "yahoo.com"
-    proxy.newHar("yahoo.com");
+// create a new HAR with the label "yahoo.com"
+proxy.newHar("yahoo.com");
 
-    // open yahoo.com
-    driver.get("http://yahoo.com");
+// open yahoo.com
+driver.get("http://yahoo.com");
 
-    // get the HAR data
-    Har har = proxy.getHar();
+// get the HAR data
+Har har = proxy.getHar();
 ```
 
 **Note**: If you're running running tests on a Selenium grid, you will need to customize the Selenium Proxy object
@@ -254,44 +234,44 @@ There are four methods to support request and response interception in LittlePro
 
 For most use cases, including inspecting and modifying requests/responses, `addRequestFilter` and `addResponseFilter` will be sufficient. The request and response filters are easy to use:
 ```java
-    proxy.addRequestFilter(new RequestFilter() {
-            @Override
-            public HttpResponse filterRequest(HttpRequest request, HttpMessageContents contents, HttpMessageInfo messageInfo) {
-                if (messageInfo.getOriginalUri().endsWith("/some-endpoint-to-intercept")) {
-                    // retrieve the existing message contents as a String or, for binary contents, as a byte[]
-                    String messageContents = contents.getTextContents();
+proxy.addRequestFilter(new RequestFilter() {
+        @Override
+        public HttpResponse filterRequest(HttpRequest request, HttpMessageContents contents, HttpMessageInfo messageInfo) {
+            if (messageInfo.getOriginalUri().endsWith("/some-endpoint-to-intercept")) {
+                // retrieve the existing message contents as a String or, for binary contents, as a byte[]
+                String messageContents = contents.getTextContents();
 
-                    // do some manipulation of the contents
-                    String newContents = messageContents.replaceAll("original-string", "my-modified-string");
-                    //[...]
+                // do some manipulation of the contents
+                String newContents = messageContents.replaceAll("original-string", "my-modified-string");
+                //[...]
 
-                    // replace the existing content by calling setTextContents() or setBinaryContents()
-                    contents.setTextContents(newContents);
-                }
-
-                // in the request filter, you can return an HttpResponse object to "short-circuit" the request
-                return null;
+                // replace the existing content by calling setTextContents() or setBinaryContents()
+                contents.setTextContents(newContents);
             }
-        });
 
-        // responses are equally as simple:
-        proxy.addResponseFilter(new ResponseFilter() {
-            @Override
-            public void filterResponse(HttpResponse response, HttpMessageContents contents, HttpMessageInfo messageInfo) {
-                if (/*...some filtering criteria...*/) {
-                    contents.setTextContents("This message body will appear in all responses!");
-                }
+            // in the request filter, you can return an HttpResponse object to "short-circuit" the request
+            return null;
+        }
+    });
+
+    // responses are equally as simple:
+    proxy.addResponseFilter(new ResponseFilter() {
+        @Override
+        public void filterResponse(HttpResponse response, HttpMessageContents contents, HttpMessageInfo messageInfo) {
+            if (/*...some filtering criteria...*/) {
+                contents.setTextContents("This message body will appear in all responses!");
             }
-        });
+        }
+    });
 ```
 
 With Java 8, the syntax is more concise:
 ```java
-        proxy.addResponseFilter((response, contents, messageInfo) -> {
-            if (/*...some filtering criteria...*/) {
-                contents.setTextContents("This message body will appear in all responses!");
-            }
-        });
+proxy.addResponseFilter((response, contents, messageInfo) -> {
+    if (/*...some filtering criteria...*/) {
+        contents.setTextContents("This message body will appear in all responses!");
+    }
+});
 ```
 
 See the javadoc for the `RequestFilter` and `ResponseFilter` classes for more information.
@@ -353,19 +333,4 @@ You'll need `gradle`. Please see [here](https://docs.gradle.org/current/userguid
 Also you can use gradle wrapper:  
     `[~]$ ./gradlew build --info`
 
-When you build the latest code from source, you'll have access to the latest snapshot release. To use the SNAPSHOT version in your code, modify the version in your maven pom:
-
-```xml
-<dependency>
-    <groupId>com.github.valfirst.browserup-proxy</groupId>
-    <artifactId>browserup-proxy-core</artifactId>
-    <version>3.1.2-SNAPSHOT</version>
-    <scope>test</scope>
-</dependency>
-```
-
-Or for gradle:
-
-```gradle
-testImplementation 'com.github.valfirst.browserup-proxy:browserup-proxy-core:3.1.2-SNAPSHOT'
-```
+When you build the latest code from source, you'll have access to the latest snapshot release. To use the SNAPSHOT version in your code, modify the version in your Maven POM or for Gradle build file.
