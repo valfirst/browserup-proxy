@@ -1,6 +1,9 @@
 # Changelog
 
-# [Unreleased - 3.1.2-SNAPSHOT]
+# [3.1.2]
+## Changed
+### Dependencies
+- Bump Netty from `4.1.117.Final` to `4.1.118.Final` (https://github.com/valfirst/browserup-proxy/pull/477)
 
 # [3.1.1]
 ## Fixed
