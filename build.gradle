@@ -10,10 +10,10 @@ subprojects {
 
     ext {
         bcpVersion = '1.80'
-        guiceVersion = '6.0.0'
+        guiceVersion = '7.0.0'
         jacksonVersion = '2.18.2'
-        jerseyVersion = '2.46'
-        jettyVersion = '9.4.57.v20241219'
+        jerseyVersion = '3.0.0'
+        jettyVersion = '11.0.24'
         log4jVersion = '2.24.3'
         nettyVersion = '4.1.118.Final'
         littleProxyVersion = '2.4.0'
