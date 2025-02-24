@@ -1,14 +1,16 @@
 package com.browserup.bup.filters;
 
+import com.browserup.bup.util.HttpMessageContents;
+import com.browserup.bup.util.HttpMessageInfo;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
-import com.browserup.bup.util.HttpMessageContents;
-import com.browserup.bup.util.HttpMessageInfo;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
+
+import java.util.Objects;
 
 /**
  * A filter adapter for {@link ResponseFilter} implementations. Executes the filter when the {@link HttpFilters#serverToProxyResponse(HttpObject)}
@@ -101,6 +103,26 @@ public class ResponseFilterAdapter extends HttpsAwareFiltersAdapter implements M
         @Override
         public int getMaximumResponseBufferSizeInBytes() {
             return maximumResponseBufferSizeInBytes;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(filter, maximumResponseBufferSizeInBytes);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return other == this || other instanceof FilterSource && equals((FilterSource) other);
+        }
+
+        private boolean equals(FilterSource other) {
+            return Objects.equals(filter, other.filter) &&
+                    Objects.equals(maximumResponseBufferSizeInBytes, other.maximumResponseBufferSizeInBytes);
+        }
+
+        @Override
+        public String toString() {
+            return filter.toString();
         }
     }
 }

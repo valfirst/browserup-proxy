@@ -51,7 +51,7 @@ import de.sstoehr.harreader.model.HarEntry;
 public class MitmProxyServer implements BrowserUpProxy {
   private static final Logger log = LoggerFactory.getLogger(MitmProxyServer.class);
 
-  private MitmProxyProcessManager mitmProxyManager = new MitmProxyProcessManager();
+  private final MitmProxyProcessManager mitmProxyManager = new MitmProxyProcessManager();
 
   public void start(List<AbstractAddon> addons) {
     mitmProxyManager.start(NetworkUtils.getFreePort(), addons);
@@ -458,7 +458,17 @@ public class MitmProxyServer implements BrowserUpProxy {
   }
 
   @Override
+  public void removeResponseFilter(ResponseFilter filter) {
+
+  }
+
+  @Override
   public void addRequestFilter(RequestFilter filter) {
+
+  }
+
+  @Override
+  public void removeRequestFilter(RequestFilter filter) {
 
   }
 
