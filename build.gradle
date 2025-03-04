@@ -12,7 +12,7 @@ subprojects {
         bcpVersion = '1.80'
         guiceVersion = '6.0.0'
         jacksonVersion = '2.18.2'
-        jerseyVersion = '2.46'
+        jerseyVersion = '3.1.10'
         jettyVersion = '9.4.57.v20241219'
         log4jVersion = '2.24.3'
         nettyVersion = '4.1.119.Final'
