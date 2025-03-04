@@ -625,11 +625,25 @@ public interface BrowserUpProxy {
     void addResponseFilter(ResponseFilter filter);
 
     /**
+     * Removes a previously added ResponseFilter when it's not needed anymore
+     *
+     * @param filter (previously added) filter instance
+     */
+    void removeResponseFilter(ResponseFilter filter);
+
+    /**
      * Adds a new RequestFilter that can be used to examine and manipulate the request before sending it to the server.
      *
      * @param filter filter instance
      */
     void addRequestFilter(RequestFilter filter);
+
+    /**
+     * Removes a previously added RequestFilter when it's not needed anymore
+     *
+     * @param filter (previously added) filter instance
+     */
+    void removeRequestFilter(RequestFilter filter);
 
     /**
      * Completely disables MITM for this proxy server. The proxy will no longer intercept HTTPS requests, but they will

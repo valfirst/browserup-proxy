@@ -1126,6 +1126,11 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
         addLastHttpFilterFactory(new ResponseFilterAdapter.FilterSource(filter, maximumResponseBufferSizeInBytes));
     }
 
+    @Override
+    public void removeResponseFilter(ResponseFilter filter) {
+        removeHttpFilterFactory(new ResponseFilterAdapter.FilterSource(filter, maximumResponseBufferSizeInBytes));
+    }
+
     /**
      * <b>Note:</b> The current implementation of this method forces a maximum request size of 2 MiB. To adjust the maximum request size, or
      * to disable aggregation (which disallows access to the {@link com.browserup.bup.util.HttpMessageContents}),
@@ -1136,6 +1141,11 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
     @Override
     public void addRequestFilter(RequestFilter filter) {
         addFirstHttpFilterFactory(new RequestFilterAdapter.FilterSource(filter, maximumRequestBufferSizeInBytes));
+    }
+
+    @Override
+    public void removeRequestFilter(RequestFilter filter) {
+        removeHttpFilterFactory(new RequestFilterAdapter.FilterSource(filter, maximumRequestBufferSizeInBytes));
     }
 
     @Override
@@ -1165,6 +1175,10 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
 
     public void addHttpFilterFactory(HttpFiltersSource filterFactory) {
         filterFactories.add(filterFactory);
+    }
+
+    public void removeHttpFilterFactory(HttpFiltersSource filterFactory) {
+        filterFactories.remove(filterFactory);
     }
 
     public List<HttpFiltersSource> getFilterFactories() {
