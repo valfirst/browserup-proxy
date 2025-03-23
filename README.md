@@ -21,7 +21,7 @@ To use BrowserUp Proxy in your tests or application, add the `browserup-proxy-co
 <dependency>
     <groupId>com.github.valfirst.browserup-proxy</groupId>
     <artifactId>browserup-proxy-core</artifactId>
-    <version>3.1.2</version>
+    <version>3.2.0</version>
     <scope>test</scope>
 </dependency>
 ```

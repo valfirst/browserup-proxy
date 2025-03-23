@@ -1,6 +1,17 @@
 # Changelog
 
-# [Unreleased - 3.1.3-SNAPSHOT]
+# [3.2.0]
+## Added
+- (Closes https://github.com/valfirst/browserup-proxy/issues/482) Add ability to remove request/response filters (https://github.com/valfirst/browserup-proxy/pull/481)
+
+## Changed
+### Dependencies
+- Bump Netty from `4.1.118.Final` to `4.1.119.Final` (https://github.com/valfirst/browserup-proxy/pull/487)
+- Bump SLF4J from `2.0.16` to `2.0.17` (https://github.com/valfirst/browserup-proxy/pull/485)
+- Bump Jackson from `2.18.2` to `2.18.3` (https://github.com/valfirst/browserup-proxy/pull/483)
+- Bump Guava from `33.4.0-jre` to `33.4.5-jre` (https://github.com/valfirst/browserup-proxy/pull/492)
+- Bump Awaitility from `4.2.2` to `4.3.0` (https://github.com/valfirst/browserup-proxy/pull/478)
+- Bump Selenium from `4.28.1` to `4.29.0` (https://github.com/valfirst/browserup-proxy/pull/480)
 
 # [3.1.2]
 ## Changed
