@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue
 /**
  * Tests for the {@link com.browserup.bup.filters.BrowserUpHttpFilterChain}.
  */
-@org.junit.Ignore
 class FilterChainTest extends MockServerTest {
     private BrowserUpProxy proxy
 

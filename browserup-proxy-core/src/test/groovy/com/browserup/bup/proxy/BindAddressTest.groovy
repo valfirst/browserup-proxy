@@ -17,7 +17,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import static org.junit.Assert.assertEquals
 import static org.junit.Assume.assumeNoException
 
-@org.junit.Ignore
 class BindAddressTest extends MockServerTest {
     private BrowserUpProxy proxy
 
