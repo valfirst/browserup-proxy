@@ -4,7 +4,7 @@ subprojects {
     apply plugin: 'maven-publish'
 
     group = 'com.github.valfirst.browserup-proxy'
-    version = '3.2.0'
+    version = '3.2.1-SNAPSHOT'
 
     sourceCompatibility=11
 

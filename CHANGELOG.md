@@ -1,5 +1,8 @@
 # Changelog
 
+# [Unreleased - 3.2.1-SNAPSHOT]
+
+
 # [3.2.0]
 ## Added
 - (Closes https://github.com/valfirst/browserup-proxy/issues/482) Add ability to remove request/response filters (https://github.com/valfirst/browserup-proxy/pull/481)
