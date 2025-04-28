@@ -11,7 +11,7 @@ subprojects {
     ext {
         bcpVersion = '1.80'
         guiceVersion = '6.0.0'
-        jacksonVersion = '2.18.3'
+        jacksonVersion = '2.19.0'
         jerseyVersion = '2.46'
         jettyVersion = '9.4.57.v20241219'
         log4jVersion = '2.24.3'
