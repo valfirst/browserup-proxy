@@ -19,7 +19,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 /**
  * Network manipulation tests using the new interface.
  */
-@org.junit.Ignore
 public class NetworkTest extends MockServerTest {
     @Test
     public void testConnectTimeout() throws IOException {
