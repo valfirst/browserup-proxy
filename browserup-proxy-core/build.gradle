@@ -86,7 +86,7 @@ dependencies {
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.codehaus.groovy:groovy-all:3.0.24'
+    testImplementation 'org.codehaus.groovy:groovy-all:3.0.25'
     testImplementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
