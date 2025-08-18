@@ -86,5 +86,5 @@ dependencies {
     testImplementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.25'
     testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
-    testImplementation 'org.mockito:mockito-core:5.18.0'
+    testImplementation 'org.mockito:mockito-core:5.19.0'
 }
