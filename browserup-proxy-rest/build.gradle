@@ -1,7 +1,6 @@
 plugins {
     id 'groovy'
     id 'java-library'
-    id 'signing'
 }
 
 archivesBaseName = 'browserup-proxy-rest'
@@ -9,16 +8,7 @@ archivesBaseName = 'browserup-proxy-rest'
 publishing {
     repositories {
         maven {
-            name 'Maven'
-            url project.version.endsWith("-SNAPSHOT") ?
-                'https://oss.sonatype.org/content/repositories/snapshots/' :
-                'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-            if (project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")) {
-                credentials {
-                    username "$ossrhUsername"
-                    password "$ossrhPassword"
-                }
-            }
+            url = layout.buildDirectory.dir('staging-deploy')
         }
     }
     publications {
@@ -100,12 +90,6 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
     testImplementation 'org.awaitility:awaitility:4.3.0'
     testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
-}
-
-signing {
-    if (project.hasProperty('sign')) {
-        sign publishing.publications.mavenJava
-    }
 }
 
 tasks.register('createVersionProperties') {

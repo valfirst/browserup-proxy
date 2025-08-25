@@ -1,7 +1,17 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath(group: 'org.jreleaser', name: 'org.jreleaser.gradle.plugin', version: '1.19.0')
+    }
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'maven-publish'
+    apply plugin: 'org.jreleaser'
 
     group = 'com.github.valfirst.browserup-proxy'
     version = '3.2.1-SNAPSHOT'
@@ -34,8 +44,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/service/local/staging/deploy/maven2/" }
     }
 
     java {
@@ -57,6 +65,24 @@ subprojects {
         def mitmproxyBinaryPath = project.findProperty('MITMPROXY_BINARY_PATH')
         if (mitmproxyBinaryPath) {
             systemProperty "MITMPROXY_BINARY_PATH", mitmproxyBinaryPath
+        }
+    }
+
+    jreleaser {
+        signing {
+            active = 'ALWAYS'
+            armored = true
+        }
+        deploy {
+            maven {
+                mavenCentral {
+                    sonatype {
+                        active = 'ALWAYS'
+                        url = 'https://central.sonatype.com/api/v1/publisher'
+                        stagingRepository('build/staging-deploy')
+                    }
+                }
+            }
         }
     }
 }

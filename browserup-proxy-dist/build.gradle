@@ -1,6 +1,5 @@
 plugins {
     id 'application'
-    id 'signing'
 }
 
 application {
@@ -12,16 +11,7 @@ archivesBaseName = 'browserup-proxy'
 publishing {
     repositories {
         maven {
-            name 'Maven'
-            url project.version.endsWith("-SNAPSHOT") ?
-                'https://oss.sonatype.org/content/repositories/snapshots/' :
-                'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-            if (project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")) {
-                credentials {
-                    username "$ossrhUsername"
-                    password "$ossrhPassword"
-                }
-            }
+            url = layout.buildDirectory.dir('staging-deploy')
         }
     }
     publications {
@@ -65,12 +55,6 @@ publishing {
                 }
             }
         }
-    }
-}
-
-signing {
-    if (project.hasProperty('sign')) {
-        sign publishing.publications.mavenJava
     }
 }
 
