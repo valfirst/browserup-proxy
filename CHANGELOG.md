@@ -1,7 +1,17 @@
 # Changelog
 
-# [Unreleased - 3.2.1-SNAPSHOT]
-
+# [3.2.1]
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.4.0` to `2.4.4` (https://github.com/valfirst/browserup-proxy/pull/501, https://github.com/valfirst/browserup-proxy/pull/506, https://github.com/valfirst/browserup-proxy/pull/523, https://github.com/valfirst/browserup-proxy/pull/529)
+- Bump Netty from `4.1.119.Final` to `4.2.3.Final` (https://github.com/valfirst/browserup-proxy/pull/496, https://github.com/valfirst/browserup-proxy/pull/507, https://github.com/valfirst/browserup-proxy/pull/513, https://github.com/valfirst/browserup-proxy/pull/527)
+- Bump Bouncy Castle from `1.80` to `1.81` (https://github.com/valfirst/browserup-proxy/pull/514)
+- Bump Log4J from `2.24.3` to `2.25.1` (https://github.com/valfirst/browserup-proxy/pull/524)
+- Bump Jackson from `2.18.3` to `2.19.2` (https://github.com/valfirst/browserup-proxy/pull/504, https://github.com/valfirst/browserup-proxy/pull/517, https://github.com/valfirst/browserup-proxy/pull/526)
+- Bump Apache Commons Lang from `3.17.0` to `3.18.0` (https://github.com/valfirst/browserup-proxy/pull/525)
+- Bump Guava from `33.4.5-jre` to `33.4.8-jre` (https://github.com/valfirst/browserup-proxy/pull/494, https://github.com/valfirst/browserup-proxy/pull/499, https://github.com/valfirst/browserup-proxy/pull/500)
+- Bump Selenium from `4.29.0` to `4.33.0` (https://github.com/valfirst/browserup-proxy/pull/493, https://github.com/valfirst/browserup-proxy/pull/497, https://github.com/valfirst/browserup-proxy/pull/505, https://github.com/valfirst/browserup-proxy/pull/510)
+- Bump Jetty from `9.4.57.v20241219` to `9.4.58.v20250814` (https://github.com/valfirst/browserup-proxy/pull/536)
 
 # [3.2.0]
 ## Added
@@ -61,7 +71,7 @@
 
 ## Changed
 ### Dependencies
-- Bump LittleProxy from `2.3.2` to `2.4.3` (https://github.com/valfirst/browserup-proxy/pull/449, https://github.com/valfirst/browserup-proxy/pull/456)
+- Bump LittleProxy from `2.3.2` to `2.4.0` (https://github.com/valfirst/browserup-proxy/pull/449, https://github.com/valfirst/browserup-proxy/pull/456)
 - Bump Netty from `4.1.115.Final` to `4.1.116.Final` (https://github.com/valfirst/browserup-proxy/pull/453)
 - Bump Log4J from `2.24.1` to `2.24.3` (https://github.com/valfirst/browserup-proxy/pull/445, https://github.com/valfirst/browserup-proxy/pull/451)
 - Bump Selenium from `4.26.0` to `4.27.0` (https://github.com/valfirst/browserup-proxy/pull/448)
