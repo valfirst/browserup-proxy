@@ -4,13 +4,6 @@ import com.browserup.bup.BrowserUpProxy
 import com.browserup.bup.BrowserUpProxyServer
 import com.browserup.bup.proxy.test.util.MockServerTest
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil
-import com.browserup.harreader.model.*
-import de.sstoehr.harreader.model.HarCookie
-import de.sstoehr.harreader.model.HarCreatorBrowser
-import de.sstoehr.harreader.model.HarPage
-import de.sstoehr.harreader.model.HarPostData
-import de.sstoehr.harreader.model.HarPostDataParam
-import de.sstoehr.harreader.model.HarRequest
 import org.apache.http.client.methods.HttpGet
 import org.junit.After
 import org.junit.Test

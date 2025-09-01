@@ -15,7 +15,6 @@ import static org.hamcrest.Matchers.not
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.Assert.assertEquals
 
-@org.junit.Ignore
 class GetHarTest extends MockServerTest {
     private BrowserUpProxy proxy
 
