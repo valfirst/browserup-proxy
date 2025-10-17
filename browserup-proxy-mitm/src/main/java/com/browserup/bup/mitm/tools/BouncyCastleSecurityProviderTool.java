@@ -12,6 +12,7 @@ import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
@@ -107,6 +108,10 @@ public class BouncyCastleSecurityProviderTool implements SecurityProviderTool {
         // create the X509Certificate using Bouncy Castle. the BC X509CertificateHolder can be converted to a JCA X509Certificate.
         X509CertificateHolder certificateHolder;
         try {
+            AuthorityKeyIdentifier authorityKeyIdentifier = new BcX509ExtensionUtils().createAuthorityKeyIdentifier(
+                new X509CertificateHolder(caRootCertificate.getEncoded())
+            );
+
             certificateHolder = new JcaX509v3CertificateBuilder(caRootCertificate,
                     serialNumber,
                     Date.from(certificateInfo.getNotBefore()),
@@ -116,8 +121,9 @@ public class BouncyCastleSecurityProviderTool implements SecurityProviderTool {
                     .addExtension(Extension.subjectAlternativeName, false, getDomainNameSANsAsASN1Encodable(certificateInfo.getSubjectAlternativeNames()))
                     .addExtension(Extension.subjectKeyIdentifier, false, createSubjectKeyIdentifier(serverKeyPair.getPublic()))
                     .addExtension(Extension.basicConstraints, false, new BasicConstraints(false))
+                    .addExtension(Extension.authorityKeyIdentifier, false, authorityKeyIdentifier)
                     .build(signer);
-        } catch (CertIOException e) {
+        } catch (IOException | CertificateException e) {
             throw new CertificateCreationException("Error creating new server certificate", e);
         }
 
