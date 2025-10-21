@@ -1,7 +1,18 @@
 # Changelog
 
-# [Unreleased - 3.2.2-SNAPSHOT]
+# [3.2.2]
+## Fixed
+- (Fixes https://github.com/valfirst/browserup-proxy/issues/561) MITM proxy: Add Authority Key Identifier to generated server certificates (https://github.com/valfirst/browserup-proxy/pull/562)
 
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.4.4` to `2.4.5` (https://github.com/valfirst/browserup-proxy/pull/548)
+- Bump Netty from `4.2.3.Final` to `4.2.7.Final` (https://github.com/valfirst/browserup-proxy/pull/532, https://github.com/valfirst/browserup-proxy/pull/549, https://github.com/valfirst/browserup-proxy/pull/565)
+- Bump Bouncy Castle from `1.81` to `1.82` (https://github.com/valfirst/browserup-proxy/pull/552)
+- Bump Log4J from `2.25.1` to `2.25.2` (https://github.com/valfirst/browserup-proxy/pull/553)
+- Bump Jackson from `2.19.2` to `2.20.0` (https://github.com/valfirst/browserup-proxy/pull/545)
+- Bump Apache Commons Lang from `3.18.0` to `3.19.0` (https://github.com/valfirst/browserup-proxy/pull/556)
+- Bump Guava from `33.4.8-jre` to `33.5.0-jre` (https://github.com/valfirst/browserup-proxy/pull/555)
 
 # [3.2.1]
 ## Changed
