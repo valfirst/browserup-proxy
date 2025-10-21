@@ -1,5 +1,7 @@
 # Changelog
 
+# [Unreleased - 3.2.3-SNAPSHOT]
+
 # [3.2.2]
 ## Fixed
 - (Fixes https://github.com/valfirst/browserup-proxy/issues/561) MITM proxy: Add Authority Key Identifier to generated server certificates (https://github.com/valfirst/browserup-proxy/pull/562)
