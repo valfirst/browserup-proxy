@@ -5,7 +5,6 @@ import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import java.net.HttpURLConnection;
 import org.junit.Test;
 
-import java.net.HttpURLConnection;
 
 import static org.junit.Assert.assertEquals;
 

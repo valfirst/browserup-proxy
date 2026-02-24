@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

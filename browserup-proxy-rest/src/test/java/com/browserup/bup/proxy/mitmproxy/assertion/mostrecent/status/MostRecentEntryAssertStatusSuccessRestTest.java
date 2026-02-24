@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.net.HttpURLConnection;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
