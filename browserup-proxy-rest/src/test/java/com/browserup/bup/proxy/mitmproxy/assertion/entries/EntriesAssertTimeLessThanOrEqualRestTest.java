@@ -4,7 +4,7 @@ import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.assertion.model.AssertionEntryResult;
 import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -86,7 +86,7 @@ public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", ".*", "milliseconds", "abcd"));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", statusCode, HttpStatus.SC_BAD_REQUEST);
+        assertEquals("Expected to get bad request", statusCode, HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 }

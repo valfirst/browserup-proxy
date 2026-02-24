@@ -3,7 +3,7 @@ package com.browserup.bup.proxy.mitmproxy.assertion.entries.status;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -18,8 +18,8 @@ public class EntriesAssertStatusEqualsRestTest extends BaseRestTest {
     private String urlOfOldRequest = "url-old";
     private String urlPatternToMatchUrl = ".*url-.*";
     private String urlPatternNotToMatchUrl = ".*does_not_match-.*";
-    private int status = HttpStatus.SC_OK;
-    private int statusNotToMatch = HttpStatus.SC_NOT_FOUND;
+    private int status = HttpURLConnection.HTTP_OK;
+    private int statusNotToMatch = HttpURLConnection.HTTP_NOT_FOUND;
     private String responseBody = "success";
 
     @Override
@@ -28,8 +28,8 @@ public class EntriesAssertStatusEqualsRestTest extends BaseRestTest {
     @Test
     public void getBadRequestIfStatusValidButUrlPatternIsInvalid() throws Exception {
         proxyManager.get().iterator().next().newHar();
-        HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", "[", "status", HttpStatus.SC_OK));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpStatus.SC_BAD_REQUEST);
+        HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", "[", "status", HttpURLConnection.HTTP_OK));
+        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 
@@ -37,7 +37,7 @@ public class EntriesAssertStatusEqualsRestTest extends BaseRestTest {
     public void getBadRequestIfStatusNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath());
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpStatus.SC_BAD_REQUEST);
+        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 
@@ -45,7 +45,7 @@ public class EntriesAssertStatusEqualsRestTest extends BaseRestTest {
     public void getBadRequestIfUrlPatternIsInvalid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", "[", "status", status));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpStatus.SC_BAD_REQUEST);
+        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 

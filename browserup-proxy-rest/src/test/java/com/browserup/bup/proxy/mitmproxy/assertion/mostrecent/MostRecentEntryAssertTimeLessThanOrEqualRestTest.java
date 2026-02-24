@@ -3,7 +3,7 @@ package com.browserup.bup.proxy.mitmproxy.assertion.mostrecent;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -62,7 +62,7 @@ public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTe
     public void getBadRequestIfMillisecondsNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", ".*", "milliseconds", "abcd"));
-        assertEquals("Expected to get bad request", HttpStatus.SC_BAD_REQUEST, conn.getResponseCode());
+        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode());
         conn.disconnect();
     }
 

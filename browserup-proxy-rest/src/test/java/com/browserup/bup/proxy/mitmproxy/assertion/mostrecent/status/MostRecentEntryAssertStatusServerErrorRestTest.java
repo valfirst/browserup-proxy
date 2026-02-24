@@ -3,7 +3,7 @@ package com.browserup.bup.proxy.mitmproxy.assertion.mostrecent.status;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -18,8 +18,8 @@ public class MostRecentEntryAssertStatusServerErrorRestTest extends BaseRestTest
     private String urlOfOldRequest = "url-old";
     private String urlPatternToMatchUrl = ".*url-.*";
     private String urlPatternNotToMatchUrl = ".*does_not_match-.*";
-    private int serverErrorStatus = HttpStatus.SC_INTERNAL_SERVER_ERROR;
-    private int nonServerErrorStatus = HttpStatus.SC_OK;
+    private int serverErrorStatus = HttpURLConnection.HTTP_INTERNAL_ERROR;
+    private int nonServerErrorStatus = HttpURLConnection.HTTP_OK;
     private String responseBody = "success";
 
     @Override
@@ -29,7 +29,7 @@ public class MostRecentEntryAssertStatusServerErrorRestTest extends BaseRestTest
     public void getBadRequestUrlPatternIsInvalid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", "["));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpStatus.SC_BAD_REQUEST);
+        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 

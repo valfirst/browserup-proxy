@@ -2,7 +2,7 @@ package com.browserup.bup.proxy.mitmproxy.assertion.entries.header;
 
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -122,7 +122,7 @@ public class EntriesAssertHeaderContainsRestTest extends BaseEntriesAssertHeader
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerName", FIRST_HEADER_NAME));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", HttpStatus.SC_BAD_REQUEST, statusCode);
+        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, statusCode);
         conn.disconnect();
     }
 }

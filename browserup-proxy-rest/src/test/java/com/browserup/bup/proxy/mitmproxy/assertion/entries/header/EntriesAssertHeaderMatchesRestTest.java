@@ -2,7 +2,7 @@ package com.browserup.bup.proxy.mitmproxy.assertion.entries.header;
 
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -79,20 +79,20 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     public void getBadRequestIfHeaderValuePatternNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH));
-        assertEquals("Expected to get bad request", HttpStatus.SC_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
     }
 
     @Test
     public void getBadRequestIfHeaderValuePatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH, "headerValuePattern", "["));
-        assertEquals("Expected to get bad request", HttpStatus.SC_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
     }
 
     @Test
     public void getBadRequestIfHeaderNamePatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", "[", "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_SECOND));
-        assertEquals("Expected to get bad request", HttpStatus.SC_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
     }
 }

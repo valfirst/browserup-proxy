@@ -2,7 +2,7 @@ package com.browserup.bup.proxy.mitmproxy.assertion.entries.content;
 
 import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.junit.Test;
 
 import java.net.HttpURLConnection;
@@ -40,7 +40,7 @@ public abstract class BaseEntriesAssertContentRestTest extends BaseRestTest {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("contentText", RESPONSE_NOT_TO_FIND));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", HttpStatus.SC_BAD_REQUEST, statusCode);
+        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, statusCode);
         conn.disconnect();
     }
 
@@ -51,7 +51,7 @@ public abstract class BaseEntriesAssertContentRestTest extends BaseRestTest {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", "[", "contentText", RESPONSE_NOT_TO_FIND));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", HttpStatus.SC_BAD_REQUEST, statusCode);
+        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, statusCode);
         conn.disconnect();
     }
 }

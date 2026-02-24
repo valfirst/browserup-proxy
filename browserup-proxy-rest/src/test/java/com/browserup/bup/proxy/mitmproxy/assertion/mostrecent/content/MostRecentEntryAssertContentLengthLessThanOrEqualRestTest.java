@@ -4,7 +4,7 @@ import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -30,14 +30,14 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
         proxyManager.get().iterator().next().newHar();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpStatus.SC_BAD_REQUEST);
+        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 
     @Test
     public void getBadRequestIfUrlPatternNotProvided() throws Exception {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath());
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpStatus.SC_BAD_REQUEST);
+        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 
@@ -46,7 +46,7 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "length", "invalidlength"));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpStatus.SC_BAD_REQUEST);
+        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
         conn.disconnect();
     }
 
