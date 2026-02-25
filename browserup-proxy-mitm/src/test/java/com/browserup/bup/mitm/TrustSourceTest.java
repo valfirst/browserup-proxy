@@ -1,14 +1,14 @@
 package com.browserup.bup.mitm;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -17,24 +17,24 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TrustSourceTest {
-    @Rule
-    public TemporaryFolder tmpDir = new TemporaryFolder();
+class TrustSourceTest {
+    @TempDir
+    Path tmpDir;
 
     private File certificateFile;
 
-    @Before
-    public void stageFiles() throws IOException {
-        certificateFile = tmpDir.newFile("certificate.crt");
+    @BeforeEach
+    void stageFiles() throws IOException {
+        certificateFile = Files.createFile(tmpDir.resolve("certificate.crt")).toFile();
 
         Files.copy(KeyStoreFileCertificateSourceTest.class.getResourceAsStream("/com/browserup/bup/mitm/certificate.crt"), certificateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Test
-    public void testLoadJavaTrustSource() {
+    void testLoadJavaTrustSource() {
         TrustSource trustSource = TrustSource.javaTrustSource();
         X509Certificate[] trustedCAs = trustSource.getTrustedCAs();
 
@@ -43,7 +43,7 @@ public class TrustSourceTest {
     }
 
     @Test
-    public void testLoadBuiltinTrustSource() {
+    void testLoadBuiltinTrustSource() {
         TrustSource trustSource = TrustSource.builtinTrustSource();
         X509Certificate[] trustedCAs = trustSource.getTrustedCAs();
 
@@ -52,7 +52,7 @@ public class TrustSourceTest {
     }
 
     @Test
-    public void testCanAddCertificateToJavaTrustSource() {
+    void testCanAddCertificateToJavaTrustSource() {
         TrustSource trustSource = TrustSource.javaTrustSource();
         int trustedCACount = trustSource.getTrustedCAs().length;
 
@@ -77,24 +77,24 @@ public class TrustSourceTest {
 
         int newTrustedCACount = newTrustSource.getTrustedCAs().length;
 
-        assertEquals("Expected trust source with additional CA to be larger than original trust source", trustedCACount + 1, newTrustedCACount);
+        assertEquals(trustedCACount + 1, newTrustedCACount, "Expected trust source with additional CA to be larger than original trust source");
     }
 
     @Test
-    public void testCanAddTrustedCertificateInFile() {
+    void testCanAddTrustedCertificateInFile() {
         TrustSource trustSource = TrustSource.javaTrustSource();
         int trustedCACount = trustSource.getTrustedCAs().length;
 
         TrustSource newTrustSource = trustSource.add(certificateFile);
         int newTrustedCACount = newTrustSource.getTrustedCAs().length;
 
-        assertEquals("Expected trust source with additional CA to be larger than original trust source", trustedCACount + 1, newTrustedCACount);
+        assertEquals(trustedCACount + 1, newTrustedCACount, "Expected trust source with additional CA to be larger than original trust source");
     }
 
     @Test
-    public void testCanAddTrustedCertificateInKeyStore() throws Exception {
+    void testCanAddTrustedCertificateInKeyStore() throws Exception {
         InputStream keystoreStream = TrustSource.class.getResourceAsStream("/com/browserup/bup/mitm/trusted-cert.jks");
-        assertNotNull("Unable to load keystore", keystoreStream);
+        assertNotNull(keystoreStream, "Unable to load keystore");
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         keyStore.load(keystoreStream, null);
 
@@ -104,6 +104,6 @@ public class TrustSourceTest {
         TrustSource newTrustSource = trustSource.add(keyStore);
         int newTrustedCACount = newTrustSource.getTrustedCAs().length;
 
-        assertEquals("Expected trust source with additional CA to be larger than original trust source", trustedCACount + 1, newTrustedCACount);
+        assertEquals(trustedCACount + 1, newTrustedCACount, "Expected trust source with additional CA to be larger than original trust source");
     }
 }

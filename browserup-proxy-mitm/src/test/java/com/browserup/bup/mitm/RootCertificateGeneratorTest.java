@@ -2,12 +2,13 @@ package com.browserup.bup.mitm;
 
 import com.browserup.bup.mitm.test.util.CertificateTestUtil;
 import com.browserup.bup.mitm.keys.RSAKeyGenerator;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 
 import static org.hamcrest.Matchers.greaterThan;
@@ -15,12 +16,12 @@ import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RootCertificateGeneratorTest {
-    @Rule
-    public TemporaryFolder tmpDir = new TemporaryFolder();
+class RootCertificateGeneratorTest {
+    @TempDir
+    Path tmpDir;
 
     private final CertificateInfo certificateInfo = new CertificateInfo()
             .commonName("littleproxy-test")
@@ -28,7 +29,7 @@ public class RootCertificateGeneratorTest {
             .notBefore(Instant.now());
 
     @Test
-    public void testGenerateRootCertificate() {
+    void testGenerateRootCertificate() {
         RootCertificateGenerator generator = RootCertificateGenerator.builder()
                 .certificateInfo(certificateInfo)
                 .keyGenerator(new RSAKeyGenerator())
@@ -41,11 +42,11 @@ public class RootCertificateGeneratorTest {
 
         CertificateAndKey secondLoad = generator.load();
 
-        assertEquals("Expected RootCertificateGenerator to return the same instance between calls to .load()", certificateAndKey, secondLoad);
+        assertEquals(certificateAndKey, secondLoad, "Expected RootCertificateGenerator to return the same instance between calls to .load()");
     }
 
     @Test
-    public void testCanUseDefaultValues() {
+    void testCanUseDefaultValues() {
         RootCertificateGenerator generator = RootCertificateGenerator.builder().build();
 
         CertificateAndKey certificateAndKey = generator.load();
@@ -54,10 +55,10 @@ public class RootCertificateGeneratorTest {
     }
 
     @Test
-    public void testCanSaveAsPKCS12File() throws IOException {
+    void testCanSaveAsPKCS12File() throws IOException {
         RootCertificateGenerator generator = RootCertificateGenerator.builder().build();
 
-        File file = tmpDir.newFile();
+        File file = Files.createTempFile(tmpDir, "test", null).toFile();
 
         generator.saveRootCertificateAndKey("PKCS12", file, "privateKey", "password");
 
@@ -66,10 +67,10 @@ public class RootCertificateGeneratorTest {
     }
 
     @Test
-    public void testCanSaveAsJKSFile() throws IOException {
+    void testCanSaveAsJKSFile() throws IOException {
         RootCertificateGenerator generator = RootCertificateGenerator.builder().build();
 
-        File file = tmpDir.newFile();
+        File file = Files.createTempFile(tmpDir, "test", null).toFile();
 
         generator.saveRootCertificateAndKey("JKS", file, "privateKey", "password");
 
@@ -78,7 +79,7 @@ public class RootCertificateGeneratorTest {
     }
 
     @Test
-    public void testCanEncodeAsPem() {
+    void testCanEncodeAsPem() {
         RootCertificateGenerator generator = RootCertificateGenerator.builder().build();
 
         String pemEncodedPrivateKey = generator.encodePrivateKeyAsPem("password");

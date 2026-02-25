@@ -1,15 +1,15 @@
 package com.browserup.bup.mitm.tools;
 
 import com.browserup.bup.mitm.keys.ECKeyGenerator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ECKeyGeneratorTest {
+class ECKeyGeneratorTest {
     @Test
-    public void testGenerateWithDefaults() {
+    void testGenerateWithDefaults() {
         ECKeyGenerator keyGenerator = new ECKeyGenerator();
         KeyPair keyPair = keyGenerator.generate();
 
@@ -17,7 +17,7 @@ public class ECKeyGeneratorTest {
     }
 
     @Test
-    public void testGenerateWithExplicitNamedCurve() {
+    void testGenerateWithExplicitNamedCurve() {
         ECKeyGenerator keyGenerator = new ECKeyGenerator("secp384r1");
         KeyPair keyPair = keyGenerator.generate();
 

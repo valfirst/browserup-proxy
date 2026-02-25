@@ -1,15 +1,15 @@
 package com.browserup.bup.mitm.tools;
 
 import com.browserup.bup.mitm.keys.RSAKeyGenerator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RSAKeyGeneratorTest {
+class RSAKeyGeneratorTest {
     @Test
-    public void testGenerateWithDefaults() {
+    void testGenerateWithDefaults() {
         RSAKeyGenerator keyGenerator = new RSAKeyGenerator();
         KeyPair keyPair = keyGenerator.generate();
 
@@ -17,7 +17,7 @@ public class RSAKeyGeneratorTest {
     }
 
     @Test
-    public void testGenerateWithExplicitKeySize() {
+    void testGenerateWithExplicitKeySize() {
         RSAKeyGenerator keyGenerator = new RSAKeyGenerator(1024);
         KeyPair keyPair = keyGenerator.generate();
 

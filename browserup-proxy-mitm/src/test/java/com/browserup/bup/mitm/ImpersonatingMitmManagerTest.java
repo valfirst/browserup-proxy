@@ -7,20 +7,20 @@ import io.netty.handler.codec.http.HttpVersion;
 import com.browserup.bup.mitm.keys.ECKeyGenerator;
 import com.browserup.bup.mitm.keys.RSAKeyGenerator;
 import com.browserup.bup.mitm.manager.ImpersonatingMitmManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSession;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ImpersonatingMitmManagerTest {
+class ImpersonatingMitmManagerTest {
     private final SSLSession mockSession = mock(SSLSession.class);
 
     @Test
-    public void testCreateDefaultServerEngine() {
+    void testCreateDefaultServerEngine() {
         ImpersonatingMitmManager mitmManager = ImpersonatingMitmManager.builder().build();
 
         SSLEngine serverSslEngine = mitmManager.serverSslEngine("hostname", 80);
@@ -28,7 +28,7 @@ public class ImpersonatingMitmManagerTest {
     }
 
     @Test
-    public void testCreateDefaultClientEngine() {
+    void testCreateDefaultClientEngine() {
         ImpersonatingMitmManager mitmManager = ImpersonatingMitmManager.builder().build();
 
         when(mockSession.getPeerHost()).thenReturn("hostname");
@@ -39,7 +39,7 @@ public class ImpersonatingMitmManagerTest {
     }
 
     @Test
-    public void testCreateCAAndServerCertificatesOfDifferentTypes() {
+    void testCreateCAAndServerCertificatesOfDifferentTypes() {
         ImpersonatingMitmManager mitmManager = ImpersonatingMitmManager.builder()
                 .rootCertificateSource(RootCertificateGenerator.builder().keyGenerator(new RSAKeyGenerator()).build())
                 .serverKeyGenerator(new ECKeyGenerator())
