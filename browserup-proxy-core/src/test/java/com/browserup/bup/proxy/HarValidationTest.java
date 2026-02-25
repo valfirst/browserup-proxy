@@ -10,7 +10,6 @@ import de.sstoehr.harreader.model.HarPage;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -21,7 +20,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.Assert.assertNotNull;
 
-@Ignore
 public class HarValidationTest extends MockServerTest {
     private BrowserUpProxy proxy;
 

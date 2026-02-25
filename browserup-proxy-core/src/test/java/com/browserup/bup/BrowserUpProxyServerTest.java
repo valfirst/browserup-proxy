@@ -1,7 +1,7 @@
 package com.browserup.bup;
 
 import io.netty.handler.codec.http.HttpRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BrowserUpProxyServerTest {
+class BrowserUpProxyServerTest {
     @Test
-    public void detectsNonProxyHosts_byURL() {
+    void detectsNonProxyHosts_byURL() {
         BrowserUpProxyServer proxy = new BrowserUpProxyServer();
         proxy.setChainedProxyNonProxyHosts(List.of("127.0.0.1", "*.example.com"));
 
@@ -26,7 +26,7 @@ public class BrowserUpProxyServerTest {
     }
 
     @Test
-    public void detectsNonProxyHosts_byHostname() {
+    void detectsNonProxyHosts_byHostname() {
         BrowserUpProxyServer proxy = new BrowserUpProxyServer();
         proxy.setChainedProxyNonProxyHosts(List.of("127.0.0.1", "*.example.com"));
 
@@ -40,7 +40,7 @@ public class BrowserUpProxyServerTest {
     }
 
     @Test
-    public void nonProxyHostsNotSpecified() {
+    void nonProxyHostsNotSpecified() {
         BrowserUpProxyServer proxy = new BrowserUpProxyServer();
         proxy.setChainedProxyNonProxyHosts(null);
 
