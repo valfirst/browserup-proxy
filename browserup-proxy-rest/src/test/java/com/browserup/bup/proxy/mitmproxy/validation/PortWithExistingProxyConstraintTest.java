@@ -3,8 +3,8 @@ package com.browserup.bup.proxy.mitmproxy.validation;
 import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.proxy.MitmProxyManager;
 import com.browserup.bup.rest.validation.PortWithExistingProxyConstraint;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintValidatorContext;
 
@@ -12,10 +12,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class PortWithExistingProxyConstraintTest {
+class PortWithExistingProxyConstraintTest {
 
     @Test
-    public void validPort() {
+    void validPort() {
         int port = 10;
         MitmProxyManager mockedProxyManager = mock(MitmProxyManager.class);
         ConstraintValidatorContext mockedContext = mock(ConstraintValidatorContext.class);
@@ -27,11 +27,11 @@ public class PortWithExistingProxyConstraintTest {
 
         boolean result = validator.isValid(port, mockedContext);
 
-        Assert.assertTrue("Expected port validation to pass", result);
+        Assertions.assertTrue(result, "Expected port validation to pass");
     }
 
     @Test
-    public void invalidPort() {
+    void invalidPort() {
         int port = 10;
         int nonExistingProxyPort = 100;
         MitmProxyManager mockedProxyManager = mock(MitmProxyManager.class);
@@ -46,6 +46,6 @@ public class PortWithExistingProxyConstraintTest {
 
         boolean result = validator.isValid(port, mockedContext);
 
-        Assert.assertFalse("Expected port validation to fail", result);
+        Assertions.assertFalse(result, "Expected port validation to fail");
     }
 }

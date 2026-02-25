@@ -1,8 +1,8 @@
 package com.browserup.bup.proxy.mitmproxy.validation;
 
 import com.browserup.bup.rest.validation.PatternConstraint;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.validation.ConstraintValidatorContext;
@@ -10,10 +10,10 @@ import javax.validation.ConstraintValidatorContext;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
-public class PatternConstraintTest {
+class PatternConstraintTest {
 
     @Test
-    public void validPattern() {
+    void validPattern() {
         PatternConstraint.PatternValidator validator = new PatternConstraint.PatternValidator();
         String pattern = ".*";
         ConstraintValidatorContext mockedContext = mock(ConstraintValidatorContext.class);
@@ -23,11 +23,11 @@ public class PatternConstraintTest {
 
         boolean result = validator.isValid(pattern, mockedContext);
 
-        Assert.assertTrue("Expected pattern validation to pass", result);
+        Assertions.assertTrue(result, "Expected pattern validation to pass");
     }
 
     @Test
-    public void invalidPattern() {
+    void invalidPattern() {
         PatternConstraint.PatternValidator validator = new PatternConstraint.PatternValidator();
         String pattern = "[";
         ConstraintValidatorContext mockedContext = mock(ConstraintValidatorContext.class);
@@ -37,6 +37,6 @@ public class PatternConstraintTest {
 
         boolean result = validator.isValid(pattern, mockedContext);
 
-        Assert.assertFalse("Expected pattern validation to fail", result);
+        Assertions.assertFalse(result, "Expected pattern validation to fail");
     }
 }

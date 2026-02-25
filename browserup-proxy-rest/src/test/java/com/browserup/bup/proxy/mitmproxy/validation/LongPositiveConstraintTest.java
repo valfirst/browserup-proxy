@@ -1,8 +1,8 @@
 package com.browserup.bup.proxy.mitmproxy.validation;
 
 import com.browserup.bup.rest.validation.LongPositiveConstraint;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.validation.ConstraintValidatorContext;
@@ -10,10 +10,10 @@ import javax.validation.ConstraintValidatorContext;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
-public class LongPositiveConstraintTest {
+class LongPositiveConstraintTest {
 
     @Test
-    public void validLongPositive() {
+    void validLongPositive() {
         LongPositiveConstraint.LongPositiveValidator validator = new LongPositiveConstraint.LongPositiveValidator();
         String value = "10000";
         ConstraintValidatorContext mockedContext = mock(ConstraintValidatorContext.class);
@@ -23,11 +23,11 @@ public class LongPositiveConstraintTest {
 
         boolean result = validator.isValid(value, mockedContext);
 
-        Assert.assertTrue("Expected long positive validation to pass", result);
+        Assertions.assertTrue(result, "Expected long positive validation to pass");
     }
 
     @Test
-    public void invalidLongNegative() {
+    void invalidLongNegative() {
         LongPositiveConstraint.LongPositiveValidator validator = new LongPositiveConstraint.LongPositiveValidator();
         String value = "-1";
         ConstraintValidatorContext mockedContext = mock(ConstraintValidatorContext.class);
@@ -37,11 +37,11 @@ public class LongPositiveConstraintTest {
 
         boolean result = validator.isValid(value, mockedContext);
 
-        Assert.assertFalse("Expected long positive validation to fail", result);
+        Assertions.assertFalse(result, "Expected long positive validation to fail");
     }
 
     @Test
-    public void invalidLongFormat() {
+    void invalidLongFormat() {
         LongPositiveConstraint.LongPositiveValidator validator = new LongPositiveConstraint.LongPositiveValidator();
         String value = "invalid_format";
         ConstraintValidatorContext mockedContext = mock(ConstraintValidatorContext.class);
@@ -51,6 +51,6 @@ public class LongPositiveConstraintTest {
 
         boolean result = validator.isValid(value, mockedContext);
 
-        Assert.assertFalse("Expected long positive validation to fail", result);
+        Assertions.assertFalse(result, "Expected long positive validation to fail");
     }
 }
