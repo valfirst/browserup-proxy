@@ -1,5 +1,4 @@
 plugins {
-    id 'groovy'
     id 'java-library'
 }
 
@@ -61,6 +60,9 @@ dependencies {
     }
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.12.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation('org.apache.httpcomponents:httpclient:4.5.14') {
         exclude(module: 'commons-logging')
     }
@@ -68,7 +70,7 @@ dependencies {
     testImplementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
     testImplementation "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
-    testImplementation 'org.codehaus.groovy:groovy-all:3.0.25'
+
     testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
     testImplementation 'org.mockito:mockito-core:5.21.0'
 }
