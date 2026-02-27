@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id "io.swagger.core.v3.swagger-gradle-plugin" version "${swaggerVersion}"
-    id 'org.openapi.generator' version '4.3.1'
+    id 'org.openapi.generator' version '6.2.1'
 }
 
 archivesBaseName = 'browserup-proxy-rest-clients'
@@ -108,7 +108,7 @@ clients.each { client ->
         apiPackage = Constants.apiPackage
         modelPackage = Constants.modelPackage
         invokerPackage = "browserup.invoker"
-        systemProperties = [
+        globalProperties = [
                 modelDocs: 'false'
         ]
         skipValidateSpec = true
