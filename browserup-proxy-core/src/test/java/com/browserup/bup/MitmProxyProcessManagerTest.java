@@ -108,8 +108,8 @@ public class MitmProxyProcessManagerTest {
         }
 
         assertNotNull(ex);
-        assertTrue("Expected ConnectException or IOException, got: " + ex.getClass().getName(),
-                ex instanceof ConnectException || ex instanceof IOException);
+        assertTrue("Expected ConnectException, got: " + ex.getClass().getName(),
+                ex instanceof ConnectException);
 
         Har har = mitmProxyManager.getHarCaptureFilterManager().getHar();
         assertNotNull(har);
@@ -134,8 +134,8 @@ public class MitmProxyProcessManagerTest {
         }
 
         assertNotNull(ex);
-        assertTrue("Expected ConnectException or IOException, got: " + ex.getClass().getName(),
-                ex instanceof ConnectException || ex instanceof IOException);
+        assertTrue("Expected ConnectException, got: " + ex.getClass().getName(),
+                ex instanceof ConnectException);
     }
 
     private void sendRequestThroughProxy(int proxyPort) throws IOException, InterruptedException {
