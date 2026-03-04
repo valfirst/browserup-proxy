@@ -22,12 +22,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -665,21 +663,5 @@ public class ProxyResource {
         public void setProxyList(Collection<ProxyDescriptor> proxyList) {
             this.proxyList = proxyList;
         }
-    }
-
-    private Optional<Long> getAssertionTimeFromRequest(String timeParam) {
-        if (StringUtils.isEmpty(timeParam)) {
-            LOG.warn("Time parameter not present");
-            return Optional.empty();
-        }
-
-        Long time;
-        try {
-            time = Long.valueOf(timeParam);
-        } catch (Exception ex) {
-            LOG.warn("Time parameter not valid", ex);
-            return Optional.empty();
-        }
-        return Optional.of(time);
     }
 }
