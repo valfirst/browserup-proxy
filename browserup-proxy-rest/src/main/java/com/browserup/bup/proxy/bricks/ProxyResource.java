@@ -8,7 +8,7 @@ import com.browserup.bup.mitmproxy.MitmProxyProcessManager.MitmProxyLoggingLevel
 import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.MitmProxyManager;
 import com.browserup.bup.proxy.auth.AuthType;
-import com.google.inject.Inject;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
