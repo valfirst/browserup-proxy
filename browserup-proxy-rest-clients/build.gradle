@@ -18,7 +18,6 @@ dependencies {
     testImplementation project(':browserup-proxy-mitm')
 
     testImplementation "com.google.inject:guice:$guiceVersion"
-    testImplementation "com.google.inject.extensions:guice-servlet:$guiceVersion"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
