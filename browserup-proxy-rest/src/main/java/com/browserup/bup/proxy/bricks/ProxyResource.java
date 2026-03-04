@@ -3,35 +3,23 @@ package com.browserup.bup.proxy.bricks;
 import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.exception.ProxyExistsException;
 import com.browserup.bup.exception.ProxyPortsExhaustedException;
-import com.browserup.bup.exception.UnsupportedCharsetException;
 import com.browserup.bup.filters.JavascriptRequestResponseFilter;
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager.MitmProxyLoggingLevel;
 import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.MitmProxyManager;
 import com.browserup.bup.proxy.auth.AuthType;
-import com.browserup.bup.util.BrowserUpHttpUtil;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import com.google.sitebricks.At;
-import com.google.sitebricks.client.transport.Json;
-import com.google.sitebricks.client.transport.Text;
-import com.google.sitebricks.headless.Reply;
-import com.google.sitebricks.headless.Request;
-import com.google.sitebricks.headless.Service;
-import com.google.sitebricks.http.Delete;
-import com.google.sitebricks.http.Get;
-import com.google.sitebricks.http.Post;
-import com.google.sitebricks.http.Put;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.script.ScriptException;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,8 +35,7 @@ import static java.util.stream.Collectors.toList;
 
 import de.sstoehr.harreader.model.Har;
 
-@At("/proxy")
-@Service
+@Path("/proxy")
 public class ProxyResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProxyResource.class);
@@ -60,29 +47,36 @@ public class ProxyResource {
         this.proxyManager = proxyManager;
     }
 
-    @Get
-    public Reply<?> getProxies() {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProxies() {
         LOG.info("GET /");
         Collection<ProxyDescriptor> proxyList = proxyManager.get().stream()
                 .map(proxy -> new ProxyDescriptor(proxy.getPort()))
                 .collect(toList());
-        return Reply.with(new ProxyListDescriptor(proxyList)).as(Json.class);
+        return Response.ok(new ProxyListDescriptor(proxyList), MediaType.APPLICATION_JSON_TYPE).build();
     }
 
-    @Post
-    public Reply<?> newProxy(Request request) {
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response newProxy(
+            @QueryParam("httpProxy") String httpProxy,
+            @QueryParam("httpNonProxyHosts") String httpNonProxyHosts,
+            @QueryParam("proxyUsername") String proxyUsername,
+            @QueryParam("proxyPassword") String proxyPassword,
+            @QueryParam("proxyHTTPS") String proxyHTTPS,
+            @QueryParam("bindAddress") String paramBindAddr,
+            @QueryParam("serverBindAddress") String paramServerBindAddr,
+            @QueryParam("port") String portParam,
+            @QueryParam("useEcc") String useEccString,
+            @QueryParam("mitmProxyLoggingLevel") String loggingLevel,
+            @QueryParam("trustAllServers") String trustAllServersString) {
         LOG.info("POST /");
-        LOG.info(request.params().toString());
         String systemProxyHost = System.getProperty("http.proxyHost");
         String systemProxyPort = System.getProperty("http.proxyPort");
         String systemNonProxyHosts = System.getProperty("http.nonProxyHosts");
 
-        String httpProxy = request.param("httpProxy");
-        String httpNonProxyHosts = request.param("httpNonProxyHosts");
-
-        String proxyUsername = request.param("proxyUsername");
-        String proxyPassword = request.param("proxyPassword");
-        boolean upstreamProxyHttps = "true".equals(request.param("proxyHTTPS"));
+        boolean upstreamProxyHttps = "true".equals(proxyHTTPS);
 
         Hashtable<String, String> options = new Hashtable<>();
 
@@ -106,20 +100,15 @@ public class ProxyResource {
             }
         }
 
-        String paramBindAddr = request.param("bindAddress");
-        String paramServerBindAddr = request.param("serverBindAddress");
-        Integer paramPort = request.param("port") == null ? null : Integer.parseInt(request.param("port"));
+        Integer paramPort = portParam == null ? null : Integer.parseInt(portParam);
 
-        String useEccString = request.param("useEcc");
         boolean useEcc = Boolean.parseBoolean(useEccString);
 
-        String loggingLevel = request.param("mitmProxyLoggingLevel");
         MitmProxyLoggingLevel level = MitmProxyLoggingLevel.info;
         if (StringUtils.isNotEmpty(loggingLevel)) {
             level = MitmProxyLoggingLevel.valueOf(loggingLevel);
         }
 
-        String trustAllServersString = request.param("trustAllServers");
         boolean trustAllServers = Boolean.parseBoolean(trustAllServersString);
 
         LOG.debug("POST proxy instance on bindAddress `{}` & port `{}` & serverBindAddress `{}`",
@@ -128,49 +117,51 @@ public class ProxyResource {
         try {
             proxy = proxyManager.create(upstreamHttpProxy, upstreamProxyHttps, upstreamNonProxyHosts, proxyUsername, proxyPassword, paramPort, paramBindAddr, paramServerBindAddr, useEcc, trustAllServers, level);
         } catch (ProxyExistsException ex) {
-            return Reply.with(new ProxyDescriptor(ex.getPort())).status(455).as(Json.class);
+            return Response.status(455).entity(new ProxyDescriptor(ex.getPort())).type(MediaType.APPLICATION_JSON_TYPE).build();
         } catch (ProxyPortsExhaustedException ex) {
-            return Reply.saying().status(456);
+            return Response.status(456).build();
         } catch (Exception ex) {
             StringWriter s = new StringWriter();
             ex.printStackTrace(new PrintWriter(s));
-            return Reply.with(s).as(Text.class).status(550);
+            return Response.status(550).entity(s.toString()).type(MediaType.TEXT_PLAIN_TYPE).build();
         }
-        return Reply.with(new ProxyDescriptor(proxy.getPort())).as(Json.class);
+        return Response.ok(new ProxyDescriptor(proxy.getPort()), MediaType.APPLICATION_JSON_TYPE).build();
     }
 
-    @Get
-    @At("/:port/har")
-    public Reply<?> getHar(@Named("port") int port, Request request) {
+    @GET
+    @Path("/{port}/har")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getHar(@PathParam("port") int port, @QueryParam("cleanHar") String cleanHar) {
         LOG.info("GET /{}/har", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        boolean cleanHar = "true".equals(request.param("cleanHar"));
-        Har har = proxy.getHar(cleanHar);
+        boolean clean = "true".equals(cleanHar);
+        Har har = proxy.getHar(clean);
 
-        return Reply.with(har).as(Json.class);
+        return Response.ok(har, MediaType.APPLICATION_JSON_TYPE).build();
     }
 
-    @Put
-    @At("/:port/har")
-    public Reply<?> newHar(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/har")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response newHar(@PathParam("port") int port,
+            @QueryParam("initialPageRef") String initialPageRef,
+            @QueryParam("initialPageTitle") String initialPageTitle,
+            @QueryParam("captureHeaders") String captureHeaders,
+            @QueryParam("captureContent") String captureContent,
+            @QueryParam("captureBinaryContent") String captureBinaryContent,
+            @QueryParam("captureCookies") String captureCookies) {
         LOG.info("PUT /{}/har", port);
-        LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String initialPageRef = request.param("initialPageRef");
-        String initialPageTitle = request.param("initialPageTitle");
         Har oldHar = proxy.newHar(initialPageRef, initialPageTitle);
 
-        String captureHeaders = request.param("captureHeaders");
-        String captureContent = request.param("captureContent");
-        String captureBinaryContent = request.param("captureBinaryContent");
         Set<CaptureType> captureTypes = new HashSet<>();
         if (Boolean.parseBoolean(captureHeaders)) {
             captureTypes.addAll(CaptureType.getHeaderCaptureTypes());
@@ -183,448 +174,448 @@ public class ProxyResource {
         }
         proxy.setHarCaptureTypes(captureTypes);
 
-        String captureCookies = request.param("captureCookies");
         if (Boolean.parseBoolean(captureCookies)) {
             proxy.enableHarCaptureTypes(CaptureType.getCookieCaptureTypes());
         }
 
         if (oldHar != null) {
-            return Reply.with(oldHar).as(Json.class);
+            return Response.ok(oldHar, MediaType.APPLICATION_JSON_TYPE).build();
         } else {
-            return Reply.saying().noContent();
+            return Response.noContent().build();
         }
     }
 
-    @Put
-    @At("/:port/har/pageRef")
-    public Reply<?> setPage(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/har/pageRef")
+    public Response setPage(@PathParam("port") int port,
+            @QueryParam("pageRef") String pageRef,
+            @QueryParam("pageTitle") String pageTitle) {
         LOG.info("PUT /{}/har/pageRef", port);
-        LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String pageRef = request.param("pageRef");
-        String pageTitle = request.param("pageTitle");
         proxy.newPage(pageRef, pageTitle);
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Post
-    @At("/:port/har/commands/endPage")
-    public Reply<?> endPage(@Named("port") int port, Request request) {
+    @POST
+    @Path("/{port}/har/commands/endPage")
+    public Response endPage(@PathParam("port") int port) {
         LOG.info("POST /{}/commands/endPage", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         proxy.endPage();
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Post
-    @At("/:port/har/commands/endHar")
-    public Reply<?> endHar(@Named("port") int port, Request request) {
+    @POST
+    @Path("/{port}/har/commands/endHar")
+    public Response endHar(@PathParam("port") int port) {
         LOG.info("POST /{}/commands/endHar", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         proxy.endHar();
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Get
-    @At("/:port/blocklist")
-    public Reply<?> getBlocklist(@Named("port") int port, Request request) {
+    @GET
+    @Path("/{port}/blocklist")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBlocklist(@PathParam("port") int port) {
         LOG.info("GET /{}/blocklist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Reply.with(proxy.getBlocklist()).as(Json.class);
+        return Response.ok(proxy.getBlocklist(), MediaType.APPLICATION_JSON_TYPE).build();
     }
 
-    @Put
-    @At("/:port/blocklist")
-    public Reply<?> blocklist(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/blocklist")
+    public Response blocklist(@PathParam("port") int port,
+            @QueryParam("regex") String regex,
+            @QueryParam("status") String status,
+            @QueryParam("method") String method) {
         LOG.info("PUT /{}/blocklist", port);
-        LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String blocklist = request.param("regex");
-        int responseCode = parseResponseCode(request.param("status"));
-        String method = request.param("method");
-        proxy.blocklistRequests(blocklist, responseCode, method);
+        int responseCode = parseResponseCode(status);
+        proxy.blocklistRequests(regex, responseCode, method);
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Delete
-    @At("/:port/blocklist")
-    public Reply<?> clearBlocklist(@Named("port") int port, Request request) {
+    @DELETE
+    @Path("/{port}/blocklist")
+    public Response clearBlocklist(@PathParam("port") int port) {
         LOG.info("DELETE /{}/blocklist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         proxy.clearBlocklist();
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Get
-    @At("/:port/allowlist")
-    public Reply<?> getAllowlist(@Named("port") int port, Request request) {
+    @GET
+    @Path("/{port}/allowlist")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllowlist(@PathParam("port") int port) {
         LOG.info("GET /{}/allowlist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Reply.with(proxy.getAllowlistUrls()).as(Json.class);
+        return Response.ok(proxy.getAllowlistUrls(), MediaType.APPLICATION_JSON_TYPE).build();
     }
 
-    @Put
-    @At("/:port/allowlist")
-    public Reply<?> allowlist(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/allowlist")
+    public Response allowlist(@PathParam("port") int port,
+            @QueryParam("regex") String regex,
+            @QueryParam("status") String status) {
         LOG.info("PUT /{}/allowlist", port);
-        LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String regex = request.param("regex");
-        int responseCode = parseResponseCode(request.param("status"));
+        int responseCode = parseResponseCode(status);
         proxy.allowlistRequests(Arrays.asList(regex.split(",")), responseCode);
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Delete
-    @At("/:port/allowlist")
-    public Reply<?> clearAllowlist(@Named("port") int port, Request request) {
+    @DELETE
+    @Path("/{port}/allowlist")
+    public Response clearAllowlist(@PathParam("port") int port) {
         LOG.info("DELETE /{}/allowlist", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         proxy.disableAllowlist();
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Post
-    @At("/:port/auth/basic/:domain")
-    public Reply<?> autoBasicAuth(@Named("port") int port, @Named("domain") String domain, Request request) {
+    @POST
+    @Path("/{port}/auth/basic/{domain}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response autoBasicAuth(@PathParam("port") int port, @PathParam("domain") String domain, Map<String, String> credentials) {
         LOG.info("POST /{}/auth/basic/{}", port, domain);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        Map<String, String> credentials = request.read(HashMap.class).as(Json.class);
         proxy.autoAuthorization(domain, credentials.get("username"), credentials.get("password"), AuthType.BASIC);
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Post
-    @At("/:port/headers")
-    public Reply<?> updateHeaders(@Named("port") int port, Request request) {
+    @POST
+    @Path("/{port}/headers")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateHeaders(@PathParam("port") int port, Map<String, String> headers) {
         LOG.info("POST /{}/headers", port);
 
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        Map<String, String> headers = request.read(Map.class).as(Json.class);
         headers.forEach(proxy::addHeader);
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Post
-    @At("/:port/filter/request")
-    public Reply<?> addRequestFilter(@Named("port") int port, Request request) throws IOException, ScriptException {
+    @POST
+    @Path("/{port}/filter/request")
+    public Response addRequestFilter(@PathParam("port") int port, String body) throws IOException, ScriptException {
         LOG.info("POST /{}/filter/request", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         JavascriptRequestResponseFilter requestResponseFilter = new JavascriptRequestResponseFilter();
 
-        String script = getEntityBodyFromRequest(request);
-        requestResponseFilter.setRequestFilterScript(script);
+        requestResponseFilter.setRequestFilterScript(body);
 
         proxy.addRequestFilter(requestResponseFilter);
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Post
-    @At("/:port/filter/response")
-    public Reply<?> addResponseFilter(@Named("port") int port, Request request) throws IOException, ScriptException {
+    @POST
+    @Path("/{port}/filter/response")
+    public Response addResponseFilter(@PathParam("port") int port, String body) throws IOException, ScriptException {
         LOG.info("POST /{}/filter/response", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         JavascriptRequestResponseFilter requestResponseFilter = new JavascriptRequestResponseFilter();
 
-        String script = getEntityBodyFromRequest(request);
-        requestResponseFilter.setResponseFilterScript(script);
+        requestResponseFilter.setResponseFilterScript(body);
 
         proxy.addResponseFilter(requestResponseFilter);
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Put
-    @At("/:port/limit")
-    public Reply<?> limit(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/limit")
+    public Response limit(@PathParam("port") int port,
+            @QueryParam("upstreamKbps") String upstreamKbps,
+            @QueryParam("upstreamBps") String upstreamBps,
+            @QueryParam("downstreamKbps") String downstreamKbps,
+            @QueryParam("downstreamBps") String downstreamBps,
+            @QueryParam("latency") String latency,
+            @QueryParam("upstreamMaxKB") String upstreamMaxKB,
+            @QueryParam("downstreamMaxKB") String downstreamMaxKB,
+            @QueryParam("payloadPercentage") String payloadPercentage,
+            @QueryParam("maxBitsPerSecond") String maxBitsPerSecond,
+            @QueryParam("enable") String enable) {
         LOG.info("PUT /{}/limit", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String upstreamKbps = request.param("upstreamKbps");
         if (upstreamKbps != null) {
             try {
                 long upstreamBytesPerSecond = Long.parseLong(upstreamKbps) * 1024;
                 proxy.setWriteBandwidthLimit(upstreamBytesPerSecond);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid upstreamKbps value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
 
-        String upstreamBps = request.param("upstreamBps");
         if (upstreamBps != null) {
             try {
                 proxy.setWriteBandwidthLimit(Integer.parseInt(upstreamBps));
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid upstreamBps value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
 
-        String downstreamKbps = request.param("downstreamKbps");
         if (downstreamKbps != null) {
             try {
                 long downstreamBytesPerSecond = Long.parseLong(downstreamKbps) * 1024;
                 proxy.setReadBandwidthLimit(downstreamBytesPerSecond);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid downstreamKbps value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
 
-        String downstreamBps = request.param("downstreamBps");
         if (downstreamBps != null) {
             try {
                 proxy.setReadBandwidthLimit(Integer.parseInt(downstreamBps));
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid downstreamBps value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
 
-        String latency = request.param("latency");
         if (latency != null) {
             try {
                 proxy.setLatency(Long.parseLong(latency), TimeUnit.MILLISECONDS);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid latency value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
 
-        if (request.param("upstreamMaxKB") != null) {
+        if (upstreamMaxKB != null) {
             LOG.warn("upstreamMaxKB no longer supported");
-            return Reply.saying().badRequest();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        if (request.param("downstreamMaxKB") != null) {
+        if (downstreamMaxKB != null) {
             LOG.warn("downstreamMaxKB no longer supported");
-            return Reply.saying().badRequest();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        if (request.param("payloadPercentage") != null) {
+        if (payloadPercentage != null) {
             LOG.warn("payloadPercentage no longer supported");
-            return Reply.saying().badRequest();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        if (request.param("maxBitsPerSecond") != null) {
+        if (maxBitsPerSecond != null) {
             LOG.warn("maxBitsPerSecond no longer supported");
-            return Reply.saying().badRequest();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        if (request.param("enable") != null) {
+        if (enable != null) {
             LOG.warn("enable no longer supported. Limits, if set, will always be enabled.");
-            return Reply.saying().badRequest();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Put
-    @At("/:port/timeout")
-    public Reply<?> timeout(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/timeout")
+    public Response timeout(@PathParam("port") int port,
+            @QueryParam("requestTimeout") String requestTimeout,
+            @QueryParam("readTimeout") String readTimeout,
+            @QueryParam("connectionTimeout") String connectionTimeout,
+            @QueryParam("dnsCacheTimeout") String dnsCacheTimeout) {
         LOG.info("PUT /{}/timeout", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String requestTimeout = request.param("requestTimeout");
         if (requestTimeout != null) {
             try {
                 proxy.setRequestTimeout(Integer.parseInt(requestTimeout), TimeUnit.MILLISECONDS);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid requestTimeout value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
-        String readTimeout = request.param("readTimeout");
         if (readTimeout != null) {
             try {
                 proxy.setIdleConnectionTimeout(Integer.parseInt(readTimeout), TimeUnit.MILLISECONDS);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid readTimeout value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
-        String connectionTimeout = request.param("connectionTimeout");
         if (connectionTimeout != null) {
             try {
                 proxy.setConnectTimeout(Integer.parseInt(connectionTimeout), TimeUnit.MILLISECONDS);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid connectionTimeout value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
-        String dnsCacheTimeout = request.param("dnsCacheTimeout");
         if (dnsCacheTimeout != null) {
             try {
                 proxy.getHostNameResolver().setPositiveDNSCacheTimeout(Integer.parseInt(dnsCacheTimeout), TimeUnit.SECONDS);
                 proxy.getHostNameResolver().setNegativeDNSCacheTimeout(Integer.parseInt(dnsCacheTimeout), TimeUnit.SECONDS);
             } catch (NumberFormatException e) {
                 LOG.warn("Invalid dnsCacheTimeout value");
-                return Reply.saying().badRequest();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Delete
-    @At("/:port")
-    public Reply<?> delete(@Named("port") int port) {
+    @DELETE
+    @Path("/{port}")
+    public Response delete(@PathParam("port") int port) {
         LOG.info("DELETE /{}", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         proxyManager.delete(port);
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Post
-    @At("/:port/hosts")
-    public Reply<?> remapHosts(@Named("port") int port, Request request) {
+    @POST
+    @Path("/{port}/hosts")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response remapHosts(@PathParam("port") int port, Map<String, String> mappings) {
         LOG.info("POST /{}/hosts", port);
-        LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        @SuppressWarnings("unchecked") Map<String, String> headers = request.read(Map.class).as(Json.class);
-
-        headers.forEach((key, value) -> {
+        mappings.forEach((key, value) -> {
             proxy.getHostNameResolver().remapHost(key, value);
             proxy.getHostNameResolver().setNegativeDNSCacheTimeout(0, TimeUnit.SECONDS);
             proxy.getHostNameResolver().setPositiveDNSCacheTimeout(0, TimeUnit.SECONDS);
             proxy.getHostNameResolver().clearDNSCache();
         });
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
 
-    @Put
-    @At("/:port/wait")
-    public Reply<?> wait(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/wait")
+    public Response wait(@PathParam("port") int port,
+            @QueryParam("quietPeriodInMs") String quietPeriodInMs,
+            @QueryParam("timeoutInMs") String timeoutInMs) {
         LOG.info("PUT /{}/wait", port);
-        LOG.info(request.params().toString());
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String quietPeriodInMs = request.param("quietPeriodInMs");
-        String timeoutInMs = request.param("timeoutInMs");
         proxy.waitForQuiescence(Long.parseLong(quietPeriodInMs), Long.parseLong(timeoutInMs), TimeUnit.MILLISECONDS);
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Delete
-    @At("/:port/dns/cache")
-    public Reply<?> clearDnsCache(@Named("port") int port) {
+    @DELETE
+    @Path("/{port}/dns/cache")
+    public Response clearDnsCache(@PathParam("port") int port) {
         LOG.info("DELETE /{}/dns/cache", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
         proxy.getHostNameResolver().clearDNSCache();
 
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Put
-    @At("/:port/rewrite")
-    public Reply<?> rewriteUrl(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/rewrite")
+    public Response rewriteUrl(@PathParam("port") int port,
+            @QueryParam("matchRegex") String matchRegex,
+            @QueryParam("replace") String replace) {
         LOG.info("PUT /{}/rewrite", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String match = request.param("matchRegex");
-        String replace = request.param("replace");
-        proxy.rewriteUrl(match, replace);
-        return Reply.saying().ok();
+        proxy.rewriteUrl(matchRegex, replace);
+        return Response.ok().build();
     }
 
-    @Delete
-    @At("/:port/rewrite")
-    public Reply<?> clearRewriteRules(@Named("port") int port, Request request) {
+    @DELETE
+    @Path("/{port}/rewrite")
+    public Response clearRewriteRules(@PathParam("port") int port) {
         LOG.info("DELETE /{}/rewrite", port);
         MitmProxyServer proxy = proxyManager.get(port);
         if (proxy == null) {
-            return Reply.saying().notFound();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         proxy.clearRewriteRules();
-        return Reply.saying().ok();
+        return Response.ok().build();
     }
 
-    @Put
-    @At("/:port/retry")
-    public Reply<?> retryCount(@Named("port") int port, Request request) {
+    @PUT
+    @Path("/{port}/retry")
+    public Response retryCount(@PathParam("port") int port) {
         LOG.warn("/port/retry API is no longer supported");
-        return Reply.saying().badRequest();
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     private int parseResponseCode(String response) {
@@ -676,32 +667,7 @@ public class ProxyResource {
         }
     }
 
-    private String getEntityBodyFromRequest(Request request) throws IOException {
-        String contentTypeHeader = request.header("Content-Type");
-        Charset charset;
-        try {
-            charset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(contentTypeHeader);
-        } catch (UnsupportedCharsetException e) {
-            java.nio.charset.UnsupportedCharsetException cause = e.getUnsupportedCharsetExceptionCause();
-            LOG.error("Character set declared in Content-Type header is not supported. Content-Type header: {}", contentTypeHeader, cause);
-
-            throw cause;
-        }
-
-        if (charset == null) {
-            charset = BrowserUpHttpUtil.DEFAULT_HTTP_CHARSET;
-        }
-
-        ByteArrayOutputStream entityBodyBytes = new ByteArrayOutputStream();
-        request.readTo(entityBodyBytes);
-
-        return new String(entityBodyBytes.toByteArray(), charset);
-    }
-
-
-
-    private Optional<Long> getAssertionTimeFromRequest(Request request) {
-        String timeParam = request.param("milliseconds");
+    private Optional<Long> getAssertionTimeFromRequest(String timeParam) {
         if (StringUtils.isEmpty(timeParam)) {
             LOG.warn("Time parameter not present");
             return Optional.empty();
