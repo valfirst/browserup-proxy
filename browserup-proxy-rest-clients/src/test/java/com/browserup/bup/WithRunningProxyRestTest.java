@@ -1,7 +1,6 @@
 package com.browserup.bup;
 
 import com.browserup.bup.proxy.MitmProxyManager;
-import com.browserup.bup.proxy.bricks.ProxyResource;
 import com.browserup.bup.proxy.guice.ConfigModule;
 import com.browserup.bup.proxy.guice.JettyModule;
 import com.browserup.bup.util.BrowserUpProxyUtil;
@@ -9,19 +8,15 @@ import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.servlet.GuiceServletContextListener;
-import com.google.sitebricks.SitebricksModule;
 import org.awaitility.Awaitility;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletContextEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,12 +57,7 @@ public abstract class WithRunningProxyRestTest {
 
     @Before
     public void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new ConfigModule(getArgs()), new JettyModule(), new SitebricksModule() {
-            @Override
-            protected void configureSitebricks() {
-                scan(ProxyResource.class.getPackage());
-            }
-        });
+        Injector injector = Guice.createInjector(new ConfigModule(getArgs()), new JettyModule());
 
         proxyManager = injector.getInstance(MitmProxyManager.class);
 
@@ -168,15 +158,7 @@ public abstract class WithRunningProxyRestTest {
     private void startRestServer(Injector injector) {
         try {
             restServer = injector.getInstance(Server.class);
-            GuiceServletContextListener contextListener = new GuiceServletContextListener() {
-                @Override
-                protected Injector getInjector() {
-                    return injector;
-                }
-            };
             restServer.start();
-            contextListener.contextInitialized(
-                    new ServletContextEvent(((ServletContextHandler) restServer.getHandler()).getServletContext()));
             try {
                 restServer.join();
             } catch (InterruptedException ignored) {
