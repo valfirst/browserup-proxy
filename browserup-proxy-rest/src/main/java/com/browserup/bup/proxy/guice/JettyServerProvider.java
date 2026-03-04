@@ -24,7 +24,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import javax.servlet.DispatcherType;
+import jakarta.servlet.DispatcherType;
 
 public class JettyServerProvider implements Provider<Server> {
     public static final String OPENAPI_CONFIG_YAML = "openapi-config.yaml";

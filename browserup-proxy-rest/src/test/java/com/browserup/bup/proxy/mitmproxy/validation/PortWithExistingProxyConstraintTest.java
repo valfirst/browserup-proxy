@@ -6,7 +6,7 @@ import com.browserup.bup.rest.validation.PortWithExistingProxyConstraint;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
