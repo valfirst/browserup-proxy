@@ -385,7 +385,7 @@ public class NewHarTest extends MockServerTest {
         assertEquals("success", content.getText(), "Expected to capture body content in HAR");
 
         assertEquals(1, har.getLog().getPages().size(), "Expected only one HAR page to be created");
-        assertEquals(har.getLog().getPages().get(0).getId(), "Expected id of HAR page to be 'first-page'", "first-page");
+        assertEquals("first-page", har.getLog().getPages().get(0).getId(), "Expected id of HAR page to be 'first-page'");
 
         Har harWithFirstPageOnly = proxy.newPage("second-page");
 
@@ -398,10 +398,10 @@ public class NewHarTest extends MockServerTest {
         Har harWithSecondPage = proxy.getHar();
 
         assertEquals(2, harWithSecondPage.getLog().getPages().size(), "Expected HAR to contain first and second page page");
-        assertEquals(harWithSecondPage.getLog().getPages().get(1).getId(), "Expected id of second HAR page to be 'second-page'", "second-page");
+        assertEquals("second-page", harWithSecondPage.getLog().getPages().get(1).getId(), "Expected id of second HAR page to be 'second-page'");
 
         assertEquals(1, harWithFirstPageOnly.getLog().getPages().size(), "Expected HAR returned from newPage() not to contain second page");
-        assertEquals(harWithFirstPageOnly.getLog().getPages().get(0).getId(), "Expected id of HAR page to be 'first-page'", "first-page");
+        assertEquals("first-page", harWithFirstPageOnly.getLog().getPages().get(0).getId(), "Expected id of HAR page to be 'first-page'");
     }
 
     @Test
@@ -465,8 +465,8 @@ public class NewHarTest extends MockServerTest {
 
         assertThat("Expected to find query parameters in the HAR", har.getLog().getEntries().get(0).getRequest().getQueryString(), not(empty()));
 
-        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1", "param1");
-        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1", "value1");
+        assertEquals("param1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1");
+        assertEquals("value1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1");
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
@@ -503,8 +503,8 @@ public class NewHarTest extends MockServerTest {
 
         assertThat("Expected to find query parameters in the HAR", har.getLog().getEntries().get(0).getRequest().getQueryString(), not(empty()));
 
-        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1", "param1");
-        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1", "value1");
+        assertEquals("param1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1");
+        assertEquals("value1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1");
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
@@ -545,8 +545,8 @@ public class NewHarTest extends MockServerTest {
 
         assertThat("Expected to find query parameters in the HAR", har.getLog().getEntries().get(0).getRequest().getQueryString(), not(empty()));
 
-        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1", "param1");
-        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1", "value1");
+        assertEquals("param1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1");
+        assertEquals("value1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1");
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
@@ -741,7 +741,7 @@ public class NewHarTest extends MockServerTest {
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
         assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
-        assertEquals(har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated", "127.0.0.1");
+        assertEquals("127.0.0.1", har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
         assertNotNull(harResponse, "No HAR response found");
@@ -789,7 +789,7 @@ public class NewHarTest extends MockServerTest {
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
         assertEquals("https://localhost:2", capturedUrl, "URL captured in HAR did not match request URL");
 
-        assertEquals(har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated", "127.0.0.1");
+        assertEquals("127.0.0.1", har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
         assertNotNull(harResponse, "No HAR response found");
@@ -843,7 +843,7 @@ public class NewHarTest extends MockServerTest {
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
         assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
-        assertEquals(har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated", "127.0.0.1");
+        assertEquals("127.0.0.1", har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
         assertNotNull(harResponse, "No HAR response found");
@@ -902,7 +902,7 @@ public class NewHarTest extends MockServerTest {
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
         assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
-        assertEquals(har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated", "127.0.0.1");
+        assertEquals("127.0.0.1", har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
         assertNotNull(harResponse, "No HAR response found");

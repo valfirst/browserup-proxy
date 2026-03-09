@@ -98,7 +98,7 @@ public class ChainedHostResolverTest {
         Collection<String> results = chainResolver.getOriginalHostnames("one");
         assertNotNull(results, "Resolver should not return null results");
         assertThat("Expected resolver to return a result", results, not(empty()));
-        assertEquals(Iterables.get(results, 0), "Resolver returned unexpected result", "originalOne");
+        assertEquals("originalOne", Iterables.get(results, 0), "Resolver returned unexpected result");
 
         verify(secondResolver, never()).getOriginalHostnames(any(String.class));
     }

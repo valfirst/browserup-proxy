@@ -113,7 +113,7 @@ public class DefaultStepIdTest extends MockServerTest {
         assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody, "Did not receive expected response from mock server");
 
         assertThat("Expected to get one entry", proxy.getHar().getLog().getEntries(), Matchers.hasSize(1));
-        assertEquals(proxy.getHar().getLog().getEntries().get(0).getPageref(), DEFAULT_STEP_NAME, "Expected entry to have default page ref");
+        assertEquals(DEFAULT_STEP_NAME, proxy.getHar().getLog().getEntries().get(0).getPageref(), "Expected entry to have default page ref");
     }
 
     @Test
@@ -126,7 +126,7 @@ public class DefaultStepIdTest extends MockServerTest {
         assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody, "Did not receive expected response from mock server");
 
         assertThat("Expected to get one entry", proxy.getHar().getLog().getEntries(), Matchers.hasSize(1));
-        assertEquals(proxy.getHar().getLog().getEntries().get(0).getPageref(), DEFAULT_STEP_NAME, "Expected entry to have default page ref");
+        assertEquals(DEFAULT_STEP_NAME, proxy.getHar().getLog().getEntries().get(0).getPageref(), "Expected entry to have default page ref");
 
         proxy.newHar(INITIAL_STEP_NAME);
         assertThat("Expected to get no entries after new har called", proxy.getHar().getLog().getEntries(), Matchers.hasSize(0));

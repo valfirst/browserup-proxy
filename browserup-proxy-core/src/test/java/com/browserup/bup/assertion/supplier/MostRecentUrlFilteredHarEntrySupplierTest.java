@@ -40,7 +40,7 @@ public class MostRecentUrlFilteredHarEntrySupplierTest {
         List<HarEntry> result = supplier.get();
 
         assertThat("Expected to get one entry", result, Matchers.hasSize(1));
-        Assertions.assertEquals(result.get(0).getRequest().getUrl(), "http://abc" + mostRecentUrlIndex + ".com", "");
+        Assertions.assertEquals("http://abc" + mostRecentUrlIndex + ".com", result.get(0).getRequest().getUrl());
     }
 
     @Test
