@@ -31,6 +31,7 @@ subprojects {
         guavaVersion = '33.5.0-jre'
         seleniumVersion = '4.33.0'
         hamcrestVersion = '3.0'
+        junitVersion = '5.14.3'
     }
 
     dependencies {
@@ -39,6 +40,7 @@ subprojects {
                 replacedBy('org.slf4j:jcl-over-slf4j', 'Redirect commons-logging logs to SLF4J')
             }
         }
+        testImplementation platform("org.junit:junit-bom:${junitVersion}")
     }
 
     repositories {
