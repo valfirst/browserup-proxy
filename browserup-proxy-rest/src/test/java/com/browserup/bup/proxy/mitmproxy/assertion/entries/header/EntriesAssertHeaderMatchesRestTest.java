@@ -4,11 +4,11 @@ import com.browserup.bup.assertion.model.AssertionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderRestTest {
     protected static final String HEADER_NAME_PATTERN_TO_MATCH_FIRST = ".*" + FIRST_HEADER_NAME + ".*";
@@ -78,20 +78,20 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     public void getBadRequestIfHeaderValuePatternNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH));
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request"); conn.disconnect();
     }
 
     @Test
     public void getBadRequestIfHeaderValuePatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH, "headerValuePattern", "["));
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request"); conn.disconnect();
     }
 
     @Test
     public void getBadRequestIfHeaderNamePatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", "[", "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_SECOND));
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request"); conn.disconnect();
     }
 }

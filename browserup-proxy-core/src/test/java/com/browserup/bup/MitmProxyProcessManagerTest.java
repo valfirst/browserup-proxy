@@ -2,9 +2,9 @@ package com.browserup.bup;
 
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import de.sstoehr.harreader.model.Har;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,16 +16,16 @@ import java.net.http.HttpResponse;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MitmProxyProcessManagerTest {
 
     private static final int PROXY_PORT = 8443;
     private final MitmProxyProcessManager mitmProxyManager = new MitmProxyProcessManager();
 
-    @After
+    @AfterEach
     public void setUp() {
         mitmProxyManager.stop();
     }
@@ -41,7 +41,7 @@ public class MitmProxyProcessManagerTest {
         //THEN
         Har har = mitmProxyManager.getHarCaptureFilterManager().getHar();
         assertNotNull(har);
-        assertEquals("Expected to capture 1 har entry", 1, har.getLog().getEntries().size());
+        assertEquals(1, har.getLog().getEntries().size(), "Expected to capture 1 har entry");
     }
 
     @Test
@@ -55,15 +55,15 @@ public class MitmProxyProcessManagerTest {
         //THEN
         Har har = mitmProxyManager.getHarCaptureFilterManager().getHar();
         assertNotNull(har);
-        assertEquals("Expected to capture 1 har entry", 1, har.getLog().getEntries().size());
+        assertEquals(1, har.getLog().getEntries().size(), "Expected to capture 1 har entry");
 
         har = mitmProxyManager.getHarCaptureFilterManager().getHar(true);
         assertNotNull(har);
-        assertEquals("Expected to capture 1 har entry", 1, har.getLog().getEntries().size());
+        assertEquals(1, har.getLog().getEntries().size(), "Expected to capture 1 har entry");
 
         har = mitmProxyManager.getHarCaptureFilterManager().getHar();
         assertNotNull(har);
-        assertEquals("Expected to capture no har entries", 0, har.getLog().getEntries().size());
+        assertEquals(0, har.getLog().getEntries().size(), "Expected to capture no har entries");
     }
 
     @Test
@@ -80,18 +80,18 @@ public class MitmProxyProcessManagerTest {
         //THEN
         Har har = mitmProxyManager.getHarCaptureFilterManager().getHar();
         assertNotNull(har);
-        assertEquals("Expected to capture " + reqNumber + " har entries", reqNumber, har.getLog().getEntries().size());
+        assertEquals(reqNumber, har.getLog().getEntries().size(), "Expected to capture " + reqNumber + " har entries");
 
         // One more request through proxy
         sendRequestThroughProxy(PROXY_PORT);
 
         har = mitmProxyManager.getHarCaptureFilterManager().getHar();
         assertNotNull(har);
-        assertEquals("Expected to capture 1 har entry", reqNumber + 1, har.getLog().getEntries().size());
+        assertEquals(reqNumber + 1, har.getLog().getEntries().size(), "Expected to capture 1 har entry");
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void afterStopLastCapturedHarIsReturned() throws IOException, InterruptedException {
         //GIVEN
         int proxyPort = 18443;
@@ -113,7 +113,7 @@ public class MitmProxyProcessManagerTest {
 
         Har har = mitmProxyManager.getHarCaptureFilterManager().getHar();
         assertNotNull(har);
-        assertEquals("Expected to capture 1 har entry", 1, har.getLog().getEntries().size());
+        assertEquals(1, har.getLog().getEntries().size(), "Expected to capture 1 har entry");
     }
 
     @Test

@@ -8,9 +8,9 @@ import de.sstoehr.harreader.model.Har;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.ProxyAuthenticator;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
@@ -19,7 +19,7 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ChainedProxyAuthTest extends MockServerTest {
     private MitmProxyServer proxy;
@@ -28,7 +28,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
     private HttpProxyServer upstreamProxy;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -58,7 +58,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse result = client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth"));
-            assertEquals("Did not receive 502 BAD GATEWAY from mitmproxy", 502, result.getStatusLine().getStatusCode());
+            assertEquals(502, result.getStatusLine().getStatusCode(), "Did not receive 502 BAD GATEWAY from mitmproxy");
         }
 
         verify(0, getRequestedFor(urlEqualTo(stubUrl)));
@@ -80,7 +80,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
@@ -105,24 +105,22 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Har downStreamHar = proxy.getHar();
         Har upStreamHar = upstreamMitmProxy.getHar();
 
-        assertEquals("Expected to get exactly one entry in har from downstream proxy", 1, downStreamHar.getLog().getEntries().size());
-        assertEquals("Expected to get exactly one entry in har from upstream proxy", 1, upStreamHar.getLog().getEntries().size());
+        assertEquals(1, downStreamHar.getLog().getEntries().size(), "Expected to get exactly one entry in har from downstream proxy");
+        assertEquals(1, upStreamHar.getLog().getEntries().size(), "Expected to get exactly one entry in har from upstream proxy");
 
-        assertEquals("Expected to get the same request URL in entries from downstream and upstream proxies",
-                downStreamHar.getLog().getEntries().get(0).getRequest().getUrl(),
-                upStreamHar.getLog().getEntries().get(0).getRequest().getUrl());
+        assertEquals(downStreamHar.getLog().getEntries().get(0).getRequest().getUrl(), upStreamHar.getLog().getEntries().get(0).getRequest().getUrl(), "Expected to get the same request URL in entries from downstream and upstream proxies");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testUpstreamProxyDoesNotGetRequestIfNonProxyHostMatch() throws Exception {
         String stubUrl = "/proxyauth";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
@@ -141,14 +139,14 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Har downStreamHar = proxy.getHar();
         Har upStreamHar = upstreamMitmProxy.getHar();
 
-        assertEquals("Expected to get exactly one entry in har from downstream proxy", 1, downStreamHar.getLog().getEntries().size());
-        assertEquals("Expected to get exactly no entries in har from upstream proxy", 0, upStreamHar.getLog().getEntries().size());
+        assertEquals(1, downStreamHar.getLog().getEntries().size(), "Expected to get exactly one entry in har from downstream proxy");
+        assertEquals(0, upStreamHar.getLog().getEntries().size(), "Expected to get exactly no entries in har from upstream proxy");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -171,7 +169,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
@@ -208,13 +206,13 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
 
-    @Ignore("To investigate: whether HTTP status should be 407 or 502")
+    @Disabled("To investigate: whether HTTP status should be 407 or 502")
     @Test
     public void testAutoProxyAuthFailure() throws Exception {
         String proxyUser = "proxyuser";
@@ -246,7 +244,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth"));
-            assertEquals("Expected to receive a Bad Gateway due to incorrect proxy authentication credentials", 502, response.getStatusLine().getStatusCode());
+            assertEquals(502, response.getStatusLine().getStatusCode(), "Expected to receive a Bad Gateway due to incorrect proxy authentication credentials");
         }
 
         verify(lessThan(1), getRequestedFor(urlEqualTo(stubUrl)));

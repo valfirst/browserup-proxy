@@ -7,7 +7,7 @@ import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 public class HeaderBaseTest extends BaseAssertionsTest {
 
@@ -31,7 +31,7 @@ public class HeaderBaseTest extends BaseAssertionsTest {
     protected static final String NOT_MATCHING_HEADER_VALUE = "headerValue not to match";
     protected static final HttpHeader HEADER = new HttpHeader(HEADER_NAME, HEADER_VALUE);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         proxy.enableHarCaptureTypes(CaptureType.RESPONSE_HEADERS);
         mockResponse(URL_PATH, HEADER);

@@ -6,19 +6,19 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LatencyTest extends MockServerTest {
     private MitmProxyServer proxy;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -39,9 +39,8 @@ public class LatencyTest extends MockServerTest {
             HttpResponse response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/latency"));
             long stop = System.nanoTime();
 
-            assertEquals("Expected to receive an HTTP 200 from the upstream server", 200, response.getStatusLine().getStatusCode());
-            assertTrue("Expected latency to be at least 2 seconds. Total time was: " + TimeUnit.MILLISECONDS.convert(stop - start, TimeUnit.NANOSECONDS) + "ms",
-                    TimeUnit.SECONDS.convert(stop - start, TimeUnit.NANOSECONDS) >= 2);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected to receive an HTTP 200 from the upstream server");
+            assertTrue(TimeUnit.SECONDS.convert(stop - start, TimeUnit.NANOSECONDS) >= 2, "Expected latency to be at least 2 seconds. Total time was: " + TimeUnit.MILLISECONDS.convert(stop - start, TimeUnit.NANOSECONDS) + "ms");
         }
 
         verify(1, getRequestedFor(urlEqualTo(url)));

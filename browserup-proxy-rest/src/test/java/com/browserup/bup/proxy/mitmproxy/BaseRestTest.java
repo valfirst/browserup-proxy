@@ -2,7 +2,7 @@ package com.browserup.bup.proxy.mitmproxy;
 
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class BaseRestTest extends WithRunningProxyRestTest {
     protected static final int TARGET_SERVER_RESPONSE_DELAY = 500;
@@ -18,16 +18,16 @@ public abstract class BaseRestTest extends WithRunningProxyRestTest {
     }
 
     protected static void assertAssertionNotNull(AssertionResult assertion) {
-        assertNotNull("Expected to get non null assertion result", assertion);
+        assertNotNull(assertion, "Expected to get non null assertion result");
     }
 
     protected static void assertAssertionPassed(AssertionResult assertion) {
-        assertTrue("Expected assertion to pass", assertion.getPassed());
-        assertFalse("Expected assertion to pass", assertion.getFailed());
+        assertTrue(assertion.getPassed(), "Expected assertion to pass");
+        assertFalse(assertion.getFailed(), "Expected assertion to pass");
     }
 
     protected static void assertAssertionFailed(AssertionResult assertion) {
-        assertFalse("Expected assertion to fail", assertion.getPassed());
-        assertTrue("Expected assertion to fail", assertion.getFailed());
+        assertFalse(assertion.getPassed(), "Expected assertion to fail");
+        assertTrue(assertion.getFailed(), "Expected assertion to fail");
     }
 }

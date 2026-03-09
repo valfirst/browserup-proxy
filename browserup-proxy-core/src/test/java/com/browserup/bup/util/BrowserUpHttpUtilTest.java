@@ -1,8 +1,8 @@
 package com.browserup.bup.util;
 
 import com.browserup.bup.exception.UnsupportedCharsetException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -10,8 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BrowserUpHttpUtilTest {
 
@@ -33,8 +33,7 @@ public class BrowserUpHttpUtilTest {
         for (Map.Entry<String, String> entry : uriToResource.entrySet()) {
             String uri = entry.getKey();
             String parsedResource = BrowserUpHttpUtil.getRawPathAndParamsFromUri(uri);
-            assertEquals("Parsed resource from URL did not match expected resource for URL: " + uri,
-                    entry.getValue(), parsedResource);
+            assertEquals(entry.getValue(), parsedResource, "Parsed resource from URL did not match expected resource for URL: " + uri);
         }
     }
 
@@ -54,9 +53,7 @@ public class BrowserUpHttpUtilTest {
         for (Map.Entry<String, String> entry : uriToHostAndPort.entrySet()) {
             String uri = entry.getKey();
             String parsedHostAndPort = HttpUtil.getHostAndPortFromUri(uri);
-            assertEquals(
-                    "Parsed host and port from URL did not match expected host and port for URL: " + uri,
-                    entry.getValue(), parsedHostAndPort);
+            assertEquals(entry.getValue(), parsedHostAndPort, "Parsed host and port from URL did not match expected host and port for URL: " + uri);
 
         }
     }
@@ -78,14 +75,12 @@ public class BrowserUpHttpUtilTest {
         for (Map.Entry<String, Charset> entry : contentTypeHeaderAndCharset.entrySet()) {
             String contentTypeHeader = entry.getKey();
             Charset derivedCharset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(contentTypeHeader);
-            assertEquals(
-                    "Charset derived from parsed content type header did not match expected charset for content type header: " + contentTypeHeader,
-                    entry.getValue(), derivedCharset);
+            assertEquals(entry.getValue(), derivedCharset, "Charset derived from parsed content type header did not match expected charset for content type header: " + contentTypeHeader);
         }
 
 
         Charset derivedCharset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(null);
-        Assert.assertNull("Expected null Content-Type header to return a null charset", derivedCharset);
+        Assertions.assertNull(derivedCharset, "Expected null Content-Type header to return a null charset");
 
         boolean threwException = false;
         try {
@@ -95,9 +90,7 @@ public class BrowserUpHttpUtilTest {
         }
 
 
-        assertTrue(
-                "Expected an UnsupportedCharsetException to occur when parsing the content type header text/html; charset=FUTURE_CHARSET",
-                threwException);
+        assertTrue(threwException, "Expected an UnsupportedCharsetException to occur when parsing the content type header text/html; charset=FUTURE_CHARSET");
     }
 
     @Test
@@ -117,14 +110,12 @@ public class BrowserUpHttpUtilTest {
         for (Map.Entry<String, Boolean> entry : contentTypeHeaderAndTextFlag.entrySet()) {
             String contentTypeHeader = entry.getKey();
             boolean isTextualContent = BrowserUpHttpUtil.hasTextualContent((String) contentTypeHeader);
-            assertEquals(
-                    "hasTextualContent did not return expected value for content type header: " + contentTypeHeader,
-                    entry.getValue(), isTextualContent);
+            assertEquals(entry.getValue(), isTextualContent, "hasTextualContent did not return expected value for content type header: " + contentTypeHeader);
         }
 
 
         boolean isTextualContent = BrowserUpHttpUtil.hasTextualContent(null);
-        Assert.assertFalse("Expected hasTextualContent to return false for null content type", isTextualContent);
+        Assertions.assertFalse(isTextualContent, "Expected hasTextualContent to return false for null content type");
     }
 
     @Test

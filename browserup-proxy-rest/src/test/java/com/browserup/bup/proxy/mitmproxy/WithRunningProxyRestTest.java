@@ -6,7 +6,7 @@ import com.browserup.bup.proxy.bricks.ProxyResource;
 import com.browserup.bup.proxy.guice.ConfigModule;
 import com.browserup.bup.proxy.guice.JettyModule;
 import com.browserup.bup.util.BrowserUpProxyUtil;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -15,9 +15,9 @@ import org.awaitility.Awaitility;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WithRunningProxyRestTest {
     private static final Logger LOG = LoggerFactory.getLogger(MitmProxyManager.class);
@@ -55,10 +55,12 @@ public class WithRunningProxyRestTest {
     protected int mockServerPort;
     protected int mockServerHttpsPort;
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(options().port(0).httpsPort(0));
+    @RegisterExtension
+    WireMockExtension wireMockRule = WireMockExtension.newInstance()
+            .options(options().port(0).httpsPort(0))
+            .build();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Injector injector = Guice.createInjector(new ConfigModule(getArgs()), new JettyModule(), new SitebricksModule() {
             @Override
@@ -87,8 +89,8 @@ public class WithRunningProxyRestTest {
 
         LOG.debug("BrowserUp Proxy server is started successfully");
 
-        mockServerPort = wireMockRule.port();
-        mockServerHttpsPort = wireMockRule.httpsPort();
+        mockServerPort = wireMockRule.getPort();
+        mockServerHttpsPort = wireMockRule.getHttpsPort();
 
         waitForProxyServer();
     }
@@ -184,7 +186,7 @@ public class WithRunningProxyRestTest {
         return map;
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         LOG.debug("Stopping proxy servers");
         for (MitmProxyServer proxyServer : proxyManager.get()) {

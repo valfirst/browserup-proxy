@@ -9,7 +9,7 @@ import com.browserup.bup.util.HttpStatusClass;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 
 import org.apache.http.HttpStatus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -18,8 +18,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
 
@@ -44,8 +44,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
         assertThat("Expected to get one assertion entry", result.getRequests(), hasSize(1));
         assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), containsString(RECENT_PATH));
-        assertTrue("Expected most recent response status to belong to the class", result.getPassed());
-        assertFalse("Expected most recent response status to belong to the class", result.getFailed());
+        assertTrue(result.getPassed(), "Expected most recent response status to belong to the class");
+        assertFalse(result.getFailed(), "Expected most recent response status to belong to the class");
     }
 
     @Test
@@ -64,8 +64,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
         assertThat("Expected to get one assertion entry", result.getRequests(), hasSize(1));
         assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), containsString(RECENT_PATH));
-        assertFalse("Expected most recent response status not to belong to specified class", result.getPassed());
-        assertTrue("Expected most recent response status not to belong to specified class", result.getFailed());
+        assertFalse(result.getPassed(), "Expected most recent response status not to belong to specified class");
+        assertTrue(result.getFailed(), "Expected most recent response status not to belong to specified class");
     }
 
     @Test
@@ -84,8 +84,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
         assertThat("Expected to get one assertion entry", result.getRequests(), hasSize(1));
         assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), containsString(RECENT_PATH));
-        assertTrue("Expected status to pass assertion", result.getPassed());
-        assertFalse("Expected status to pass assertion", result.getFailed());
+        assertTrue(result.getPassed(), "Expected status to pass assertion");
+        assertFalse(result.getFailed(), "Expected status to pass assertion");
     }
 
     @Test
@@ -104,8 +104,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
         assertThat("Expected to get one assertion entry", result.getRequests(), hasSize(1));
         assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), containsString(RECENT_PATH));
-        assertFalse("Expected status to fail assertion", result.getPassed());
-        assertTrue("Expected status to fail assertion", result.getFailed());
+        assertFalse(result.getPassed(), "Expected status to fail assertion");
+        assertTrue(result.getFailed(), "Expected status to fail assertion");
     }
 
     @Test
@@ -121,8 +121,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
 
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(NOT_TO_MATCH_PATTERN, HttpStatusClass.SUCCESS);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
@@ -138,8 +138,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
 
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(NOT_TO_MATCH_PATTERN, HttpStatusClass.SUCCESS);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
@@ -155,8 +155,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
 
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(NOT_TO_MATCH_PATTERN, status);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
@@ -172,8 +172,8 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
 
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(NOT_TO_MATCH_PATTERN, status);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     protected StubMapping mockResponse(String path, Integer status) {

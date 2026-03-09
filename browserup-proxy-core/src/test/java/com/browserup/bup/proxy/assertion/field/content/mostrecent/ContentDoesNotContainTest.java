@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ContentDoesNotContainTest extends MostRecentContentBaseTest {
 

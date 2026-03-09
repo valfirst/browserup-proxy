@@ -2,10 +2,10 @@ package com.browserup.bup.proxy.test.util;
 
 import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.proxy.bricks.ProxyResource;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.google.sitebricks.headless.Request;
-import org.junit.Before;
-import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -29,16 +29,18 @@ public abstract class ProxyResourceTest extends ProxyManagerTest {
     protected int mockServerPort;
     protected int mockServerHttpsPort;
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(options().port(0).httpsPort(0));
+    @RegisterExtension
+    WireMockExtension wireMockRule = WireMockExtension.newInstance()
+            .options(options().port(0).httpsPort(0))
+            .build();
 
-    @Before
+    @BeforeEach
     public void setUpMockServer() {
-        mockServerPort = wireMockRule.port();
-        mockServerHttpsPort = wireMockRule.httpsPort();
+        mockServerPort = wireMockRule.getPort();
+        mockServerHttpsPort = wireMockRule.getHttpsPort();
     }
 
-    @Before
+    @BeforeEach
     public void setUpProxyResource() {
         MitmProxyServer proxy = proxyManager.create(0);
         proxyPort = proxy.getPort();

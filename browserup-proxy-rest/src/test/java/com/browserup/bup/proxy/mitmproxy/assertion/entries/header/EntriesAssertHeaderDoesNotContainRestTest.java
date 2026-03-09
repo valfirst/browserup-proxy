@@ -4,11 +4,11 @@ import com.browserup.bup.assertion.model.AssertionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssertHeaderRestTest {
 
@@ -121,7 +121,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerName", FIRST_HEADER_NAME));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, statusCode);
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, statusCode, "Expected to get bad request");
         conn.disconnect();
     }
 }

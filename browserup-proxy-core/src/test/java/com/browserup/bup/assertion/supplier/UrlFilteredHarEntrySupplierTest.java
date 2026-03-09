@@ -4,7 +4,7 @@ import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarRequest;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UrlFilteredHarEntrySupplierTest {
     @Test
@@ -41,7 +41,7 @@ public class UrlFilteredHarEntrySupplierTest {
 
         assertThat("Expected to get " + maxIndexToBeFiltered + " entries", result, Matchers.hasSize(maxIndexToBeFiltered));
         result.forEach(harEntry -> {
-            assertTrue("Expected that found entry can be matched using url pattern", urlPattern.matcher(harEntry.getRequest().getUrl()).matches());
+            assertTrue(urlPattern.matcher(harEntry.getRequest().getUrl()).matches(), "Expected that found entry can be matched using url pattern");
         });
     }
 

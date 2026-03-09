@@ -12,10 +12,9 @@ import com.browserup.bup.mitm.tools.BouncyCastleSecurityProviderTool;
 import com.browserup.bup.mitm.tools.DefaultSecurityProviderTool;
 import com.browserup.bup.mitm.util.MitmConstants;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,45 +22,31 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLSession;
 import java.security.KeyPair;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-@RunWith(Parameterized.class)
 public class ImpersonationPerformanceTests {
     private static final Logger log = LoggerFactory.getLogger(ImpersonationPerformanceTests.class);
 
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                {new RSAKeyGenerator(), "SHA384", new RSAKeyGenerator(), "SHA384"},
-                {new RSAKeyGenerator(), "SHA384", new RSAKeyGenerator(1024), "SHA384"},
-                {new RSAKeyGenerator(1024), "SHA384", new RSAKeyGenerator(1024), "SHA384"},
-                {new RSAKeyGenerator(), "SHA384", new ECKeyGenerator(), "SHA384"},
-                {new ECKeyGenerator(), "SHA384", new ECKeyGenerator(), "SHA384"},
-                {new ECKeyGenerator(), "SHA384", new RSAKeyGenerator(), "SHA384"}
-        });
+    static Stream<Arguments> data() {
+        return Stream.of(
+                Arguments.of(new RSAKeyGenerator(), "SHA384", new RSAKeyGenerator(), "SHA384"),
+                Arguments.of(new RSAKeyGenerator(), "SHA384", new RSAKeyGenerator(1024), "SHA384"),
+                Arguments.of(new RSAKeyGenerator(1024), "SHA384", new RSAKeyGenerator(1024), "SHA384"),
+                Arguments.of(new RSAKeyGenerator(), "SHA384", new ECKeyGenerator(), "SHA384"),
+                Arguments.of(new ECKeyGenerator(), "SHA384", new ECKeyGenerator(), "SHA384"),
+                Arguments.of(new ECKeyGenerator(), "SHA384", new RSAKeyGenerator(), "SHA384")
+        );
     }
-
-    @Parameter
-    public KeyGenerator rootCertKeyGen;
-
-    @Parameter(1)
-    public String rootCertDigest;
-
-    @Parameter(2)
-    public KeyGenerator serverCertKeyGen;
-
-    @Parameter(3)
-    public String serverCertDigest;
 
     private static final int WARM_UP_ITERATIONS = 5;
 
     private static final int ITERATIONS = 50;
 
-    @Test
-    public void testImpersonatingMitmManagerPerformance() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void testImpersonatingMitmManagerPerformance(KeyGenerator rootCertKeyGen, String rootCertDigest, KeyGenerator serverCertKeyGen, String serverCertDigest) {
         ImpersonatingMitmManager mitmManager = ImpersonatingMitmManager.builder()
                 .rootCertificateSource(RootCertificateGenerator.builder()
                         .keyGenerator(rootCertKeyGen)
@@ -101,8 +86,9 @@ public class ImpersonationPerformanceTests {
         log.info("Generated {} certificates in {}ms. Average time per certificate: {}ms", iteration.get(), finish - start, (finish - start) / iteration.get());
     }
 
-    @Test
-    public void testServerCertificateCreationAndAssembly() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void testServerCertificateCreationAndAssembly(KeyGenerator rootCertKeyGen, String rootCertDigest, KeyGenerator serverCertKeyGen, String serverCertDigest) {
         CertificateAndKey rootCert = RootCertificateGenerator.builder()
                 .keyGenerator(rootCertKeyGen)
                 .messageDigest(rootCertDigest)

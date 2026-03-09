@@ -13,13 +13,13 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 
 import org.apache.http.HttpStatus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
@@ -39,8 +39,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
         AssertionResult result = proxy.assertResponseStatusCode(COMMON_URL_PATTERN, HttpStatusClass.SUCCESS);
 
         assertThat("Expected to get proper assertion entries number", result.getRequests(), hasSize(2));
-        assertTrue("Expected filtered urls statuses to belong to specified class", result.getPassed());
-        assertFalse("Expected filtered urls statuses to belong to specified class", result.getFailed());
+        assertTrue(result.getPassed(), "Expected filtered urls statuses to belong to specified class");
+        assertFalse(result.getFailed(), "Expected filtered urls statuses to belong to specified class");
     }
 
     @Test
@@ -62,8 +62,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
         assertThat("Expected to get one failed assertion entry", failedRequests, hasSize(1));
         assertThat("Expected failed assertion entry to have proper url", failedRequests.get(0).getUrl(),
                 containsString(RECENT_PATH));
-        assertFalse("Expected some of filtered urls statuses not to belong to specified class", result.getPassed());
-        assertTrue("Expected some of filtered urls statuses not to belong to specified class", result.getFailed());
+        assertFalse(result.getPassed(), "Expected some of filtered urls statuses not to belong to specified class");
+        assertTrue(result.getFailed(), "Expected some of filtered urls statuses not to belong to specified class");
     }
 
     @Test
@@ -79,8 +79,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
         AssertionResult result = proxy.assertResponseStatusCode(COMMON_URL_PATTERN, status);
 
         assertThat("Expected to get proper assertion entries number", result.getRequests(), hasSize(2));
-        assertTrue("Expected filtered urls statuses to have specified status", result.getPassed());
-        assertFalse("Expected filtered urls statuses to have specified status", result.getFailed());
+        assertTrue(result.getPassed(), "Expected filtered urls statuses to have specified status");
+        assertFalse(result.getFailed(), "Expected filtered urls statuses to have specified status");
     }
 
     @Test
@@ -104,8 +104,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
         assertThat("Expected to get one failed assertion entry", failedRequests, hasSize(1));
         assertThat("Expected failed assertion entry to have proper url", failedRequests.get(0).getUrl(),
                 containsString(RECENT_PATH));
-        assertFalse("Expected some of filtered urls statuses not be equal to specified class", result.getPassed());
-        assertTrue("Expected some of filtered urls statuses not be equal to specified class", result.getFailed());
+        assertFalse(result.getPassed(), "Expected some of filtered urls statuses not be equal to specified class");
+        assertTrue(result.getFailed(), "Expected some of filtered urls statuses not be equal to specified class");
     }
 
     @Test
@@ -120,8 +120,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(NOT_TO_MATCH_PATTERN, HttpStatusClass.SUCCESS);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
@@ -136,8 +136,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(NOT_TO_MATCH_PATTERN, HttpStatusClass.SUCCESS);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
@@ -152,8 +152,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(NOT_TO_MATCH_PATTERN, status);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
@@ -168,8 +168,8 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(NOT_TO_MATCH_PATTERN, status);
 
-        assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     protected StubMapping mockResponse(String path, Integer status) {

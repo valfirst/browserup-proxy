@@ -20,9 +20,9 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -47,14 +47,14 @@ import static org.mockito.Mockito.when;
 public class NewHarTest extends MockServerTest {
     private MitmProxyServer proxy;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
-    @Ignore("proxy_manager.py doesn't take into account set 'dns_resolving_delay_ms'")
+    @Disabled("proxy_manager.py doesn't take into account set 'dns_resolving_delay_ms'")
     @Test
     public void testDnsTimingPopulatedIfNoDnsResolutionDelaySpecified() throws Exception {
         String stubUrl = "/testDnsTimingPopulated";
@@ -70,16 +70,16 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxyPort)) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testDnsTimingPopulated")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
         Har har = proxy.getHar();
 
-        assertNotNull("HAR should not be null", har);
-        assertNotNull("HAR log should not be null", har.getLog());
-        assertNotNull("HAR log entries should not be null", har.getLog().getEntries());
-        assertFalse("HAR entries should exist", har.getLog().getEntries().isEmpty());
+        assertNotNull(har, "HAR should not be null");
+        assertNotNull(har.getLog(), "HAR log should not be null");
+        assertNotNull(har.getLog().getEntries(), "HAR log entries should not be null");
+        assertFalse(har.getLog().getEntries().isEmpty(), "HAR entries should exist");
 
         HarEntry entry = Iterables.get(har.getLog().getEntries(), 0);
         assertThat("Expected at least 1 second DNS delay", entry.getTimings().getDns(), lessThanOrEqualTo(1000));
@@ -88,7 +88,7 @@ public class NewHarTest extends MockServerTest {
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
 
-    @Ignore("proxy_manager.py doesn't take into account set 'dns_resolving_delay_ms'")
+    @Disabled("proxy_manager.py doesn't take into account set 'dns_resolving_delay_ms'")
     @Test
     public void testDnsTimingPopulatedIfDnsResolutionDelaySpecified() throws Exception {
         String stubUrl = "/testDnsTimingPopulated";
@@ -105,16 +105,16 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxyPort)) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testDnsTimingPopulated")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
         Har har = proxy.getHar();
 
-        assertNotNull("HAR should not be null", har);
-        assertNotNull("HAR log should not be null", har.getLog());
-        assertNotNull("HAR log entries should not be null", har.getLog().getEntries());
-        assertFalse("HAR entries should exist", har.getLog().getEntries().isEmpty());
+        assertNotNull(har, "HAR should not be null");
+        assertNotNull(har.getLog(), "HAR log should not be null");
+        assertNotNull(har.getLog().getEntries(), "HAR log entries should not be null");
+        assertFalse(har.getLog().getEntries().isEmpty(), "HAR entries should exist");
 
         HarEntry entry = Iterables.get(har.getLog().getEntries(), 0);
         assertThat("Expected at least 1 second DNS delay", entry.getTimings().getDns(), greaterThanOrEqualTo(1000));
@@ -148,7 +148,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/testCaptureResponseCookiesInHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -160,14 +160,14 @@ public class NewHarTest extends MockServerTest {
         HarCookie maxAgeCookie = har.getLog().getEntries().get(0).getResponse().getCookies().get(0);
         HarCookie expiresCookie = har.getLog().getEntries().get(0).getResponse().getCookies().get(1);
 
-        assertEquals("Incorrect cookie name in HAR", "max-age-cookie", maxAgeCookie.getName());
-        assertEquals("Incorrect cookie value in HAR", "mock-value", maxAgeCookie.getValue());
+        assertEquals(maxAgeCookie.getName(), "Incorrect cookie name in HAR", "max-age-cookie");
+        assertEquals(maxAgeCookie.getValue(), "Incorrect cookie value in HAR", "mock-value");
         assertThat("Incorrect expiration date in cookie with Max-Age", maxAgeCookie.getExpires(), greaterThan(maxAgeCookieNotBefore));
 
-        assertEquals("Incorrect cookie name in HAR", "expires-cookie", expiresCookie.getName());
-        assertEquals("Incorrect cookie value in HAR", "mock-value", expiresCookie.getValue());
+        assertEquals(expiresCookie.getName(), "Incorrect cookie name in HAR", "expires-cookie");
+        assertEquals(expiresCookie.getValue(), "Incorrect cookie value in HAR", "mock-value");
 
-        assertEquals("Incorrect expiration date in cookie with Expires", expiresCookie.getExpires(), expiresDate);
+        assertEquals(expiresCookie.getExpires(), expiresDate, "Incorrect expiration date in cookie with Expires");
 
         //verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -188,7 +188,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testCaptureResponseHeaderInHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -200,8 +200,8 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find headers in the HAR", headers, not(empty()));
 
         HarHeader header = headers.stream().filter(h -> "Mock-Header".equals(h.getName())).findFirst().orElse(null);
-        assertNotNull("Expected to find header with name Mock-Header in HAR", header);
-        assertEquals("Incorrect header value for Mock-Header", "mock value", header.getValue());
+        assertNotNull(header, "Expected to find header with name Mock-Header in HAR");
+        assertEquals(header.getValue(), "Incorrect header value for Mock-Header", "mock value");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -223,7 +223,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testCaptureResponseHeaderInHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -235,8 +235,8 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find headers in the HAR", headers, not(empty()));
 
         HarHeader header = headers.stream().filter(h -> "Mock-Header".equals(h.getName())).findFirst().orElse(null);
-        assertNotNull("Expected to find header with name Mock-Header in HAR", header);
-        assertEquals("Incorrect header value for Mock-Header", "mock value", header.getValue());
+        assertNotNull(header, "Expected to find header with name Mock-Header in HAR");
+        assertEquals(header.getValue(), "Incorrect header value for Mock-Header", "mock value");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -258,7 +258,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testCaptureResponseHeaderInHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -290,17 +290,17 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + firstRequestUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", firstResponseBody, responseBody);
+            assertEquals(firstResponseBody, responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
         Har har = proxy.getHar();
 
-        assertEquals("Expected to get exactly one entry", 1, har.getLog().getEntries().size());
+        assertEquals(1, har.getLog().getEntries().size(), "Expected to get exactly one entry");
 
         HarContent content = har.getLog().getEntries().get(0).getResponse().getContent();
-        assertNotNull("Expected to find HAR content", content);
-        assertEquals("Expected to find HAR content body of first response", firstResponseBody, content.getText());
+        assertNotNull(content, "Expected to find HAR content");
+        assertEquals(firstResponseBody, content.getText(), "Expected to find HAR content body of first response");
 
         proxy.newHar();
 
@@ -314,17 +314,17 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + secondRequestUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", secondResponseBody, responseBody);
+            assertEquals(secondResponseBody, responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
         har = proxy.getHar();
 
-        assertEquals("Expected to get exactly one entry after newHar was called", 1, har.getLog().getEntries().size());
+        assertEquals(1, har.getLog().getEntries().size(), "Expected to get exactly one entry after newHar was called");
 
         content = har.getLog().getEntries().get(0).getResponse().getContent();
-        assertNotNull("Expected to find HAR content", content);
-        assertEquals("Expected to find HAR content body of second response", secondResponseBody, content.getText());
+        assertNotNull(content, "Expected to find HAR content");
+        assertEquals(secondResponseBody, content.getText(), "Expected to find HAR content body of second response");
 
         verify(1, getRequestedFor(urlEqualTo(secondRequestUrl)));
     }
@@ -348,7 +348,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testCaptureResponseContentInHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", expectedResponseBody, responseBody);
+            assertEquals(expectedResponseBody, responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -357,12 +357,12 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         HarContent content = har.getLog().getEntries().get(0).getResponse().getContent();
-        assertNotNull("Expected to find HAR content", content);
+        assertNotNull(content, "Expected to find HAR content");
 
-        assertEquals("Expected to capture response mimeType in HAR", responseContentType, content.getMimeType());
+        assertEquals(responseContentType, content.getMimeType(), "Expected to capture response mimeType in HAR");
 
-        assertEquals("Expected to capture body content in HAR", expectedResponseBody, content.getText());
-        assertEquals("Unexpected response content length", (long) expectedResponseBody.getBytes("UTF-8").length, (long) content.getSize());
+        assertEquals(expectedResponseBody, content.getText(), "Expected to capture body content in HAR");
+        assertEquals((long) expectedResponseBody.getBytes("UTF-8").length, (long) content.getSize(), "Unexpected response content length");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -386,7 +386,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testCaptureResponseContentInHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", expectedResponseBody, responseBody);
+            assertEquals(expectedResponseBody, responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -395,17 +395,16 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         HarContent content = har.getLog().getEntries().get(0).getResponse().getContent();
-        assertNotNull("Expected to find HAR content", content);
+        assertNotNull(content, "Expected to find HAR content");
 
-        assertEquals("Expected to capture response mimeType in HAR", responseContentType, content.getMimeType());
+        assertEquals(responseContentType, content.getMimeType(), "Expected to capture response mimeType in HAR");
 
-        assertEquals("Expected to not capture body content in HAR", "", content.getText());
+        assertEquals(content.getText(), "Expected to not capture body content in HAR", "");
 
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -425,7 +424,7 @@ public class NewHarTest extends MockServerTest {
         // newHarInitiallyEmpty
         {
             Har newHar = proxy.newHar();
-            assertNull("Expected newHar() to return the old (null) har", newHar);
+            assertNull(newHar, "Expected newHar() to return the old (null) har");
         }
 
         proxy.newHar();
@@ -434,7 +433,7 @@ public class NewHarTest extends MockServerTest {
         {
             try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-                assertEquals("Did not receive expected response from mock server", "success", responseBody);
+                assertEquals(responseBody, "Did not receive expected response from mock server", "success");
             }
 
             Thread.sleep(500);
@@ -443,9 +442,9 @@ public class NewHarTest extends MockServerTest {
             assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
             HarContent content = har.getLog().getEntries().get(0).getResponse().getContent();
-            assertNotNull("Expected to find HAR content", content);
+            assertNotNull(content, "Expected to find HAR content");
 
-            assertEquals("Expected to capture body content in HAR", "success", content.getText());
+            assertEquals(content.getText(), "Expected to capture body content in HAR", "success");
 
             assertThat("Expected HAR page timing onLoad value to be populated", har.getLog().getPages().get(har.getLog().getPages().size() - 1).getPageTimings().getOnLoad(), greaterThan(0));
             assertNotNull(har.getLog().getEntries().get(0).getTime());
@@ -454,27 +453,27 @@ public class NewHarTest extends MockServerTest {
         // harEmptyAfterEnd
         {
             Har emptyHar = proxy.getHar();
-            assertNull("Expected getHar() to return null after calling endHar()", emptyHar);
+            assertNull(emptyHar, "Expected getHar() to return null after calling endHar()");
         }
 
         // harNotEmptyAfterRequest
         {
             try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-                assertEquals("Did not receive expected response from mock server", "success", responseBody);
+                assertEquals(responseBody, "Did not receive expected response from mock server", "success");
             }
 
             Thread.sleep(500);
             Har nonEmptyHar = proxy.getHar();
 
-            assertNotNull("Expected getHar() to return non-null Har after calling endHar() and sending request", nonEmptyHar);
+            assertNotNull(nonEmptyHar, "Expected getHar() to return non-null Har after calling endHar() and sending request");
         }
 
         // newHarCanCapture
         {
             try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-                assertEquals("Did not receive expected response from mock server", "success", responseBody);
+                assertEquals(responseBody, "Did not receive expected response from mock server", "success");
             }
 
             Thread.sleep(500);
@@ -483,15 +482,14 @@ public class NewHarTest extends MockServerTest {
             assertThat("Expected to find entries in the HAR", populatedHar.getLog().getEntries(), not(empty()));
 
             HarContent newContent = populatedHar.getLog().getEntries().get(0).getResponse().getContent();
-            assertNotNull("Expected to find HAR content", newContent);
+            assertNotNull(newContent, "Expected to find HAR content");
 
-            assertEquals("Expected to capture body content in HAR", "success", newContent.getText());
+            assertEquals(newContent.getText(), "Expected to capture body content in HAR", "success");
 
-            assertTrue("Expected HAR entries to have _url field",
-                    populatedHar.getLog().getEntries().stream().allMatch(e -> {
+            assertTrue(populatedHar.getLog().getEntries().stream().allMatch(e -> {
                         Object url = e.getAdditional().get("_url");
                         return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                    }));
+                    }), "Expected HAR entries to have _url field");
         }
     }
 
@@ -511,7 +509,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -520,33 +518,32 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         HarContent content = har.getLog().getEntries().get(0).getResponse().getContent();
-        assertNotNull("Expected to find HAR content", content);
+        assertNotNull(content, "Expected to find HAR content");
 
-        assertEquals("Expected to capture body content in HAR", "success", content.getText());
+        assertEquals(content.getText(), "Expected to capture body content in HAR", "success");
 
-        assertEquals("Expected only one HAR page to be created", 1, har.getLog().getPages().size());
-        assertEquals("Expected id of HAR page to be 'first-page'", "first-page", har.getLog().getPages().get(0).getId());
+        assertEquals(1, har.getLog().getPages().size(), "Expected only one HAR page to be created");
+        assertEquals(har.getLog().getPages().get(0).getId(), "Expected id of HAR page to be 'first-page'", "first-page");
 
         Har harWithFirstPageOnly = proxy.newPage("second-page");
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
         Har harWithSecondPage = proxy.getHar();
 
-        assertEquals("Expected HAR to contain first and second page page", 2, harWithSecondPage.getLog().getPages().size());
-        assertEquals("Expected id of second HAR page to be 'second-page'", "second-page", harWithSecondPage.getLog().getPages().get(1).getId());
+        assertEquals(2, harWithSecondPage.getLog().getPages().size(), "Expected HAR to contain first and second page page");
+        assertEquals(harWithSecondPage.getLog().getPages().get(1).getId(), "Expected id of second HAR page to be 'second-page'", "second-page");
 
-        assertEquals("Expected HAR returned from newPage() not to contain second page", 1, harWithFirstPageOnly.getLog().getPages().size());
-        assertEquals("Expected id of HAR page to be 'first-page'", "first-page", harWithFirstPageOnly.getLog().getPages().get(0).getId());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals(1, harWithFirstPageOnly.getLog().getPages().size(), "Expected HAR returned from newPage() not to contain second page");
+        assertEquals(harWithFirstPageOnly.getLog().getPages().get(0).getId(), "Expected id of HAR page to be 'first-page'", "first-page");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
     }
 
     @Test
@@ -566,7 +563,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet(requestUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -575,12 +572,11 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
 
@@ -601,7 +597,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet(requestUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -610,17 +606,16 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
         assertThat("Expected to find query parameters in the HAR", har.getLog().getEntries().get(0).getRequest().getQueryString(), not(empty()));
 
-        assertEquals("Expected first query parameter name to be param1", "param1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName());
-        assertEquals("Expected first query parameter value to be value1", "value1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1", "param1");
+        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1", "value1");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
@@ -643,7 +638,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet(requestUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -652,17 +647,16 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
         assertThat("Expected to find query parameters in the HAR", har.getLog().getEntries().get(0).getRequest().getQueryString(), not(empty()));
 
-        assertEquals("Expected first query parameter name to be param1", "param1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName());
-        assertEquals("Expected first query parameter value to be value1", "value1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1", "param1");
+        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1", "value1");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
@@ -686,10 +680,10 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
@@ -698,21 +692,20 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", expectedRewrittenUrl, capturedUrl);
+        assertEquals(expectedRewrittenUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
         assertThat("Expected to find query parameters in the HAR", har.getLog().getEntries().get(0).getRequest().getQueryString(), not(empty()));
 
-        assertEquals("Expected first query parameter name to be param1", "param1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName());
-        assertEquals("Expected first query parameter value to be value1", "value1", har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getName(), "Expected first query parameter name to be param1", "param1");
+        assertEquals(har.getLog().getEntries().get(0).getRequest().getQueryString().get(0).getValue(), "Expected first query parameter value to be value1", "value1");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
-    @Ignore("com.browserup.bup.MitmProxyServer.setHostNameResolver is not implemented")
+    @Disabled("com.browserup.bup.MitmProxyServer.setHostNameResolver is not implemented")
     @Test
     public void testHttpDnsFailureCapturedInHar() throws Exception {
         AdvancedHostResolver mockFailingResolver = mock(AdvancedHostResolver.class);
@@ -728,7 +721,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 502 from proxy", 502, response.getStatusLine().getStatusCode());
+            assertEquals(502, response.getStatusLine().getStatusCode(), "Did not receive HTTP 502 from proxy");
         }
 
         Thread.sleep(500);
@@ -738,36 +731,35 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
-        assertNotNull("No HAR response found", harResponse);
+        assertNotNull(harResponse, "No HAR response found");
 
-        assertEquals("Error in HAR response did not match expected DNS failure error message", HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address"), harResponse.getAdditional().get("_errorMessage"));
-        assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus());
-        assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion());
-        assertEquals("Expected default value for headersSize for failed request", (Long)(-1L), harResponse.getHeadersSize());
-        assertEquals("Expected default value for bodySize for failed request", (Long)(-1L), harResponse.getBodySize());
+        assertEquals(HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address"), harResponse.getAdditional().get("_errorMessage"), "Error in HAR response did not match expected DNS failure error message");
+        assertEquals(HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus(), "Expected HTTP status code of 0 for failed request");
+        assertEquals(HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion(), "Expected unknown HTTP version for failed request");
+        assertEquals((Long)(-1L), harResponse.getHeadersSize(), "Expected default value for headersSize for failed request");
+        assertEquals((Long)(-1L), harResponse.getBodySize(), "Expected default value for bodySize for failed request");
 
         HarTiming harTimings = har.getLog().getEntries().get(0).getTimings();
-        assertNotNull("No HAR timings found", harTimings);
+        assertNotNull(harTimings, "No HAR timings found");
 
         assertThat("Expected dns time to be populated after dns resolution failure", harTimings.getDns(), greaterThan(0));
 
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer)(-1), harTimings.getConnect());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer)(-1), harTimings.getSsl());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer) 0, harTimings.getSend());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer) 0, harTimings.getWait());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer) 0, harTimings.getReceive());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals((Integer)(-1), harTimings.getConnect(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer)(-1), harTimings.getSsl(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer) 0, harTimings.getSend(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer) 0, harTimings.getWait(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer) 0, harTimings.getReceive(), "Expected HAR timings to contain default values after DNS failure");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         assertNotNull(har.getLog().getEntries().get(0).getTime());
     }
 
-    @Ignore("com.browserup.bup.MitmProxyServer.setHostNameResolver is not implemented")
+    @Disabled("com.browserup.bup.MitmProxyServer.setHostNameResolver is not implemented")
     @Test
     public void testHttpsDnsFailureCapturedInHar() throws Exception {
         AdvancedHostResolver mockFailingResolver = mock(AdvancedHostResolver.class);
@@ -783,7 +775,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 502 from proxy", 502, response.getStatusLine().getStatusCode());
+            assertEquals(502, response.getStatusLine().getStatusCode(), "Did not receive HTTP 502 from proxy");
         }
 
         Thread.sleep(500);
@@ -793,36 +785,35 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match expected HTTP CONNECT URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match expected HTTP CONNECT URL");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
-        assertNotNull("No HAR response found", harResponse);
+        assertNotNull(harResponse, "No HAR response found");
 
-        assertEquals("Error in HAR response did not match expected DNS failure error message", HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address:443"), harResponse.getAdditional().get("_errorMessage"));
-        assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus());
-        assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion());
-        assertEquals("Expected default value for headersSize for failed request", (Long)(-1L), harResponse.getHeadersSize());
-        assertEquals("Expected default value for bodySize for failed request", (Long)(-1L), harResponse.getBodySize());
+        assertEquals(HarCaptureUtil.getResolutionFailedErrorMessage("www.doesnotexist.address:443"), harResponse.getAdditional().get("_errorMessage"), "Error in HAR response did not match expected DNS failure error message");
+        assertEquals(HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus(), "Expected HTTP status code of 0 for failed request");
+        assertEquals(HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion(), "Expected unknown HTTP version for failed request");
+        assertEquals((Long)(-1L), harResponse.getHeadersSize(), "Expected default value for headersSize for failed request");
+        assertEquals((Long)(-1L), harResponse.getBodySize(), "Expected default value for bodySize for failed request");
 
         HarTiming harTimings = har.getLog().getEntries().get(0).getTimings();
-        assertNotNull("No HAR timings found", harTimings);
+        assertNotNull(harTimings, "No HAR timings found");
 
         assertThat("Expected dns time to be populated after dns resolution failure", harTimings.getDns(), greaterThan(0));
 
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer)(-1), harTimings.getConnect());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer)(-1), harTimings.getSsl());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer) 0, harTimings.getSend());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer) 0, harTimings.getWait());
-        assertEquals("Expected HAR timings to contain default values after DNS failure", (Integer) 0, harTimings.getReceive());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals((Integer)(-1), harTimings.getConnect(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer)(-1), harTimings.getSsl(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer) 0, harTimings.getSend(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer) 0, harTimings.getWait(), "Expected HAR timings to contain default values after DNS failure");
+        assertEquals((Integer) 0, harTimings.getReceive(), "Expected HAR timings to contain default values after DNS failure");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         assertNotNull(har.getLog().getEntries().get(0).getTime());
     }
 
-    @Ignore("To investigate: serverIPAddress is not set in HAR")
+    @Disabled("To investigate: serverIPAddress is not set in HAR")
     @Test
     public void testHttpConnectTimeoutCapturedInHar() throws Exception {
         proxy = new MitmProxyServer();
@@ -836,7 +827,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 502 from proxy", 502, response.getStatusLine().getStatusCode());
+            assertEquals(502, response.getStatusLine().getStatusCode(), "Did not receive HTTP 502 from proxy");
         }
 
         Thread.sleep(500);
@@ -846,37 +837,36 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
-        assertTrue("Expected IP address to be populated", Arrays.asList("127.0.0.1", "::1").contains(har.getLog().getEntries().get(0).getServerIPAddress()));
+        assertTrue(Arrays.asList("127.0.0.1", "::1").contains(har.getLog().getEntries().get(0).getServerIPAddress()), "Expected IP address to be populated");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
-        assertNotNull("No HAR response found", harResponse);
+        assertNotNull(harResponse, "No HAR response found");
 
-        assertEquals("Error in HAR response did not match expected connection failure error message", HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.getAdditional().get("_errorMessage"));
-        assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus());
-        assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion());
-        assertEquals("Expected default value for headersSize for failed request", (Long)(-1L), harResponse.getHeadersSize());
-        assertEquals("Expected default value for bodySize for failed request", (Long)(-1L), harResponse.getBodySize());
+        assertEquals(HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.getAdditional().get("_errorMessage"), "Error in HAR response did not match expected connection failure error message");
+        assertEquals(HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus(), "Expected HTTP status code of 0 for failed request");
+        assertEquals(HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion(), "Expected unknown HTTP version for failed request");
+        assertEquals((Long)(-1L), harResponse.getHeadersSize(), "Expected default value for headersSize for failed request");
+        assertEquals((Long)(-1L), harResponse.getBodySize(), "Expected default value for bodySize for failed request");
 
         HarTiming harTimings = har.getLog().getEntries().get(0).getTimings();
-        assertNotNull("No HAR timings found", harTimings);
+        assertNotNull(harTimings, "No HAR timings found");
 
         assertThat("Expected dns time to be populated after connection failure", harTimings.getDns(), greaterThan(0));
         assertThat("Expected connect time to be populated after connection failure", harTimings.getConnect(), greaterThan(0));
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer)(-1), harTimings.getSsl());
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer) 0, harTimings.getSend());
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer) 0, harTimings.getWait());
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer) 0, harTimings.getReceive());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals((Integer)(-1), harTimings.getSsl(), "Expected HAR timings to contain default values after connection failure");
+        assertEquals((Integer) 0, harTimings.getSend(), "Expected HAR timings to contain default values after connection failure");
+        assertEquals((Integer) 0, harTimings.getWait(), "Expected HAR timings to contain default values after connection failure");
+        assertEquals((Integer) 0, harTimings.getReceive(), "Expected HAR timings to contain default values after connection failure");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         assertNotNull(har.getLog().getEntries().get(0).getTime());
     }
 
-    @Ignore("To investigate: serverIPAddress is not set in HAR")
+    @Disabled("To investigate: serverIPAddress is not set in HAR")
     @Test
     public void testHttpsConnectTimeoutCapturedInHar() throws Exception {
         proxy = new MitmProxyServer();
@@ -890,7 +880,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 502 from proxy", 502, response.getStatusLine().getStatusCode());
+            assertEquals(502, response.getStatusLine().getStatusCode(), "Did not receive HTTP 502 from proxy");
         }
 
         Thread.sleep(1000);
@@ -900,37 +890,36 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", "https://localhost:2", capturedUrl);
+        assertEquals(capturedUrl, "URL captured in HAR did not match request URL", "https://localhost:2");
 
-        assertTrue("Expected IP address to be populated", Arrays.asList("127.0.0.1", "::1").contains(har.getLog().getEntries().get(0).getServerIPAddress()));
+        assertTrue(Arrays.asList("127.0.0.1", "::1").contains(har.getLog().getEntries().get(0).getServerIPAddress()), "Expected IP address to be populated");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
-        assertNotNull("No HAR response found", harResponse);
+        assertNotNull(harResponse, "No HAR response found");
 
-        assertEquals("Error in HAR response did not match expected connection failure error message", HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.getAdditional().get("_errorMessage"));
-        assertEquals("Expected HTTP status code of 0 for failed request", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus());
-        assertEquals("Expected unknown HTTP version for failed request", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion());
-        assertEquals("Expected default value for headersSize for failed request", (Long)(-1L), harResponse.getHeadersSize());
-        assertEquals("Expected default value for bodySize for failed request", (Long)(-1L), harResponse.getBodySize());
+        assertEquals(HarCaptureUtil.getConnectionFailedErrorMessage(), harResponse.getAdditional().get("_errorMessage"), "Error in HAR response did not match expected connection failure error message");
+        assertEquals(HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus(), "Expected HTTP status code of 0 for failed request");
+        assertEquals(HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion(), "Expected unknown HTTP version for failed request");
+        assertEquals((Long)(-1L), harResponse.getHeadersSize(), "Expected default value for headersSize for failed request");
+        assertEquals((Long)(-1L), harResponse.getBodySize(), "Expected default value for bodySize for failed request");
 
         HarTiming harTimings = har.getLog().getEntries().get(0).getTimings();
-        assertNotNull("No HAR timings found", harTimings);
+        assertNotNull(harTimings, "No HAR timings found");
 
         assertThat("Expected dns time to be populated after connection failure", harTimings.getDns(), greaterThan(0));
         assertThat("Expected connect time to be populated after connection failure", harTimings.getConnect(), greaterThan(0));
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer)(-1), harTimings.getSsl());
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer) 0, harTimings.getSend());
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer) 0, harTimings.getWait());
-        assertEquals("Expected HAR timings to contain default values after connection failure", (Integer) 0, harTimings.getReceive());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals((Integer)(-1), harTimings.getSsl(), "Expected HAR timings to contain default values after connection failure");
+        assertEquals((Integer) 0, harTimings.getSend(), "Expected HAR timings to contain default values after connection failure");
+        assertEquals((Integer) 0, harTimings.getWait(), "Expected HAR timings to contain default values after connection failure");
+        assertEquals((Integer) 0, harTimings.getReceive(), "Expected HAR timings to contain default values after connection failure");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         assertTrue(har.getLog().getEntries().get(0).getTime() > 0);
     }
 
-    @Ignore("proxy_manager.py doesn't take into account set 'connection_timeout_idle'")
+    @Disabled("proxy_manager.py doesn't take into account set 'connection_timeout_idle'")
     @Test
     public void testHttpResponseTimeoutCapturedInHar() throws Exception {
         String stubUrl = "/testResponseTimeoutCapturedInHar";
@@ -950,7 +939,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 504 from proxy", 504, response.getStatusLine().getStatusCode());
+            assertEquals(504, response.getStatusLine().getStatusCode(), "Did not receive HTTP 504 from proxy");
         }
 
         Thread.sleep(500);
@@ -960,23 +949,23 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
-        assertTrue("Expected IP address to be populated", Arrays.asList("127.0.0.1", "::1").contains(har.getLog().getEntries().get(0).getServerIPAddress()));
+        assertTrue(Arrays.asList("127.0.0.1", "::1").contains(har.getLog().getEntries().get(0).getServerIPAddress()), "Expected IP address to be populated");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
-        assertNotNull("No HAR response found", harResponse);
+        assertNotNull(harResponse, "No HAR response found");
 
-        assertEquals("Error in HAR response did not match expected response timeout error message", HarCaptureUtil.getResponseTimedOutErrorMessage(), harResponse.getAdditional().get("_errorMessage"));
-        assertEquals("Expected HTTP status code of 0 for response timeout", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus());
-        assertEquals("Expected unknown HTTP version for response timeout", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion());
-        assertEquals("Expected default value for headersSize for response timeout", (Long)(-1L), harResponse.getHeadersSize());
-        assertEquals("Expected default value for bodySize for response timeout", (Long)(-1L), harResponse.getBodySize());
+        assertEquals(HarCaptureUtil.getResponseTimedOutErrorMessage(), harResponse.getAdditional().get("_errorMessage"), "Error in HAR response did not match expected response timeout error message");
+        assertEquals(HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus(), "Expected HTTP status code of 0 for response timeout");
+        assertEquals(HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion(), "Expected unknown HTTP version for response timeout");
+        assertEquals((Long)(-1L), harResponse.getHeadersSize(), "Expected default value for headersSize for response timeout");
+        assertEquals((Long)(-1L), harResponse.getBodySize(), "Expected default value for bodySize for response timeout");
 
         HarTiming harTimings = har.getLog().getEntries().get(0).getTimings();
-        assertNotNull("No HAR timings found", harTimings);
+        assertNotNull(harTimings, "No HAR timings found");
 
-        assertEquals("Expected ssl timing to contain default value", (Integer)(-1), harTimings.getSsl());
+        assertEquals((Integer)(-1), harTimings.getSsl(), "Expected ssl timing to contain default value");
 
         // this timeout was caused by a failure of the server to respond, so dns, connect, send, and wait should all be populated,
         // but receive should not be populated since no response was received.
@@ -985,16 +974,15 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected send time to be populated", harTimings.getSend(), greaterThan(0));
         assertThat("Expected wait time to be populated", harTimings.getWait(), greaterThan(0));
 
-        assertEquals("Expected receive time to not be populated", (Integer) 0, harTimings.getReceive());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals((Integer) 0, harTimings.getReceive(), "Expected receive time to not be populated");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         assertTrue(har.getLog().getEntries().get(0).getTime() > 0);
     }
 
-    @Ignore("proxy_manager.py doesn't take into account set 'connection_timeout_idle'")
+    @Disabled("proxy_manager.py doesn't take into account set 'connection_timeout_idle'")
     @Test
     public void testHttpsResponseTimeoutCapturedInHar() throws Exception {
         String stubUrl = "/testResponseTimeoutCapturedInHar";
@@ -1015,7 +1003,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 504 from proxy", 504, response.getStatusLine().getStatusCode());
+            assertEquals(504, response.getStatusLine().getStatusCode(), "Did not receive HTTP 504 from proxy");
         }
 
         Thread.sleep(500);
@@ -1025,21 +1013,21 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
-        assertEquals("Expected IP address to be populated", "127.0.0.1", har.getLog().getEntries().get(0).getServerIPAddress());
+        assertEquals(har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated", "127.0.0.1");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
-        assertNotNull("No HAR response found", harResponse);
+        assertNotNull(harResponse, "No HAR response found");
 
-        assertEquals("Error in HAR response did not match expected response timeout error message", HarCaptureUtil.getResponseTimedOutErrorMessage(), harResponse.getAdditional().get("_errorMessage"));
-        assertEquals("Expected HTTP status code of 0 for response timeout", HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus());
-        assertEquals("Expected unknown HTTP version for response timeout", HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion());
-        assertEquals("Expected default value for headersSize for response timeout", (Long)(-1L), harResponse.getHeadersSize());
-        assertEquals("Expected default value for bodySize for response timeout", (Long)(-1L), harResponse.getBodySize());
+        assertEquals(HarCaptureUtil.getResponseTimedOutErrorMessage(), harResponse.getAdditional().get("_errorMessage"), "Error in HAR response did not match expected response timeout error message");
+        assertEquals(HarCaptureUtil.HTTP_STATUS_CODE_FOR_FAILURE, harResponse.getStatus(), "Expected HTTP status code of 0 for response timeout");
+        assertEquals(HarCaptureUtil.HTTP_VERSION_STRING_FOR_FAILURE, harResponse.getHttpVersion(), "Expected unknown HTTP version for response timeout");
+        assertEquals((Long)(-1L), harResponse.getHeadersSize(), "Expected default value for headersSize for response timeout");
+        assertEquals((Long)(-1L), harResponse.getBodySize(), "Expected default value for bodySize for response timeout");
 
         HarTiming harTimings = har.getLog().getEntries().get(0).getTimings();
-        assertNotNull("No HAR timings found", harTimings);
+        assertNotNull(harTimings, "No HAR timings found");
 
         assertThat("Expected ssl timing to be populated", harTimings.getSsl(), greaterThan(0));
 
@@ -1050,12 +1038,11 @@ public class NewHarTest extends MockServerTest {
         assertThat("Expected send time to be populated", harTimings.getSend(), greaterThan(0));
         assertThat("Expected wait time to be populated", harTimings.getWait(), greaterThan(0));
 
-        assertEquals("Expected receive time to not be populated", (Integer) 0, harTimings.getReceive());
-        assertTrue("Expected HAR entries to have _url field",
-                har.getLog().getEntries().stream().allMatch(e -> {
+        assertEquals((Integer) 0, harTimings.getReceive(), "Expected receive time to not be populated");
+        assertTrue(har.getLog().getEntries().stream().allMatch(e -> {
                     Object url = e.getAdditional().get("_url");
                     return url != null && StringUtils.isNotEmpty(String.valueOf(url));
-                }));
+                }), "Expected HAR entries to have _url field");
         assertTrue(har.getLog().getEntries().get(0).getTime() > 0);
     }
 
@@ -1129,7 +1116,7 @@ public class NewHarTest extends MockServerTest {
             request.setConfig(RequestConfig.custom().setRedirectsEnabled(false).build());
 
             CloseableHttpResponse response = client.execute(request);
-            assertEquals("HTTP response code did not match expected response code", expectedStatusCode, response.getStatusLine().getStatusCode());
+            assertEquals(expectedStatusCode, response.getStatusLine().getStatusCode(), "HTTP response code did not match expected response code");
         }
 
         Thread.sleep(500);
@@ -1139,12 +1126,12 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
-        assertNotNull("No HAR response found", harResponse);
+        assertNotNull(harResponse, "No HAR response found");
 
-        assertEquals("Expected redirect location to be populated in redirectURL field", expectedLocationValue, harResponse.getRedirectURL());
+        assertEquals(expectedLocationValue, harResponse.getRedirectURL(), "Expected redirect location to be populated in redirectURL field");
     }
 
     //TODO: Add Request Capture Type tests

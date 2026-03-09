@@ -24,8 +24,9 @@ import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
@@ -50,16 +51,16 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InterceptorTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -110,11 +111,11 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/regular200"));
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertTrue("Expected interceptor to fire", interceptorFired.get());
-            assertFalse("Did not expected short circuit interceptor code to execute", shortCircuitFired.get());
+            assertTrue(interceptorFired.get(), "Expected interceptor to fire");
+            assertFalse(shortCircuitFired.get(), "Did not expected short circuit interceptor code to execute");
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
 
             verify(1, getRequestedFor(urlEqualTo(url1)));
         }
@@ -124,11 +125,11 @@ public class InterceptorTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/shortcircuit204"));
 
-            assertTrue("Expected interceptor to fire", interceptorFired.get());
-            assertTrue("Expected interceptor to short-circuit response", shortCircuitFired.get());
+            assertTrue(interceptorFired.get(), "Expected interceptor to fire");
+            assertTrue(shortCircuitFired.get(), "Expected interceptor to short-circuit response");
 
-            assertEquals("Expected interceptor to return a 204 (No Content)", 204, response.getStatusLine().getStatusCode());
-            assertNull("Expected no entity attached to response", response.getEntity());
+            assertEquals(204, response.getStatusLine().getStatusCode(), "Expected interceptor to return a 204 (No Content)");
+            assertNull(response.getEntity(), "Expected no entity attached to response");
         }
     }
 
@@ -181,8 +182,8 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/originalrequest"));
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -217,8 +218,8 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(request);
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
 
             verify(1, putRequestedFor(urlEqualTo(url)));
         }
@@ -254,8 +255,8 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(request);
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
 
             verify(1, putRequestedFor(urlEqualTo(url)));
         }
@@ -289,7 +290,7 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(request);
             byte[] responseBytes = ByteStreams.toByteArray(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
             assertThat("Did not receive expected response from mock server", responseBytes, equalTo(newBytes));
 
             verify(1, getRequestedFor(urlEqualTo(url)));
@@ -325,8 +326,8 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(request);
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", newText, responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(newText, responseBody, "Did not receive expected response from mock server");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -362,8 +363,8 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(request);
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", newText, responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(newText, responseBody, "Did not receive expected response from mock server");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -387,8 +388,8 @@ public class InterceptorTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpHead("http://localhost:" + mockServerPort + "/interceptortest"));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Expected binary contents captured in interceptor to be empty", 0, responseContents.get().length);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(0, responseContents.get().length, "Expected binary contents captured in interceptor to be empty");
 
             verify(1, headRequestedFor(urlEqualTo(url)));
         }
@@ -417,14 +418,14 @@ public class InterceptorTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/originalendpoint"));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
             assertThat("Expected URI on originalRequest to match actual URI of original HTTP request", originalRequestUri.get(), endsWith("/originalendpoint"));
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
     }
 
-    @org.junit.Ignore
+    @Disabled
     @Test
     public void testMessageContentsNotAvailableWithoutAggregation() throws IOException {
         String url = "/endpoint";
@@ -453,9 +454,9 @@ public class InterceptorTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/endpoint"));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertTrue("Expected HttpMessageContents to be null in RequestFilter because HTTP message aggregation is disabled", requestContentsNull.get());
-            assertTrue("Expected HttpMessageContents to be null in ResponseFilter because HTTP message aggregation is disabled", responseContentsNull.get());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertTrue(requestContentsNull.get(), "Expected HttpMessageContents to be null in RequestFilter because HTTP message aggregation is disabled");
+            assertTrue(responseContentsNull.get(), "Expected HttpMessageContents to be null in ResponseFilter because HTTP message aggregation is disabled");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -486,10 +487,10 @@ public class InterceptorTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/mitmdisabled"));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
 
-            assertTrue("Expected request filter to fire on CONNECT", connectRequestFilterFired.get());
-            assertFalse("Expected request filter to fail to fire on GET because MITM is disabled", getRequestFilterFired.get());
+            assertTrue(connectRequestFilterFired.get(), "Expected request filter to fire on CONNECT");
+            assertFalse(getRequestFilterFired.get(), "Expected request filter to fail to fire on GET because MITM is disabled");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -516,8 +517,8 @@ public class InterceptorTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/mitmdisabled"));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertFalse("Expected response filter to fail to fire because MITM is disabled", responseFilterFired.get());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertFalse(responseFilterFired.get(), "Expected response filter to fail to fire because MITM is disabled");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -568,8 +569,8 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/modifyresponse"));
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", newText, responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(newText, responseBody, "Did not receive expected response from mock server");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -608,28 +609,28 @@ public class InterceptorTest extends MockServerTest {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/bypassfilter"));
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
 
-        assertEquals("Expected filters source to be invoked on first request", 1, filtersSourceHitCount.get());
-        assertEquals("Expected filter instance to be bypassed on first request", 0, filterHitCount.get());
+        assertEquals(1, filtersSourceHitCount.get(), "Expected filters source to be invoked on first request");
+        assertEquals(0, filterHitCount.get(), "Expected filter instance to be bypassed on first request");
 
         // during the second request, the filterRequest(...) method will return a filter instance, which should be invoked during processing
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/bypassfilter"));
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         Thread.sleep(500);
 
-        assertEquals("Expected filters source to be invoked again on second request", 2, filtersSourceHitCount.get());
-        assertEquals("Expected filter instance to be invoked on second request (only)", 1, filterHitCount.get());
+        assertEquals(2, filtersSourceHitCount.get(), "Expected filters source to be invoked again on second request");
+        assertEquals(1, filterHitCount.get(), "Expected filter instance to be invoked on second request (only)");
 
         verify(2, getRequestedFor(urlEqualTo(url)));
     }
@@ -678,18 +679,18 @@ public class InterceptorTest extends MockServerTest {
             String requestUrl = "http://localhost:" + mockServerPort + "/httpmessageinfopopulated?param1=value1";
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertNotNull("Expected ChannelHandlerContext to be populated in request filter", requestCtx.get());
-            assertNotNull("Expected originalRequest to be populated in request filter", requestOriginalRequest.get());
-            assertFalse("Expected isHttps to return false in request filter", requestIsHttps.get());
-            assertEquals("Expected originalUrl in request filter to match actual request URL", requestUrl, requestFilterOriginalUrl.get());
-            assertEquals("Expected url in request filter to match actual request URL", requestUrl, requestFilterUrl.get());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertNotNull(requestCtx.get(), "Expected ChannelHandlerContext to be populated in request filter");
+            assertNotNull(requestOriginalRequest.get(), "Expected originalRequest to be populated in request filter");
+            assertFalse(requestIsHttps.get(), "Expected isHttps to return false in request filter");
+            assertEquals(requestUrl, requestFilterOriginalUrl.get(), "Expected originalUrl in request filter to match actual request URL");
+            assertEquals(requestUrl, requestFilterUrl.get(), "Expected url in request filter to match actual request URL");
 
-            assertNotNull("Expected ChannelHandlerContext to be populated in response filter", responseCtx.get());
-            assertNotNull("Expected originalRequest to be populated in response filter", responseOriginalRequest.get());
-            assertFalse("Expected isHttps to return false in response filter", responseIsHttps.get());
-            assertEquals("Expected originalUrl in response filter to match actual request URL", requestUrl, responseFilterOriginalUrl.get());
-            assertEquals("Expected url in response filter to match actual request URL", requestUrl, responseFilterUrl.get());
+            assertNotNull(responseCtx.get(), "Expected ChannelHandlerContext to be populated in response filter");
+            assertNotNull(responseOriginalRequest.get(), "Expected originalRequest to be populated in response filter");
+            assertFalse(responseIsHttps.get(), "Expected isHttps to return false in response filter");
+            assertEquals(requestUrl, responseFilterOriginalUrl.get(), "Expected originalUrl in response filter to match actual request URL");
+            assertEquals(requestUrl, responseFilterUrl.get(), "Expected url in response filter to match actual request URL");
 
             verify(1, getRequestedFor(urlMatching(urlPattern)));
         }
@@ -735,12 +736,12 @@ public class InterceptorTest extends MockServerTest {
             String modifiedRequestUrl = "http://localhost:" + mockServerPort + "/urlreflectsmodifications";
             CloseableHttpResponse response = httpClient.execute(new HttpGet(originalRequestUrl));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Expected originalUrl in request filter to match actual request URL", originalRequestUrl, requestFilterOriginalUrl.get());
-            assertEquals("Expected url in request filter to match modified request URL", modifiedRequestUrl, requestFilterUrl.get());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(originalRequestUrl, requestFilterOriginalUrl.get(), "Expected originalUrl in request filter to match actual request URL");
+            assertEquals(modifiedRequestUrl, requestFilterUrl.get(), "Expected url in request filter to match modified request URL");
 
-            assertEquals("Expected originalUrl in response filter to match actual request URL", originalRequestUrl, responseFilterOriginalUrl.get());
-            assertEquals("Expected url in response filter to match modified request URL", modifiedRequestUrl, responseFilterUrl.get());
+            assertEquals(originalRequestUrl, responseFilterOriginalUrl.get(), "Expected originalUrl in response filter to match actual request URL");
+            assertEquals(modifiedRequestUrl, responseFilterUrl.get(), "Expected url in response filter to match modified request URL");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -787,12 +788,12 @@ public class InterceptorTest extends MockServerTest {
             String modifiedRequestUrl = "https://localhost:" + mockServerHttpsPort + "/urlreflectsmodifications";
             CloseableHttpResponse response = httpClient.execute(new HttpGet(originalRequestUrl));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
-            assertEquals("Expected originalUrl in request filter to match actual request URL", originalRequestUrl, requestFilterOriginalUrl.get());
-            assertEquals("Expected url in request filter to match modified request URL", modifiedRequestUrl, requestFilterUrl.get());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
+            assertEquals(originalRequestUrl, requestFilterOriginalUrl.get(), "Expected originalUrl in request filter to match actual request URL");
+            assertEquals(modifiedRequestUrl, requestFilterUrl.get(), "Expected url in request filter to match modified request URL");
 
-            assertEquals("Expected originalUrl in response filter to match actual request URL", originalRequestUrl, responseFilterOriginalUrl.get());
-            assertEquals("Expected url in response filter to match modified request URL", modifiedRequestUrl, responseFilterUrl.get());
+            assertEquals(originalRequestUrl, responseFilterOriginalUrl.get(), "Expected originalUrl in response filter to match actual request URL");
+            assertEquals(modifiedRequestUrl, responseFilterUrl.get(), "Expected url in response filter to match modified request URL");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -839,17 +840,17 @@ public class InterceptorTest extends MockServerTest {
             String requestUrl = "https://localhost:" + mockServerHttpsPort + "/httpmessageinfopopulated?param1=value1";
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
 
-            assertEquals("Expected server to return a 200", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
 
-            assertNotNull("Expected ChannelHandlerContext to be populated in request filter", requestCtx.get());
-            assertNotNull("Expected originalRequest to be populated in request filter", requestOriginalRequest.get());
-            assertTrue("Expected isHttps to return true in request filter", requestIsHttps.get());
-            assertEquals("Expected originalUrl in request filter to match actual request URL", requestUrl, requestOriginalUrl.get());
+            assertNotNull(requestCtx.get(), "Expected ChannelHandlerContext to be populated in request filter");
+            assertNotNull(requestOriginalRequest.get(), "Expected originalRequest to be populated in request filter");
+            assertTrue(requestIsHttps.get(), "Expected isHttps to return true in request filter");
+            assertEquals(requestUrl, requestOriginalUrl.get(), "Expected originalUrl in request filter to match actual request URL");
 
-            assertNotNull("Expected ChannelHandlerContext to be populated in response filter", responseCtx.get());
-            assertNotNull("Expected originalRequest to be populated in response filter", responseOriginalRequest.get());
-            assertTrue("Expected isHttps to return true in response filter", responseIsHttps.get());
-            assertEquals("Expected originalUrl in response filter to match actual request URL", requestUrl, responseOriginalUrl.get());
+            assertNotNull(responseCtx.get(), "Expected ChannelHandlerContext to be populated in response filter");
+            assertNotNull(responseOriginalRequest.get(), "Expected originalRequest to be populated in response filter");
+            assertTrue(responseIsHttps.get(), "Expected isHttps to return true in response filter");
+            assertEquals(requestUrl, responseOriginalUrl.get(), "Expected originalUrl in response filter to match actual request URL");
 
             verify(1, getRequestedFor(urlMatching(urlPattern)));
         }

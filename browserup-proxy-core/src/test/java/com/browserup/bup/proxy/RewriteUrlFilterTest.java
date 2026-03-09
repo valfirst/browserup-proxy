@@ -17,8 +17,8 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
@@ -28,7 +28,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 public class RewriteUrlFilterTest extends MockServerTest {
     public BrowserUpProxy proxy;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -116,16 +116,16 @@ public class RewriteUrlFilterTest extends MockServerTest {
         String url = "http://www.someotherhost.com:" + mockServerPort + "/testRewriteHttpHost";
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse firstResponse = httpClient.execute(new HttpGet(url));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, firstResponse.getStatusLine().getStatusCode());
+            assertEquals(200, firstResponse.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String firstResponseBody = NewProxyServerTestUtil.toStringAndClose(firstResponse.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", firstResponseBody);
+            assertEquals(firstResponseBody, "Did not receive expected response from mock server", "success");
 
             CloseableHttpResponse secondResponse = httpClient.execute(new HttpGet(url));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, secondResponse.getStatusLine().getStatusCode());
+            assertEquals(200, secondResponse.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String secondResponseBody = NewProxyServerTestUtil.toStringAndClose(secondResponse.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", secondResponseBody);
+            assertEquals(secondResponseBody, "Did not receive expected response from mock server", "success");
         }
 
         WireMock.verify(2, getRequestedFor(urlEqualTo(stubUrl)));
@@ -146,10 +146,10 @@ public class RewriteUrlFilterTest extends MockServerTest {
         String url = "http://badhost:" + mockServerPort + "/badresource";
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String firstResponseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(url)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", firstResponseBody);
+            assertEquals(firstResponseBody, "Did not receive expected response from mock server", "success");
 
             String secondResponseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(url)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", secondResponseBody);
+            assertEquals(secondResponseBody, "Did not receive expected response from mock server", "success");
         }
 
         WireMock.verify(2, getRequestedFor(urlEqualTo(stubUrl)));
@@ -171,10 +171,10 @@ public class RewriteUrlFilterTest extends MockServerTest {
         String url = "https://localhost:" + mockServerHttpsPort + "/badresource";
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String firstResponseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(url)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", firstResponseBody);
+            assertEquals(firstResponseBody, "Did not receive expected response from mock server", "success");
 
             String secondResponseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(url)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", secondResponseBody);
+            assertEquals(secondResponseBody, "Did not receive expected response from mock server", "success");
         }
 
         WireMock.verify(2, getRequestedFor(urlEqualTo(stubUrl)));

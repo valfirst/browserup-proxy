@@ -3,9 +3,9 @@ package com.browserup.bup.ruby;
 import com.browserup.bup.WithRunningProxyRestTest;
 import org.awaitility.Awaitility;
 import org.eclipse.jetty.server.ServerConnector;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.Testcontainers;
@@ -26,7 +26,7 @@ public class RubyClientTest extends WithRunningProxyRestTest {
         return "har/entries";
     }
 
-    @After
+    @AfterEach
     public void shutDown() {
         if (container != null) {
             container.stop();
@@ -66,8 +66,7 @@ public class RubyClientTest extends WithRunningProxyRestTest {
 
         LOG.info("Docker log: " + container.getLogs());
 
-        Assert.assertEquals("Expected ruby-client container exit code to be 0", 0,
-                (int) container.getCurrentContainerInfo().getState().getExitCode());
+        Assertions.assertEquals(0, (int) container.getCurrentContainerInfo().getState().getExitCode(), "Expected ruby-client container exit code to be 0");
     }
 
     @Test
@@ -103,7 +102,6 @@ public class RubyClientTest extends WithRunningProxyRestTest {
 
         LOG.info("Docker log: " + container.getLogs());
 
-        Assert.assertEquals("Expected ruby-client container exit code to be 1", 1,
-                (int) container.getCurrentContainerInfo().getState().getExitCode());
+        Assertions.assertEquals(1, (int) container.getCurrentContainerInfo().getState().getExitCode(), "Expected ruby-client container exit code to be 1");
     }
 }

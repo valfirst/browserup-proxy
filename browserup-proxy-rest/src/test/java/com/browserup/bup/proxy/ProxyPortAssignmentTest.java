@@ -1,13 +1,13 @@
 package com.browserup.bup.proxy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.exception.ProxyExistsException;
 import com.browserup.bup.exception.ProxyPortsExhaustedException;
 import com.browserup.bup.proxy.test.util.ProxyManagerTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ProxyPortAssignmentTest extends ProxyManagerTest {
     @Override

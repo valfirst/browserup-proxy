@@ -5,11 +5,11 @@ import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     private int successfulAssertionMilliseconds = SUCCESSFUL_ASSERTION_TIME_WITHIN;
@@ -34,7 +34,7 @@ public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTe
         assertAssertionNotNull(r1);
         assertThat("Expected to get one assertion result", r1.getRequests(), Matchers.hasSize(1));
         assertAssertionPassed(r1);
-        assertFalse("Expected assertion entry result to have \"false\" failed flag", r1.getRequests().get(0).getFailed());
+        assertFalse(r1.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"false\" failed flag");
         conn1.disconnect();
 
         HttpURLConnection conn2 = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPat, "milliseconds", failedAssertionMilliseconds));
@@ -42,7 +42,7 @@ public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTe
         assertAssertionNotNull(r2);
         assertThat("Expected to get one assertion result", r2.getRequests(), Matchers.hasSize(1));
         assertAssertionFailed(r2);
-        assertTrue("Expected assertion entry result to have \"true\" failed flag", r2.getRequests().get(0).getFailed());
+        assertTrue(r2.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"true\" failed flag");
         conn2.disconnect();
     }
 
@@ -61,7 +61,7 @@ public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTe
     public void getBadRequestIfMillisecondsNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", ".*", "milliseconds", "abcd"));
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request");
         conn.disconnect();
     }
 

@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.assertion.field.header.HeaderBaseTest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HeaderMatchesTest extends HeaderBaseTest {
 
@@ -30,8 +30,8 @@ public class HeaderMatchesTest extends HeaderBaseTest {
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),
                 Pattern.compile(".*" + NOT_MATCHING_HEADER_VALUE + ".*"));
 
-        assertFalse("Expected headers not to match value pattern", result.getPassed());
-        assertTrue("Expected headers not to match value pattern", result.getFailed());
+        assertFalse(result.getPassed(), "Expected headers not to match value pattern");
+        assertTrue(result.getFailed(), "Expected headers not to match value pattern");
     }
 
     @Test

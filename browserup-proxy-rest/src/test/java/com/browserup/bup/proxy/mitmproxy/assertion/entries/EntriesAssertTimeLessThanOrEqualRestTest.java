@@ -6,7 +6,7 @@ import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     private String responseBody = "success";
@@ -51,10 +51,10 @@ public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
 
         for (AssertionEntryResult e : assertionResult.getRequests()) {
             if (fastUrls.stream().anyMatch(u -> e.getUrl().contains(u))) {
-                assertFalse("Expected entry result for fast response to have failed flag = false", e.getFailed());
+                assertFalse(e.getFailed(), "Expected entry result for fast response to have failed flag = false");
             }
             if (slowUrls.stream().anyMatch(u -> e.getUrl().contains(u))) {
-                assertTrue("Expected entry result for slow response to have failed flag = true", e.getFailed());
+                assertTrue(e.getFailed(), "Expected entry result for slow response to have failed flag = true");
             }
         }
         conn.disconnect();
@@ -85,7 +85,7 @@ public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", ".*", "milliseconds", "abcd"));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", statusCode, HttpURLConnection.HTTP_BAD_REQUEST);
+        assertEquals(statusCode, HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 }

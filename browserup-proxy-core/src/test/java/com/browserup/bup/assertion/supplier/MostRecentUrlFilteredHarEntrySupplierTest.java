@@ -4,8 +4,8 @@ import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarRequest;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
@@ -40,7 +40,7 @@ public class MostRecentUrlFilteredHarEntrySupplierTest {
         List<HarEntry> result = supplier.get();
 
         assertThat("Expected to get one entry", result, Matchers.hasSize(1));
-        Assert.assertEquals("", result.get(0).getRequest().getUrl(), "http://abc" + mostRecentUrlIndex + ".com");
+        Assertions.assertEquals(result.get(0).getRequest().getUrl(), "http://abc" + mostRecentUrlIndex + ".com", "");
     }
 
     @Test
@@ -59,7 +59,7 @@ public class MostRecentUrlFilteredHarEntrySupplierTest {
         MostRecentUrlFilteredHarEntrySupplier supplier = new MostRecentUrlFilteredHarEntrySupplier(har, Pattern.compile(urlPattern));
         List<HarEntry> result = supplier.get();
 
-        Assert.assertNotNull("Expected to get empty list", result);
+        Assertions.assertNotNull(result, "Expected to get empty list");
         assertThat("Expected to get no entries", result, Matchers.hasSize(0));
     }
 

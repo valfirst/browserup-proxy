@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.assertion.field.header.HeaderBaseTest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HeaderDoesNotContainTest extends HeaderBaseTest {
 

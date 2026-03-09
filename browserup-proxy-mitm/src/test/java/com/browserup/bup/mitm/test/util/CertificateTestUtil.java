@@ -5,8 +5,8 @@ import com.browserup.bup.mitm.CertificateAndKey;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Utility methods for X.509 certificate verification in unit tests.

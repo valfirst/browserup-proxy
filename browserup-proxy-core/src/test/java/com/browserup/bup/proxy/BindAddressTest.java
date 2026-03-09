@@ -8,9 +8,9 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -19,17 +19,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeNoException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.abort;
 
 public class BindAddressTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
-    @Before
+    @BeforeEach
     public void setUp() {
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -62,7 +62,7 @@ public class BindAddressTest extends MockServerTest {
         try {
             localHostAddr = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            assumeNoException("Could not get a localhost address. Skipping test.", e);
+            abort("Could not get a localhost address. Skipping test.");
             return;
         }
 
@@ -97,7 +97,7 @@ public class BindAddressTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://www.google.com"));
-            assertEquals("Expected a 502 Bad Gateway when connecting to an external address after binding to loopback", 502, response.getStatusLine().getStatusCode());
+            assertEquals(502, response.getStatusLine().getStatusCode(), "Expected a 502 Bad Gateway when connecting to an external address after binding to loopback");
         }
     }
 }

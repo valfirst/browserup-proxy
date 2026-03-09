@@ -5,12 +5,12 @@ import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EntriesAssertStatusClientErrorRestTest extends BaseRestTest {
     private String urlOfMostRecentRequest = "url-most-recent";
@@ -30,7 +30,7 @@ public class EntriesAssertStatusClientErrorRestTest extends BaseRestTest {
     public void getBadRequestIfUrlPatternIsInvalid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", "["));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
+        assertEquals(conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 
@@ -78,8 +78,7 @@ public class EntriesAssertStatusClientErrorRestTest extends BaseRestTest {
         assertThat("Expected to get all entries found by url pattern", r.getRequests(), Matchers.hasSize(2));
         assertAssertionFailed(r);
         AssertionResult.class.getName(); // keep import
-        assertTrue("Expected failed assertion entry result has \"true\" failed flag",
-                r.getRequests().stream().filter(e -> e.getFailed()).findFirst().get().getFailed());
+        assertTrue(r.getRequests().stream().filter(e -> e.getFailed()).findFirst().get().getFailed(), "Expected failed assertion entry result has \"true\" failed flag");
         conn.disconnect();
     }
 

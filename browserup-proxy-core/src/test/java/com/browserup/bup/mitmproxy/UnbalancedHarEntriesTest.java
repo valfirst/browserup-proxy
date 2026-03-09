@@ -9,8 +9,8 @@ import de.sstoehr.harreader.model.HarResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +25,8 @@ import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * These tests use mocked server with long delay to verify behavior of 'unbalanced' har entries, where there might be request-only, response-only or HAR entry with both request and response, depending on when 'clean har' is called during request/response/reporting process.
@@ -42,7 +42,7 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
 
     private MitmProxyServer proxy;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -75,8 +75,8 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
         assertThat("Expected to find entries in the HAR", har.getLog().getEntries(), not(empty()));
 
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
-        assertEquals("Expected response to be default", DEFAULT_HAR_RESPONSE, har.getLog().getEntries().get(0).getResponse());
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
+        assertEquals(DEFAULT_HAR_RESPONSE, har.getLog().getEntries().get(0).getResponse(), "Expected response to be default");
     }
 
     @Test
@@ -104,8 +104,8 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
         Har har = proxy.getHar();
         HarEntry harEntry = har.getLog().getEntries().get(0);
         String capturedUrl = harEntry.getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
-        assertEquals("Expected response to be default", DEFAULT_HAR_RESPONSE, harEntry.getResponse());
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
+        assertEquals(DEFAULT_HAR_RESPONSE, harEntry.getResponse(), "Expected response to be default");
 
         // Wait until response is received
         await().atMost(targetServerDelaySec + 1, TimeUnit.SECONDS).until(() -> responseReceived.get());
@@ -113,13 +113,11 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
         // Verify we got response-only har entry
         har = proxy.getHar();
         harEntry = har.getLog().getEntries().get(0);
-        assertNotEquals("Expected request to be not default", DEFAULT_HAR_REQUEST, harEntry.getRequest());
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
-        assertNotEquals("Expected response to be not defualt", DEFAULT_HAR_RESPONSE, harEntry.getResponse());
-        assertEquals("Expected response status to be " + targetServiceResponseCode,
-                harEntry.getResponse().getStatus(), targetServiceResponseCode);
-        assertNotEquals("Expected response http version to be populated",
-                harEntry.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion());
+        assertNotEquals(DEFAULT_HAR_REQUEST, harEntry.getRequest(), "Expected request to be not default");
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
+        assertNotEquals(DEFAULT_HAR_RESPONSE, harEntry.getResponse(), "Expected response to be not defualt");
+        assertEquals(harEntry.getResponse().getStatus(), targetServiceResponseCode, "Expected response status to be " + targetServiceResponseCode);
+        assertNotEquals(harEntry.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion(), "Expected response http version to be populated");
     }
 
     @Test
@@ -159,32 +157,30 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
         //THEN
         // Verify we got request-only har entry for mocked server
         Har har = proxy.getHar();
-        assertEquals("Expected to get correct number of entries", totalNumberOfRequests, har.getLog().getEntries().size());
+        assertEquals(totalNumberOfRequests, har.getLog().getEntries().size(), "Expected to get correct number of entries");
 
         HarEntry entryForSlowEndpoint = har.getLog().getEntries().stream()
                 .filter(e -> e.getRequest().getUrl().contains(slowEndpointUrl))
                 .findFirst().orElse(null);
         String capturedUrl = entryForSlowEndpoint.getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
-        assertEquals("Expected response to be default", DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse());
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
+        assertEquals(DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse(), "Expected response to be default");
 
         // Wait until response is received
         await().atMost(targetServerDelaySec + 1, TimeUnit.SECONDS).until(() -> responseReceived.get());
 
         // Verify this time har entry for mocked server contains both request and response
         har = proxy.getHar();
-        assertEquals("Expected to get correct number of entries", totalNumberOfRequests, har.getLog().getEntries().size());
+        assertEquals(totalNumberOfRequests, har.getLog().getEntries().size(), "Expected to get correct number of entries");
 
         entryForSlowEndpoint = har.getLog().getEntries().stream()
                 .filter(e -> e.getRequest().getUrl().contains(slowEndpointUrl))
                 .findFirst().orElse(null);
-        assertNotEquals("Expected request to be not default", DEFAULT_HAR_REQUEST, entryForSlowEndpoint.getRequest());
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, entryForSlowEndpoint.getRequest().getUrl());
-        assertNotEquals("Expected response to be not defualt", DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse());
-        assertEquals("Got unexpected response status",
-                entryForSlowEndpoint.getResponse().getStatus(), targetServiceResponseCode);
-        assertNotEquals("Expected response http version to be populated",
-                entryForSlowEndpoint.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion());
+        assertNotEquals(DEFAULT_HAR_REQUEST, entryForSlowEndpoint.getRequest(), "Expected request to be not default");
+        assertEquals(requestUrl, entryForSlowEndpoint.getRequest().getUrl(), "URL captured in HAR did not match request URL");
+        assertNotEquals(DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse(), "Expected response to be not defualt");
+        assertEquals(entryForSlowEndpoint.getResponse().getStatus(), targetServiceResponseCode, "Got unexpected response status");
+        assertNotEquals(entryForSlowEndpoint.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion(), "Expected response http version to be populated");
     }
 
     @Test
@@ -224,29 +220,27 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
         //THEN
         // Verify we got request-only har entry for mocked server and clean har
         Har har = proxy.getHar(true);
-        assertEquals("Expected to get correct number of entries", totalNumberOfRequests, har.getLog().getEntries().size());
+        assertEquals(totalNumberOfRequests, har.getLog().getEntries().size(), "Expected to get correct number of entries");
 
         HarEntry entryForSlowEndpoint = har.getLog().getEntries().stream()
                 .filter(e -> e.getRequest().getUrl().contains(slowEndpointUrl))
                 .findFirst().orElse(null);
         String capturedUrl = entryForSlowEndpoint.getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
-        assertEquals("Expected response to be default", DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse());
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
+        assertEquals(DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse(), "Expected response to be default");
 
         // Wait until response is received
         await().atMost(targetServerDelaySec + 1, TimeUnit.SECONDS).until(() -> responseReceived.get());
 
         // Verify this time har entry for mocked server contains both request and response
         har = proxy.getHar();
-        assertEquals("Expected to get only one entry for slow request after clean har", 1, har.getLog().getEntries().size());
+        assertEquals(1, har.getLog().getEntries().size(), "Expected to get only one entry for slow request after clean har");
 
         entryForSlowEndpoint = har.getLog().getEntries().get(0);
-        assertEquals("Expected request to be default", DEFAULT_HAR_REQUEST, entryForSlowEndpoint.getRequest());
-        assertNotEquals("Expected response to be not defualt", DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse());
-        assertEquals("Got unexpected response status",
-                entryForSlowEndpoint.getResponse().getStatus(), targetServiceResponseCode);
-        assertNotEquals("Expected response http version to be populated",
-                entryForSlowEndpoint.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion());
+        assertEquals(DEFAULT_HAR_REQUEST, entryForSlowEndpoint.getRequest(), "Expected request to be default");
+        assertNotEquals(DEFAULT_HAR_RESPONSE, entryForSlowEndpoint.getResponse(), "Expected response to be not defualt");
+        assertEquals(entryForSlowEndpoint.getResponse().getStatus(), targetServiceResponseCode, "Got unexpected response status");
+        assertNotEquals(entryForSlowEndpoint.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion(), "Expected response http version to be populated");
     }
 
     @Test
@@ -275,8 +269,8 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
         Har har = proxy.getHar();
         HarEntry harEntry = har.getLog().getEntries().get(0);
         String capturedUrl = harEntry.getRequest().getUrl();
-        assertEquals("URL captured in HAR did not match request URL", requestUrl, capturedUrl);
-        assertEquals("Expected response to be default", DEFAULT_HAR_RESPONSE, harEntry.getResponse());
+        assertEquals(requestUrl, capturedUrl, "URL captured in HAR did not match request URL");
+        assertEquals(DEFAULT_HAR_RESPONSE, harEntry.getResponse(), "Expected response to be default");
 
         // Clean HAR
         proxy.getHar(true);
@@ -287,12 +281,10 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
         // Verify we got response-only har entry
         har = proxy.getHar();
         harEntry = har.getLog().getEntries().get(0);
-        assertEquals("Expected request to be default", DEFAULT_HAR_REQUEST, harEntry.getRequest());
-        assertNotEquals("Expected response to be not defualt", DEFAULT_HAR_RESPONSE, harEntry.getResponse());
-        assertEquals("Expected response status to be " + targetServiceResponseCode,
-                harEntry.getResponse().getStatus(), targetServiceResponseCode);
-        assertNotEquals("Expected response http version to be populated",
-                harEntry.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion());
+        assertEquals(DEFAULT_HAR_REQUEST, harEntry.getRequest(), "Expected request to be default");
+        assertNotEquals(DEFAULT_HAR_RESPONSE, harEntry.getResponse(), "Expected response to be not defualt");
+        assertEquals(harEntry.getResponse().getStatus(), targetServiceResponseCode, "Expected response status to be " + targetServiceResponseCode);
+        assertNotEquals(harEntry.getResponse().getHttpVersion(), DEFAULT_HAR_RESPONSE.getHttpVersion(), "Expected response http version to be populated");
     }
 
     private void configureMockServer(String url, int delaySec, int responseCode) {
@@ -318,8 +310,7 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
                 CloseableHttpResponse response = client.execute(new HttpGet(requestUrl));
                 responseReceived.set(true);
                 if (targetServiceResponseCode != null) {
-                    assertEquals("Did not receive HTTP " + targetServiceResponseCode + " from proxy",
-                            (int) targetServiceResponseCode, response.getStatusLine().getStatusCode());
+                    assertEquals((int) targetServiceResponseCode, response.getStatusLine().getStatusCode(), "Did not receive HTTP " + targetServiceResponseCode + " from proxy");
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);

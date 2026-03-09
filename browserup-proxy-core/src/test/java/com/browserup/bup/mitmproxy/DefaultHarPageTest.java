@@ -6,14 +6,14 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.browserup.bup.proxy.test.util.NewProxyServerTestUtil.toStringAndClose;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DefaultHarPageTest extends MockServerTest {
     private static final String SUCCESSFUL_RESPONSE_BODY = "success";
@@ -22,7 +22,7 @@ public class DefaultHarPageTest extends MockServerTest {
     private MitmProxyServer proxy;
     private CloseableHttpClient clientToProxy;
 
-    @Before
+    @BeforeEach
     public void startUp() {
         proxy = new MitmProxyServer();
         proxy.setTrustAllServers(true);
@@ -31,7 +31,7 @@ public class DefaultHarPageTest extends MockServerTest {
         clientToProxy = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -45,8 +45,8 @@ public class DefaultHarPageTest extends MockServerTest {
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;
 
         String respBody = toStringAndClose(clientToProxy.execute(new HttpGet(firstUrl)).getEntity().getContent());
-        assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY, respBody);
-        assertEquals("Expected first request entry to have initial page ref", "Default", proxy.getHar().getLog().getEntries().get(0).getPageref());
+        assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody, "Did not receive expected response from mock server");
+        assertEquals(proxy.getHar().getLog().getEntries().get(0).getPageref(), "Expected first request entry to have initial page ref", "Default");
         assertThat("Expected 1 page available", proxy.getHar().getLog().getPages(), Matchers.hasSize(1));
     }
 
@@ -58,7 +58,7 @@ public class DefaultHarPageTest extends MockServerTest {
         String firstUrl = "http://localhost:" + nonResponsivePort + "/" + FIRST_URL;
 
         toStringAndClose(clientToProxy.execute(new HttpGet(firstUrl)).getEntity().getContent());
-        assertEquals("Expected first request entry to have initial page ref", "Default", proxy.getHar().getLog().getEntries().get(0).getPageref());
+        assertEquals(proxy.getHar().getLog().getEntries().get(0).getPageref(), "Expected first request entry to have initial page ref", "Default");
         assertThat("Expected 1 page available", proxy.getHar().getLog().getPages(), Matchers.hasSize(1));
     }
 

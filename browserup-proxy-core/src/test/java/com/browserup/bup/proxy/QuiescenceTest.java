@@ -6,7 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +22,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class QuiescenceTest extends NewProxyServerTest {
     private static final Logger log = LoggerFactory.getLogger(QuiescenceTest.class);
@@ -45,7 +45,7 @@ public class QuiescenceTest extends NewProxyServerTest {
 
                 requestComplete.set(System.nanoTime());
 
-                assertEquals("Expected successful response from server", 200, response.getStatusLine().getStatusCode());
+                assertEquals(200, response.getStatusLine().getStatusCode(), "Expected successful response from server");
             } catch (IOException e) {
                 fail("Error occurred while connecting to server");
                 log.error("Error occurred while connecting to server", e);
@@ -59,13 +59,13 @@ public class QuiescenceTest extends NewProxyServerTest {
 
         long waitForQuiescenceFinished = System.nanoTime();
 
-        assertTrue("Expected to successfully wait for quiescence", waitSuccessful);
-        assertTrue("Expected request to be complete after waiting for quiescence", requestComplete.get() > 0);
+        assertTrue(waitSuccessful, "Expected to successfully wait for quiescence");
+        assertTrue(requestComplete.get() > 0, "Expected request to be complete after waiting for quiescence");
 
         // the total wait time after the request is complete should be approximately 2 seconds
         long wait = TimeUnit.MILLISECONDS.convert(waitForQuiescenceFinished - requestComplete.get(), TimeUnit.NANOSECONDS);
 
-        assertTrue("Expected time to wait for quiescence to be approximately 2s. Waited for: " + wait + "ms", wait < 3000);
+        assertTrue(wait < 3000, "Expected time to wait for quiescence to be approximately 2s. Waited for: " + wait + "ms");
 
         verify(1, getRequestedFor(urlEqualTo(url)));
     }
@@ -93,9 +93,9 @@ public class QuiescenceTest extends NewProxyServerTest {
 
         boolean waitSuccessful = proxy.waitForQuiescence(1, 3, TimeUnit.SECONDS);
 
-        assertFalse("Expected waitForQuiescence to time out while waiting for traffic to stop", waitSuccessful);
+        assertFalse(waitSuccessful, "Expected waitForQuiescence to time out while waiting for traffic to stop");
 
-        assertFalse("Did not expect request to complete", requestCompleted.get());
+        assertFalse(requestCompleted.get(), "Did not expect request to complete");
 
         verify(1, getRequestedFor(urlEqualTo(url)));
     }
@@ -110,7 +110,7 @@ public class QuiescenceTest extends NewProxyServerTest {
             HttpResponse response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiescencecompleted"));
             EntityUtils.consumeQuietly(response.getEntity());
 
-            assertEquals("Expected successful response from server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected successful response from server");
         }
 
         // wait for 2s of quiescence, now that the call has already completed
@@ -118,10 +118,9 @@ public class QuiescenceTest extends NewProxyServerTest {
         boolean waitSuccessful = proxy.waitForQuiescence(2, 5, TimeUnit.SECONDS);
         long finish = System.nanoTime();
 
-        assertTrue("Expected to successfully wait for quiescence", waitSuccessful);
+        assertTrue(waitSuccessful, "Expected to successfully wait for quiescence");
 
-        assertTrue("Expected to wait for quiescence for approximately 2s. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms",
-                TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 1500 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 2500);
+        assertTrue(TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 1500 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 2500, "Expected to wait for quiescence for approximately 2s. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms");
 
         verify(1, getRequestedFor(urlEqualTo(url)));
     }
@@ -136,7 +135,7 @@ public class QuiescenceTest extends NewProxyServerTest {
             HttpResponse response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiescencesatisfied"));
             EntityUtils.consumeQuietly(response.getEntity());
 
-            assertEquals("Expected successful response from server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected successful response from server");
         }
 
         // wait for 2s, then wait for 1s of quiescence, which should already be satisfied
@@ -146,10 +145,9 @@ public class QuiescenceTest extends NewProxyServerTest {
         boolean waitSuccessful = proxy.waitForQuiescence(1, 5, TimeUnit.SECONDS);
         long finish = System.nanoTime();
 
-        assertTrue("Expected to successfully wait for quiescence", waitSuccessful);
+        assertTrue(waitSuccessful, "Expected to successfully wait for quiescence");
 
-        assertTrue("Expected wait for quiescence to return immediately. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms",
-                TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 1);
+        assertTrue(TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 1, "Expected wait for quiescence to return immediately. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms");
 
         verify(1, getRequestedFor(urlEqualTo(url)));
     }
@@ -164,7 +162,7 @@ public class QuiescenceTest extends NewProxyServerTest {
             HttpResponse response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiescencesmalltimeoutsuccess"));
             EntityUtils.consumeQuietly(response.getEntity());
 
-            assertEquals("Expected successful response from server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected successful response from server");
         }
 
         Thread.sleep(2500);
@@ -175,10 +173,9 @@ public class QuiescenceTest extends NewProxyServerTest {
         boolean waitSuccessful = proxy.waitForQuiescence(3, 1, TimeUnit.SECONDS);
         long finish = System.nanoTime();
 
-        assertTrue("Expected to successfully wait for quiescence", waitSuccessful);
+        assertTrue(waitSuccessful, "Expected to successfully wait for quiescence");
 
-        assertTrue("Expected to wait for quiescence for approximately 500ms. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms",
-                TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 300 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 700);
+        assertTrue(TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 300 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 700, "Expected to wait for quiescence for approximately 500ms. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms");
 
         verify(1, getRequestedFor(urlEqualTo(url)));
     }
@@ -193,7 +190,7 @@ public class QuiescenceTest extends NewProxyServerTest {
             HttpResponse response = client.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/quiescencesmalltimeoutunsuccessful"));
             EntityUtils.consumeQuietly(response.getEntity());
 
-            assertEquals("Expected successful response from server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected successful response from server");
         }
 
         Thread.sleep(1000);
@@ -204,10 +201,9 @@ public class QuiescenceTest extends NewProxyServerTest {
         boolean waitSuccessful = proxy.waitForQuiescence(3, 1, TimeUnit.SECONDS);
         long finish = System.nanoTime();
 
-        assertFalse("Expected to unsuccessfully wait for quiescence", waitSuccessful);
+        assertFalse(waitSuccessful, "Expected to unsuccessfully wait for quiescence");
 
-        assertTrue("Expected wait for quiescence to return immediately. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms",
-                TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 0 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 10);
+        assertTrue(TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 0 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 10, "Expected wait for quiescence to return immediately. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms");
 
         verify(1, getRequestedFor(urlEqualTo(url)));
     }
@@ -253,20 +249,18 @@ public class QuiescenceTest extends NewProxyServerTest {
         boolean waitSuccessful = proxy.waitForQuiescence(2, 10, TimeUnit.SECONDS);
         long finish = System.nanoTime();
 
-        assertFalse("An exception occurred while making an HTTP request", exceptionOccurred.get());
-        assertEquals("Expected successful response from server on first request", 200, firstRequestStatusCode.get());
-        assertTrue("Expected second request to be finished", secondRequestFinished.get() > 0);
-        assertEquals("Expected successful response from server on second request", 200, secondRequestStatusCode.get());
+        assertFalse(exceptionOccurred.get(), "An exception occurred while making an HTTP request");
+        assertEquals(200, firstRequestStatusCode.get(), "Expected successful response from server on first request");
+        assertTrue(secondRequestFinished.get() > 0, "Expected second request to be finished");
+        assertEquals(200, secondRequestStatusCode.get(), "Expected successful response from server on second request");
 
-        assertTrue("Expected to successfully wait for quiescence", waitSuccessful);
+        assertTrue(waitSuccessful, "Expected to successfully wait for quiescence");
 
-        assertTrue("Expected waitForQuiescence to return after approximately 2s of quiescence. Actual time: "
-                        + TimeUnit.MILLISECONDS.convert(finish - secondRequestFinished.get(), TimeUnit.NANOSECONDS) + "ms",
-                TimeUnit.MILLISECONDS.convert(finish - secondRequestFinished.get(), TimeUnit.NANOSECONDS) >= 1600
-                        && TimeUnit.MILLISECONDS.convert(finish - secondRequestFinished.get(), TimeUnit.NANOSECONDS) <= 2400);
+        assertTrue(TimeUnit.MILLISECONDS.convert(finish - secondRequestFinished.get(), TimeUnit.NANOSECONDS) >= 1600
+                        && TimeUnit.MILLISECONDS.convert(finish - secondRequestFinished.get(), TimeUnit.NANOSECONDS) <= 2400, "Expected waitForQuiescence to return after approximately 2s of quiescence. Actual time: "
+                        + TimeUnit.MILLISECONDS.convert(finish - secondRequestFinished.get(), TimeUnit.NANOSECONDS) + "ms");
 
-        assertTrue("Expected to wait for quiescence for approximately 6s. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms",
-                TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 5000 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 7000);
+        assertTrue(TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 5000 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 7000, "Expected to wait for quiescence for approximately 6s. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms");
 
         verify(2, getRequestedFor(urlEqualTo(url)));
     }
@@ -306,12 +300,11 @@ public class QuiescenceTest extends NewProxyServerTest {
         boolean waitSuccessful = proxy.waitForQuiescence(2, 5, TimeUnit.SECONDS);
         long finish = System.nanoTime();
 
-        assertFalse("Expected to unsuccessfully wait for quiescence", waitSuccessful);
+        assertFalse(waitSuccessful, "Expected to unsuccessfully wait for quiescence");
 
-        assertTrue("Expected to wait for quiescence for approximately 3s. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms",
-                TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 2500 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 3500);
+        assertTrue(TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) >= 2500 && TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) <= 3500, "Expected to wait for quiescence for approximately 3s. Actual wait time was: " + TimeUnit.MILLISECONDS.convert(finish - start, TimeUnit.NANOSECONDS) + "ms");
 
-        assertEquals("Expected successful response from server on first request", 200, firstResponseStatusCode.get());
-        assertFalse("Did not expect second request to complete", secondRequestCompleted.get());
+        assertEquals(200, firstResponseStatusCode.get(), "Expected successful response from server on first request");
+        assertFalse(secondRequestCompleted.get(), "Did not expect second request to complete");
     }
 }

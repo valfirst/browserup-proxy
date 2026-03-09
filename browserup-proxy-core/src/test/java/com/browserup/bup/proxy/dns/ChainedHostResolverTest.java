@@ -4,8 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.browserup.bup.proxy.test.util.TestConstants;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
 
 import java.net.InetAddress;
@@ -20,9 +21,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@org.junit.Ignore
+@Disabled
 public class ChainedHostResolverTest {
     @Test
     public void testEmptyResolver() {
@@ -39,11 +40,11 @@ public class ChainedHostResolverTest {
 
         Collection<InetAddress> results = resolver.resolve("www.google.com");
 
-        assertNotNull("Resolver should not return null results", results);
+        assertNotNull(results, "Resolver should not return null results");
         assertThat("Empty resolver chain should return empty results", results, empty());
 
         Map<String, String> remappings = resolver.getHostRemappings();
-        assertTrue("Empty resolver chain should return empty results", remappings.isEmpty());
+        assertTrue(remappings.isEmpty(), "Empty resolver chain should return empty results");
 
         // make sure no exception is thrown when attempting write operations on an empty resolver
         resolver.setNegativeDNSCacheTimeout(1000, TimeUnit.DAYS);
@@ -65,9 +66,9 @@ public class ChainedHostResolverTest {
         when(secondResolver.resolve("1.1.1.1")).thenReturn(Collections.emptyList());
 
         Collection<InetAddress> results = chainResolver.resolve("1.1.1.1");
-        assertNotNull("Resolver should not return null results", results);
+        assertNotNull(results, "Resolver should not return null results");
         assertThat("Expected resolver to return a result", results, not(empty()));
-        Assert.assertEquals("Resolver returned unexpected result", TestConstants.addressOnes, Iterables.get(results, 0));
+        Assertions.assertEquals(TestConstants.addressOnes, Iterables.get(results, 0), "Resolver returned unexpected result");
 
         verify(secondResolver, never()).resolve("1.1.1.1");
 
@@ -78,9 +79,9 @@ public class ChainedHostResolverTest {
         when(secondResolver.resolve("2.2.2.2")).thenReturn(TestConstants.addressTwosList);
 
         results = chainResolver.resolve("2.2.2.2");
-        assertNotNull("Resolver should not return null results", results);
+        assertNotNull(results, "Resolver should not return null results");
         assertThat("Expected resolver to return a result", results, not(empty()));
-        Assert.assertEquals("Resolver returned unexpected result", TestConstants.addressTwos, Iterables.get(results, 0));
+        Assertions.assertEquals(TestConstants.addressTwos, Iterables.get(results, 0), "Resolver returned unexpected result");
 
         verify(firstResolver).resolve("2.2.2.2");
         verify(secondResolver).resolve("2.2.2.2");
@@ -95,9 +96,9 @@ public class ChainedHostResolverTest {
         when(firstResolver.getOriginalHostnames("one")).thenReturn(ImmutableList.of("originalOne"));
 
         Collection<String> results = chainResolver.getOriginalHostnames("one");
-        assertNotNull("Resolver should not return null results", results);
+        assertNotNull(results, "Resolver should not return null results");
         assertThat("Expected resolver to return a result", results, not(empty()));
-        assertEquals("Resolver returned unexpected result", "originalOne", Iterables.get(results, 0));
+        assertEquals(Iterables.get(results, 0), "Resolver returned unexpected result", "originalOne");
 
         verify(secondResolver, never()).getOriginalHostnames(any(String.class));
     }
@@ -141,14 +142,14 @@ public class ChainedHostResolverTest {
 
         // make sure the second resolver has started clearing the cache before invoking resolve on the chained resolver, to make sure
         // that this call to resolve will result in a wait
-        assertTrue("Expected resolver to already be clearing the DNS cache in a separate thread", secondResolverClearingCache.get());
-        assertEquals("Did not expect resolver to already be finished clearing the DNS cache", 0, secondResolverCacheClearFinishedTime.get());
+        assertTrue(secondResolverClearingCache.get(), "Expected resolver to already be clearing the DNS cache in a separate thread");
+        assertEquals(0, secondResolverCacheClearFinishedTime.get(), "Did not expect resolver to already be finished clearing the DNS cache");
 
         Collection<InetAddress> results = chainResolver.resolve("1.1.1.1");
 
-        assertNotNull("Resolver should not return null results", results);
+        assertNotNull(results, "Resolver should not return null results");
         assertThat("Expected resolver to return a result", results, not(empty()));
-        Assert.assertEquals("Resolver returned unexpected result", TestConstants.addressOnes, Iterables.get(results, 0));
+        Assertions.assertEquals(TestConstants.addressOnes, Iterables.get(results, 0), "Resolver returned unexpected result");
 
         assertThat("Expected resolver to be finished clearing DNS cache", secondResolverCacheClearFinishedTime.get(), greaterThan(0L));
 

@@ -9,14 +9,14 @@ import com.browserup.bup.proxy.assertion.BaseAssertionsTest;
 import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
 
 import org.apache.http.client.methods.HttpGet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AllUrlResponsesTimeWithinTest extends BaseAssertionsTest {
 
@@ -27,11 +27,11 @@ public class AllUrlResponsesTimeWithinTest extends BaseAssertionsTest {
 
         AssertionResult result = runTest(numberOfCalls);
 
-        assertTrue("Expected failed flag to be true", result.getFailed());
-        assertFalse("Expected passed flag to be false", result.getPassed());
+        assertTrue(result.getFailed(), "Expected failed flag to be true");
+        assertFalse(result.getPassed(), "Expected passed flag to be false");
 
         result.getRequests().forEach(request ->
-                assertTrue("Expected entry result to have failed flag = true", request.getFailed()));
+                assertTrue(request.getFailed(), "Expected entry result to have failed flag = true"));
 
         verify(numberOfCalls, getRequestedFor(urlMatching(".*")));
     }
@@ -44,19 +44,17 @@ public class AllUrlResponsesTimeWithinTest extends BaseAssertionsTest {
 
         AssertionResult result = runTest(4);
 
-        assertTrue("Expected failed flag to be true", result.getFailed());
-        assertFalse("Expected passed flag to be false", result.getPassed());
+        assertTrue(result.getFailed(), "Expected failed flag to be true");
+        assertFalse(result.getPassed(), "Expected passed flag to be false");
 
         result.getRequests().stream()
                 .filter(r -> r.getUrl().endsWith(URL_PATH + "1") || r.getUrl().endsWith(URL_PATH + "2"))
                 .forEach(request ->
-                        assertFalse("Expected entry result for fast response to have failed flag = false",
-                                request.getFailed()));
+                        assertFalse(request.getFailed(), "Expected entry result for fast response to have failed flag = false"));
         result.getRequests().stream()
                 .filter(r -> r.getUrl().endsWith(URL_PATH + "3") || r.getUrl().endsWith(URL_PATH + "4"))
                 .forEach(request ->
-                        assertTrue("Expected entry result for slow response to have failed flag = true",
-                                request.getFailed()));
+                        assertTrue(request.getFailed(), "Expected entry result for slow response to have failed flag = true"));
 
         verify(4, getRequestedFor(urlMatching(".*")));
     }
@@ -67,8 +65,7 @@ public class AllUrlResponsesTimeWithinTest extends BaseAssertionsTest {
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(clientToProxy.execute(request).getEntity()
                     .getContent());
-            assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY,
-                    responseBody);
+            assertEquals(SUCCESSFUL_RESPONSE_BODY, responseBody, "Did not receive expected response from mock server");
         }
 
         return proxy.assertResponseTimeLessThanOrEqual(Pattern.compile(".*" + URL_PATH + ".*"),

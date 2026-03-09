@@ -17,7 +17,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSource;
@@ -29,8 +29,8 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests out-of-the-box integration with LittleProxy.
@@ -93,7 +93,7 @@ public class LittleProxyIntegrationTest {
             HttpGet httpGet = new HttpGet("https://www.google.com");
             httpGet.setProtocolVersion(protocolVersion);
             try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
-                assertEquals("Expected to receive an HTTP 200 from http://www.google.com", 200, response.getStatusLine().getStatusCode());
+                assertEquals(200, response.getStatusLine().getStatusCode(), "Expected to receive an HTTP 200 from http://www.google.com");
 
                 EntityUtils.consume(response.getEntity());
             }
@@ -101,8 +101,8 @@ public class LittleProxyIntegrationTest {
 
         Thread.sleep(500);
 
-        assertTrue("Expected HttpFilters to successfully intercept the HTTP GET request", interceptedGetRequest.get());
-        assertTrue("Expected HttpFilters to successfully intercept the server's response to the HTTP GET", interceptedGetResponse.get());
+        assertTrue(interceptedGetRequest.get(), "Expected HttpFilters to successfully intercept the HTTP GET request");
+        assertTrue(interceptedGetResponse.get(), "Expected HttpFilters to successfully intercept the server's response to the HTTP GET");
 
         proxyServer.abort();
     }

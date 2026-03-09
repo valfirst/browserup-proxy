@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 import com.browserup.bup.assertion.model.AssertionResult;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContentSizeLessThanOrEqualTest extends ContentBaseTest {
 
@@ -25,8 +25,8 @@ public class ContentSizeLessThanOrEqualTest extends ContentBaseTest {
         AssertionResult result = proxy.assertMostRecentResponseContentLengthLessThanOrEqual(Pattern.compile(".*" + URL_PATH + ".*"),
                 (long) bodySize);
 
-        assertTrue("Expected assertion to pass", result.getPassed());
-        assertFalse("Expected assertion to pass", result.getFailed());
+        assertTrue(result.getPassed(), "Expected assertion to pass");
+        assertFalse(result.getFailed(), "Expected assertion to pass");
     }
 
     @Test
@@ -41,8 +41,8 @@ public class ContentSizeLessThanOrEqualTest extends ContentBaseTest {
         AssertionResult result = proxy.assertMostRecentResponseContentLengthLessThanOrEqual(Pattern.compile(".*" + URL_PATH + ".*"),
                 (long) (bodySize - 1));
 
-        assertFalse("Expected assertion to fail", result.getPassed());
-        assertTrue("Expected assertion to fail", result.getFailed());
+        assertFalse(result.getPassed(), "Expected assertion to fail");
+        assertTrue(result.getFailed(), "Expected assertion to fail");
     }
 
 }

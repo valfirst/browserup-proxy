@@ -10,8 +10,8 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
@@ -25,9 +25,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for the {@link com.browserup.bup.filters.BrowserUpHttpFilterChain}.
@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
 public class FilterChainTest extends MockServerTest {
     private BrowserUpProxyServer proxy;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -64,10 +64,10 @@ public class FilterChainTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
@@ -126,15 +126,15 @@ public class FilterChainTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
-        assertTrue("Expected second filter method to be invoked after first filter threw exception", clientToProxyRequest.get());
-        assertTrue("Expected second filter method to be invoked after first filter threw exception", serverToProxyResponse.get());
-        assertTrue("Expected second filter method to be invoked after first filter threw exception", proxyToClientResponse.get());
+        assertTrue(clientToProxyRequest.get(), "Expected second filter method to be invoked after first filter threw exception");
+        assertTrue(serverToProxyResponse.get(), "Expected second filter method to be invoked after first filter threw exception");
+        assertTrue(proxyToClientResponse.get(), "Expected second filter method to be invoked after first filter threw exception");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -162,10 +162,10 @@ public class FilterChainTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
@@ -190,12 +190,12 @@ public class FilterChainTest extends MockServerTest {
         });
 
         proxy.addRequestFilter((a, b, c) -> {
-            assertFalse("Did not expect second request filter to be invoked yet", secondRequestFilterInvoked.get());
+            assertFalse(secondRequestFilterInvoked.get(), "Did not expect second request filter to be invoked yet");
             throw new RuntimeException("Throwing exception from RequestFilter");
         });
 
         proxy.addResponseFilter((a, b, c) -> {
-            assertFalse("Did not expect second response filter to be invoked yet", secondResponseFilterInvoked.get());
+            assertFalse(secondResponseFilterInvoked.get(), "Did not expect second response filter to be invoked yet");
             throw new RuntimeException("Throwing exception from ResponseFilter");
         });
 
@@ -209,14 +209,14 @@ public class FilterChainTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
         }
 
-        assertTrue("Expected second request filter to be invoked", secondRequestFilterInvoked.get());
-        assertTrue("Expected second response filter to be invoked", secondResponseFilterInvoked.get());
+        assertTrue(secondRequestFilterInvoked.get(), "Expected second request filter to be invoked");
+        assertTrue(secondResponseFilterInvoked.get(), "Expected second response filter to be invoked");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }

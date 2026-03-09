@@ -9,28 +9,28 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class BaseAssertionsTest extends MockServerTest {
     public void requestToMockedServer(String url, String response) throws IOException {
         String respBody = NewProxyServerTestUtil.toStringAndClose(clientToProxy.execute(new HttpGet(mockedServerUrl + "/" + url)).getEntity().getContent());
-        Assert.assertEquals("Did not receive expected response from mock server", response, respBody);
+        Assertions.assertEquals(response, respBody, "Did not receive expected response from mock server");
     }
 
     public void requestToMockedServer(String url) throws IOException {
         requestToMockedServer(url, SUCCESSFUL_RESPONSE_BODY);
     }
 
-    @Before
+    @BeforeEach
     public void startUp() {
         proxy = new BrowserUpProxyServer();
         proxy.setTrustAllServers(true);
@@ -42,7 +42,7 @@ public abstract class BaseAssertionsTest extends MockServerTest {
         url = mockedServerUrl + "/" + URL_PATH;
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -54,13 +54,13 @@ public abstract class BaseAssertionsTest extends MockServerTest {
     }
 
     public static void assertAssertionPassed(AssertionResult assertion) {
-        assertTrue("Expected assertion to pass", assertion.getPassed());
-        assertFalse("Expected assertion to pass", assertion.getFailed());
+        assertTrue(assertion.getPassed(), "Expected assertion to pass");
+        assertFalse(assertion.getFailed(), "Expected assertion to pass");
     }
 
     public static void assertAssertionFailed(AssertionResult assertion) {
-        assertFalse("Expected assertion to fail", assertion.getPassed());
-        assertTrue("Expected assertion to fail", assertion.getFailed());
+        assertFalse(assertion.getPassed(), "Expected assertion to fail");
+        assertTrue(assertion.getFailed(), "Expected assertion to fail");
     }
 
     public static void assertAssertionHasNoEntries(AssertionResult assertion) {

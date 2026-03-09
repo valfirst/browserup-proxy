@@ -6,13 +6,13 @@ import java.util.List;
 import com.browserup.bup.assertion.model.AssertionEntryResult;
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContentMatchesTest extends FilteredContentBaseTest {
 
@@ -23,8 +23,8 @@ public class ContentMatchesTest extends FilteredContentBaseTest {
         AssertionResult result = proxy.assertAnyUrlContentMatches(URL_PATTERN_TO_MATCH_BOTH,
                 BODY_PATTERN_TO_MATCH_BODY_PART);
 
-        assertTrue("Expected assertion to pass", result.getPassed());
-        assertFalse("Expected assertion to pass", result.getFailed());
+        assertTrue(result.getPassed(), "Expected assertion to pass");
+        assertFalse(result.getFailed(), "Expected assertion to pass");
     }
 
     @Test
@@ -34,8 +34,8 @@ public class ContentMatchesTest extends FilteredContentBaseTest {
         AssertionResult result = proxy.assertAnyUrlContentMatches(URL_PATTERN_TO_MATCH_FIRST,
                 BODY_PATTERN_TO_MATCH_BODY_PART);
 
-        assertTrue("Expected assertion to pass", result.getPassed());
-        assertFalse("Expected assertion to pass", result.getFailed());
+        assertTrue(result.getPassed(), "Expected assertion to pass");
+        assertFalse(result.getFailed(), "Expected assertion to pass");
     }
 
     @Test

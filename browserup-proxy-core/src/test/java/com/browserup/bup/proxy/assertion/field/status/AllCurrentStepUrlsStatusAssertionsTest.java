@@ -8,14 +8,14 @@ import com.browserup.bup.util.HttpStatusClass;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 
 import org.apache.http.HttpStatus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
@@ -31,8 +31,8 @@ public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(HttpStatusClass.SUCCESS);
 
-        assertTrue("Expected statuses of all responses to have the same class", result.getPassed());
-        assertFalse("Expected statuses of all responses to have the same class", result.getFailed());
+        assertTrue(result.getPassed(), "Expected statuses of all responses to have the same class");
+        assertFalse(result.getFailed(), "Expected statuses of all responses to have the same class");
     }
 
     @Test
@@ -47,8 +47,8 @@ public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(HttpStatusClass.SUCCESS);
 
-        assertFalse("Expected some response statuses to belong to other classes", result.getPassed());
-        assertTrue("Expected some response statuses to belong to other classes", result.getFailed());
+        assertFalse(result.getPassed(), "Expected some response statuses to belong to other classes");
+        assertTrue(result.getFailed(), "Expected some response statuses to belong to other classes");
     }
 
     @Test
@@ -63,8 +63,8 @@ public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(status);
 
-        assertTrue("Expected statuses of all responses to match", result.getPassed());
-        assertFalse("Expected statuses of all responses to match", result.getFailed());
+        assertTrue(result.getPassed(), "Expected statuses of all responses to match");
+        assertFalse(result.getFailed(), "Expected statuses of all responses to match");
     }
 
     @Test
@@ -79,8 +79,8 @@ public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
         AssertionResult result = proxy.assertResponseStatusCode(status);
 
-        assertFalse("Expected some responses statuses not to match", result.getPassed());
-        assertTrue("Expected some responses statuses not to match", result.getFailed());
+        assertFalse(result.getPassed(), "Expected some responses statuses not to match");
+        assertTrue(result.getFailed(), "Expected some responses statuses not to match");
     }
 
     protected StubMapping mockResponse(String path, Integer status) {

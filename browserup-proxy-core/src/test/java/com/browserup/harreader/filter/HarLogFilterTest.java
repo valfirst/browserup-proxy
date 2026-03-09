@@ -1,13 +1,13 @@
 package com.browserup.harreader.filter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -31,8 +31,7 @@ public class HarLogFilterTest {
             log.getEntries().add(entry);
         }
 
-        assertEquals("Expected to find all entries",
-                HarLogFilter.findEntries(log, urlPattern).size(), entriesNumber);
+        assertEquals(HarLogFilter.findEntries(log, urlPattern).size(), entriesNumber, "Expected to find all entries");
     }
 
     @Test
@@ -49,8 +48,7 @@ public class HarLogFilterTest {
 
         log.getEntries().add(entry);
 
-        assertFalse("Expected to get empty entry",
-                HarLogFilter.findMostRecentEntry(log, urlPattern).isPresent());
+        assertFalse(HarLogFilter.findMostRecentEntry(log, urlPattern).isPresent(), "Expected to get empty entry");
     }
 
     @Test
@@ -62,9 +60,8 @@ public class HarLogFilterTest {
         HarLog log = createHarLog(url, firstDate, secondDate);
 
         Optional<HarEntry> entry = HarLogFilter.findMostRecentEntry(log, Pattern.compile("^http://abc\\.com?"));
-        assertTrue("Expected to find entry", entry.isPresent());
-        assertEquals("Expected to find the most recent entry",
-                entry.get().getStartedDateTime(), secondDate);
+        assertTrue(entry.isPresent(), "Expected to find entry");
+        assertEquals(entry.get().getStartedDateTime(), secondDate, "Expected to find the most recent entry");
     }
 
     @Test
@@ -76,9 +73,8 @@ public class HarLogFilterTest {
         HarLog log = createHarLog(url, firstDate, secondDate);
 
         Optional<HarEntry> entry = HarLogFilter.findMostRecentEntry(log);
-        assertTrue("Expected to find entry", entry.isPresent());
-        assertEquals("Expected to find the most recent entry",
-                entry.get().getStartedDateTime(), secondDate);
+        assertTrue(entry.isPresent(), "Expected to find entry");
+        assertEquals(entry.get().getStartedDateTime(), secondDate, "Expected to find the most recent entry");
     }
 
     private HarLog createHarLog(String url, Date firstDate, Date secondDate) {

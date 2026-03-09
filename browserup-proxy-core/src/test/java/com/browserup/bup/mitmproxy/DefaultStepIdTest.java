@@ -8,9 +8,9 @@ import de.sstoehr.harreader.model.HarPage;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import static com.browserup.bup.proxy.test.util.NewProxyServerTestUtil.toStringAndClose;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DefaultStepIdTest extends MockServerTest {
     private static final String SUCCESSFUL_RESPONSE_BODY = "success";
@@ -31,7 +31,7 @@ public class DefaultStepIdTest extends MockServerTest {
     private MitmProxyServer proxy;
     private CloseableHttpClient clientToProxy;
 
-    @Before
+    @BeforeEach
     public void startUp() {
         proxy = new MitmProxyServer();
         proxy.start();
@@ -39,7 +39,7 @@ public class DefaultStepIdTest extends MockServerTest {
         clientToProxy = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
@@ -59,8 +59,8 @@ public class DefaultStepIdTest extends MockServerTest {
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;
 
         String respBody = toStringAndClose(clientToProxy.execute(new HttpGet(firstUrl)).getEntity().getContent());
-        assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY, respBody);
-        assertEquals("Expected first request entry to have initial page ref", INITIAL_STEP_NAME, proxy.getHar().getLog().getEntries().get(0).getPageref());
+        assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody, "Did not receive expected response from mock server");
+        assertEquals(INITIAL_STEP_NAME, proxy.getHar().getLog().getEntries().get(0).getPageref(), "Expected first request entry to have initial page ref");
         assertThat("Expected 1 page available", proxy.getHar().getLog().getPages(), Matchers.hasSize(1));
 
         proxy.endPage();
@@ -70,41 +70,40 @@ public class DefaultStepIdTest extends MockServerTest {
         String secondUrl = "http://localhost:" + mockServerPort + "/" + SECOND_URL;
 
         String respBody2 = toStringAndClose(clientToProxy.execute(new HttpGet(secondUrl)).getEntity().getContent());
-        assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY, respBody2);
+        assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody2, "Did not receive expected response from mock server");
         HarPage defaultPage = proxy.getHar().getLog().getPages().stream()
                 .filter(p -> p.getId().equals(DEFAULT_STEP_NAME))
                 .findFirst().orElse(null);
-        assertNotNull("Expected not null default page", defaultPage);
-        assertNotNull("Expected page with started date time", defaultPage.getStartedDateTime());
+        assertNotNull(defaultPage, "Expected not null default page");
+        assertNotNull(defaultPage.getStartedDateTime(), "Expected page with started date time");
         Optional<HarEntry> newestEntry = proxy.getHar().getLog().getEntries().stream()
                 .max(Comparator.comparing(HarEntry::getStartedDateTime));
         assertTrue(newestEntry.isPresent());
-        assertEquals("Expected to get default step name ", DEFAULT_STEP_NAME, newestEntry.get().getPageref());
+        assertEquals(DEFAULT_STEP_NAME, newestEntry.get().getPageref(), "Expected to get default step name ");
 
         String thirdUrl = "http://localhost:" + mockServerPort + "/" + THIRD_URL;
 
         String respBody3 = toStringAndClose(clientToProxy.execute(new HttpGet(thirdUrl)).getEntity().getContent());
-        assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY, respBody3);
+        assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody3, "Did not receive expected response from mock server");
 
         assertThat("Expected two pages available", proxy.getHar().getLog().getPages(), Matchers.hasSize(2));
-        assertNotNull("Expected to find default page among pages",
-                proxy.getHar().getLog().getPages().stream()
+        assertNotNull(proxy.getHar().getLog().getPages().stream()
                         .filter(p -> p.getId().equals(DEFAULT_STEP_NAME))
-                        .findFirst().orElse(null));
+                        .findFirst().orElse(null), "Expected to find default page among pages");
     }
 
     @Test
     public void testHarIsCreatedAfterFirstRequestIfNoNewHarCalled() throws Exception {
         mockResponseForPath(FIRST_URL);
 
-        assertNull("Expected null har before any requests sent", proxy.getHar());
+        assertNull(proxy.getHar(), "Expected null har before any requests sent");
 
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;
 
         String respBody = toStringAndClose(clientToProxy.execute(new HttpGet(firstUrl)).getEntity().getContent());
-        assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY, respBody);
+        assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody, "Did not receive expected response from mock server");
 
-        assertNotNull("Expected non null har after request sent", proxy.getHar());
+        assertNotNull(proxy.getHar(), "Expected non null har after request sent");
     }
 
     @Test
@@ -114,10 +113,10 @@ public class DefaultStepIdTest extends MockServerTest {
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;
 
         String respBody = toStringAndClose(clientToProxy.execute(new HttpGet(firstUrl)).getEntity().getContent());
-        assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY, respBody);
+        assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody, "Did not receive expected response from mock server");
 
         assertThat("Expected to get one entry", proxy.getHar().getLog().getEntries(), Matchers.hasSize(1));
-        assertEquals("Expected entry to have default page ref", proxy.getHar().getLog().getEntries().get(0).getPageref(), DEFAULT_STEP_NAME);
+        assertEquals(proxy.getHar().getLog().getEntries().get(0).getPageref(), DEFAULT_STEP_NAME, "Expected entry to have default page ref");
     }
 
     @Test
@@ -127,10 +126,10 @@ public class DefaultStepIdTest extends MockServerTest {
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;
 
         String respBody = toStringAndClose(clientToProxy.execute(new HttpGet(firstUrl)).getEntity().getContent());
-        assertEquals("Did not receive expected response from mock server", SUCCESSFUL_RESPONSE_BODY, respBody);
+        assertEquals(SUCCESSFUL_RESPONSE_BODY, respBody, "Did not receive expected response from mock server");
 
         assertThat("Expected to get one entry", proxy.getHar().getLog().getEntries(), Matchers.hasSize(1));
-        assertEquals("Expected entry to have default page ref", proxy.getHar().getLog().getEntries().get(0).getPageref(), DEFAULT_STEP_NAME);
+        assertEquals(proxy.getHar().getLog().getEntries().get(0).getPageref(), DEFAULT_STEP_NAME, "Expected entry to have default page ref");
 
         proxy.newHar(INITIAL_STEP_NAME);
         assertThat("Expected to get no entries after new har called", proxy.getHar().getLog().getEntries(), Matchers.hasSize(0));
