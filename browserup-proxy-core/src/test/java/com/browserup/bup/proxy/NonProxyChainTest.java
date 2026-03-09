@@ -43,14 +43,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Disabled
-public class NonProxyChainTest extends MockServerTest {
+class NonProxyChainTest extends MockServerTest {
 
     private BrowserUpProxy proxy;
 
     public HttpProxyServer upstreamProxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
@@ -67,7 +67,7 @@ public class NonProxyChainTest extends MockServerTest {
      * This will end up in a 502, because the request is processed to the upstream proxy, which will deny the request.
      */
     @Test
-    public void testUpStreamProxyWithoutNonProxy() throws Exception {
+    void testUpStreamProxyWithoutNonProxy() throws Exception {
 
         upstreamProxy = DefaultHttpProxyServer.bootstrap()
                 .withFiltersSource(getFiltersSource())
@@ -97,7 +97,7 @@ public class NonProxyChainTest extends MockServerTest {
      * This will end up in a 200, because the request is NOT processed to the upstream proxy due the nonProxySetting
      */
     @Test
-    public void testUpStreamProxyWithNonProxy() throws Exception {
+    void testUpStreamProxyWithNonProxy() throws Exception {
 
         List<String> objects = new ArrayList<>();
         objects.add("localhost");
@@ -134,7 +134,7 @@ public class NonProxyChainTest extends MockServerTest {
      * This will end up in a 200, because the request is NOT processed to the upstream proxy due the nonProxySetting
      */
     @Test
-    public void testUpStreamProxyWithNonProxyWildcard() throws Exception {
+    void testUpStreamProxyWithNonProxyWildcard() throws Exception {
 
         List<String> objects = new ArrayList<>();
         objects.add("*");

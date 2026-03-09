@@ -32,18 +32,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for the {@link com.browserup.bup.filters.BrowserUpHttpFilterChain}.
  */
-public class FilterChainTest extends MockServerTest {
+class FilterChainTest extends MockServerTest {
     private BrowserUpProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testFilterExceptionDoesNotAbortRequest() throws Exception {
+    void testFilterExceptionDoesNotAbortRequest() throws Exception {
         // tests that an exception in one filter does not prevent the request from completing
 
         String stubUrl = "/testfilterexceptionpreservesrequest";
@@ -74,7 +74,7 @@ public class FilterChainTest extends MockServerTest {
     }
 
     @Test
-    public void testFilterExceptionDoesNotAbortFilterChain() throws Exception {
+    void testFilterExceptionDoesNotAbortFilterChain() throws Exception {
         // tests that an exception in the first filter in a filter chain does not prevent subsequent filters from being invoked
 
         String stubUrl = "/testfilterexceptionpreserveschain";
@@ -140,7 +140,7 @@ public class FilterChainTest extends MockServerTest {
     }
 
     @Test
-    public void testRequestResponseFilterExceptionsDoNotAbortRequest() throws Exception {
+    void testRequestResponseFilterExceptionsDoNotAbortRequest() throws Exception {
         // tests that exceptions thrown by the RequestFilter and ResponseFilter do not abort the request
 
         String stubUrl = "/testrequestresponsefilterpreservesrequest";
@@ -172,7 +172,7 @@ public class FilterChainTest extends MockServerTest {
     }
 
     @Test
-    public void testRequestResponseFilterExceptionsDoNotAbortFilterChain() throws Exception {
+    void testRequestResponseFilterExceptionsDoNotAbortFilterChain() throws Exception {
         // tests that exceptions thrown by the RequestFilter and ResponseFilter do not prevent subsequent filters from being invoked
 
         String stubUrl = "/testrequestresponsefilterpreserveschain";

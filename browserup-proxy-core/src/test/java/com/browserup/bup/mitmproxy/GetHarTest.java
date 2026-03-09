@@ -18,18 +18,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GetHarTest extends MockServerTest {
+class GetHarTest extends MockServerTest {
     private MitmProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testGetHarClean() throws Exception {
+    void testGetHarClean() throws Exception {
         String stubUrl = "/testCaptureResponseCookiesInHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()

@@ -13,9 +13,10 @@ import java.util.Comparator;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class FindMostRecentEntryRestTest extends BaseRestTest {
+class FindMostRecentEntryRestTest extends BaseRestTest {
     private static final int MILLISECONDS_BETWEEN_REQUESTS = 100;
 
     private String urlOfMostRecentRequest = "url-most-recent";
@@ -30,7 +31,7 @@ public class FindMostRecentEntryRestTest extends BaseRestTest {
     }
 
     @Test
-    public void findMostRecentHarEntryByUrlPattern() throws Exception {
+    void findMostRecentHarEntryByUrlPattern() throws Exception {
         mockTargetServerResponse(urlOfMostRecentRequest, responseBody);
         mockTargetServerResponse(urlOfOldRequest, responseBody);
 
@@ -70,7 +71,7 @@ public class FindMostRecentEntryRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getEmptyEntryIfNoEntryFoundByUrlPattern() throws Exception {
+    void getEmptyEntryIfNoEntryFoundByUrlPattern() throws Exception {
         mockTargetServerResponse(urlOfMostRecentRequest, responseBody);
         mockTargetServerResponse(urlOfOldRequest, responseBody);
 

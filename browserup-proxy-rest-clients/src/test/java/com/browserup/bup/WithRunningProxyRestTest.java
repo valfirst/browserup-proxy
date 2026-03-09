@@ -60,7 +60,7 @@ public abstract class WithRunningProxyRestTest {
     protected WireMockServer wireMockRule;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    protected void setUp() throws Exception {
         wireMockRule = new WireMockServer(options().port(0).httpsPort(0));
         wireMockRule.start();
         WireMock.configureFor("localhost", wireMockRule.port());
@@ -148,7 +148,7 @@ public abstract class WithRunningProxyRestTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    protected void tearDown() throws Exception {
         LOG.debug("Stopping proxy servers");
         for (MitmProxyServer proxyServer : proxyManager.get()) {
             try {

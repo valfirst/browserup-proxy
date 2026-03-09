@@ -16,18 +16,18 @@ import java.util.Map;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RewriteUrlFilterTest extends MockServerTest {
+class RewriteUrlFilterTest extends MockServerTest {
     private MitmProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testRewriteMultipleMatches() throws Exception {
+    void testRewriteMultipleMatches() throws Exception {
         String stubUrl = "/testRewriteHttpHost/finalModification";
         stubFor(get(urlEqualTo(stubUrl))
                 .withHeader("Host", new EqualToPattern("localhost:" + mockServerPort))
@@ -62,7 +62,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
     }
 
     @Test
-    public void testRewriteHttpHost() throws Exception {
+    void testRewriteHttpHost() throws Exception {
         String stubUrl = "/testRewriteHttpHost";
         stubFor(get(urlEqualTo(stubUrl))
                 .withHeader("Host", new EqualToPattern("localhost:" + mockServerPort))
@@ -93,7 +93,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
     }
 
     @Test
-    public void testRewriteHttpResource() throws Exception {
+    void testRewriteHttpResource() throws Exception {
         String stubUrl = "/rewrittenresource";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -117,7 +117,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
     }
 
     @Test
-    public void testRewriteHttpsResource() throws Exception {
+    void testRewriteHttpsResource() throws Exception {
         String stubUrl = "/rewrittenresource";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()

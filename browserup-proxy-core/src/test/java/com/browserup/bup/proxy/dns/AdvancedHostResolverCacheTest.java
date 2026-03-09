@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 @Disabled
-public class AdvancedHostResolverCacheTest {
+class AdvancedHostResolverCacheTest {
     private static final Logger log = LoggerFactory.getLogger(AdvancedHostResolverCacheTest.class);
 
     static Stream<AdvancedHostResolver> resolvers() {

@@ -33,11 +33,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class RewriteUrlFilterTest extends MockServerTest {
+class RewriteUrlFilterTest extends MockServerTest {
     public BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
@@ -45,7 +45,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testRewriteWithCaptureGroups() {
+    void testRewriteWithCaptureGroups() {
         HttpHeaders mockHeaders = mock(HttpHeaders.class);
         when(mockHeaders.contains(HttpHeaderNames.HOST)).thenReturn(false);
 
@@ -72,7 +72,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testRewriteMultipleMatches() {
+    void testRewriteMultipleMatches() {
         HttpHeaders mockHeaders = mock(HttpHeaders.class);
         when(mockHeaders.contains(HttpHeaderNames.HOST)).thenReturn(false);
 
@@ -101,7 +101,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
     }
 
     @Test
-    public void testRewriteHttpHost() throws Exception {
+    void testRewriteHttpHost() throws Exception {
         String stubUrl = "/testRewriteHttpHost";
         stubFor(get(urlEqualTo(stubUrl))
                 .withHeader("Host", new EqualToPattern("localhost:" + mockServerPort))
@@ -132,7 +132,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
     }
 
     @Test
-    public void testRewriteHttpResource() throws Exception {
+    void testRewriteHttpResource() throws Exception {
         String stubUrl = "/rewrittenresource";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -156,7 +156,7 @@ public class RewriteUrlFilterTest extends MockServerTest {
     }
 
     @Test
-    public void testRewriteHttpsResource() throws Exception {
+    void testRewriteHttpsResource() throws Exception {
         String stubUrl = "/rewrittenresource";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()

@@ -22,23 +22,24 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
-public class AllowlistTest extends MockServerTest {
+class AllowlistTest extends MockServerTest {
     private MitmProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testAllowlistCannotShortCircuitCONNECT() {
+    void testAllowlistCannotShortCircuitCONNECT() {
         HttpRequest request = mock(HttpRequest.class);
         when(request.method()).thenReturn(HttpMethod.CONNECT);
         when(request.uri()).thenReturn("somedomain.com:443");
@@ -53,7 +54,7 @@ public class AllowlistTest extends MockServerTest {
     }
 
     @Test
-    public void testNonAllowlistedHttpRequestReturnsAllowlistStatusCode() throws Exception {
+    void testNonAllowlistedHttpRequestReturnsAllowlistStatusCode() throws Exception {
         proxy = new MitmProxyServer();
         proxy.start();
         int proxyPort = proxy.getPort();
@@ -70,7 +71,7 @@ public class AllowlistTest extends MockServerTest {
     }
 
     @Test
-    public void testNonAllowlistedHttpsRequestReturnsAllowlistStatusCode() throws Exception {
+    void testNonAllowlistedHttpsRequestReturnsAllowlistStatusCode() throws Exception {
         String url = "/nonallowlistedresource";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withBody("should never be returned")));
@@ -92,7 +93,7 @@ public class AllowlistTest extends MockServerTest {
     }
 
     @Test
-    public void testAllowlistedHttpRequestNotShortCircuited() throws Exception {
+    void testAllowlistedHttpRequestNotShortCircuited() throws Exception {
         String url = "/allowlistedresource";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withBody("allowlisted")));
@@ -113,7 +114,7 @@ public class AllowlistTest extends MockServerTest {
     }
 
     @Test
-    public void testAllowlistedHttpsRequestNotShortCircuited() throws Exception {
+    void testAllowlistedHttpsRequestNotShortCircuited() throws Exception {
         String url = "/allowlistedresource";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withBody("allowlisted")));
@@ -135,7 +136,7 @@ public class AllowlistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanAllowlistSpecificHttpResource() throws Exception {
+    void testCanAllowlistSpecificHttpResource() throws Exception {
         String url = "/allowlistedresource";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withBody("allowlisted")));
@@ -166,7 +167,7 @@ public class AllowlistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanAllowlistSpecificHttpsResource() throws Exception {
+    void testCanAllowlistSpecificHttpsResource() throws Exception {
         String url = "/allowlistedresource";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withBody("allowlisted")));

@@ -20,18 +20,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MitmProxyProcessManagerTest {
+class MitmProxyProcessManagerTest {
 
     private static final int PROXY_PORT = 8443;
     private final MitmProxyProcessManager mitmProxyManager = new MitmProxyProcessManager();
 
     @AfterEach
-    public void setUp() {
+    protected void setUp() {
         mitmProxyManager.stop();
     }
 
     @Test
-    public void proxyStartedAndHarIsAvailable() throws IOException, InterruptedException {
+    void proxyStartedAndHarIsAvailable() throws IOException, InterruptedException {
         //GIVEN
         mitmProxyManager.start(PROXY_PORT);
 
@@ -45,7 +45,7 @@ public class MitmProxyProcessManagerTest {
     }
 
     @Test
-    public void proxyStartedAndHarCleanRequestParamCleansHar() throws IOException, InterruptedException {
+    void proxyStartedAndHarCleanRequestParamCleansHar() throws IOException, InterruptedException {
         //GIVEN
         mitmProxyManager.start(PROXY_PORT);
 
@@ -67,7 +67,7 @@ public class MitmProxyProcessManagerTest {
     }
 
     @Test
-    public void proxyStartedCurrentHarIsBeingPopulated() throws IOException, InterruptedException {
+    void proxyStartedCurrentHarIsBeingPopulated() throws IOException, InterruptedException {
         //GIVEN
         mitmProxyManager.start(PROXY_PORT);
 
@@ -92,7 +92,7 @@ public class MitmProxyProcessManagerTest {
 
     @Test
     @Disabled
-    public void afterStopLastCapturedHarIsReturned() throws IOException, InterruptedException {
+    void afterStopLastCapturedHarIsReturned() throws IOException, InterruptedException {
         //GIVEN
         int proxyPort = 18443;
         mitmProxyManager.start(proxyPort);
@@ -117,7 +117,7 @@ public class MitmProxyProcessManagerTest {
     }
 
     @Test
-    public void afterStopConnectionToProxyRefused() throws IOException, InterruptedException {
+    void afterStopConnectionToProxyRefused() throws IOException, InterruptedException {
         //GIVEN
         int proxyPort = 18443;
         mitmProxyManager.start(proxyPort);

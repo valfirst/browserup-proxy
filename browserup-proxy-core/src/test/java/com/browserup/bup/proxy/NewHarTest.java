@@ -63,18 +63,18 @@ import static org.mockito.Mockito.when;
  * HAR tests using the new interface. When the legacy interface is retired, these tests should be combined with the tests currently in HarTest.
  */
 @Disabled
-public class NewHarTest extends MockServerTest {
+class NewHarTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testDnsTimingPopulated() throws Exception {
+    void testDnsTimingPopulated() throws Exception {
         // mock up a resolver with a DNS resolution delay
         AdvancedHostResolver mockResolver = mock(AdvancedHostResolver.class);
         when(mockResolver.resolve("localhost")).then(new Answer<java.util.Collection<InetAddress>>() {
@@ -117,7 +117,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureResponseCookiesInHar() throws Exception {
+    void testCaptureResponseCookiesInHar() throws Exception {
         String stubUrl = "/testCaptureResponseCookiesInHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -166,7 +166,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureResponseHeaderInHar() throws Exception {
+    void testCaptureResponseHeaderInHar() throws Exception {
         String stubUrl = "/testCaptureResponseHeaderInHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -200,7 +200,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureResponseContentInHar() throws Exception {
+    void testCaptureResponseContentInHar() throws Exception {
         String expectedResponseBody = "success";
         String responseContentType = "text/plain;charset=utf-8";
 
@@ -238,7 +238,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureResponseInfoWhenResponseCaptureDisabled() throws Exception {
+    void testCaptureResponseInfoWhenResponseCaptureDisabled() throws Exception {
         String expectedResponseBody = "success";
         String responseContentType = "text/plain;charset=utf-8";
 
@@ -275,7 +275,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testEndHar() throws Exception {
+    void testEndHar() throws Exception {
         String stubUrl = "/testEndHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -356,7 +356,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testNewPageReturnsHarInPreviousState() throws Exception {
+    void testNewPageReturnsHarInPreviousState() throws Exception {
         String stubUrl = "/testEndHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -405,7 +405,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureHttpRequestUrlInHar() throws Exception {
+    void testCaptureHttpRequestUrlInHar() throws Exception {
         String stubUrl = "/httprequesturlcaptured";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -436,7 +436,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureHttpRequestUrlWithQueryParamInHar() throws Exception {
+    void testCaptureHttpRequestUrlWithQueryParamInHar() throws Exception {
         String stubUrl = "/httprequesturlcaptured.*";
         stubFor(get(urlMatching(stubUrl)).withQueryParam("param1", WireMock.equalTo("value1"))
                 .willReturn(ok()
@@ -472,7 +472,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureHttpsRequestUrlInHar() throws Exception {
+    void testCaptureHttpsRequestUrlInHar() throws Exception {
         String stubUrl = "/httpsrequesturlcaptured.*";
         stubFor(get(urlMatching(stubUrl)).withQueryParam("param1", WireMock.equalTo("value1"))
                 .willReturn(ok()
@@ -510,7 +510,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testCaptureHttpsRewrittenUrlInHar() throws Exception {
+    void testCaptureHttpsRewrittenUrlInHar() throws Exception {
         String stubUrl = "/httpsrewrittenurlcaptured.*";
         stubFor(get(urlMatching(stubUrl)).withQueryParam("param1", WireMock.equalTo("value1"))
                 .willReturn(ok()
@@ -552,7 +552,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testMitmDisabledStopsHTTPCapture() throws Exception {
+    void testMitmDisabledStopsHTTPCapture() throws Exception {
         String stubUrl1 = "/httpmitmdisabled";
         stubFor(get(urlEqualTo(stubUrl1))
                 .willReturn(ok()
@@ -619,7 +619,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpDnsFailureCapturedInHar() throws Exception {
+    void testHttpDnsFailureCapturedInHar() throws Exception {
         AdvancedHostResolver mockFailingResolver = mock(AdvancedHostResolver.class);
         when(mockFailingResolver.resolve("www.doesnotexist.address")).thenReturn(Collections.emptyList());
 
@@ -668,7 +668,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpsDnsFailureCapturedInHar() throws Exception {
+    void testHttpsDnsFailureCapturedInHar() throws Exception {
         AdvancedHostResolver mockFailingResolver = mock(AdvancedHostResolver.class);
         when(mockFailingResolver.resolve("www.doesnotexist.address")).thenReturn(Collections.emptyList());
 
@@ -717,7 +717,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpConnectTimeoutCapturedInHar() throws Exception {
+    void testHttpConnectTimeoutCapturedInHar() throws Exception {
         proxy = new BrowserUpProxyServer();
         proxy.start();
 
@@ -765,7 +765,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpsConnectTimeoutCapturedInHar() throws Exception {
+    void testHttpsConnectTimeoutCapturedInHar() throws Exception {
         proxy = new BrowserUpProxyServer();
         proxy.start();
 
@@ -813,7 +813,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpResponseTimeoutCapturedInHar() throws Exception {
+    void testHttpResponseTimeoutCapturedInHar() throws Exception {
         String stubUrl = "/testResponseTimeoutCapturedInHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -871,7 +871,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpsResponseTimeoutCapturedInHar() throws Exception {
+    void testHttpsResponseTimeoutCapturedInHar() throws Exception {
         String stubUrl = "/testResponseTimeoutCapturedInHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -930,7 +930,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpsBlacklistedUrlInHar() throws Exception {
+    void testHttpsBlacklistedUrlInHar() throws Exception {
         String stubUrl = "/httpsblacklistedurl";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok())
@@ -964,7 +964,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpsWhitelistedUrlInHar() throws Exception {
+    void testHttpsWhitelistedUrlInHar() throws Exception {
         String stubUrl = "/httpsblacklistedurl";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok())
@@ -998,7 +998,7 @@ public class NewHarTest extends MockServerTest {
     }
 
     @Test
-    public void testRedirectUrlCapturedForRedirects() throws Exception {
+    void testRedirectUrlCapturedForRedirects() throws Exception {
         String stubUrl = "/test300";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(aResponse().withStatus(300)

@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
+class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
     protected static final Pattern COMMON_URL_PATTERN = Pattern.compile(".*some-url.*");
     protected static final Pattern NOT_TO_MATCH_PATTERN = Pattern.compile(".*will_not_match.*");
@@ -29,7 +29,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     protected static final String OLD_PATH = "old-some-url";
 
     @Test
-    public void filteredUrlsStatusesCodeBelongToClassPasses() throws IOException {
+    void filteredUrlsStatusesCodeBelongToClassPasses() throws IOException {
         mockResponse(OLD_PATH, HttpStatus.SC_OK);
         mockResponse(RECENT_PATH, HttpStatus.SC_CREATED);
 
@@ -44,7 +44,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void filteredUrlsStatusesCodeBelongToClassFail() throws IOException {
+    void filteredUrlsStatusesCodeBelongToClassFail() throws IOException {
         mockResponse(OLD_PATH, HttpStatus.SC_OK);
         mockResponse(RECENT_PATH, HttpStatus.SC_BAD_REQUEST);
 
@@ -67,7 +67,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void filteredUrlStatusCodeEqualsPasses() throws IOException {
+    void filteredUrlStatusCodeEqualsPasses() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -84,7 +84,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void filteredUrlStatusCodeEqualsFails() throws IOException {
+    void filteredUrlStatusCodeEqualsFails() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -109,7 +109,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusBelongsToClassPasses() throws IOException {
+    void noResponseFoundByUrlAndStatusBelongsToClassPasses() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -125,7 +125,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() throws IOException {
+    void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -141,7 +141,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusEqualsPasses() throws IOException {
+    void noResponseFoundByUrlAndStatusEqualsPasses() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -157,7 +157,7 @@ public class FilteredUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusNotEqualsPasses() throws IOException {
+    void noResponseFoundByUrlAndStatusNotEqualsPasses() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);

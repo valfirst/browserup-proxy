@@ -35,14 +35,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests out-of-the-box integration with LittleProxy.
  */
-public class LittleProxyIntegrationTest {
+class LittleProxyIntegrationTest {
     @Test
-    public void testLittleProxyMitm() throws IOException, InterruptedException {
+    void testLittleProxyMitm() throws IOException, InterruptedException {
         testLittleProxyMitm(null);
     }
 
     @Test
-    public void testLittleProxyMitmHttp1_0() throws IOException, InterruptedException {
+    void testLittleProxyMitmHttp1_0() throws IOException, InterruptedException {
         testLittleProxyMitm(HttpVersion.HTTP_1_0);
     }
 

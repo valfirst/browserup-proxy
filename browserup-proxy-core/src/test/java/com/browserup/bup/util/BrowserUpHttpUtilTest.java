@@ -13,10 +13,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BrowserUpHttpUtilTest {
+class BrowserUpHttpUtilTest {
 
     @Test
-    public void testGetResourceFromUri() throws URISyntaxException {
+    void testGetResourceFromUri() throws URISyntaxException {
         Map<String, String> uriToResource = Map.of(
                 "http://www.example.com/the/resource", "/the/resource",
                 "https://example/resource", "/resource",
@@ -38,7 +38,7 @@ public class BrowserUpHttpUtilTest {
     }
 
     @Test
-    public void testGetHostAndPortFromUri() throws URISyntaxException {
+    void testGetHostAndPortFromUri() throws URISyntaxException {
         Map<String, String> uriToHostAndPort = Map.of(
                 "http://www.example.com/some/resource", "www.example.com",
                 "https://www.example.com:8080/some/resource", "www.example.com:8080",
@@ -59,7 +59,7 @@ public class BrowserUpHttpUtilTest {
     }
 
     @Test
-    public void testReadCharsetInContentTypeHeader() throws UnsupportedCharsetException {
+    void testReadCharsetInContentTypeHeader() throws UnsupportedCharsetException {
         Map<String, Charset> contentTypeHeaderAndCharset = new LinkedHashMap<String, Charset>(10);
         contentTypeHeaderAndCharset.put("text/html; charset=UTF-8", StandardCharsets.UTF_8);
         contentTypeHeaderAndCharset.put("text/html; charset=US-ASCII", StandardCharsets.US_ASCII);
@@ -94,7 +94,7 @@ public class BrowserUpHttpUtilTest {
     }
 
     @Test
-    public void testHasTextualContent() {
+    void testHasTextualContent() {
         Map<String, Boolean> contentTypeHeaderAndTextFlag = Map.of(
                 "text/html", true,
                 "text/*", true,
@@ -119,21 +119,21 @@ public class BrowserUpHttpUtilTest {
     }
 
     @Test
-    public void testGetRawPathWithQueryParams() throws URISyntaxException {
+    void testGetRawPathWithQueryParams() throws URISyntaxException {
         String path = "/some%20resource?param%20name=value";
 
         assertEquals(path, BrowserUpHttpUtil.getRawPathAndParamsFromUri("https://www.example.com" + path));
     }
 
     @Test
-    public void testGetRawPathWithoutQueryParams() throws URISyntaxException {
+    void testGetRawPathWithoutQueryParams() throws URISyntaxException {
         String path = "/some%20resource";
 
         assertEquals(path, BrowserUpHttpUtil.getRawPathAndParamsFromUri("https://www.example.com" + path));
     }
 
     @Test
-    public void testRemoveMatchingPort()
+    void testRemoveMatchingPort()
     {
         String portRemoved = BrowserUpHttpUtil.removeMatchingPort("www.example.com:443", 443);
         assertEquals("www.example.com", portRemoved);

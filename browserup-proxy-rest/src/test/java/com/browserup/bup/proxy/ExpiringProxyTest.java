@@ -7,9 +7,9 @@ import java.util.Random;
 import com.browserup.bup.BrowserUpProxyServer;
 import org.junit.jupiter.api.Test;
 
-public class ExpiringProxyTest {
+class ExpiringProxyTest {
     @Test
-    public void testExpiredProxyStops() throws InterruptedException {
+    void testExpiredProxyStops() throws InterruptedException {
         int minPort = new Random().nextInt(50000) + 10000;
 
         ProxyManager proxyManager = new ProxyManager(
@@ -36,7 +36,7 @@ public class ExpiringProxyTest {
     }
 
     @Test
-    public void testZeroTtlProxyDoesNotExpire() throws InterruptedException {
+    void testZeroTtlProxyDoesNotExpire() throws InterruptedException {
         int minPort = new Random().nextInt(50000) + 10000;
 
         ProxyManager proxyManager = new ProxyManager(

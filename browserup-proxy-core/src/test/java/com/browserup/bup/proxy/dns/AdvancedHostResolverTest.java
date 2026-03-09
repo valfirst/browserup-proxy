@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @Disabled
-public class AdvancedHostResolverTest {
+class AdvancedHostResolverTest {
 
     static Stream<AdvancedHostResolver> resolvers() {
         return Stream.of(

@@ -9,9 +9,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ResponseTimeLessThanOrEqualAssertionTest {
+class ResponseTimeLessThanOrEqualAssertionTest {
     @Test
-    public void testAssertionFailsIfTimeExceeds() {
+    void testAssertionFailsIfTimeExceeds() {
         long expectedTime = 500;
         ResponseTimeLessThanOrEqualAssertion assertion = new ResponseTimeLessThanOrEqualAssertion(expectedTime);
         HarEntry entry = new HarEntry();
@@ -24,7 +24,7 @@ public class ResponseTimeLessThanOrEqualAssertionTest {
     }
 
     @Test
-    public void testAssertionDoesNotFailIfTimeDoesNotExceed() {
+    void testAssertionDoesNotFailIfTimeDoesNotExceed() {
         long expectedTime = 2000;
         ResponseTimeLessThanOrEqualAssertion assertion = new ResponseTimeLessThanOrEqualAssertion(expectedTime);
         HarEntry entry = new HarEntry();

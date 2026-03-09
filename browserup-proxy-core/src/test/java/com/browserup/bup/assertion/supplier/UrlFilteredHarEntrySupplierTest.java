@@ -16,9 +16,9 @@ import java.util.stream.IntStream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UrlFilteredHarEntrySupplierTest {
+class UrlFilteredHarEntrySupplierTest {
     @Test
-    public void getFilteredByUrlEntries() {
+    void getFilteredByUrlEntries() {
         int fromIndex = 1;
         int maxIndexToBeFiltered = 5;
         int toIndex = 10;
@@ -46,7 +46,7 @@ public class UrlFilteredHarEntrySupplierTest {
     }
 
     @Test
-    public void getEmptyEntriesIfNothingFoundByFilter() {
+    void getEmptyEntriesIfNothingFoundByFilter() {
         Pattern urlPattern = Pattern.compile("^http://def\\.com$");
 
         List<HarEntry> harEntries = IntStream.range(1, 5).mapToObj(i -> {

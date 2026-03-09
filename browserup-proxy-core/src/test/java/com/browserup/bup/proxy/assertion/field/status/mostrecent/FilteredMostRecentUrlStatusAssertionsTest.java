@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
+class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
 
     protected static final Pattern COMMON_URL_PATTERN = Pattern.compile(".*some-url.*");
     protected static final Pattern NOT_TO_MATCH_PATTERN = Pattern.compile(".*will_not_match.*");
@@ -29,7 +29,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     protected static final String OLD_PATH = "old-some-url";
 
     @Test
-    public void mostRecentUrlStatusCodeBelongsToClassPasses() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeBelongsToClassPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, HttpStatus.SC_CONFLICT);
@@ -49,7 +49,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     }
 
     @Test
-    public void mostRecentUrlStatusCodeBelongsToClassFails() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeBelongsToClassFails() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -69,7 +69,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     }
 
     @Test
-    public void mostRecentUrlStatusCodeEqualsPasses() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeEqualsPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, HttpStatus.SC_BAD_REQUEST);
@@ -89,7 +89,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     }
 
     @Test
-    public void mostRecentUrlStatusCodeEqualsFails() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeEqualsFails() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -109,7 +109,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusBelongsToClassPasses() throws IOException, InterruptedException {
+    void noResponseFoundByUrlAndStatusBelongsToClassPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -126,7 +126,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() throws IOException, InterruptedException {
+    void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -143,7 +143,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusEqualsPasses() throws IOException, InterruptedException {
+    void noResponseFoundByUrlAndStatusEqualsPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -160,7 +160,7 @@ public class FilteredMostRecentUrlStatusAssertionsTest extends BaseAssertionsTes
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusNotEqualsPasses() throws IOException, InterruptedException {
+    void noResponseFoundByUrlAndStatusNotEqualsPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);

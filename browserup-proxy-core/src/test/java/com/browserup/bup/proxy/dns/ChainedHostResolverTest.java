@@ -33,9 +33,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Disabled
-public class ChainedHostResolverTest {
+class ChainedHostResolverTest {
     @Test
-    public void testEmptyResolver() {
+    void testEmptyResolver() {
         ChainedHostResolver resolver = new ChainedHostResolver(null);
 
         Collection<InetAddress> results = resolver.resolve("www.google.com");
@@ -57,7 +57,7 @@ public class ChainedHostResolverTest {
     }
 
     @Test
-    public void testResolveReturnsFirstResults() {
+    void testResolveReturnsFirstResults() {
         AdvancedHostResolver firstResolver = mock(AdvancedHostResolver.class);
         AdvancedHostResolver secondResolver = mock(AdvancedHostResolver.class);
         ChainedHostResolver chainResolver = new ChainedHostResolver(ImmutableList.of(firstResolver, secondResolver));
@@ -88,7 +88,7 @@ public class ChainedHostResolverTest {
     }
 
     @Test
-    public void testGetterUsesFirstResolver() {
+    void testGetterUsesFirstResolver() {
         AdvancedHostResolver firstResolver = mock(AdvancedHostResolver.class);
         AdvancedHostResolver secondResolver = mock(AdvancedHostResolver.class);
         ChainedHostResolver chainResolver = new ChainedHostResolver(ImmutableList.of(firstResolver, secondResolver));
@@ -104,7 +104,7 @@ public class ChainedHostResolverTest {
     }
 
     @Test
-    public void testResolveWaitsForWriteOperation() throws InterruptedException {
+    void testResolveWaitsForWriteOperation() throws InterruptedException {
         AdvancedHostResolver firstResolver = mock(AdvancedHostResolver.class);
         AdvancedHostResolver secondResolver = mock(AdvancedHostResolver.class);
         final ChainedHostResolver chainResolver = new ChainedHostResolver(ImmutableList.of(firstResolver, secondResolver));

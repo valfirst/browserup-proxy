@@ -16,19 +16,19 @@ import java.util.Map;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AdditionalHeadersTest extends MockServerTest {
+class AdditionalHeadersTest extends MockServerTest {
 
     private MitmProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testAdditionalHeaderIsAdded() throws Exception {
+    void testAdditionalHeaderIsAdded() throws Exception {
         String stubUrl = "/dummyPath";
         String customHeaderName = "CustomHeaderName";
         String customHeaderValue = "CustomHeaderValue";
@@ -51,7 +51,7 @@ public class AdditionalHeadersTest extends MockServerTest {
     }
 
     @Test
-    public void testAdditionalHeadersAreAdded() throws Exception {
+    void testAdditionalHeadersAreAdded() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -81,7 +81,7 @@ public class AdditionalHeadersTest extends MockServerTest {
     }
 
     @Test
-    public void testAdditionalHeadersAreAddedExceptOne() throws Exception {
+    void testAdditionalHeadersAreAddedExceptOne() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -123,7 +123,7 @@ public class AdditionalHeadersTest extends MockServerTest {
     }
 
     @Test
-    public void testAdditionalHeadersAreAddedAndOneDeleted() throws Exception {
+    void testAdditionalHeadersAreAddedAndOneDeleted() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -166,7 +166,7 @@ public class AdditionalHeadersTest extends MockServerTest {
     }
 
     @Test
-    public void testAdditionalHeadersAreAddedAndAllDeleted() throws Exception {
+    void testAdditionalHeadersAreAddedAndAllDeleted() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -209,7 +209,7 @@ public class AdditionalHeadersTest extends MockServerTest {
     }
 
     @Test
-    public void testFailsIfAdditionalHeaderNotAdded() throws Exception {
+    void testFailsIfAdditionalHeaderNotAdded() throws Exception {
         String stubUrl = "/dummyPath";
         String customHeaderName = "CustomHeaderName";
         String customHeaderValue = "CustomHeaderValue";

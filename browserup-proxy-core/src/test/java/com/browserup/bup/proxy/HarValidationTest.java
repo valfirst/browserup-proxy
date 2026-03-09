@@ -22,18 +22,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Disabled
-public class HarValidationTest extends MockServerTest {
+class HarValidationTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testDefaultValuesOfMockedHarResponse() throws Exception {
+    void testDefaultValuesOfMockedHarResponse() throws Exception {
         String stubUrl = "/testUrl.*";
         stubFor(get(urlMatching(stubUrl)).willReturn(ok()));
 

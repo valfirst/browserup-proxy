@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends BaseRestTest {
+class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends BaseRestTest {
     private String urlOfMostRecentRequest = "url-most-recent";
     private String urlOfOldRequest = "url-old";
     private String urlPatternToMatchUrl = ".*url-.*";
@@ -25,7 +27,7 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
     protected String getUrlPath() { return "har/mostRecentEntry/assertContentLengthLessThanOrEqual"; }
 
     @Test
-    public void getBadRequestIfLengthNotProvided() throws Exception {
+    void getBadRequestIfLengthNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern));
@@ -34,14 +36,14 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotProvided() throws Exception {
+    protected void getBadRequestIfUrlPatternNotProvided() throws Exception {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath());
         assertEquals(conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 
     @Test
-    public void getBadRequestIfLengthNotValid() throws Exception {
+    void getBadRequestIfLengthNotValid() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "length", "invalidlength"));
@@ -50,7 +52,7 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
     }
 
     @Test
-    public void contentLengthLessThanOrEqualPasses() throws Exception {
+    void contentLengthLessThanOrEqualPasses() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "length", lengthToMatch));
@@ -63,7 +65,7 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
     }
 
     @Test
-    public void contentLengthLessThanOrEqualFails() throws Exception {
+    void contentLengthLessThanOrEqualFails() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "length", lengthNotToMatch));
@@ -76,7 +78,7 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
     }
 
     @Test
-    public void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
+    void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
         sendRequestsToTargetServer();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPatternNotToMatchUrl, "length", lengthNotToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);

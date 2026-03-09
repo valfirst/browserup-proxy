@@ -27,11 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class QuiescenceTest extends NewProxyServerTest {
+class QuiescenceTest extends NewProxyServerTest {
     private static final Logger log = LoggerFactory.getLogger(QuiescenceTest.class);
 
     @Test
-    public void testWaitForQuiescenceSuccessful() throws InterruptedException {
+    void testWaitForQuiescenceSuccessful() throws InterruptedException {
         String url = "/quiescencesuccessful";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withFixedDelay((int) TimeUnit.SECONDS.toMillis(4))));
@@ -71,7 +71,7 @@ public class QuiescenceTest extends NewProxyServerTest {
     }
 
     @Test
-    public void testWaitForQuiescenceUnsuccessful() throws IOException, InterruptedException {
+    void testWaitForQuiescenceUnsuccessful() throws IOException, InterruptedException {
         String url = "/quiescenceunsuccessful";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withFixedDelay((int) TimeUnit.MINUTES.toMillis(1))));
@@ -101,7 +101,7 @@ public class QuiescenceTest extends NewProxyServerTest {
     }
 
     @Test
-    public void testWaitForQuiescenceAfterRequestCompleted() throws IOException {
+    void testWaitForQuiescenceAfterRequestCompleted() throws IOException {
         String url = "/quiescencecompleted";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok()));
@@ -126,7 +126,7 @@ public class QuiescenceTest extends NewProxyServerTest {
     }
 
     @Test
-    public void testWaitForQuiescenceQuietPeriodAlreadySatisfied() throws IOException, InterruptedException {
+    void testWaitForQuiescenceQuietPeriodAlreadySatisfied() throws IOException, InterruptedException {
         String url = "/quiescencesatisfied";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok()));
@@ -153,7 +153,7 @@ public class QuiescenceTest extends NewProxyServerTest {
     }
 
     @Test
-    public void testWaitForQuiescenceTimeoutLessThanQuietPeriodSuccessful() throws IOException, InterruptedException {
+    void testWaitForQuiescenceTimeoutLessThanQuietPeriodSuccessful() throws IOException, InterruptedException {
         String url = "/quiescencesmalltimeoutsuccess";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok()));
@@ -181,7 +181,7 @@ public class QuiescenceTest extends NewProxyServerTest {
     }
 
     @Test
-    public void testWaitForQuiescenceTimeoutLessThanQuietPeriodUnuccessful() throws IOException, InterruptedException {
+    void testWaitForQuiescenceTimeoutLessThanQuietPeriodUnuccessful() throws IOException, InterruptedException {
         String url = "/quiescencesmalltimeoutunsuccessful";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok()));
@@ -209,7 +209,7 @@ public class QuiescenceTest extends NewProxyServerTest {
     }
 
     @Test
-    public void testWaitForQuiescenceInterruptedBySecondRequestSuccessful() throws InterruptedException {
+    void testWaitForQuiescenceInterruptedBySecondRequestSuccessful() throws InterruptedException {
         String url = "/successquiesence2s";
 
         stubFor(get(urlEqualTo(url)).willReturn(ok().withFixedDelay((int) TimeUnit.SECONDS.toMillis(2))));
@@ -266,7 +266,7 @@ public class QuiescenceTest extends NewProxyServerTest {
     }
 
     @Test
-    public void testWaitForQuiescenceInterruptedBySecondRequestUnsuccessful() throws InterruptedException {
+    void testWaitForQuiescenceInterruptedBySecondRequestUnsuccessful() throws InterruptedException {
         String url1 = "/quiesence2s";
         String url2 = "/quiesence5s";
         stubFor(get(urlEqualTo(url1)).willReturn(ok().withFixedDelay((int) TimeUnit.SECONDS.toMillis(2))));

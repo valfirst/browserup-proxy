@@ -16,10 +16,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertionsTest {
+class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertionsTest {
 
     @Test
-    public void mostRecentUrlResponseTimeExceeds() throws IOException {
+    void mostRecentUrlResponseTimeExceeds() throws IOException {
         mockResponseForPathWithDelay(URL_PATH, DEFAULT_RESPONSE_DELAY);
 
         requestToMockedServer(URL_PATH);
@@ -35,7 +35,7 @@ public class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertions
     }
 
     @Test
-    public void passesIfNoEntriesFound() throws IOException {
+    void passesIfNoEntriesFound() throws IOException {
         mockResponseForPathWithDelay(URL_PATH, 0);
 
         requestToMockedServer(URL_PATH);
@@ -51,7 +51,7 @@ public class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertions
     }
 
     @Test
-    public void mostRecentUrlResponseTimeLessThanOrEqual() throws IOException {
+    void mostRecentUrlResponseTimeLessThanOrEqual() throws IOException {
         mockResponseForPathWithDelay(URL_PATH, DEFAULT_RESPONSE_DELAY);
 
         requestToMockedServer(URL_PATH);

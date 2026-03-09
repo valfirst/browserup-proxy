@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class EntriesAssertContentDoesNotContainRestTest extends BaseEntriesAssertContentRestTest {
+class EntriesAssertContentDoesNotContainRestTest extends BaseEntriesAssertContentRestTest {
 
     @Override
     protected String getUrlPath() {
@@ -17,7 +17,7 @@ public class EntriesAssertContentDoesNotContainRestTest extends BaseEntriesAsser
     }
 
     @Test
-    public void urlFilterMatchesBothAndContentDoesNotContainInBothPasses() throws Exception {
+    void urlFilterMatchesBothAndContentDoesNotContainInBothPasses() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -29,7 +29,7 @@ public class EntriesAssertContentDoesNotContainRestTest extends BaseEntriesAsser
     }
 
     @Test
-    public void urlFilterMatchesBothAndContentContainsInSomeFails() throws Exception {
+    void urlFilterMatchesBothAndContentContainsInSomeFails() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -47,7 +47,7 @@ public class EntriesAssertContentDoesNotContainRestTest extends BaseEntriesAsser
     }
 
     @Test
-    public void urlFilterMatchesFirstAndContentContainsInFirstFails() throws Exception {
+    void urlFilterMatchesFirstAndContentContainsInFirstFails() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -64,7 +64,7 @@ public class EntriesAssertContentDoesNotContainRestTest extends BaseEntriesAsser
     }
 
     @Test
-    public void urlFilterMatchesNonePasses() throws Exception {
+    void urlFilterMatchesNonePasses() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),

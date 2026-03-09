@@ -8,12 +8,12 @@ import com.browserup.bup.proxy.assertion.field.header.HeaderBaseTest;
 
 import org.junit.jupiter.api.Test;
 
-public class HeaderContainsTest extends HeaderBaseTest {
+class HeaderContainsTest extends HeaderBaseTest {
 
     private static final Pattern URL_PATTERN = Pattern.compile(".*" + URL_PATH + ".*");
 
     @Test
-    public void anyNameAndMatchingValue() throws IOException {
+    void anyNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderContains(URL_PATTERN, HEADER_VALUE);
@@ -22,7 +22,7 @@ public class HeaderContainsTest extends HeaderBaseTest {
     }
 
     @Test
-    public void anyNameIfEmptyNameProvidedAndMatchingValue() throws IOException {
+    void anyNameIfEmptyNameProvidedAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderContains(URL_PATTERN, null, HEADER_VALUE);
@@ -35,7 +35,7 @@ public class HeaderContainsTest extends HeaderBaseTest {
     }
 
     @Test
-    public void matchingNameAndMatchingValue() throws IOException {
+    void matchingNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderContains(URL_PATTERN, HEADER_NAME, HEADER_VALUE);
@@ -44,7 +44,7 @@ public class HeaderContainsTest extends HeaderBaseTest {
     }
 
     @Test
-    public void matchingNameAndNotMatchingValue() throws IOException {
+    void matchingNameAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderContains(URL_PATTERN, HEADER_NAME,
@@ -54,7 +54,7 @@ public class HeaderContainsTest extends HeaderBaseTest {
     }
 
     @Test
-    public void notMatchingNameAndMatchingValue() throws IOException {
+    void notMatchingNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderContains(URL_PATTERN, NOT_MATCHING_HEADER_NAME,
@@ -64,7 +64,7 @@ public class HeaderContainsTest extends HeaderBaseTest {
     }
 
     @Test
-    public void notMatchingNameAndNotMatchingValue() throws IOException {
+    void notMatchingNameAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderContains(URL_PATTERN, NOT_MATCHING_HEADER_NAME,

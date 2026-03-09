@@ -16,13 +16,13 @@ public abstract class ProxyManagerTest {
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
+    protected void setUp() throws Exception {
         Injector injector = Guice.createInjector(new ConfigModule(getArgs()));
         proxyManager = injector.getInstance(MitmProxyManager.class);
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    protected void tearDown() throws Exception {
         for(MitmProxyServer p : proxyManager.get()){
             try{
                 proxyManager.delete(p.getPort());

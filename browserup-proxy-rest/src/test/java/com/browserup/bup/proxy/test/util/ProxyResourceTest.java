@@ -33,7 +33,7 @@ public abstract class ProxyResourceTest extends ProxyManagerTest {
     protected WireMockServer wireMockRule;
 
     @BeforeEach
-    public void setUpMockServer() {
+    protected void setUpMockServer() {
         wireMockRule = new WireMockServer(options().port(0).httpsPort(0));
         wireMockRule.start();
         WireMock.configureFor("localhost", wireMockRule.port());
@@ -42,14 +42,14 @@ public abstract class ProxyResourceTest extends ProxyManagerTest {
     }
 
     @AfterEach
-    public void tearDownMockServer() {
+    protected void tearDownMockServer() {
         if (wireMockRule != null && wireMockRule.isRunning()) {
             wireMockRule.stop();
         }
     }
 
     @BeforeEach
-    public void setUpProxyResource() {
+    protected void setUpProxyResource() {
         MitmProxyServer proxy = proxyManager.create(0);
         proxyPort = proxy.getPort();
 

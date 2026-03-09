@@ -18,13 +18,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
-public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
+class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
 
     protected static final String RECENT_PATH = "recent-some-url";
     protected static final String OLD_PATH = "old-some-url";
 
     @Test
-    public void mostRecentUrlStatusCodeBelongsToClassPasses() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeBelongsToClassPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, HttpStatus.SC_CONFLICT);
@@ -44,7 +44,7 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void mostRecentUrlStatusCodeBelongsToClassFails() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeBelongsToClassFails() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -64,7 +64,7 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void mostRecentUrlStatusCodeEqualsPasses() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeEqualsPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, HttpStatus.SC_BAD_REQUEST);
@@ -84,7 +84,7 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void mostRecentUrlStatusCodeEqualsFails() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeEqualsFails() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -104,7 +104,7 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusBelongsToClassPasses() {
+    void noResponseFoundByUrlAndStatusBelongsToClassPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatusClass.SUCCESS);
 
         Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
@@ -112,7 +112,7 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() {
+    void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatusClass.SUCCESS);
 
         Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
@@ -120,7 +120,7 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusEqualsPasses() {
+    void noResponseFoundByUrlAndStatusEqualsPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatus.SC_OK);
 
         Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
@@ -128,7 +128,7 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusNotEqualsPasses() {
+    void noResponseFoundByUrlAndStatusNotEqualsPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatus.SC_OK);
 
         Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");

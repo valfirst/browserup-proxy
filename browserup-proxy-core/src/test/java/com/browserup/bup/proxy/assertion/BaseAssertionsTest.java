@@ -31,7 +31,7 @@ public abstract class BaseAssertionsTest extends MockServerTest {
     }
 
     @BeforeEach
-    public void startUp() {
+    protected void startUp() {
         proxy = new BrowserUpProxyServer();
         proxy.setTrustAllServers(true);
         proxy.start();
@@ -43,7 +43,7 @@ public abstract class BaseAssertionsTest extends MockServerTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }

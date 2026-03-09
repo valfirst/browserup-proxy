@@ -16,9 +16,9 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MostRecentUrlFilteredHarEntrySupplierTest {
+class MostRecentUrlFilteredHarEntrySupplierTest {
     @Test
-    public void getMostRecentEntryByUrl() {
+    void getMostRecentEntryByUrl() {
         int fromIndex = 1;
         int toIndex = 10;
         int mostRecentUrlIndex = toIndex;
@@ -44,7 +44,7 @@ public class MostRecentUrlFilteredHarEntrySupplierTest {
     }
 
     @Test
-    public void returnEmptyListIfNoEntryFoundByUrl() {
+    void returnEmptyListIfNoEntryFoundByUrl() {
         String urlPattern = "^http://does_not_match\\.com?";
         HarEntry harEntry = new HarEntry();
         HarRequest harRequest = new HarRequest();

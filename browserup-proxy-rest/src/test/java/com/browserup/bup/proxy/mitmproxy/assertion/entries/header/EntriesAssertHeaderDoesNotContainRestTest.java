@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssertHeaderRestTest {
+class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssertHeaderRestTest {
 
     @Override
     protected String getUrlPath() {
@@ -18,7 +18,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesBothAndHeaderValueMissedInBothPasses() throws Exception {
+    void urlFilterMatchesBothAndHeaderValueMissedInBothPasses() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_BOTH, "headerValue", MISSING_HEADER_VALUE));
@@ -30,7 +30,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesBothAndAnyHeaderNameAndHeaderValuePresentFails() throws Exception {
+    void urlFilterMatchesBothAndAnyHeaderNameAndHeaderValuePresentFails() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_BOTH, "headerValue", FIRST_HEADER_VALUE));
@@ -42,7 +42,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesFirstAndAnyHeaderNameAndHeaderValuePresentFails() throws Exception {
+    void urlFilterMatchesFirstAndAnyHeaderNameAndHeaderValuePresentFails() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_FIRST, "headerValue", FIRST_HEADER_VALUE));
@@ -57,7 +57,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesFirstAndAnyHeaderNameAndHeaderValueMissedPassed() throws Exception {
+    void urlFilterMatchesFirstAndAnyHeaderNameAndHeaderValueMissedPassed() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_FIRST, "headerValue", SECOND_HEADER_VALUE));
@@ -69,7 +69,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesFirstAndFirstHeaderNameAndSecondHeaderValuePassed() throws Exception {
+    void urlFilterMatchesFirstAndFirstHeaderNameAndSecondHeaderValuePassed() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_FIRST, "headerName", FIRST_HEADER_NAME, "headerValue", SECOND_HEADER_VALUE));
@@ -81,7 +81,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesFirstAndFirstHeaderNameAndFirstHeaderValueContainsFails() throws Exception {
+    void urlFilterMatchesFirstAndFirstHeaderNameAndFirstHeaderValueContainsFails() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_FIRST, "headerName", FIRST_HEADER_NAME, "headerValue", FIRST_HEADER_VALUE));
@@ -93,7 +93,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesFirstAndFirstHeaderNameAndSecondHeaderValueContainsPassed() throws Exception {
+    void urlFilterMatchesFirstAndFirstHeaderNameAndSecondHeaderValueContainsPassed() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_FIRST, "headerName", FIRST_HEADER_NAME, "headerValue", SECOND_HEADER_VALUE));
@@ -105,7 +105,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void urlFilterMatchesNonePasses() throws Exception {
+    void urlFilterMatchesNonePasses() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerName", FIRST_HEADER_NAME, "headerValue", SECOND_HEADER_VALUE));
@@ -116,7 +116,7 @@ public class EntriesAssertHeaderDoesNotContainRestTest extends BaseEntriesAssert
     }
 
     @Test
-    public void getBadRequestIfHeaderValueNotProvided() throws Exception {
+    void getBadRequestIfHeaderValueNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerName", FIRST_HEADER_NAME));

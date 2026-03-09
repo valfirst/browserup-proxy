@@ -32,7 +32,7 @@ public class HeaderBaseTest extends BaseAssertionsTest {
     protected static final HttpHeader HEADER = new HttpHeader(HEADER_NAME, HEADER_VALUE);
 
     @BeforeEach
-    public void setUp() {
+    protected void setUp() {
         proxy.enableHarCaptureTypes(CaptureType.RESPONSE_HEADERS);
         mockResponse(URL_PATH, HEADER);
     }

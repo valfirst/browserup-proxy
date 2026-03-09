@@ -13,7 +13,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FindHarEntriesRestTest extends BaseRestTest {
+class FindHarEntriesRestTest extends BaseRestTest {
 
     @Override
     protected String getUrlPath() {
@@ -21,7 +21,7 @@ public class FindHarEntriesRestTest extends BaseRestTest {
     }
 
     @Test
-    public void findHarEntryByUrlPattern() throws Exception {
+    void findHarEntryByUrlPattern() throws Exception {
         String urlToCatch = "test";
         String urlNotToCatch = "missing";
         String responseBody = "success";
@@ -52,7 +52,7 @@ public class FindHarEntriesRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getEmptyEntriesArrayIfNoEntriesFoundByUrl() throws Exception {
+    void getEmptyEntriesArrayIfNoEntriesFoundByUrl() throws Exception {
         String urlToCatch = "test";
         String urlNotToCatch = "missing";
         String responseBody = "success";

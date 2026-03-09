@@ -33,7 +33,7 @@ public abstract class BaseEntriesAssertContentRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotProvided() throws Exception {
+    protected void getBadRequestIfUrlPatternNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -44,7 +44,7 @@ public abstract class BaseEntriesAssertContentRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotValid() throws Exception {
+    protected void getBadRequestIfUrlPatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertContentRestTest {
+class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertContentRestTest {
     protected static final String CONTENT_PATTERN_TO_MATCH_BOTH = ".*" + RESPONSE_COMMON_PART + ".*";
     protected static final String CONTENT_PATTERN_TO_MATCH_FIRST = ".*" + FIRST_RESPONSE + ".*";
     protected static final String CONTENT_PATTERN_TO_MATCH_SECOND = ".*" + SECOND_RESPONSE + ".*";
@@ -21,7 +21,7 @@ public class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertConten
     }
 
     @Test
-    public void urlFilterMatchesBothAndContentFilterMatchesBothPasses() throws Exception {
+    void urlFilterMatchesBothAndContentFilterMatchesBothPasses() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -33,7 +33,7 @@ public class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertConten
     }
 
     @Test
-    public void urlFilterMatchesBothAndContentFilterDoesNotMatchSomeFails() throws Exception {
+    void urlFilterMatchesBothAndContentFilterDoesNotMatchSomeFails() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -51,7 +51,7 @@ public class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertConten
     }
 
     @Test
-    public void urlFilterMatchesFirstAndContentFilterDoesNotMatchFirstFails() throws Exception {
+    void urlFilterMatchesFirstAndContentFilterDoesNotMatchFirstFails() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -68,7 +68,7 @@ public class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertConten
     }
 
     @Test
-    public void urlFilterMatchesNonePasses() throws Exception {
+    void urlFilterMatchesNonePasses() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -80,7 +80,7 @@ public class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertConten
     }
 
     @Test
-    public void getBadRequestIfContentPatternNotProvided() throws Exception {
+    void getBadRequestIfContentPatternNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -91,7 +91,7 @@ public class EntriesAssertContentMatchesRestTest extends BaseEntriesAssertConten
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotValid() throws Exception {
+    protected void getBadRequestIfUrlPatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),

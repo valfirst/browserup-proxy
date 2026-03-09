@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 
-public class ContentLengthLessThanOrEqualTest extends FilteredContentBaseTest {
+class ContentLengthLessThanOrEqualTest extends FilteredContentBaseTest {
 
     private static final String BIG_BODY = IntStream.range(0, 10).mapToObj(i -> "big body").collect(Collectors.joining(" "));
     private static final String SMALL_BODY = "small body";
@@ -22,7 +22,7 @@ public class ContentLengthLessThanOrEqualTest extends FilteredContentBaseTest {
     private static final long SMALL_BODY_SIZE = SMALL_BODY.getBytes().length;
 
     @Test
-    public void filterMatchesBothRequestsAndBothContentLengthAreUnderLimitPasses() throws IOException {
+    void filterMatchesBothRequestsAndBothContentLengthAreUnderLimitPasses() throws IOException {
         mockAndSendRequestsToMockedServer(BIG_BODY, SMALL_BODY);
 
         AssertionResult result = proxy.assertAnyUrlContentLengthLessThanOrEquals(URL_PATTERN_TO_MATCH_BOTH,
@@ -32,7 +32,7 @@ public class ContentLengthLessThanOrEqualTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesFirstRequestAndOnlySecondContentLengthIsUnderLimitFails() throws IOException {
+    void filterMatchesFirstRequestAndOnlySecondContentLengthIsUnderLimitFails() throws IOException {
         mockAndSendRequestsToMockedServer(BIG_BODY, SMALL_BODY);
 
         AssertionResult result = proxy.assertAnyUrlContentLengthLessThanOrEquals(URL_PATTERN_TO_MATCH_FIRST,
@@ -47,7 +47,7 @@ public class ContentLengthLessThanOrEqualTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeContentIsNotUnderLimitFails() throws IOException {
+    void filterMatchesBothRequestsAndSomeContentIsNotUnderLimitFails() throws IOException {
         mockAndSendRequestsToMockedServer(BIG_BODY, SMALL_BODY);
 
         AssertionResult result = proxy.assertAnyUrlContentLengthLessThanOrEquals(URL_PATTERN_TO_MATCH_BOTH,
@@ -62,7 +62,7 @@ public class ContentLengthLessThanOrEqualTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndAllContentIsNotUnderLimitFails() throws IOException {
+    void filterMatchesBothRequestsAndAllContentIsNotUnderLimitFails() throws IOException {
         mockAndSendRequestsToMockedServer(BIG_BODY, SMALL_BODY);
 
         AssertionResult result = proxy.assertAnyUrlContentLengthLessThanOrEquals(URL_PATTERN_TO_MATCH_BOTH,

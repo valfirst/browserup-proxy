@@ -26,13 +26,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Disabled
-public class ChainedProxyAuthTest extends MockServerTest {
+class ChainedProxyAuthTest extends MockServerTest {
     public BrowserUpProxy proxy;
 
     public HttpProxyServer upstreamProxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
@@ -43,7 +43,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testAutoProxyAuthSuccessful() throws Exception {
+    void testAutoProxyAuthSuccessful() throws Exception {
         String proxyUser = "proxyuser";
         String proxyPassword = "proxypassword";
 
@@ -80,7 +80,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testAutoProxyAuthFailure() throws Exception {
+    void testAutoProxyAuthFailure() throws Exception {
         String proxyUser = "proxyuser";
         String proxyPassword = "proxypassword";
 

@@ -13,13 +13,13 @@ public class NewProxyServerTest extends MockServerTest {
     protected BrowserUpProxy proxy;
 
     @BeforeEach
-    public void setUpProxyServer() {
+    protected void setUpProxyServer() {
         proxy = new BrowserUpProxyServer();
         proxy.start();
     }
 
     @AfterEach
-    public void shutDownProxyServer() {
+    protected void shutDownProxyServer() {
         if (proxy != null) {
             proxy.abort();
         }

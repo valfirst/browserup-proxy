@@ -22,18 +22,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests host remapping using the {@link com.browserup.bup.proxy.dns.AdvancedHostResolver#remapHost(java.lang.String, java.lang.String)}
  * and related methods exposes by {@link BrowserUpProxy#getHostNameResolver()}.
  */
-public class RemapHostsTest extends MockServerTest {
+class RemapHostsTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testRemapHttpHost() throws Exception {
+    void testRemapHttpHost() throws Exception {
         // mock up a response to serve
 
         String stubUrl = "/remapHttpHost";
@@ -57,7 +57,7 @@ public class RemapHostsTest extends MockServerTest {
     }
 
     @Test
-    public void testRemapHttpsHost() throws Exception {
+    void testRemapHttpsHost() throws Exception {
         // mock up a response to serve
         String stubUrl = "/remapHttpsHost";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));

@@ -19,9 +19,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 /**
  * Network manipulation tests using the new interface.
  */
-public class NetworkTest extends MockServerTest {
+class NetworkTest extends MockServerTest {
     @Test
-    public void testConnectTimeout() throws IOException {
+    void testConnectTimeout() throws IOException {
         BrowserUpProxy proxy = new BrowserUpProxyServer();
         proxy.setConnectTimeout(1, TimeUnit.SECONDS);
         proxy.start();
@@ -39,7 +39,7 @@ public class NetworkTest extends MockServerTest {
     }
 
     @Test
-    public void testIdleConnectionTimeout() throws IOException {
+    void testIdleConnectionTimeout() throws IOException {
         String url = "/idleconnectiontimeout";
         stubFor(get(urlEqualTo(url)).willReturn(ok().withFixedDelay((int) TimeUnit.SECONDS.toMillis(5))));
 
@@ -62,7 +62,7 @@ public class NetworkTest extends MockServerTest {
     }
 
     @Test
-    public void testLatency() throws IOException {
+    void testLatency() throws IOException {
         String url = "/latency";
         stubFor(get(urlEqualTo(url)).willReturn(ok()));
 

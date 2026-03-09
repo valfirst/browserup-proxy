@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ContentSizeLessThanOrEqualTest extends ContentBaseTest {
+class ContentSizeLessThanOrEqualTest extends ContentBaseTest {
 
     @Test
-    public void contentSizeWithinAssertionPasses() throws IOException {
+    void contentSizeWithinAssertionPasses() throws IOException {
         int bodySize = 100;
         String body = StringUtils.repeat("a", bodySize);
 
@@ -30,7 +30,7 @@ public class ContentSizeLessThanOrEqualTest extends ContentBaseTest {
     }
 
     @Test
-    public void contentSizeWithinAssertionFails() throws IOException {
+    void contentSizeWithinAssertionFails() throws IOException {
         int bodySize = 100;
         String body = StringUtils.repeat("a", bodySize);
 

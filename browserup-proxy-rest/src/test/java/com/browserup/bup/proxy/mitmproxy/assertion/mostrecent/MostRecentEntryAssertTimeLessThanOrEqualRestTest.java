@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
+class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     private int successfulAssertionMilliseconds = SUCCESSFUL_ASSERTION_TIME_WITHIN;
     private int failedAssertionMilliseconds = FAILED_ASSERTION_TIME_WITHIN;
     private String urlOfMostRecentRequest = "url-most-recent";
@@ -25,7 +27,7 @@ public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTe
     protected String getUrlPath() { return "har/mostRecentEntry/assertResponseTimeLessThanOrEqual"; }
 
     @Test
-    public void passAndFailTimeWithinAssertion() throws Exception {
+    void passAndFailTimeWithinAssertion() throws Exception {
         sendRequestsToTargetServer();
         String urlPat = ".*" + commonUrlPattern;
 
@@ -47,7 +49,7 @@ public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTe
     }
 
     @Test
-    public void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
+    void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
         sendRequestsToTargetServer();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "milliseconds", assertionMilliseconds));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -58,7 +60,7 @@ public class MostRecentEntryAssertTimeLessThanOrEqualRestTest extends BaseRestTe
     }
 
     @Test
-    public void getBadRequestIfMillisecondsNotValid() throws Exception {
+    void getBadRequestIfMillisecondsNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", ".*", "milliseconds", "abcd"));
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request");

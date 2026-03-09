@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ValidateHarRestTest extends BaseRestTest {
+class ValidateHarRestTest extends BaseRestTest {
 
     @Override
     protected String getUrlPath() {
@@ -20,7 +22,7 @@ public class ValidateHarRestTest extends BaseRestTest {
     }
 
     @Test
-    public void cleanHarFalseTest() throws Exception {
+    void cleanHarFalseTest() throws Exception {
         String urlToCatch = "test";
         String responseBody = "";
 
@@ -50,7 +52,7 @@ public class ValidateHarRestTest extends BaseRestTest {
     }
 
     @Test
-    public void cleanHarTest() throws Exception {
+    void cleanHarTest() throws Exception {
         String urlToCatch = "test";
         String responseBody = "";
 
@@ -80,7 +82,7 @@ public class ValidateHarRestTest extends BaseRestTest {
     }
 
     @Test
-    public void validateHarForRequestWithEmptyContentAndMimeType() throws Exception {
+    void validateHarForRequestWithEmptyContentAndMimeType() throws Exception {
         String urlToCatch = "test";
         String responseBody = "";
 

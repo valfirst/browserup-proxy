@@ -17,10 +17,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
+class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
 
     @Test
-    public void currentUrlsStatusCodesBelongToClassPass() throws IOException {
+    void currentUrlsStatusCodesBelongToClassPass() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(URL_PATH, status);
@@ -36,7 +36,7 @@ public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void currentUrlsStatusCodesBelongToClassFail() throws IOException {
+    void currentUrlsStatusCodesBelongToClassFail() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(URL_PATH, status);
@@ -52,7 +52,7 @@ public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void currentUrlsStatusCodesEqualPass() throws IOException {
+    void currentUrlsStatusCodesEqualPass() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(URL_PATH, status);
@@ -68,7 +68,7 @@ public class AllCurrentStepUrlsStatusAssertionsTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void currentUrlsStatusCodesEqualFail() throws IOException {
+    void currentUrlsStatusCodesEqualFail() throws IOException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(URL_PATH, status);

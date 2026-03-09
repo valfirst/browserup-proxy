@@ -19,7 +19,7 @@ public class ContentBaseTest extends BaseAssertionsTest {
     protected static final Pattern BODY_PATTERN_NOT_TO_MATCH_BODY_PART = Pattern.compile(".*NOT-TO-MATCH.*");
 
     @BeforeEach
-    public void setUp() {
+    protected void setUp() {
         proxy.enableHarCaptureTypes(CaptureType.RESPONSE_CONTENT, CaptureType.REQUEST_BINARY_CONTENT, CaptureType.REQUEST_CONTENT);
     }
 

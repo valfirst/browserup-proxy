@@ -19,18 +19,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RewriteRuleTest extends MockServerTest {
+class RewriteRuleTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testRewriteHttpUrl() throws Exception {
+    void testRewriteHttpUrl() throws Exception {
         String stubUrl = "/.*";
         stubFor(get(urlMatching(stubUrl))
                 .withQueryParam("originalDomain", WireMock.equalTo("yahoo"))
@@ -56,7 +56,7 @@ public class RewriteRuleTest extends MockServerTest {
     }
 
     @Test
-    public void testRewriteHttpsUrl() throws Exception {
+    void testRewriteHttpsUrl() throws Exception {
         // HTTPS URLs cannot currently be rewritten to another domain, so verify query parameters can be rewritten
 
         String stubUrl = "/.*";

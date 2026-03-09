@@ -13,9 +13,10 @@ import java.net.HttpURLConnection;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
+class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
     private String responseBody = "success";
     private String urlOfMostRecentRequest = "url-most-recent";
     private String urlOfOldRequest = "url-old";
@@ -31,7 +32,7 @@ public class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
     protected String getUrlPath() { return "har/mostRecentEntry/assertResponseHeaderContains"; }
 
     @Test
-    public void anyNameAndMatchingValue() throws Exception {
+    void anyNameAndMatchingValue() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerValue", headerValueToFind));
@@ -42,7 +43,7 @@ public class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
     }
 
     @Test
-    public void matchingNameAndMatchingValue() throws Exception {
+    void matchingNameAndMatchingValue() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerName", headerNameToFind, "headerValue", headerValueToFind));
@@ -53,7 +54,7 @@ public class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
     }
 
     @Test
-    public void notMatchingNameAndMatchingValue() throws Exception {
+    void notMatchingNameAndMatchingValue() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerName", headerNameNotToFind, "headerValue", headerValueToFind));
@@ -64,7 +65,7 @@ public class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
     }
 
     @Test
-    public void matchingNameAndNotMatchingValue() throws Exception {
+    void matchingNameAndNotMatchingValue() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerName", headerNameToFind, "headerValue", headerValueNotToFind));
@@ -75,7 +76,7 @@ public class MostRecentEntryAssertHeaderContainsRestTest extends BaseRestTest {
     }
 
     @Test
-    public void emptyResultIfNoEntryFoundByUrlPattern() throws Exception {
+    void emptyResultIfNoEntryFoundByUrlPattern() throws Exception {
         sendRequestsToTargetServer();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPatternNotToMatchUrl, "headerValue", headerValueNotToFind));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);

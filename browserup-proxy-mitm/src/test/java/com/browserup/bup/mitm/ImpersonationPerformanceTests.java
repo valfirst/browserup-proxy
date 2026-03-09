@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class ImpersonationPerformanceTests {
+class ImpersonationPerformanceTests {
     private static final Logger log = LoggerFactory.getLogger(ImpersonationPerformanceTests.class);
 
     static Stream<Arguments> data() {

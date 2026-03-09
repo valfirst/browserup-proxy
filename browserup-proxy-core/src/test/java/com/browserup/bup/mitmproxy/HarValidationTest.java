@@ -17,18 +17,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HarValidationTest extends MockServerTest {
+class HarValidationTest extends MockServerTest {
     private MitmProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testHarEntryContainsUrlField() throws Exception {
+    void testHarEntryContainsUrlField() throws Exception {
         String stubUrl = "/testUrl.*";
         stubFor(get(urlMatching(stubUrl)).willReturn(ok()));
 
@@ -56,7 +56,7 @@ public class HarValidationTest extends MockServerTest {
     }
 
     @Test
-    public void testDefaultValuesOfMockedHarResponse() throws Exception {
+    void testDefaultValuesOfMockedHarResponse() throws Exception {
         String stubUrl = "/testUrl.*";
         stubFor(get(urlMatching(stubUrl)).willReturn(ok()));
 

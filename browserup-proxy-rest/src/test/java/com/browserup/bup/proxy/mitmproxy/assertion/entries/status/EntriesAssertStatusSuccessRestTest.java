@@ -10,9 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
+class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
     private String urlOfMostRecentRequest = "url-most-recent";
     private String urlOfOldRequest = "url-old";
     private String urlOfNotToMatchRequest = "not-to-match";
@@ -27,7 +28,7 @@ public class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
     protected String getUrlPath() { return "har/entries/assertStatusSuccess"; }
 
     @Test
-    public void getBadRequestIfUrlPatternIsInvalid() throws Exception {
+    void getBadRequestIfUrlPatternIsInvalid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", "["));
         assertEquals(conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
@@ -35,7 +36,7 @@ public class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
     }
 
     @Test
-    public void statusSuccessForFilteredResponsesPasses() throws Exception {
+    void statusSuccessForFilteredResponsesPasses() throws Exception {
         sendRequestsToTargetServer(successStatus, successStatus, statusOfNotToMatchUrl);
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern));
@@ -47,7 +48,7 @@ public class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
     }
 
     @Test
-    public void statusSuccessForAllResponsesPasses() throws Exception {
+    void statusSuccessForAllResponsesPasses() throws Exception {
         sendRequestsToTargetServer(successStatus, successStatus, successStatus);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath());
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -58,7 +59,7 @@ public class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
     }
 
     @Test
-    public void statusSuccessForAllResponsesFails() throws Exception {
+    void statusSuccessForAllResponsesFails() throws Exception {
         sendRequestsToTargetServer(successStatus, successStatus, statusOfNotToMatchUrl);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath());
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -69,7 +70,7 @@ public class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
     }
 
     @Test
-    public void statusSuccessForFilteredResponsesFails() throws Exception {
+    void statusSuccessForFilteredResponsesFails() throws Exception {
         sendRequestsToTargetServer(successStatus, nonSuccessStatus, statusOfNotToMatchUrl);
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern));
@@ -83,7 +84,7 @@ public class EntriesAssertStatusSuccessRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
+    void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
         sendRequestsToTargetServer(successStatus, nonSuccessStatus, statusOfNotToMatchUrl);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPatternNotToMatchUrl));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);

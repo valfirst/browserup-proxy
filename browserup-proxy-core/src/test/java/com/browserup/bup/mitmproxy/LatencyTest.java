@@ -15,18 +15,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LatencyTest extends MockServerTest {
+class LatencyTest extends MockServerTest {
     private MitmProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testLatency() throws Exception {
+    void testLatency() throws Exception {
         String url = "/latency";
         stubFor(get(urlEqualTo(url)).willReturn(ok()));
 

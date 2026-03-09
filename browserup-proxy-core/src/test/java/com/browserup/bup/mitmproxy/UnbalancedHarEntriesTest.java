@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 /**
  * These tests use mocked server with long delay to verify behavior of 'unbalanced' har entries, where there might be request-only, response-only or HAR entry with both request and response, depending on when 'clean har' is called during request/response/reporting process.
  */
-public class UnbalancedHarEntriesTest extends MockServerTest {
+class UnbalancedHarEntriesTest extends MockServerTest {
     private static final HarResponse DEFAULT_HAR_RESPONSE = new HarResponse();
     private static final HarRequest DEFAULT_HAR_REQUEST = new HarRequest();
 
@@ -43,14 +43,14 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
     private MitmProxyServer proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testResponseOnlyHarEntryReceivedIfNoResponseYet() throws Exception {
+    void testResponseOnlyHarEntryReceivedIfNoResponseYet() throws Exception {
         //GIVEN
         String stubUrl = "/testResponseTimeoutCapturedInHar";
         int targetServerDelaySec = 5;
@@ -80,7 +80,7 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
     }
 
     @Test
-    public void testGetRequestOnlyEntryAndVerifyPopulatedEntry() throws Exception {
+    void testGetRequestOnlyEntryAndVerifyPopulatedEntry() throws Exception {
         //GIVEN
         String stubUrl = "/testResponseTimeoutCapturedInHar";
         int targetServerDelaySec = 5;
@@ -121,7 +121,7 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
     }
 
     @Test
-    public void testMultipleRequestsAndForSlowOneWeGetOnlyResponseOnlyEntry() throws Exception {
+    void testMultipleRequestsAndForSlowOneWeGetOnlyResponseOnlyEntry() throws Exception {
         //GIVEN
         String slowEndpointUrl = "/testSlowEndpoint";
         String fastEndpointUrl = "/testFastEndpoint.*";
@@ -184,7 +184,7 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
     }
 
     @Test
-    public void testMultipleRequestsAndAfterCleanHarWeGetOnlyOneResponseOnlyEntry() throws Exception {
+    void testMultipleRequestsAndAfterCleanHarWeGetOnlyOneResponseOnlyEntry() throws Exception {
         //GIVEN
         String slowEndpointUrl = "/testSlowEndpoint";
         String fastEndpointUrl = "/testFastEndpoint.*";
@@ -244,7 +244,7 @@ public class UnbalancedHarEntriesTest extends MockServerTest {
     }
 
     @Test
-    public void testSlowEndpointGetRequestOnlyEntryAndCleanHarAndVerifyResponseOnlyEntry() throws Exception {
+    void testSlowEndpointGetRequestOnlyEntryAndCleanHarAndVerifyResponseOnlyEntry() throws Exception {
         //GIVEN
         String stubUrl = "/testResponseTimeoutCapturedInHar";
         int targetServerDelaySec = 5;

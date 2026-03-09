@@ -23,22 +23,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.abort;
 
-public class BindAddressTest extends MockServerTest {
+class BindAddressTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @BeforeEach
-    public void setUp() {
+    protected void setUp() {
     }
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testClientBindAddress() throws Exception {
+    void testClientBindAddress() throws Exception {
         String stubUrl = "/clientbind";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
 
@@ -53,7 +53,7 @@ public class BindAddressTest extends MockServerTest {
     }
 
     @Test
-    public void testClientBindAddressCannotConnect() throws Exception {
+    void testClientBindAddressCannotConnect() throws Exception {
         String stubUrl = "/clientbind";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
 
@@ -77,7 +77,7 @@ public class BindAddressTest extends MockServerTest {
     }
 
     @Test
-    public void testServerBindAddress() throws Exception {
+    void testServerBindAddress() throws Exception {
         String stubUrl = "/serverbind";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
 
@@ -92,7 +92,7 @@ public class BindAddressTest extends MockServerTest {
     }
 
     @Test
-    public void testServerBindAddressCannotConnect() throws Exception {
+    void testServerBindAddressCannotConnect() throws Exception {
         // bind outgoing traffic to loopback. since loopback cannot reach external addresses, this should fail.
         proxy = new BrowserUpProxyServer();
         proxy.start(0, null, InetAddress.getLoopbackAddress());

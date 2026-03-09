@@ -24,18 +24,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AutoAuthTest extends MockServerTest {
+class AutoAuthTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testBasicAuthAddedToHttpRequest() throws IOException {
+    void testBasicAuthAddedToHttpRequest() throws IOException {
         // the base64-encoded rendering of "testUsername:testPassword" is dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==
         String stubUrl = "/basicAuthHttp";
 
@@ -57,7 +57,7 @@ public class AutoAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testBasicAuthAddedToHttpsRequest() throws IOException {
+    void testBasicAuthAddedToHttpsRequest() throws IOException {
         // the base64-encoded rendering of "testUsername:testPassword" is dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==
         String stubUrl = "/basicAuthHttp";
 
@@ -79,7 +79,7 @@ public class AutoAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testCanStopBasicAuth() throws IOException {
+    void testCanStopBasicAuth() throws IOException {
         // the base64-encoded rendering of "testUsername:testPassword" is dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==
         String stubUrl = "/basicAuthHttp";
 

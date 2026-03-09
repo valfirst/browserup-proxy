@@ -26,18 +26,18 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class BlocklistTest extends MockServerTest {
+class BlocklistTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testBlocklistedHttpRequestReturnsBlocklistStatusCode() throws IOException {
+    void testBlocklistedHttpRequestReturnsBlocklistStatusCode() throws IOException {
         proxy = new BrowserUpProxyServer();
         proxy.start();
 
@@ -54,7 +54,7 @@ public class BlocklistTest extends MockServerTest {
 
     @Disabled
     @Test
-    public void testBlocklistedHttpRequestNotRecordedToHar() throws IOException {
+    void testBlocklistedHttpRequestNotRecordedToHar() throws IOException {
         proxy = new BrowserUpProxyServer();
         proxy.start();
 
@@ -74,7 +74,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testBlocklistedHttpsRequestReturnsBlocklistStatusCode() throws IOException {
+    void testBlocklistedHttpsRequestReturnsBlocklistStatusCode() throws IOException {
         // need to set up a mock server to handle the CONNECT, since that is not blocklisted
         String stubUrl = "/thisrequestshouldnotoccur";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
@@ -95,7 +95,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanBlocklistSingleHttpResource() throws IOException {
+    void testCanBlocklistSingleHttpResource() throws IOException {
         String stubUrl1 = "/blocklistedresource";
         stubFor(get(urlEqualTo(stubUrl1)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
 
@@ -126,7 +126,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanBlocklistSingleHttpsResource() throws IOException {
+    void testCanBlocklistSingleHttpsResource() throws IOException {
         String stubUrl1 = "/blocklistedresource";
         stubFor(get(urlEqualTo(stubUrl1)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
 
@@ -158,7 +158,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanBlocklistConnectExplicitly() throws IOException {
+    void testCanBlocklistConnectExplicitly() throws IOException {
         String stubUrl1 = "/blocklistconnect";
         stubFor(get(urlEqualTo(stubUrl1)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
 
@@ -180,7 +180,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testBlocklistDoesNotApplyToCONNECT() throws IOException {
+    void testBlocklistDoesNotApplyToCONNECT() throws IOException {
         String stubUrl = "/connectNotBlocklisted";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
 

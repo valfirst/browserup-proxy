@@ -21,7 +21,7 @@ import java.util.Arrays;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ChainedProxyAuthTest extends MockServerTest {
+class ChainedProxyAuthTest extends MockServerTest {
     private MitmProxyServer proxy;
 
     private MitmProxyServer upstreamMitmProxy;
@@ -29,7 +29,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     private HttpProxyServer upstreamProxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
@@ -42,7 +42,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testUpstreamProxyIsDown() throws Exception {
+    void testUpstreamProxyIsDown() throws Exception {
         upstreamProxy = DefaultHttpProxyServer.bootstrap()
                 .withPort(0)
                 .start();
@@ -65,7 +65,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testMitmproxyUsesUpstreamProxy() throws Exception {
+    void testMitmproxyUsesUpstreamProxy() throws Exception {
         upstreamProxy = DefaultHttpProxyServer.bootstrap()
                 .withPort(0)
                 .start();
@@ -87,7 +87,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testUpstreamAndDownstreamProxiesGetRequestIfNonProxyHostDoNotMatch() throws Exception {
+    void testUpstreamAndDownstreamProxiesGetRequestIfNonProxyHostDoNotMatch() throws Exception {
         upstreamMitmProxy = new MitmProxyServer();
         upstreamMitmProxy.setTrustAllServers(true);
         upstreamMitmProxy.start();
@@ -121,7 +121,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
     @Test
     @Disabled
-    public void testUpstreamProxyDoesNotGetRequestIfNonProxyHostMatch() throws Exception {
+    void testUpstreamProxyDoesNotGetRequestIfNonProxyHostMatch() throws Exception {
         String stubUrl = "/proxyauth";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
 
@@ -152,7 +152,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testMitmproxyUsesHttpsUpstreamProxy() throws Exception {
+    void testMitmproxyUsesHttpsUpstreamProxy() throws Exception {
         upstreamMitmProxy = new MitmProxyServer();
         upstreamMitmProxy.setTrustAllServers(true);
         upstreamMitmProxy.start();
@@ -176,7 +176,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
     }
 
     @Test
-    public void testAutoProxyAuthSuccessful() throws Exception {
+    void testAutoProxyAuthSuccessful() throws Exception {
         String proxyUser = "proxyuser";
         String proxyPassword = "proxypassword";
 
@@ -214,7 +214,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
     @Disabled("To investigate: whether HTTP status should be 407 or 502")
     @Test
-    public void testAutoProxyAuthFailure() throws Exception {
+    void testAutoProxyAuthFailure() throws Exception {
         String proxyUser = "proxyuser";
         String proxyPassword = "proxypassword";
 

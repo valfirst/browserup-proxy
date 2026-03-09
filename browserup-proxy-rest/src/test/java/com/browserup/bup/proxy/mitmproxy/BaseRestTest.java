@@ -2,7 +2,9 @@ package com.browserup.bup.proxy.mitmproxy;
 
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class BaseRestTest extends WithRunningProxyRestTest {
     protected static final int TARGET_SERVER_RESPONSE_DELAY = 500;

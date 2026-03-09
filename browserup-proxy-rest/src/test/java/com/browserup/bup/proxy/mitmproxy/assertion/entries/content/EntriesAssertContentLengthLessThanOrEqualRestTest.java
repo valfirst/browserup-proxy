@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntriesAssertContentRestTest {
+class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntriesAssertContentRestTest {
     protected static final int FIRST_CONTENT_SIZE = FIRST_RESPONSE.getBytes().length;
     protected static final int SECOND_CONTENT_SIZE = SECOND_RESPONSE.getBytes().length;
 
@@ -20,7 +20,7 @@ public class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntri
     }
 
     @Test
-    public void urlFilterMatchesBothAndContentLengthLessOrEqualPasses() throws Exception {
+    void urlFilterMatchesBothAndContentLengthLessOrEqualPasses() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -32,7 +32,7 @@ public class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntri
     }
 
     @Test
-    public void urlFilterMatchesBothAndSomeContentLengthExceedsForSomeFails() throws Exception {
+    void urlFilterMatchesBothAndSomeContentLengthExceedsForSomeFails() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -50,7 +50,7 @@ public class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntri
     }
 
     @Test
-    public void urlFilterMatchesFirstAndFirstContentLengthExceedsFails() throws Exception {
+    void urlFilterMatchesFirstAndFirstContentLengthExceedsFails() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -67,7 +67,7 @@ public class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntri
     }
 
     @Test
-    public void urlFilterMatchesNonePasses() throws Exception {
+    void urlFilterMatchesNonePasses() throws Exception {
         sendRequestsToTargetServer(FIRST_RESPONSE, SECOND_RESPONSE);
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -79,7 +79,7 @@ public class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntri
     }
 
     @Test
-    public void getBadRequestIfLengthNotProvided() throws Exception {
+    void getBadRequestIfLengthNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
@@ -90,7 +90,7 @@ public class EntriesAssertContentLengthLessThanOrEqualRestTest extends BaseEntri
     }
 
     @Test
-    public void getBadRequestIfLengthNotValid() throws Exception {
+    void getBadRequestIfLengthNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),

@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Disabled
-public class FilterTest extends ProxyResourceTest {
+class FilterTest extends ProxyResourceTest {
 
     private String readBody(HttpURLConnection conn) throws Exception {
         InputStream is;
@@ -47,7 +47,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testCanModifyRequestHeadersWithJavascript() throws Exception {
+    void testCanModifyRequestHeadersWithJavascript() throws Exception {
         final String requestFilterJavaScript =
                 "request.headers().remove('User-Agent');\n" +
                 "request.headers().add('User-Agent', 'My-Custom-User-Agent-String 1.0');\n";
@@ -69,7 +69,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testCanModifyRequestContentsWithJavascript() throws Exception {
+    void testCanModifyRequestContentsWithJavascript() throws Exception {
         final String requestFilterJavaScript =
                 "if (request.getUri().endsWith('/modifyrequest') && contents.isText()) {\n" +
                 "    if (contents.getTextContents() == 'original request text') {\n" +
@@ -97,7 +97,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testCanModifyResponseWithJavascript() throws Exception {
+    void testCanModifyResponseWithJavascript() throws Exception {
         final String responseFilterJavaScript =
                 "if (contents.isText()) {\n" +
                 "    if (contents.getTextContents() == 'original response text') {\n" +
@@ -121,7 +121,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testCanAccessOriginalRequestWithJavascript() throws Exception {
+    void testCanAccessOriginalRequestWithJavascript() throws Exception {
         final String requestFilterJavaScript =
                 "if (request.getUri().endsWith('/originalrequest')) {\n" +
                 "    request.setUri(request.getUri().replaceAll('originalrequest', 'modifiedrequest'));\n" +
@@ -148,7 +148,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testRequestFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
+    void testRequestFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
         final String requestFilterJavaScript = "this javascript won\'t compile!";
 
         Request mockRestAddReqFilterRequest = createMockRestRequestWithEntity(requestFilterJavaScript);
@@ -172,7 +172,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testResponseFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
+    void testResponseFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
         final String responseFilterJavaScript = "this javascript won\'t compile!";
 
         Request mockRestAddRespFilterRequest = createMockRestRequestWithEntity(responseFilterJavaScript);
@@ -196,7 +196,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testCanShortCircuitRequestWithJavascript() throws Exception {
+    void testCanShortCircuitRequestWithJavascript() throws Exception {
         double javaVersion = Double.parseDouble(System.getProperty("java.specification.version"));
         assumeTrue(javaVersion >= 1.8d, "Skipping Nashorn-dependent test on Java 1.7");
 

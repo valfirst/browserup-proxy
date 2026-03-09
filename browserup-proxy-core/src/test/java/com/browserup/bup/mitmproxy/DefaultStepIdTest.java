@@ -18,9 +18,12 @@ import java.util.Optional;
 import static com.browserup.bup.proxy.test.util.NewProxyServerTestUtil.toStringAndClose;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DefaultStepIdTest extends MockServerTest {
+class DefaultStepIdTest extends MockServerTest {
     private static final String SUCCESSFUL_RESPONSE_BODY = "success";
     private static final String FIRST_URL = "first-url";
     private static final String SECOND_URL = "second-url";
@@ -32,7 +35,7 @@ public class DefaultStepIdTest extends MockServerTest {
     private CloseableHttpClient clientToProxy;
 
     @BeforeEach
-    public void startUp() {
+    protected void startUp() {
         proxy = new MitmProxyServer();
         proxy.start();
 
@@ -40,14 +43,14 @@ public class DefaultStepIdTest extends MockServerTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testDefaultStepIdIfNoCurrentPage() throws Exception {
+    void testDefaultStepIdIfNoCurrentPage() throws Exception {
         proxy.newHar(INITIAL_STEP_NAME);
 
         Thread.sleep(2000);
@@ -93,7 +96,7 @@ public class DefaultStepIdTest extends MockServerTest {
     }
 
     @Test
-    public void testHarIsCreatedAfterFirstRequestIfNoNewHarCalled() throws Exception {
+    void testHarIsCreatedAfterFirstRequestIfNoNewHarCalled() throws Exception {
         mockResponseForPath(FIRST_URL);
 
         assertNull(proxy.getHar(), "Expected null har before any requests sent");
@@ -107,7 +110,7 @@ public class DefaultStepIdTest extends MockServerTest {
     }
 
     @Test
-    public void testEntryCapturedIfNoNewHarCalled() throws Exception {
+    void testEntryCapturedIfNoNewHarCalled() throws Exception {
         mockResponseForPath(FIRST_URL);
 
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;
@@ -120,7 +123,7 @@ public class DefaultStepIdTest extends MockServerTest {
     }
 
     @Test
-    public void testEntryWithDefaultPageRefRemovedAfterNewHarCreated() throws Exception {
+    void testEntryWithDefaultPageRefRemovedAfterNewHarCreated() throws Exception {
         mockResponseForPath(FIRST_URL);
 
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;

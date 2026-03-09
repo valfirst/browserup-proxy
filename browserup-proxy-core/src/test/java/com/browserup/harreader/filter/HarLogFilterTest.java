@@ -16,9 +16,9 @@ import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarLog;
 import de.sstoehr.harreader.model.HarRequest;
 
-public class HarLogFilterTest {
+class HarLogFilterTest {
     @Test
-    public void testFindEntries() {
+    void testFindEntries() {
         Pattern urlPattern = Pattern.compile("http://abc\\.com\\?param=\\d?");
         HarLog log = new HarLog();
         int entriesNumber = 10;
@@ -35,7 +35,7 @@ public class HarLogFilterTest {
     }
 
     @Test
-    public void testFindEntryReturnsEmpty() {
+    void testFindEntryReturnsEmpty() {
         String url = "http://abc.com";
         Pattern urlPattern = Pattern.compile("^doesnotmatch?");
 
@@ -52,7 +52,7 @@ public class HarLogFilterTest {
     }
 
     @Test
-    public void testFindEntryReturnsMostRecentEntryFilteredByUrl() {
+    void testFindEntryReturnsMostRecentEntryFilteredByUrl() {
         String url = "http://abc.com";
         Date firstDate = Date.from(Instant.ofEpochSecond(1000));
         Date secondDate = Date.from(Instant.ofEpochSecond(2000));
@@ -65,7 +65,7 @@ public class HarLogFilterTest {
     }
 
     @Test
-    public void testFindEntryReturnsMostRecentEntry() {
+    void testFindEntryReturnsMostRecentEntry() {
         String url = "http://abc.com";
         Date firstDate = Date.from(Instant.ofEpochSecond(1000));
         Date secondDate = Date.from(Instant.ofEpochSecond(2000));

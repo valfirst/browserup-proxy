@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 import static com.browserup.bup.proxy.test.util.NewProxyServerTestUtil.toStringAndClose;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DefaultHarPageTest extends MockServerTest {
+class DefaultHarPageTest extends MockServerTest {
     private static final String SUCCESSFUL_RESPONSE_BODY = "success";
     private static final String FIRST_URL = "first-url";
 
@@ -23,7 +23,7 @@ public class DefaultHarPageTest extends MockServerTest {
     private CloseableHttpClient clientToProxy;
 
     @BeforeEach
-    public void startUp() {
+    protected void startUp() {
         proxy = new MitmProxyServer();
         proxy.setTrustAllServers(true);
         proxy.start();
@@ -32,14 +32,14 @@ public class DefaultHarPageTest extends MockServerTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void defaultPageIsCreatedForSuccessfulRequest() throws Exception {
+    void defaultPageIsCreatedForSuccessfulRequest() throws Exception {
         mockResponseForPath(FIRST_URL);
 
         String firstUrl = "http://localhost:" + mockServerPort + "/" + FIRST_URL;
@@ -51,7 +51,7 @@ public class DefaultHarPageTest extends MockServerTest {
     }
 
     @Test
-    public void defaultPageIsCreatedForHarEntryIfConnectionFailed() throws Exception {
+    void defaultPageIsCreatedForHarEntryIfConnectionFailed() throws Exception {
         mockResponseForPath(FIRST_URL);
         int nonResponsivePort = mockServerPort + 1;
 

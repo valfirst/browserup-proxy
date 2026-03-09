@@ -14,10 +14,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ContentDoesNotContainTest extends FilteredContentBaseTest {
+class ContentDoesNotContainTest extends FilteredContentBaseTest {
 
     @Test
-    public void filterMatchesBothRequestsAndBothContentDoNotContainTextPasses() throws IOException {
+    void filterMatchesBothRequestsAndBothContentDoNotContainTextPasses() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_NOT_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentDoesNotContain(URL_PATTERN_TO_MATCH_BOTH, BODY_PART);
@@ -27,7 +27,7 @@ public class ContentDoesNotContainTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesFirstRequestAndOnlySecondContentDoesNotContainTextFails() throws IOException {
+    void filterMatchesFirstRequestAndOnlySecondContentDoesNotContainTextFails() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_NOT_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentDoesNotContain(URL_PATTERN_TO_MATCH_FIRST, BODY_PART);
@@ -41,7 +41,7 @@ public class ContentDoesNotContainTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeContentContainTextFails_1() throws IOException {
+    void filterMatchesBothRequestsAndSomeContentContainTextFails_1() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentDoesNotContain(URL_PATTERN_TO_MATCH_BOTH, BODY_PART);
@@ -55,7 +55,7 @@ public class ContentDoesNotContainTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeContentContainTextFails_2() throws IOException {
+    void filterMatchesBothRequestsAndSomeContentContainTextFails_2() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_NOT_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentDoesNotContain(URL_PATTERN_TO_MATCH_BOTH, BODY_PART);

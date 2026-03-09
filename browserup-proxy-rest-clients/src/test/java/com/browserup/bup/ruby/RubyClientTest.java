@@ -16,7 +16,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
-public class RubyClientTest extends WithRunningProxyRestTest {
+class RubyClientTest extends WithRunningProxyRestTest {
     private static final Logger LOG = LoggerFactory.getLogger(RubyClientTest.class);
 
     private GenericContainer<?> container;
@@ -27,14 +27,14 @@ public class RubyClientTest extends WithRunningProxyRestTest {
     }
 
     @AfterEach
-    public void shutDown() {
+    void shutDown() {
         if (container != null) {
             container.stop();
         }
     }
 
     @Test
-    public void connectToProxy() throws Exception {
+    void connectToProxy() throws Exception {
         String urlToCatch = "test";
         String urlNotToCatch = "missing";
         String responseBody = "success";
@@ -70,7 +70,7 @@ public class RubyClientTest extends WithRunningProxyRestTest {
     }
 
     @Test
-    public void failsToConnectToProxy() throws Exception {
+    void failsToConnectToProxy() throws Exception {
         String urlToCatch = "test";
         String urlNotToCatch = "missing";
         String responseBody = "success";

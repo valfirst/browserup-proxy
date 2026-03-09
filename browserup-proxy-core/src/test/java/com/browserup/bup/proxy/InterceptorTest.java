@@ -57,18 +57,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InterceptorTest extends MockServerTest {
+class InterceptorTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testCanShortCircuitResponse() throws IOException {
+    void testCanShortCircuitResponse() throws IOException {
         String url1 = "/regular200";
         stubFor(get(urlMatching(url1)).willReturn(ok().withBody("success")));
 
@@ -134,7 +134,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testCanModifyResponseBodyLarger() throws IOException {
+    void testCanModifyResponseBodyLarger() throws IOException {
         final String originalText = "The quick brown fox jumps over the lazy dog";
         final String newText = "The quick brown frog jumps over the lazy aardvark";
 
@@ -142,7 +142,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testCanModifyResponseBodySmaller() throws IOException {
+    void testCanModifyResponseBodySmaller() throws IOException {
         final String originalText = "The quick brown fox jumps over the lazy dog";
         final String newText = "The quick brown fox jumped.";
 
@@ -150,7 +150,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testCanModifyRequest() throws IOException {
+    void testCanModifyRequest() throws IOException {
         String url = "/modifyrequest";
         stubFor(
                 get(urlEqualTo(url)).
@@ -190,7 +190,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testRequestFilterCanModifyHttpRequestBody() throws IOException {
+    void testRequestFilterCanModifyHttpRequestBody() throws IOException {
         final String originalText = "original body";
         final String newText = "modified body";
 
@@ -226,7 +226,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testRequestFilterCanModifyHttpsRequestBody() throws IOException {
+    void testRequestFilterCanModifyHttpsRequestBody() throws IOException {
         final String originalText = "original body";
         final String newText = "modified body";
 
@@ -263,7 +263,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testResponseFilterCanModifyBinaryContents() throws IOException {
+    void testResponseFilterCanModifyBinaryContents() throws IOException {
         final byte[] originalBytes = new byte[]{1, 2, 3, 4, 5};
         final byte[] newBytes = new byte[]{20, 30, 40, 50, 60};
 
@@ -298,7 +298,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testResponseFilterCanModifyHttpTextContents() throws IOException {
+    void testResponseFilterCanModifyHttpTextContents() throws IOException {
         final String originalText = "The quick brown fox jumps over the lazy dog";
         final String newText = "The quick brown fox jumped.";
 
@@ -334,7 +334,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testResponseFilterCanModifyHttpsTextContents() throws IOException {
+    void testResponseFilterCanModifyHttpsTextContents() throws IOException {
         final String originalText = "The quick brown fox jumps over the lazy dog";
         final String newText = "The quick brown fox jumped.";
 
@@ -371,7 +371,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testResponseInterceptorWithoutBody() throws IOException {
+    void testResponseInterceptorWithoutBody() throws IOException {
         String url = "/interceptortest";
         stubFor(
                 head(urlMatching(url)).
@@ -396,7 +396,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testResponseFilterOriginalRequestNotModified() throws IOException {
+    void testResponseFilterOriginalRequestNotModified() throws IOException {
         String url = "/modifiedendpoint";
         stubFor(get(urlMatching(url)).willReturn(ok().withBody("success")));
 
@@ -427,7 +427,7 @@ public class InterceptorTest extends MockServerTest {
 
     @Disabled
     @Test
-    public void testMessageContentsNotAvailableWithoutAggregation() throws IOException {
+    void testMessageContentsNotAvailableWithoutAggregation() throws IOException {
         String url = "/endpoint";
         stubFor(get(urlMatching(url)).willReturn(ok().withBody("success")));
 
@@ -463,7 +463,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testMitmDisabledHttpsRequestFilterNotAvailable() throws IOException {
+    void testMitmDisabledHttpsRequestFilterNotAvailable() throws IOException {
         String url = "/mitmdisabled";
         stubFor(get(urlMatching(url)).willReturn(ok().withBody("success")));
 
@@ -497,7 +497,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testMitmDisabledHttpsResponseFilterNotAvailable() throws IOException {
+    void testMitmDisabledHttpsResponseFilterNotAvailable() throws IOException {
         String url = "/mitmdisabled";
         stubFor(get(urlMatching(url)).willReturn(ok().withBody("success")));
 
@@ -577,7 +577,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testCanBypassFilterForRequest() throws IOException, InterruptedException {
+    void testCanBypassFilterForRequest() throws IOException, InterruptedException {
         String url = "/bypassfilter";
         stubFor(get(urlMatching(url)).willReturn(ok().withBody("success")));
 
@@ -636,7 +636,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpResponseFilterMessageInfoPopulated() throws IOException {
+    void testHttpResponseFilterMessageInfoPopulated() throws IOException {
         String urlPattern = "/httpmessageinfopopulated.*";
         stubFor(
                 get(urlMatching(urlPattern)).
@@ -697,7 +697,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpResponseFilterUrlReflectsModifications() throws IOException {
+    void testHttpResponseFilterUrlReflectsModifications() throws IOException {
         String url = "/urlreflectsmodifications";
         stubFor(get(urlEqualTo(url)).willReturn(ok().withBody("success")));
 
@@ -748,7 +748,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpsResponseFilterUrlReflectsModifications() throws IOException {
+    void testHttpsResponseFilterUrlReflectsModifications() throws IOException {
         String url = "/urlreflectsmodifications";
         stubFor(get(urlEqualTo(url)).willReturn(ok().withBody("success")));
 
@@ -800,7 +800,7 @@ public class InterceptorTest extends MockServerTest {
     }
 
     @Test
-    public void testHttpsResponseFilterMessageInfoPopulated() throws IOException {
+    void testHttpsResponseFilterMessageInfoPopulated() throws IOException {
         String urlPattern = "/httpmessageinfopopulated.*";
         stubFor(
                 get(urlMatching(urlPattern)).

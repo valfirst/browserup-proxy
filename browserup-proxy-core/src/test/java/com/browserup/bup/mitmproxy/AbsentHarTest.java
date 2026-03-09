@@ -24,7 +24,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AbsentHarTest extends MockServerTest {
+class AbsentHarTest extends MockServerTest {
 
     private static final String SUCCESSFUL_RESPONSE_BODY = "success";
     private static final String FIRST_URL = "first-url";
@@ -37,7 +37,7 @@ public class AbsentHarTest extends MockServerTest {
     private CloseableHttpClient clientToProxy;
 
     @BeforeEach
-    public void startUp() {
+    protected void startUp() {
         proxy = new MitmProxyServer();
         proxy.setTrustAllServers(true);
         proxy.start();
@@ -46,14 +46,14 @@ public class AbsentHarTest extends MockServerTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void noHarAvailableCallNewPageCheckHarCreatedAndRequestsLogged() throws IOException, InterruptedException {
+    void noHarAvailableCallNewPageCheckHarCreatedAndRequestsLogged() throws IOException, InterruptedException {
         proxy.newPage(INITIAL_STEP_NAME, INITIAL_STEP_NAME);
 
         mockResponseForPath(FIRST_URL);
@@ -91,7 +91,7 @@ public class AbsentHarTest extends MockServerTest {
     }
 
     @Test
-    public void noHarAvailableCallEndPage() {
+    void noHarAvailableCallEndPage() {
         proxy.endPage();
 
         //No exception thrown

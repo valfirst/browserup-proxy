@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AllUrlResponsesTimeWithinTest extends BaseAssertionsTest {
+class AllUrlResponsesTimeWithinTest extends BaseAssertionsTest {
 
     @Test
-    public void allUrlResponsesTimeExceeds() throws IOException {
+    void allUrlResponsesTimeExceeds() throws IOException {
         int numberOfCalls = 3;
         mockResponsesWithDelay(1, numberOfCalls, DEFAULT_RESPONSE_DELAY);
 
@@ -37,7 +37,7 @@ public class AllUrlResponsesTimeWithinTest extends BaseAssertionsTest {
     }
 
     @Test
-    public void someUrlResponsesTimeExceeds() throws IOException
+    void someUrlResponsesTimeExceeds() throws IOException
     {
         mockResponsesWithDelay(1, 2, FAST_RESPONSE_DELAY);
         mockResponsesWithDelay(3, 4, DEFAULT_RESPONSE_DELAY);

@@ -16,10 +16,10 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HeaderMatchesTest extends FilteredHeaderBaseTest {
+class HeaderMatchesTest extends FilteredHeaderBaseTest {
 
     @Test
-    public void urlFilterMatchesBothAndHeaderNameFilterMatchesBothAndHeaderValueFilterMatchesBothPasses() throws
+    void urlFilterMatchesBothAndHeaderNameFilterMatchesBothAndHeaderValueFilterMatchesBothPasses() throws
             IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
@@ -30,7 +30,7 @@ public class HeaderMatchesTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void urlFilterMatchesBothAndAnyHeaderNameIsUsedAndHeaderValueFilterMatchesFirstFails() throws IOException {
+    void urlFilterMatchesBothAndAnyHeaderNameIsUsedAndHeaderValueFilterMatchesFirstFails() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderMatches(URL_PATTERN_TO_MATCH_BOTH,
@@ -53,7 +53,7 @@ public class HeaderMatchesTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void urlFilterMatchesFirstAndAnyHeaderNameIsUsedAndHeaderValueFilterMatchesFirstFails() throws IOException {
+    void urlFilterMatchesFirstAndAnyHeaderNameIsUsedAndHeaderValueFilterMatchesFirstFails() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderMatches(URL_PATTERN_TO_MATCH_FIRST,
@@ -71,7 +71,7 @@ public class HeaderMatchesTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void urlFilterMatchesFirstAndAnyHeaderNameIsUsedAndHeaderValueFilterMatchesAllPasses() throws IOException {
+    void urlFilterMatchesFirstAndAnyHeaderNameIsUsedAndHeaderValueFilterMatchesAllPasses() throws IOException {
         Pattern headerValuePattern = Pattern.compile(".*");
 
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
@@ -82,7 +82,7 @@ public class HeaderMatchesTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void urlFilterMatchesNothingAndHeaderNameFilterMatchesFirstAndHeaderValueFilterMatchesFirstPasses() throws
+    void urlFilterMatchesNothingAndHeaderNameFilterMatchesFirstAndHeaderValueFilterMatchesFirstPasses() throws
             IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
@@ -93,7 +93,7 @@ public class HeaderMatchesTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void urlFilterMatchesFirstAndHeaderNameFilterMatchesFirstAndHeaderValueFilterMatchesFirstPasses() throws
+    void urlFilterMatchesFirstAndHeaderNameFilterMatchesFirstAndHeaderValueFilterMatchesFirstPasses() throws
             IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
@@ -104,7 +104,7 @@ public class HeaderMatchesTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void urlFilterMatchesFirstAndHeaderNameFilterMatchesFirstAndHeaderValueFilterMatchesSecondFails() throws
+    void urlFilterMatchesFirstAndHeaderNameFilterMatchesFirstAndHeaderValueFilterMatchesSecondFails() throws
             IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
@@ -120,7 +120,7 @@ public class HeaderMatchesTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void urlFilterMatchesFirstAndHeaderNameFilterMatchesNothingAndHeaderValueFilterMatchesSecondPasses() throws
+    void urlFilterMatchesFirstAndHeaderNameFilterMatchesNothingAndHeaderValueFilterMatchesSecondPasses() throws
             IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
