@@ -20,6 +20,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.abort;
 
 public class BindAddressTest extends MockServerTest {
@@ -51,7 +52,7 @@ public class BindAddressTest extends MockServerTest {
         }
     }
 
-    @Test(expected = HttpHostConnectException.class)
+    @Test
     public void testClientBindAddressCannotConnect() throws Exception {
         String stubUrl = "/clientbind";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
@@ -70,7 +71,8 @@ public class BindAddressTest extends MockServerTest {
         proxy.start(0, localHostAddr);
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
-            httpClient.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/clientbind"));
+            assertThrows(HttpHostConnectException.class, () ->
+                    httpClient.execute(new HttpGet("http://127.0.0.1:" + mockServerPort + "/clientbind")));
         }
     }
 

@@ -1,8 +1,8 @@
 package com.browserup.bup.proxy.test.util;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.junit.Before;
+import org.junit.Rule;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -13,14 +13,12 @@ public class MockServerTest {
     protected int mockServerPort;
     protected int mockServerHttpsPort;
 
-    @RegisterExtension
-    WireMockExtension wireMockRule = WireMockExtension.newInstance()
-            .options(options().port(0).httpsPort(0))
-            .build();
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(options().port(0).httpsPort(0));
 
-    @BeforeEach
+    @Before
     public void setUpMockServer() {
-        mockServerPort = wireMockRule.getPort();
-        mockServerHttpsPort = wireMockRule.getHttpsPort();
+        mockServerPort = wireMockRule.port();
+        mockServerHttpsPort = wireMockRule.httpsPort();
     }
 }
