@@ -2,20 +2,15 @@ package com.browserup.bup.proxy;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.servlet.GuiceServletContextListener;
-import com.google.sitebricks.SitebricksModule;
 import com.browserup.bup.exception.JettyException;
-import com.browserup.bup.proxy.bricks.ProxyResource;
 import com.browserup.bup.proxy.guice.ConfigModule;
 import com.browserup.bup.proxy.guice.JettyModule;
 import com.browserup.bup.util.BrowserUpProxyUtil;
 import com.browserup.bup.util.DeleteDirectoryTask;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletContextEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -44,22 +39,11 @@ public class Main {
             System.exit(0);
         }
 
-        final Injector injector = Guice.createInjector(new ConfigModule(args), new JettyModule(), new SitebricksModule() {
-            @Override
-            protected void configureSitebricks() {
-                scan(ProxyResource.class.getPackage());
-            }
-        });
+        final Injector injector = Guice.createInjector(new ConfigModule(args), new JettyModule());
 
         LogHolder.log.info("Starting BrowserUp Proxy version {}", BrowserUpProxyUtil.getVersionString());
 
         Server server = injector.getInstance(Server.class);
-        GuiceServletContextListener gscl = new GuiceServletContextListener() {
-            @Override
-            protected Injector getInjector() {
-                return injector;
-            }
-        };
         try {
             server.start();
         } catch (Exception e) {
@@ -67,9 +51,6 @@ public class Main {
 
             throw new JettyException("Unable to start Jetty server", e);
         }
-
-        ServletContextHandler context = (ServletContextHandler) server.getHandler();
-        gscl.contextInitialized(new ServletContextEvent(context.getServletContext()));
 
         try {
             server.join();

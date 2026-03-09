@@ -2,6 +2,18 @@
 
 # [Unreleased - 3.2.3-SNAPSHOT]
 
+## Changed
+### Dependencies
+- Bump Jetty from `9.4.58.v20250814` to `11.0.26` (https://github.com/valfirst/browserup-proxy/pull/604)
+- Bump Guice from `6.0.0` to `7.0.0` (https://github.com/valfirst/browserup-proxy/pull/604)
+- Bump Jersey from `2.46` to `3.1.3` (https://github.com/valfirst/browserup-proxy/pull/604)
+- Switch Swagger artifacts to Jakarta variants (https://github.com/valfirst/browserup-proxy/pull/604)
+- Replace `com.github.tomakehurst:wiremock-jre8:2.35.0` with `org.wiremock:wiremock:3.3.1` (https://github.com/valfirst/browserup-proxy/pull/604)
+
+## Removed
+- Remove Sitebricks dependency (no Jakarta support) (https://github.com/valfirst/browserup-proxy/pull/604)
+- Remove `guice-servlet` dependency (https://github.com/valfirst/browserup-proxy/pull/604)
+
 # [3.2.2]
 ## Fixed
 - (Fixes https://github.com/valfirst/browserup-proxy/issues/561) MITM proxy: Add Authority Key Identifier to generated server certificates (https://github.com/valfirst/browserup-proxy/pull/562)

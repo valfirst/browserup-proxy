@@ -6,11 +6,9 @@ import com.browserup.bup.rest.filter.LoggingFilter;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
-import com.google.inject.servlet.GuiceFilter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import java.util.EnumSet;
 
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import org.eclipse.jetty.server.Server;
@@ -24,11 +22,10 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import javax.servlet.DispatcherType;
-
 public class JettyServerProvider implements Provider<Server> {
     public static final String OPENAPI_CONFIG_YAML = "openapi-config.yaml";
     public static final String OPENAPI_PACKAGE = "com.browserup.bup.rest.resource";
+    public static final String PROXY_RESOURCE_PACKAGE = "com.browserup.bup.proxy.bricks";
 
     private Server server;
 
@@ -38,7 +35,7 @@ public class JettyServerProvider implements Provider<Server> {
         openApiResource.setConfigLocation(OPENAPI_CONFIG_YAML);
 
         ResourceConfig resourceConfig = new ResourceConfig();
-        resourceConfig.packages(OPENAPI_PACKAGE);
+        resourceConfig.packages(OPENAPI_PACKAGE, PROXY_RESOURCE_PACKAGE);
         resourceConfig.register(openApiResource);
         resourceConfig.register(proxyManagerToHkBinder(proxyManager));
         resourceConfig.register(JacksonFeature.class);
@@ -51,7 +48,6 @@ public class JettyServerProvider implements Provider<Server> {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
 
-        context.addFilter(GuiceFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));;
         context.addServlet(DefaultServlet.class, "/");
         context.addServlet(new ServletHolder(new ServletContainer(resourceConfig)), "/*");
 

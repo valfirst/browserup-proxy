@@ -52,12 +52,6 @@ dependencies {
 
     implementation "com.google.guava:guava:${guavaVersion}"
     implementation "com.google.inject:guice:${guiceVersion}"
-    implementation "com.google.inject.extensions:guice-servlet:${guiceVersion}"
-    implementation('com.google.sitebricks:sitebricks:0.8.11') {
-        exclude(group: 'org.jboss.netty', module: 'netty')
-        exclude(module: 'validation-api')
-        exclude(group: 'com.google.inject.extensions', module: 'guice-multibindings')
-    }
     implementation "io.netty:netty-all:${nettyVersion}"
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
@@ -69,11 +63,11 @@ dependencies {
     implementation "org.glassfish.jersey.inject:jersey-hk2:${jerseyVersion}"
     implementation "org.glassfish.jersey.ext:jersey-bean-validation:${jerseyVersion}"
 
-    implementation "io.swagger.core.v3:swagger-jaxrs2:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-core:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-integration:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-jaxrs2-servlet-initializer:${swaggerVersion}"
-    implementation "io.swagger.core.v3:swagger-models:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-jaxrs2-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-core-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-integration-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-jaxrs2-servlet-initializer-jakarta:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-models-jakarta:${swaggerVersion}"
 
     testImplementation project(':browserup-proxy-mitm')
 
@@ -90,7 +84,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.22.0'
     testImplementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
     testImplementation 'org.awaitility:awaitility:4.3.0'
-    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
+    testImplementation 'org.wiremock:wiremock:3.3.1'
 }
 
 tasks.register('createVersionProperties') {
