@@ -6,15 +6,15 @@ import java.util.regex.Pattern;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.assertion.field.header.HeaderBaseTest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HeaderMatchesTest extends HeaderBaseTest {
+class HeaderMatchesTest extends HeaderBaseTest {
 
     @Test
-    public void anyNameAndMatchingValue() throws IOException {
+    void anyNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),
@@ -24,18 +24,18 @@ public class HeaderMatchesTest extends HeaderBaseTest {
     }
 
     @Test
-    public void anyNameAndNotMatchingValue() throws IOException {
+    void anyNameAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),
                 Pattern.compile(".*" + NOT_MATCHING_HEADER_VALUE + ".*"));
 
-        assertFalse("Expected headers not to match value pattern", result.getPassed());
-        assertTrue("Expected headers not to match value pattern", result.getFailed());
+        assertFalse(result.getPassed(), "Expected headers not to match value pattern");
+        assertTrue(result.getFailed(), "Expected headers not to match value pattern");
     }
 
     @Test
-    public void emptyNameProvidedAndMatchingValue() throws IOException {
+    void emptyNameProvidedAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),
@@ -45,7 +45,7 @@ public class HeaderMatchesTest extends HeaderBaseTest {
     }
 
     @Test
-    public void matchingNameAndMatchingValue() throws IOException {
+    void matchingNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),
@@ -55,7 +55,7 @@ public class HeaderMatchesTest extends HeaderBaseTest {
     }
 
     @Test
-    public void matchingNameAndNotMatchingValue() throws IOException {
+    void matchingNameAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),
@@ -65,7 +65,7 @@ public class HeaderMatchesTest extends HeaderBaseTest {
     }
 
     @Test
-    public void notMatchingNameAndMatchingValue() throws IOException {
+    void notMatchingNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),
@@ -75,7 +75,7 @@ public class HeaderMatchesTest extends HeaderBaseTest {
     }
 
     @Test
-    public void notMatchingNameAndNotMatchingValue() throws IOException {
+    void notMatchingNameAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderMatches(Pattern.compile(".*" + URL_PATH + ".*"),

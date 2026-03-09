@@ -3,10 +3,10 @@ package com.browserup.bup.proxy.mitmproxy.assertion.entries.content;
 import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import java.net.HttpURLConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class BaseEntriesAssertContentRestTest extends BaseRestTest {
     protected static final String COMMON_URL_PART = "url";
@@ -33,24 +33,24 @@ public abstract class BaseEntriesAssertContentRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotProvided() throws Exception {
+    protected void getBadRequestIfUrlPatternNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("contentText", RESPONSE_NOT_TO_FIND));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, statusCode);
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, statusCode, "Expected to get bad request");
         conn.disconnect();
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotValid() throws Exception {
+    protected void getBadRequestIfUrlPatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", "[", "contentText", RESPONSE_NOT_TO_FIND));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, statusCode);
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, statusCode, "Expected to get bad request");
         conn.disconnect();
     }
 }

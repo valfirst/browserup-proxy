@@ -6,16 +6,16 @@ import java.util.List;
 import com.browserup.bup.assertion.model.AssertionEntryResult;
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 
-public class ContentMatchesTest extends MostRecentContentBaseTest {
+class ContentMatchesTest extends MostRecentContentBaseTest {
 
     @Test
-    public void oldAndRecentMatchesAndRecentFilterIsUsedPasses() throws IOException, InterruptedException {
+    void oldAndRecentMatchesAndRecentFilterIsUsedPasses() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentMatches(RECENT_REQUEST_URL_PATH_PATTERN,
@@ -25,7 +25,7 @@ public class ContentMatchesTest extends MostRecentContentBaseTest {
     }
 
     @Test
-    public void oldAndRecentMatchesAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
+    void oldAndRecentMatchesAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentMatches(OLD_REQUEST_URL_PATH_PATTERN,
@@ -35,7 +35,7 @@ public class ContentMatchesTest extends MostRecentContentBaseTest {
     }
 
     @Test
-    public void onlyOldMatchesAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
+    void onlyOldMatchesAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentMatches(OLD_REQUEST_URL_PATH_PATTERN,
@@ -45,7 +45,7 @@ public class ContentMatchesTest extends MostRecentContentBaseTest {
     }
 
     @Test
-    public void onlyOldMatchesAndRecentFilterIsUsedFails() throws IOException, InterruptedException {
+    void onlyOldMatchesAndRecentFilterIsUsedFails() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentMatches(RECENT_REQUEST_URL_PATH_PATTERN,
@@ -60,7 +60,7 @@ public class ContentMatchesTest extends MostRecentContentBaseTest {
     }
 
     @Test
-    public void onlyRecentMatchesAndOldFilterIsUsedFails() throws IOException, InterruptedException {
+    void onlyRecentMatchesAndOldFilterIsUsedFails() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_NOT_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentMatches(OLD_REQUEST_URL_PATH_PATTERN,

@@ -7,15 +7,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentEntryAssertHeaderMatchesRestTest extends BaseRestTest {
+class MostRecentEntryAssertHeaderMatchesRestTest extends BaseRestTest {
     private String responseBody = "success";
     private String urlOfMostRecentRequest = "url-most-recent";
     private String urlOfOldRequest = "url-old";
@@ -35,73 +36,73 @@ public class MostRecentEntryAssertHeaderMatchesRestTest extends BaseRestTest {
     protected String getUrlPath() { return "har/mostRecentEntry/assertResponseHeaderMatches"; }
 
     @Test
-    public void anyNameAndMatchingValuePatternPass() throws Exception {
+    void anyNameAndMatchingValuePatternPass() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerValuePattern", headerValuePatternToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
         assertAssertionNotNull(r); assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1)); assertAssertionPassed(r);
-        assertFalse("Expected assertion entry result to have \"false\" failed flag", r.getRequests().get(0).getFailed());
+        assertFalse(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"false\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void anyNameAndNotMatchingValuePatternFail() throws Exception {
+    void anyNameAndNotMatchingValuePatternFail() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerValuePattern", headerValuePatternNotToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
         assertAssertionNotNull(r); assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1)); assertAssertionFailed(r);
-        assertTrue("Expected assertion entry result to have \"true\" failed flag", r.getRequests().get(0).getFailed());
+        assertTrue(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"true\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void matchingNameAndMatchingValuePass() throws Exception {
+    void matchingNameAndMatchingValuePass() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerNamePattern", headerNamePatternToMatch, "headerValuePattern", headerValuePatternToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
         assertAssertionNotNull(r); assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1)); assertAssertionPassed(r);
-        assertFalse("Expected assertion entry result to have \"false\" failed flag", r.getRequests().get(0).getFailed());
+        assertFalse(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"false\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void notMatchingNameAndMatchingValuePass() throws Exception {
+    void notMatchingNameAndMatchingValuePass() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerNamePattern", headerNamePatternNotToMatch, "headerValuePattern", headerValuePatternToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
         assertAssertionNotNull(r); assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1)); assertAssertionPassed(r);
-        assertFalse("Expected assertion entry result to have \"false\" failed flag", r.getRequests().get(0).getFailed());
+        assertFalse(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"false\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void matchingNameAndNotMatchingValueFail() throws Exception {
+    void matchingNameAndNotMatchingValueFail() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerNamePattern", headerNamePatternToMatch, "headerValuePattern", headerValuePatternNotToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
         assertAssertionNotNull(r); assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1)); assertAssertionFailed(r);
-        assertTrue("Expected assertion entry result to have \"true\" failed flag", r.getRequests().get(0).getFailed());
+        assertTrue(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"true\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void notMatchingNameAndNotMatchingValuePass() throws Exception {
+    void notMatchingNameAndNotMatchingValuePass() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "headerNamePattern", headerNamePatternNotToMatch, "headerValuePattern", headerValuePatternNotToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
         assertAssertionNotNull(r); assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1)); assertAssertionPassed(r);
-        assertFalse("Expected assertion entry result to have \"false\" failed flag", r.getRequests().get(0).getFailed());
+        assertFalse(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"false\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void emptyResultIfNoEntryFoundByUrlPattern() throws Exception {
+    void emptyResultIfNoEntryFoundByUrlPattern() throws Exception {
         sendRequestsToTargetServer();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPatternNotToMatchUrl, "headerValuePattern", headerValueNotToFind));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);

@@ -4,8 +4,8 @@ import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarRequest;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
@@ -16,9 +16,9 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MostRecentUrlFilteredHarEntrySupplierTest {
+class MostRecentUrlFilteredHarEntrySupplierTest {
     @Test
-    public void getMostRecentEntryByUrl() {
+    void getMostRecentEntryByUrl() {
         int fromIndex = 1;
         int toIndex = 10;
         int mostRecentUrlIndex = toIndex;
@@ -40,11 +40,11 @@ public class MostRecentUrlFilteredHarEntrySupplierTest {
         List<HarEntry> result = supplier.get();
 
         assertThat("Expected to get one entry", result, Matchers.hasSize(1));
-        Assert.assertEquals("", result.get(0).getRequest().getUrl(), "http://abc" + mostRecentUrlIndex + ".com");
+        Assertions.assertEquals("http://abc" + mostRecentUrlIndex + ".com", result.get(0).getRequest().getUrl());
     }
 
     @Test
-    public void returnEmptyListIfNoEntryFoundByUrl() {
+    void returnEmptyListIfNoEntryFoundByUrl() {
         String urlPattern = "^http://does_not_match\\.com?";
         HarEntry harEntry = new HarEntry();
         HarRequest harRequest = new HarRequest();
@@ -59,7 +59,7 @@ public class MostRecentUrlFilteredHarEntrySupplierTest {
         MostRecentUrlFilteredHarEntrySupplier supplier = new MostRecentUrlFilteredHarEntrySupplier(har, Pattern.compile(urlPattern));
         List<HarEntry> result = supplier.get();
 
-        Assert.assertNotNull("Expected to get empty list", result);
+        Assertions.assertNotNull(result, "Expected to get empty list");
         assertThat("Expected to get no entries", result, Matchers.hasSize(0));
     }
 

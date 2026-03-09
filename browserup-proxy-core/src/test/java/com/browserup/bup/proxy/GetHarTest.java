@@ -7,8 +7,8 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
 import de.sstoehr.harreader.model.Har;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.EnumSet;
 
@@ -21,20 +21,20 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GetHarTest extends MockServerTest {
+class GetHarTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testGetHarClean() throws Exception {
+    void testGetHarClean() throws Exception {
         String stubUrl = "/testCaptureResponseCookiesInHar";
         stubFor(get(urlEqualTo(stubUrl))
                 .willReturn(ok()
@@ -50,7 +50,7 @@ public class GetHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/testCaptureResponseCookiesInHar")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);

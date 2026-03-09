@@ -8,18 +8,18 @@ import com.browserup.bup.proxy.assertion.BaseAssertionsTest;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertionsTest {
+class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertionsTest {
 
     @Test
-    public void mostRecentUrlResponseTimeExceeds() throws IOException {
+    void mostRecentUrlResponseTimeExceeds() throws IOException {
         mockResponseForPathWithDelay(URL_PATH, DEFAULT_RESPONSE_DELAY);
 
         requestToMockedServer(URL_PATH);
@@ -28,14 +28,14 @@ public class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertions
 
         AssertionResult result = proxy.assertMostRecentResponseTimeLessThanOrEqual(Pattern.compile(".*" + URL_PATH + ".*"), assertionTime);
 
-        assertTrue("Expected failed flag to be true", result.getFailed());
-        assertFalse("Expected passed flag to be true", result.getPassed());
+        assertTrue(result.getFailed(), "Expected failed flag to be true");
+        assertFalse(result.getPassed(), "Expected passed flag to be true");
 
         verify(1, getRequestedFor(urlMatching(".*" + URL_PATH + ".*")));
     }
 
     @Test
-    public void passesIfNoEntriesFound() throws IOException {
+    void passesIfNoEntriesFound() throws IOException {
         mockResponseForPathWithDelay(URL_PATH, 0);
 
         requestToMockedServer(URL_PATH);
@@ -43,15 +43,15 @@ public class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertions
         AssertionResult result = proxy.assertMostRecentResponseTimeLessThanOrEqual(Pattern.compile("^does not match?"),
                 0);
 
-        assertTrue("Expected passed flag to be true", result.getPassed());
-        assertFalse("Expected failed flag to be true", result.getFailed());
+        assertTrue(result.getPassed(), "Expected passed flag to be true");
+        assertFalse(result.getFailed(), "Expected failed flag to be true");
         MatcherAssert.assertThat("Expected to get one har entry result", result.getRequests(), Matchers.empty());
 
         verify(1, getRequestedFor(urlMatching(".*" + URL_PATH + ".*")));
     }
 
     @Test
-    public void mostRecentUrlResponseTimeLessThanOrEqual() throws IOException {
+    void mostRecentUrlResponseTimeLessThanOrEqual() throws IOException {
         mockResponseForPathWithDelay(URL_PATH, DEFAULT_RESPONSE_DELAY);
 
         requestToMockedServer(URL_PATH);
@@ -60,8 +60,8 @@ public class MostRecentUrlResponseTimeLessThanOrEqualTest extends BaseAssertions
 
         AssertionResult result = proxy.assertMostRecentResponseTimeLessThanOrEqual(Pattern.compile(".*" + URL_PATH + ".*"), assertionTime);
 
-        assertTrue("Expected passed flag to be true", result.getPassed());
-        assertFalse("Expected failed flag to be false", result.getFailed());
+        assertTrue(result.getPassed(), "Expected passed flag to be true");
+        assertFalse(result.getFailed(), "Expected failed flag to be false");
         MatcherAssert.assertThat("Expected to get one har entry result", result.getRequests(), Matchers.hasSize(1));
 
         verify(1, getRequestedFor(urlMatching(".*" + URL_PATH + ".*")));

@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ContentContainsTest extends MostRecentContentBaseTest {
+class ContentContainsTest extends MostRecentContentBaseTest {
 
     @Test
-    public void oldAndRecentContainsTextAndRecentFilterIsUsedPasses() throws IOException, InterruptedException {
+    void oldAndRecentContainsTextAndRecentFilterIsUsedPasses() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentContains(RECENT_REQUEST_URL_PATH_PATTERN,
@@ -19,7 +19,7 @@ public class ContentContainsTest extends MostRecentContentBaseTest {
     }
 
     @Test
-    public void oldAndRecentContainsTextAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
+    void oldAndRecentContainsTextAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentContains(OLD_REQUEST_URL_PATH_PATTERN, BODY_PART);
@@ -28,7 +28,7 @@ public class ContentContainsTest extends MostRecentContentBaseTest {
     }
 
     @Test
-    public void onlyOldContainsTextAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
+    void onlyOldContainsTextAndOldFilterIsUsedPasses() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentContains(OLD_REQUEST_URL_PATH_PATTERN, BODY_PART);
@@ -37,7 +37,7 @@ public class ContentContainsTest extends MostRecentContentBaseTest {
     }
 
     @Test
-    public void onlyOldContainsTextAndRecentFilterIsUsedFails() throws IOException, InterruptedException {
+    void onlyOldContainsTextAndRecentFilterIsUsedFails() throws IOException, InterruptedException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertMostRecentResponseContentContains(RECENT_REQUEST_URL_PATH_PATTERN,

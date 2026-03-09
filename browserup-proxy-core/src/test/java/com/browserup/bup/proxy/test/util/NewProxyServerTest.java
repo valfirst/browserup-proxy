@@ -2,8 +2,8 @@ package com.browserup.bup.proxy.test.util;
 
 import com.browserup.bup.BrowserUpProxy;
 import com.browserup.bup.BrowserUpProxyServer;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * A base class that spins up and shuts down a BrowserUpProxy instance using the new interface. It also provides mock server support via
@@ -12,14 +12,14 @@ import org.junit.Before;
 public class NewProxyServerTest extends MockServerTest {
     protected BrowserUpProxy proxy;
 
-    @Before
-    public void setUpProxyServer() {
+    @BeforeEach
+    protected void setUpProxyServer() {
         proxy = new BrowserUpProxyServer();
         proxy.start();
     }
 
-    @After
-    public void shutDownProxyServer() {
+    @AfterEach
+    protected void shutDownProxyServer() {
         if (proxy != null) {
             proxy.abort();
         }

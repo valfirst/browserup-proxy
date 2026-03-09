@@ -10,21 +10,21 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
-public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
+class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
 
     protected static final String RECENT_PATH = "recent-some-url";
     protected static final String OLD_PATH = "old-some-url";
 
     @Test
-    public void mostRecentUrlStatusCodeBelongsToClassPasses() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeBelongsToClassPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, HttpStatus.SC_CONFLICT);
@@ -39,12 +39,12 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
         MatcherAssert.assertThat("Expected to get one assertion entry", result.getRequests(), Matchers.hasSize(1));
         MatcherAssert.assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), Matchers.containsString(RECENT_PATH));
-        Assert.assertTrue("Expected most recent response status to belong to the class", result.getPassed());
-        Assert.assertFalse("Expected most recent response status to belong to the class", result.getFailed());
+        Assertions.assertTrue(result.getPassed(), "Expected most recent response status to belong to the class");
+        Assertions.assertFalse(result.getFailed(), "Expected most recent response status to belong to the class");
     }
 
     @Test
-    public void mostRecentUrlStatusCodeBelongsToClassFails() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeBelongsToClassFails() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -59,12 +59,12 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
         MatcherAssert.assertThat("Expected to get one assertion entry", result.getRequests(), Matchers.hasSize(1));
         MatcherAssert.assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), Matchers.containsString(RECENT_PATH));
-        Assert.assertFalse("Expected most recent response status not to belong to specified class", result.getPassed());
-        Assert.assertTrue("Expected most recent response status not to belong to specified class", result.getFailed());
+        Assertions.assertFalse(result.getPassed(), "Expected most recent response status not to belong to specified class");
+        Assertions.assertTrue(result.getFailed(), "Expected most recent response status not to belong to specified class");
     }
 
     @Test
-    public void mostRecentUrlStatusCodeEqualsPasses() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeEqualsPasses() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, HttpStatus.SC_BAD_REQUEST);
@@ -79,12 +79,12 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
         MatcherAssert.assertThat("Expected to get one assertion entry", result.getRequests(), Matchers.hasSize(1));
         MatcherAssert.assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), Matchers.containsString(RECENT_PATH));
-        Assert.assertTrue("Expected status to pass assertion", result.getPassed());
-        Assert.assertFalse("Expected status to pass assertion", result.getFailed());
+        Assertions.assertTrue(result.getPassed(), "Expected status to pass assertion");
+        Assertions.assertFalse(result.getFailed(), "Expected status to pass assertion");
     }
 
     @Test
-    public void mostRecentUrlStatusCodeEqualsFails() throws IOException, InterruptedException {
+    void mostRecentUrlStatusCodeEqualsFails() throws IOException, InterruptedException {
         int status = HttpStatus.SC_OK;
 
         mockResponse(OLD_PATH, status);
@@ -99,40 +99,40 @@ public class MostRecentUrlStatusAssertionsTest extends BaseAssertionsTest {
         MatcherAssert.assertThat("Expected to get one assertion entry", result.getRequests(), Matchers.hasSize(1));
         MatcherAssert.assertThat("Expected assertion entry to have most recent url",
                 result.getRequests().get(0).getUrl(), Matchers.containsString(RECENT_PATH));
-        Assert.assertFalse("Expected status to fail assertion", result.getPassed());
-        Assert.assertTrue("Expected status to fail assertion", result.getFailed());
+        Assertions.assertFalse(result.getPassed(), "Expected status to fail assertion");
+        Assertions.assertTrue(result.getFailed(), "Expected status to fail assertion");
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusBelongsToClassPasses() {
+    void noResponseFoundByUrlAndStatusBelongsToClassPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatusClass.SUCCESS);
 
-        Assert.assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        Assert.assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        Assertions.assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() {
+    void noResponseFoundByUrlAndStatusDoesNotBelongToClassPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatusClass.SUCCESS);
 
-        Assert.assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        Assert.assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        Assertions.assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusEqualsPasses() {
+    void noResponseFoundByUrlAndStatusEqualsPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatus.SC_OK);
 
-        Assert.assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        Assert.assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        Assertions.assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     @Test
-    public void noResponseFoundByUrlAndStatusNotEqualsPasses() {
+    void noResponseFoundByUrlAndStatusNotEqualsPasses() {
         AssertionResult result = proxy.assertMostRecentResponseStatusCode(HttpStatus.SC_OK);
 
-        Assert.assertTrue("Expected to pass when no response found by url pattern", result.getPassed());
-        Assert.assertFalse("Expected to pass when no response found by url pattern", result.getFailed());
+        Assertions.assertTrue(result.getPassed(), "Expected to pass when no response found by url pattern");
+        Assertions.assertFalse(result.getFailed(), "Expected to pass when no response found by url pattern");
     }
 
     protected StubMapping mockResponse(String path, Integer status) {

@@ -6,7 +6,7 @@ import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
+class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     private String responseBody = "success";
     private String url = "some-url";
     private String urlPatternToMatchUrl = ".*url-.*";
@@ -28,7 +30,7 @@ public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     }
 
     @Test
-    public void someEntriesFailTimeWithinAssertion() throws Exception {
+    void someEntriesFailTimeWithinAssertion() throws Exception {
         List<String> fastUrls = IntStream.rangeClosed(1, 2).mapToObj(i -> url + "-" + i).collect(Collectors.toList());
         List<String> slowUrls = IntStream.rangeClosed(3, 4).mapToObj(i -> url + "-" + i).collect(Collectors.toList());
         List<String> allUrls = new ArrayList<>(fastUrls);
@@ -51,17 +53,17 @@ public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
 
         for (AssertionEntryResult e : assertionResult.getRequests()) {
             if (fastUrls.stream().anyMatch(u -> e.getUrl().contains(u))) {
-                assertFalse("Expected entry result for fast response to have failed flag = false", e.getFailed());
+                assertFalse(e.getFailed(), "Expected entry result for fast response to have failed flag = false");
             }
             if (slowUrls.stream().anyMatch(u -> e.getUrl().contains(u))) {
-                assertTrue("Expected entry result for slow response to have failed flag = true", e.getFailed());
+                assertTrue(e.getFailed(), "Expected entry result for slow response to have failed flag = true");
             }
         }
         conn.disconnect();
     }
 
     @Test
-    public void emptyResultIfNoEntriesFoundForTimeWithinAssertion() throws Exception {
+    void emptyResultIfNoEntriesFoundForTimeWithinAssertion() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         mockTargetServerResponse(url, responseBody);
@@ -79,13 +81,13 @@ public class EntriesAssertTimeLessThanOrEqualRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getBadRequestIfMillisecondsNotValid() throws Exception {
+    void getBadRequestIfMillisecondsNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
 
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(),
                 toStringMap("urlPattern", ".*", "milliseconds", "abcd"));
         int statusCode = conn.getResponseCode();
-        assertEquals("Expected to get bad request", statusCode, HttpURLConnection.HTTP_BAD_REQUEST);
+        assertEquals(statusCode, HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 }

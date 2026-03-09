@@ -6,40 +6,40 @@ import java.util.List;
 import com.browserup.bup.assertion.model.AssertionEntryResult;
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ContentMatchesTest extends FilteredContentBaseTest {
+class ContentMatchesTest extends FilteredContentBaseTest {
 
     @Test
-    public void filterMatchesBothRequestsAndBothContentMatchPasses() throws IOException {
+    void filterMatchesBothRequestsAndBothContentMatchPasses() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentMatches(URL_PATTERN_TO_MATCH_BOTH,
                 BODY_PATTERN_TO_MATCH_BODY_PART);
 
-        assertTrue("Expected assertion to pass", result.getPassed());
-        assertFalse("Expected assertion to pass", result.getFailed());
+        assertTrue(result.getPassed(), "Expected assertion to pass");
+        assertFalse(result.getFailed(), "Expected assertion to pass");
     }
 
     @Test
-    public void filterMatchesFirstRequestAndFirstContentMatchPasses() throws IOException {
+    void filterMatchesFirstRequestAndFirstContentMatchPasses() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_NOT_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentMatches(URL_PATTERN_TO_MATCH_FIRST,
                 BODY_PATTERN_TO_MATCH_BODY_PART);
 
-        assertTrue("Expected assertion to pass", result.getPassed());
-        assertFalse("Expected assertion to pass", result.getFailed());
+        assertTrue(result.getPassed(), "Expected assertion to pass");
+        assertFalse(result.getFailed(), "Expected assertion to pass");
     }
 
     @Test
-    public void filterMatchesFirstRequestAndOnlySecondContentMatchesFails() throws IOException {
+    void filterMatchesFirstRequestAndOnlySecondContentMatchesFails() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentMatches(URL_PATTERN_TO_MATCH_FIRST,
@@ -54,7 +54,7 @@ public class ContentMatchesTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeContentDoesNotMatchFails_1() throws IOException {
+    void filterMatchesBothRequestsAndSomeContentDoesNotMatchFails_1() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_NOT_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentMatches(URL_PATTERN_TO_MATCH_BOTH,
@@ -69,7 +69,7 @@ public class ContentMatchesTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeContentDoesNotMatchFails_2() throws IOException {
+    void filterMatchesBothRequestsAndSomeContentDoesNotMatchFails_2() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentMatches(URL_PATTERN_TO_MATCH_BOTH,

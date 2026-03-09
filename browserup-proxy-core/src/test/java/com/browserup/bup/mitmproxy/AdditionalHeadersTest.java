@@ -7,28 +7,28 @@ import com.github.tomakehurst.wiremock.matching.AbsentPattern;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AdditionalHeadersTest extends MockServerTest {
+class AdditionalHeadersTest extends MockServerTest {
 
     private MitmProxyServer proxy;
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testAdditionalHeaderIsAdded() throws Exception {
+    void testAdditionalHeaderIsAdded() throws Exception {
         String stubUrl = "/dummyPath";
         String customHeaderName = "CustomHeaderName";
         String customHeaderValue = "CustomHeaderValue";
@@ -44,14 +44,14 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testAdditionalHeadersAreAdded() throws Exception {
+    void testAdditionalHeadersAreAdded() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -74,14 +74,14 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testAdditionalHeadersAreAddedExceptOne() throws Exception {
+    void testAdditionalHeadersAreAddedExceptOne() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -116,14 +116,14 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             int responseCode = client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getStatusLine().getStatusCode();
-            assertEquals("Expected to get 404 response", 404, responseCode);
+            assertEquals(404, responseCode, "Expected to get 404 response");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testAdditionalHeadersAreAddedAndOneDeleted() throws Exception {
+    void testAdditionalHeadersAreAddedAndOneDeleted() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -150,23 +150,23 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         proxy.removeHeader(headers.entrySet().iterator().next().getKey());
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             int responseCode = client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getStatusLine().getStatusCode();
-            assertEquals("Expected to get 404 response", 404, responseCode);
+            assertEquals(404, responseCode, "Expected to get 404 response");
         }
 
-        assertEquals("Expected to get 2 headers left after removing", 2, proxy.getAllHeaders().size());
+        assertEquals(2, proxy.getAllHeaders().size(), "Expected to get 2 headers left after removing");
 
         verify(2, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testAdditionalHeadersAreAddedAndAllDeleted() throws Exception {
+    void testAdditionalHeadersAreAddedAndAllDeleted() throws Exception {
         String stubUrl = "/dummyPath";
 
         Map<String, String> headers = new LinkedHashMap<>();
@@ -193,23 +193,23 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             int responseCode = client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getStatusLine().getStatusCode();
-            assertEquals("Expected to get 404 response", 404, responseCode);
+            assertEquals(404, responseCode, "Expected to get 404 response");
         }
 
         proxy.removeAllHeaders();
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
-        assertEquals("Expected to get no headers left after removing", 0, proxy.getAllHeaders().size());
+        assertEquals(0, proxy.getAllHeaders().size(), "Expected to get no headers left after removing");
 
         verify(2, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testFailsIfAdditionalHeaderNotAdded() throws Exception {
+    void testFailsIfAdditionalHeaderNotAdded() throws Exception {
         String stubUrl = "/dummyPath";
         String customHeaderName = "CustomHeaderName";
         String customHeaderValue = "CustomHeaderValue";
@@ -227,7 +227,7 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             int responseCode = client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getStatusLine().getStatusCode();
-            assertEquals("Expected to get 404 response", 404, responseCode);
+            assertEquals(404, responseCode, "Expected to get 404 response");
         }
     }
 }

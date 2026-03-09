@@ -4,13 +4,13 @@ import com.browserup.bup.assertion.model.AssertionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderRestTest {
+class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderRestTest {
     protected static final String HEADER_NAME_PATTERN_TO_MATCH_FIRST = ".*" + FIRST_HEADER_NAME + ".*";
     protected static final String HEADER_NAME_PATTERN_TO_MATCH_BOTH = ".*" + COMMON_HEADER_NAME + ".*";
     protected static final String HEADER_VALUE_PATTERN_TO_MATCH_FIRST = ".*" + FIRST_HEADER_VALUE + ".*";
@@ -21,7 +21,7 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     protected String getUrlPath() { return "har/entries/assertResponseHeaderMatches"; }
 
     @Test
-    public void urlFilterMatchesBothAndAnyHeaderNameAndHeaderValueMatchesPasses() throws Exception {
+    void urlFilterMatchesBothAndAnyHeaderNameAndHeaderValueMatchesPasses() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_BOTH, "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_ALL));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -29,7 +29,7 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     }
 
     @Test
-    public void urlFilterMatchesBothAndAnyHeaderNameAndHeaderValueDoesNotMatchesFails() throws Exception {
+    void urlFilterMatchesBothAndAnyHeaderNameAndHeaderValueDoesNotMatchesFails() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_BOTH, "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_FIRST));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -37,7 +37,7 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     }
 
     @Test
-    public void urlFilterMatchesBothAndHeaderNameMatchesFirstAndHeaderValueMatchesFirstPasses() throws Exception {
+    void urlFilterMatchesBothAndHeaderNameMatchesFirstAndHeaderValueMatchesFirstPasses() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_BOTH, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_FIRST, "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_FIRST));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -45,7 +45,7 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     }
 
     @Test
-    public void urlFilterMatchesBothAndHeaderNameMatchesFirstAndHeaderValueMatchesSecondFails() throws Exception {
+    void urlFilterMatchesBothAndHeaderNameMatchesFirstAndHeaderValueMatchesSecondFails() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_BOTH, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_FIRST, "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_SECOND));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -56,7 +56,7 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     }
 
     @Test
-    public void urlFilterMatchesBothAndHeaderNameMatchesBothAndHeaderValueMatchesSecondFails() throws Exception {
+    void urlFilterMatchesBothAndHeaderNameMatchesBothAndHeaderValueMatchesSecondFails() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_BOTH, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH, "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_SECOND));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -67,7 +67,7 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     }
 
     @Test
-    public void urlFilterMatchesNonePasses() throws Exception {
+    void urlFilterMatchesNonePasses() throws Exception {
         sendRequestsToTargetServer(FIRST_HEADER, SECOND_HEADER);
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH, "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_SECOND));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -75,23 +75,23 @@ public class EntriesAssertHeaderMatchesRestTest extends BaseEntriesAssertHeaderR
     }
 
     @Test
-    public void getBadRequestIfHeaderValuePatternNotProvided() throws Exception {
+    void getBadRequestIfHeaderValuePatternNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH));
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request"); conn.disconnect();
     }
 
     @Test
-    public void getBadRequestIfHeaderValuePatternNotValid() throws Exception {
+    void getBadRequestIfHeaderValuePatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", HEADER_NAME_PATTERN_TO_MATCH_BOTH, "headerValuePattern", "["));
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request"); conn.disconnect();
     }
 
     @Test
-    public void getBadRequestIfHeaderNamePatternNotValid() throws Exception {
+    void getBadRequestIfHeaderNamePatternNotValid() throws Exception {
         proxyManager.get().iterator().next().newHar();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", URL_PATTERN_TO_MATCH_NOTHING, "headerNamePattern", "[", "headerValuePattern", HEADER_VALUE_PATTERN_TO_MATCH_SECOND));
-        assertEquals("Expected to get bad request", HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode()); conn.disconnect();
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, conn.getResponseCode(), "Expected to get bad request"); conn.disconnect();
     }
 }

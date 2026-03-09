@@ -6,16 +6,16 @@ import java.util.List;
 import com.browserup.bup.assertion.model.AssertionEntryResult;
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 
-public class ContentContainsTest extends FilteredContentBaseTest {
+class ContentContainsTest extends FilteredContentBaseTest {
 
     @Test
-    public void filterMatchesBothRequestsAndBothContentContainTextPasses() throws IOException {
+    void filterMatchesBothRequestsAndBothContentContainTextPasses() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentContains(URL_PATTERN_TO_MATCH_BOTH, BODY_PART);
@@ -24,7 +24,7 @@ public class ContentContainsTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesFirstRequestAndOnlySecondContentContainTextFails() throws IOException {
+    void filterMatchesFirstRequestAndOnlySecondContentContainTextFails() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentContains(URL_PATTERN_TO_MATCH_FIRST, BODY_PART);
@@ -38,7 +38,7 @@ public class ContentContainsTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeContentDoesNotContainTextFails_1() throws IOException {
+    void filterMatchesBothRequestsAndSomeContentDoesNotContainTextFails_1() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_CONTAINING_BODY_PART, BODY_NOT_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentContains(URL_PATTERN_TO_MATCH_BOTH, BODY_PART);
@@ -52,7 +52,7 @@ public class ContentContainsTest extends FilteredContentBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeContentDoesNotContainTextFails_2() throws IOException {
+    void filterMatchesBothRequestsAndSomeContentDoesNotContainTextFails_2() throws IOException {
         mockAndSendRequestsToMockedServer(BODY_NOT_CONTAINING_BODY_PART, BODY_CONTAINING_BODY_PART);
 
         AssertionResult result = proxy.assertAnyUrlContentContains(URL_PATTERN_TO_MATCH_BOTH, BODY_PART);

@@ -8,8 +8,8 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
@@ -17,20 +17,20 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RewriteRuleTest extends MockServerTest {
+class RewriteRuleTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testRewriteHttpUrl() throws Exception {
+    void testRewriteHttpUrl() throws Exception {
         String stubUrl = "/.*";
         stubFor(get(urlMatching(stubUrl))
                 .withQueryParam("originalDomain", WireMock.equalTo("yahoo"))
@@ -46,17 +46,17 @@ public class RewriteRuleTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testRewriteHttpsUrl() throws Exception {
+    void testRewriteHttpsUrl() throws Exception {
         // HTTPS URLs cannot currently be rewritten to another domain, so verify query parameters can be rewritten
 
         String stubUrl = "/.*";
@@ -74,10 +74,10 @@ public class RewriteRuleTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));

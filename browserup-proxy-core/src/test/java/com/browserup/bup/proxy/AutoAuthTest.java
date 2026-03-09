@@ -12,8 +12,8 @@ import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
@@ -22,20 +22,20 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AutoAuthTest extends MockServerTest {
+class AutoAuthTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testBasicAuthAddedToHttpRequest() throws IOException {
+    void testBasicAuthAddedToHttpRequest() throws IOException {
         // the base64-encoded rendering of "testUsername:testPassword" is dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==
         String stubUrl = "/basicAuthHttp";
 
@@ -50,14 +50,14 @@ public class AutoAuthTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/basicAuthHttp"))
                     .getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testBasicAuthAddedToHttpsRequest() throws IOException {
+    void testBasicAuthAddedToHttpsRequest() throws IOException {
         // the base64-encoded rendering of "testUsername:testPassword" is dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==
         String stubUrl = "/basicAuthHttp";
 
@@ -72,14 +72,14 @@ public class AutoAuthTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(
                     "https://localhost:" + mockServerHttpsPort + "/basicAuthHttp")).getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
     }
 
     @Test
-    public void testCanStopBasicAuth() throws IOException {
+    void testCanStopBasicAuth() throws IOException {
         // the base64-encoded rendering of "testUsername:testPassword" is dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==
         String stubUrl = "/basicAuthHttp";
 
@@ -96,7 +96,7 @@ public class AutoAuthTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/basicAuthHttp"))
                     .getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));

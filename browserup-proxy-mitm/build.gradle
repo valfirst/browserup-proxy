@@ -59,9 +59,7 @@ dependencies {
         exclude(group: 'io.netty', module: 'netty-all')
     }
 
-    testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation('org.apache.httpcomponents:httpclient:4.5.14') {
         exclude(module: 'commons-logging')

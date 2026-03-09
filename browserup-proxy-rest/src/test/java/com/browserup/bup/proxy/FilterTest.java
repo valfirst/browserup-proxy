@@ -8,8 +8,8 @@ import com.browserup.bup.proxy.bricks.ProxyResource;
 import com.browserup.bup.proxy.test.util.ProxyResourceTest;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.sitebricks.headless.Request;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -19,20 +19,19 @@ import java.nio.charset.StandardCharsets;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@Ignore
-public class FilterTest extends ProxyResourceTest {
+@Disabled
+class FilterTest extends ProxyResourceTest {
 
     private String readBody(HttpURLConnection conn) throws Exception {
         InputStream is;
@@ -48,7 +47,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testCanModifyRequestHeadersWithJavascript() throws Exception {
+    void testCanModifyRequestHeadersWithJavascript() throws Exception {
         final String requestFilterJavaScript =
                 "request.headers().remove('User-Agent');\n" +
                 "request.headers().add('User-Agent', 'My-Custom-User-Agent-String 1.0');\n";
@@ -65,12 +64,12 @@ public class FilterTest extends ProxyResourceTest {
 
         HttpURLConnection conn = getHttpConnection("/modifyuseragent");
         String body = readBody(conn);
-        assertEquals("Javascript interceptor did not modify the user agent string", "success", body);
+        assertEquals("success", body, "Javascript interceptor did not modify the user agent string");
         conn.disconnect();
     }
 
     @Test
-    public void testCanModifyRequestContentsWithJavascript() throws Exception {
+    void testCanModifyRequestContentsWithJavascript() throws Exception {
         final String requestFilterJavaScript =
                 "if (request.getUri().endsWith('/modifyrequest') && contents.isText()) {\n" +
                 "    if (contents.getTextContents() == 'original request text') {\n" +
@@ -93,12 +92,12 @@ public class FilterTest extends ProxyResourceTest {
         conn.setDoOutput(true);
         conn.getOutputStream().write("original request text".getBytes(StandardCharsets.UTF_8));
         String body = readBody(conn);
-        assertEquals("Javascript interceptor did not modify request body", "success", body);
+        assertEquals("success", body, "Javascript interceptor did not modify request body");
         conn.disconnect();
     }
 
     @Test
-    public void testCanModifyResponseWithJavascript() throws Exception {
+    void testCanModifyResponseWithJavascript() throws Exception {
         final String responseFilterJavaScript =
                 "if (contents.isText()) {\n" +
                 "    if (contents.getTextContents() == 'original response text') {\n" +
@@ -117,12 +116,12 @@ public class FilterTest extends ProxyResourceTest {
 
         HttpURLConnection conn = getHttpConnection("/modifyresponse");
         String body = readBody(conn);
-        assertEquals("Javascript interceptor did not modify response text", "modified response text", body);
+        assertEquals("modified response text", body, "Javascript interceptor did not modify response text");
         conn.disconnect();
     }
 
     @Test
-    public void testCanAccessOriginalRequestWithJavascript() throws Exception {
+    void testCanAccessOriginalRequestWithJavascript() throws Exception {
         final String requestFilterJavaScript =
                 "if (request.getUri().endsWith('/originalrequest')) {\n" +
                 "    request.setUri(request.getUri().replaceAll('originalrequest', 'modifiedrequest'));\n" +
@@ -149,7 +148,7 @@ public class FilterTest extends ProxyResourceTest {
     }
 
     @Test
-    public void testRequestFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
+    void testRequestFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
         final String requestFilterJavaScript = "this javascript won\'t compile!";
 
         Request mockRestAddReqFilterRequest = createMockRestRequestWithEntity(requestFilterJavaScript);
@@ -168,12 +167,12 @@ public class FilterTest extends ProxyResourceTest {
             javascriptExceptionOccurred = true;
         }
 
-        assertTrue("Expected javascript to fail to compile", javascriptExceptionOccurred);
+        assertTrue(javascriptExceptionOccurred, "Expected javascript to fail to compile");
         verify(mockProxy, never()).addRequestFilter(any(RequestFilter.class));
     }
 
     @Test
-    public void testResponseFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
+    void testResponseFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
         final String responseFilterJavaScript = "this javascript won\'t compile!";
 
         Request mockRestAddRespFilterRequest = createMockRestRequestWithEntity(responseFilterJavaScript);
@@ -192,14 +191,14 @@ public class FilterTest extends ProxyResourceTest {
             javascriptExceptionOccurred = true;
         }
 
-        assertTrue("Expected javascript to fail to compile", javascriptExceptionOccurred);
+        assertTrue(javascriptExceptionOccurred, "Expected javascript to fail to compile");
         verify(mockProxy, never()).addResponseFilter(any(ResponseFilter.class));
     }
 
     @Test
-    public void testCanShortCircuitRequestWithJavascript() throws Exception {
+    void testCanShortCircuitRequestWithJavascript() throws Exception {
         double javaVersion = Double.parseDouble(System.getProperty("java.specification.version"));
-        assumeThat("Skipping Nashorn-dependent test on Java 1.7", javaVersion, greaterThanOrEqualTo(1.8d));
+        assumeTrue(javaVersion >= 1.8d, "Skipping Nashorn-dependent test on Java 1.7");
 
         final String requestFilterJavaScript =
                 "var DefaultFullHttpResponse = Java.type('io.netty.handler.codec.http.DefaultFullHttpResponse');\n" +
@@ -216,9 +215,8 @@ public class FilterTest extends ProxyResourceTest {
         HttpURLConnection conn = getHttpConnection("/testShortCircuit");
         int status = conn.getResponseCode();
         String body = readBody(conn);
-        assertEquals("Expected short-circuit response to return an HTTP 402 Payment Required", 402, status);
-        assertEquals("Expected short-circuit response to contain body text set in Javascript",
-                "You have to pay the troll toll to get into this Proxy's soul", body);
+        assertEquals(402, status, "Expected short-circuit response to return an HTTP 402 Payment Required");
+        assertEquals("You have to pay the troll toll to get into this Proxy's soul", body, "Expected short-circuit response to contain body text set in Javascript");
         conn.disconnect();
     }
 

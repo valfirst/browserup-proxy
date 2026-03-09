@@ -10,9 +10,9 @@ import com.browserup.bup.proxy.test.util.NewProxyServerTestUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import de.sstoehr.harreader.model.Har;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -23,21 +23,21 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class BlocklistTest extends MockServerTest {
+class BlocklistTest extends MockServerTest {
     private BrowserUpProxy proxy;
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
     }
 
     @Test
-    public void testBlocklistedHttpRequestReturnsBlocklistStatusCode() throws IOException {
+    void testBlocklistedHttpRequestReturnsBlocklistStatusCode() throws IOException {
         proxy = new BrowserUpProxyServer();
         proxy.start();
 
@@ -45,17 +45,16 @@ public class BlocklistTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://www.blocklisted.domain/someresource"));
-            assertEquals("Did not receive blocklisted status code in response", 405,
-                    response.getStatusLine().getStatusCode());
+            assertEquals(405, response.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
             assertThat("Expected blocklisted response to contain 0-length body", responseBody, is(emptyOrNullString()));
         }
     }
 
-    @Ignore
+    @Disabled
     @Test
-    public void testBlocklistedHttpRequestNotRecordedToHar() throws IOException {
+    void testBlocklistedHttpRequestNotRecordedToHar() throws IOException {
         proxy = new BrowserUpProxyServer();
         proxy.start();
 
@@ -63,8 +62,7 @@ public class BlocklistTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://www.blocklisted.domain/someresource"));
-            assertEquals("Did not receive blocklisted status code in response", 405,
-                    response.getStatusLine().getStatusCode());
+            assertEquals(405, response.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
             assertThat("Expected blocklisted response to contain 0-length body", responseBody, is(emptyOrNullString()));
@@ -72,12 +70,11 @@ public class BlocklistTest extends MockServerTest {
 
         Har har = proxy.getHar();
 
-        assertFalse("Expected not to find blocklisted requests in har entries",
-                har.getLog().getEntries().stream().anyMatch(it -> it.getRequest().getUrl().contains("blocklisted")));
+        assertFalse(har.getLog().getEntries().stream().anyMatch(it -> it.getRequest().getUrl().contains("blocklisted")), "Expected not to find blocklisted requests in har entries");
     }
 
     @Test
-    public void testBlocklistedHttpsRequestReturnsBlocklistStatusCode() throws IOException {
+    void testBlocklistedHttpsRequestReturnsBlocklistStatusCode() throws IOException {
         // need to set up a mock server to handle the CONNECT, since that is not blocklisted
         String stubUrl = "/thisrequestshouldnotoccur";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
@@ -90,8 +87,7 @@ public class BlocklistTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost:" + String.valueOf(mockServerHttpsPort) + "/thisrequestshouldnotoccur"));
-            assertEquals("Did not receive blocklisted status code in response", 405,
-                    response.getStatusLine().getStatusCode());
+            assertEquals(405, response.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
             assertThat("Expected blocklisted response to contain 0-length body", responseBody, is(emptyOrNullString()));
@@ -99,7 +95,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanBlocklistSingleHttpResource() throws IOException {
+    void testCanBlocklistSingleHttpResource() throws IOException {
         String stubUrl1 = "/blocklistedresource";
         stubFor(get(urlEqualTo(stubUrl1)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
 
@@ -113,17 +109,14 @@ public class BlocklistTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse nonBlocklistedResourceResponse = httpClient.execute(new HttpGet("http://localhost:" + String.valueOf(mockServerPort) + "/nonblocklistedresource"));
-            assertEquals("Did not receive blocklisted status code in response", 200,
-                    nonBlocklistedResourceResponse.getStatusLine().getStatusCode());
+            assertEquals(200, nonBlocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String nonBlocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     nonBlocklistedResourceResponse.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "not blocklisted",
-                    nonBlocklistedResponseBody);
+            assertEquals("not blocklisted", nonBlocklistedResponseBody, "Did not receive expected response from mock server");
 
             CloseableHttpResponse blocklistedResourceResponse = httpClient.execute(new HttpGet("http://localhost:" + String.valueOf(mockServerPort) + "/blocklistedresource"));
-            assertEquals("Did not receive blocklisted status code in response", 405,
-                    blocklistedResourceResponse.getStatusLine().getStatusCode());
+            assertEquals(405, blocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String blocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     blocklistedResourceResponse.getEntity().getContent());
@@ -133,7 +126,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanBlocklistSingleHttpsResource() throws IOException {
+    void testCanBlocklistSingleHttpsResource() throws IOException {
         String stubUrl1 = "/blocklistedresource";
         stubFor(get(urlEqualTo(stubUrl1)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
 
@@ -148,17 +141,14 @@ public class BlocklistTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse nonBlocklistedResourceResponse = httpClient.execute(new HttpGet("https://localhost:" + String.valueOf(mockServerHttpsPort) + "/nonblocklistedresource"));
-            assertEquals("Did not receive blocklisted status code in response", 200,
-                    nonBlocklistedResourceResponse.getStatusLine().getStatusCode());
+            assertEquals(200, nonBlocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String nonBlocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     nonBlocklistedResourceResponse.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "not blocklisted",
-                    nonBlocklistedResponseBody);
+            assertEquals("not blocklisted", nonBlocklistedResponseBody, "Did not receive expected response from mock server");
 
             CloseableHttpResponse blocklistedResourceResponse = httpClient.execute(new HttpGet("https://localhost:" + String.valueOf(mockServerHttpsPort) + "/blocklistedresource"));
-            assertEquals("Did not receive blocklisted status code in response", 405,
-                    blocklistedResourceResponse.getStatusLine().getStatusCode());
+            assertEquals(405, blocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String blocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     blocklistedResourceResponse.getEntity().getContent());
@@ -168,7 +158,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testCanBlocklistConnectExplicitly() throws IOException {
+    void testCanBlocklistConnectExplicitly() throws IOException {
         String stubUrl1 = "/blocklistconnect";
         stubFor(get(urlEqualTo(stubUrl1)).willReturn(aResponse().withStatus(500).withBody("this URL should never be called")));
 
@@ -180,8 +170,7 @@ public class BlocklistTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse blocklistedResourceResponse = httpClient.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/blocklistconnect"));
-            assertEquals("Did not receive blocklisted status code in response", 405,
-                    blocklistedResourceResponse.getStatusLine().getStatusCode());
+            assertEquals(405, blocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String blocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     blocklistedResourceResponse.getEntity().getContent());
@@ -191,7 +180,7 @@ public class BlocklistTest extends MockServerTest {
     }
 
     @Test
-    public void testBlocklistDoesNotApplyToCONNECT() throws IOException {
+    void testBlocklistDoesNotApplyToCONNECT() throws IOException {
         String stubUrl = "/connectNotBlocklisted";
         stubFor(get(urlEqualTo(stubUrl)).willReturn(ok().withBody("success")));
 
@@ -204,12 +193,10 @@ public class BlocklistTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/connectNotBlocklisted"));
-            assertEquals("Expected to receive response from mock server after successful CONNECT", 200,
-                    response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Expected to receive response from mock server after successful CONNECT");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Expected to receive HTTP 200 and success message from server", "success",
-                    responseBody);
+            assertEquals("success", responseBody, "Expected to receive HTTP 200 and success message from server");
         }
     }
 }

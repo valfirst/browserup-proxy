@@ -8,7 +8,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 
 import org.apache.http.HttpHeaders;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 public class ContentBaseTest extends BaseAssertionsTest {
 
@@ -18,8 +18,8 @@ public class ContentBaseTest extends BaseAssertionsTest {
     protected static final Pattern BODY_PATTERN_TO_MATCH_BODY_PART = Pattern.compile(".*" + BODY_PART + ".*");
     protected static final Pattern BODY_PATTERN_NOT_TO_MATCH_BODY_PART = Pattern.compile(".*NOT-TO-MATCH.*");
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    protected void setUp() {
         proxy.enableHarCaptureTypes(CaptureType.RESPONSE_CONTENT, CaptureType.REQUEST_BINARY_CONTENT, CaptureType.REQUEST_CONTENT);
     }
 

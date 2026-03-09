@@ -6,13 +6,14 @@ import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentEntryAssertContentContainsRestTest extends BaseRestTest {
+class MostRecentEntryAssertContentContainsRestTest extends BaseRestTest {
     private String urlOfMostRecentRequest = "url-most-recent";
     private String urlOfOldRequest = "url-old";
     private String urlPatternToMatchUrl = ".*url-.*";
@@ -24,7 +25,7 @@ public class MostRecentEntryAssertContentContainsRestTest extends BaseRestTest {
     protected String getUrlPath() { return "har/mostRecentEntry/assertContentContains"; }
 
     @Test
-    public void contentContainsPasses() throws Exception {
+    void contentContainsPasses() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "contentText", responseBodyPart));
@@ -36,7 +37,7 @@ public class MostRecentEntryAssertContentContainsRestTest extends BaseRestTest {
     }
 
     @Test
-    public void contentContainsFails() throws Exception {
+    void contentContainsFails() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "contentText", "will not be found"));
@@ -44,12 +45,12 @@ public class MostRecentEntryAssertContentContainsRestTest extends BaseRestTest {
         assertAssertionNotNull(r);
         assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1));
         assertAssertionFailed(r);
-        assertTrue("Expected assertion entry result to have \"true\" failed flag", r.getRequests().get(0).getFailed());
+        assertTrue(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"true\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
+    void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
         sendRequestsToTargetServer();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPatternNotToMatchUrl, "contentText", responseBodyPart));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);
@@ -60,9 +61,9 @@ public class MostRecentEntryAssertContentContainsRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotProvided() throws Exception {
+    protected void getBadRequestIfUrlPatternNotProvided() throws Exception {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath());
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
+        assertEquals(conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 
