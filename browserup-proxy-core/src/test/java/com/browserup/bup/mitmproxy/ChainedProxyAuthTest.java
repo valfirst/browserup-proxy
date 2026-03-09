@@ -80,7 +80,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
@@ -105,7 +105,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Har downStreamHar = proxy.getHar();
@@ -139,7 +139,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Har downStreamHar = proxy.getHar();
@@ -169,7 +169,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
@@ -206,7 +206,7 @@ public class ChainedProxyAuthTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/proxyauth")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));

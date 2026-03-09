@@ -49,7 +49,7 @@ public class RewriteRuleTest extends MockServerTest {
             assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
@@ -77,7 +77,7 @@ public class RewriteRuleTest extends MockServerTest {
             assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));

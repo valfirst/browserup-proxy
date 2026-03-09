@@ -126,7 +126,7 @@ public class BlocklistTest extends MockServerTest {
             assertEquals(200, nonBlocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String nonBlocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(nonBlocklistedResourceResponse.getEntity().getContent());
-            assertEquals(nonBlocklistedResponseBody, "Did not receive expected response from mock server", "not blocklisted");
+            assertEquals("not blocklisted", nonBlocklistedResponseBody, "Did not receive expected response from mock server");
 
             CloseableHttpResponse blocklistedResourceResponse = client.execute(new HttpGet("http://localhost:" + mockServerPort + "/blocklistedresource"));
             assertEquals(405, blocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
@@ -156,7 +156,7 @@ public class BlocklistTest extends MockServerTest {
             assertEquals(200, nonBlocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
 
             String nonBlocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(nonBlocklistedResourceResponse.getEntity().getContent());
-            assertEquals(nonBlocklistedResponseBody, "Did not receive expected response from mock server", "not blocklisted");
+            assertEquals("not blocklisted", nonBlocklistedResponseBody, "Did not receive expected response from mock server");
 
             CloseableHttpResponse blocklistedResourceResponse = client.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/blocklistedresource"));
             assertEquals(405, blocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
@@ -205,7 +205,7 @@ public class BlocklistTest extends MockServerTest {
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected to receive response from mock server after successful CONNECT");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals(responseBody, "Expected to receive HTTP 200 and success message from server", "success");
+            assertEquals("success", responseBody, "Expected to receive HTTP 200 and success message from server");
         }
     }
 }

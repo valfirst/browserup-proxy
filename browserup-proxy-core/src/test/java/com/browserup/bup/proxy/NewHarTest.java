@@ -98,7 +98,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxyPort)) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/testDnsTimingPopulated")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -141,7 +141,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("https://localhost:" + mockServerHttpsPort + "/testCaptureResponseCookiesInHar")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -153,12 +153,12 @@ public class NewHarTest extends MockServerTest {
         HarCookie maxAgeCookie = har.getLog().getEntries().get(0).getResponse().getCookies().get(0);
         HarCookie expiresCookie = har.getLog().getEntries().get(0).getResponse().getCookies().get(1);
 
-        assertEquals(maxAgeCookie.getName(), "Incorrect cookie name in HAR", "max-age-cookie");
-        assertEquals(maxAgeCookie.getValue(), "Incorrect cookie value in HAR", "mock-value");
+        assertEquals("max-age-cookie", maxAgeCookie.getName(), "Incorrect cookie name in HAR");
+        assertEquals("mock-value", maxAgeCookie.getValue(), "Incorrect cookie value in HAR");
         assertThat("Incorrect expiration date in cookie with Max-Age", maxAgeCookie.getExpires(), greaterThan(maxAgeCookieNotBefore));
 
-        assertEquals(expiresCookie.getName(), "Incorrect cookie name in HAR", "expires-cookie");
-        assertEquals(expiresCookie.getValue(), "Incorrect cookie value in HAR", "mock-value");
+        assertEquals("expires-cookie", expiresCookie.getName(), "Incorrect cookie name in HAR");
+        assertEquals("mock-value", expiresCookie.getValue(), "Incorrect cookie value in HAR");
 
         assertThat("Incorrect expiration date in cookie with Expires", expiresCookie.getExpires(), equalTo(expiresDate));
 
@@ -181,7 +181,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/testCaptureResponseHeaderInHar")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -194,7 +194,7 @@ public class NewHarTest extends MockServerTest {
 
         HarHeader header = headers.stream().filter(h -> h.getName().equals("Mock-Header")).findFirst().orElse(null);
         assertNotNull(header, "Expected to find header with name Mock-Header in HAR");
-        assertEquals(header.getValue(), "Incorrect header value for Mock-Header", "mock value");
+        assertEquals("mock value", header.getValue(), "Incorrect header value for Mock-Header");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -269,7 +269,7 @@ public class NewHarTest extends MockServerTest {
 
         assertEquals(responseContentType, content.getMimeType(), "Expected to capture response mimeType in HAR");
 
-        assertEquals(content.getText(), "Expected to not capture body content in HAR", "");
+        assertEquals("", content.getText(), "Expected to not capture body content in HAR");
 
         verify(1, getRequestedFor(urlEqualTo(stubUrl)));
     }
@@ -299,7 +299,7 @@ public class NewHarTest extends MockServerTest {
         {
             try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-                assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+                assertEquals("success", responseBody, "Did not receive expected response from mock server");
             }
 
             Thread.sleep(500);
@@ -310,7 +310,7 @@ public class NewHarTest extends MockServerTest {
             HarContent content = har.getLog().getEntries().get(0).getResponse().getContent();
             assertNotNull(content, "Expected to find HAR content");
 
-            assertEquals(content.getText(), "Expected to capture body content in HAR", "success");
+            assertEquals("success", content.getText(), "Expected to capture body content in HAR");
 
             assertThat("Expected HAR page timing onLoad value to be populated", har.getLog().getPages().get(har.getLog().getPages().size() - 1).getPageTimings().getOnLoad(), greaterThan(0));
             assertNotNull(har.getLog().getEntries().get(0).getTime());
@@ -327,7 +327,7 @@ public class NewHarTest extends MockServerTest {
         {
             try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-                assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+                assertEquals("success", responseBody, "Did not receive expected response from mock server");
             }
 
             Thread.sleep(500);
@@ -340,7 +340,7 @@ public class NewHarTest extends MockServerTest {
         {
             try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-                assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+                assertEquals("success", responseBody, "Did not receive expected response from mock server");
             }
 
             Thread.sleep(500);
@@ -351,7 +351,7 @@ public class NewHarTest extends MockServerTest {
             HarContent newContent = populatedHar.getLog().getEntries().get(0).getResponse().getContent();
             assertNotNull(newContent, "Expected to find HAR content");
 
-            assertEquals(newContent.getText(), "Expected to capture body content in HAR", "success");
+            assertEquals("success", newContent.getText(), "Expected to capture body content in HAR");
         }
     }
 
@@ -371,7 +371,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -382,7 +382,7 @@ public class NewHarTest extends MockServerTest {
         HarContent content = har.getLog().getEntries().get(0).getResponse().getContent();
         assertNotNull(content, "Expected to find HAR content");
 
-        assertEquals(content.getText(), "Expected to capture body content in HAR", "success");
+        assertEquals("success", content.getText(), "Expected to capture body content in HAR");
 
         assertEquals(1, har.getLog().getPages().size(), "Expected only one HAR page to be created");
         assertEquals(har.getLog().getPages().get(0).getId(), "Expected id of HAR page to be 'first-page'", "first-page");
@@ -391,7 +391,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/testEndHar")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -421,7 +421,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(requestUrl)).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -452,7 +452,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(requestUrl)).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -490,7 +490,7 @@ public class NewHarTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(requestUrl)).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -532,7 +532,7 @@ public class NewHarTest extends MockServerTest {
             assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -576,7 +576,7 @@ public class NewHarTest extends MockServerTest {
             String httpsUrl = "https://localhost:" + mockServerHttpsPort + "/httpsmitmdisabled";
             try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(httpsUrl)).getEntity().getContent());
-                assertEquals(responseBody, "Did not receive expected response from mock server", "Response over HTTPS");
+                assertEquals("Response over HTTPS", responseBody, "Did not receive expected response from mock server");
             }
 
             Thread.sleep(500);
@@ -590,7 +590,7 @@ public class NewHarTest extends MockServerTest {
             String httpUrl = "http://localhost:" + mockServerPort + "/httpmitmdisabled";
             try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(httpUrl)).getEntity().getContent());
-                assertEquals(responseBody, "Did not receive expected response from mock server", "Response over HTTP");
+                assertEquals("Response over HTTP", responseBody, "Did not receive expected response from mock server");
             }
 
             Thread.sleep(500);
@@ -607,7 +607,7 @@ public class NewHarTest extends MockServerTest {
             String httpsUrl = "https://localhost:" + mockServerHttpsPort + "/httpsmitmdisabled";
             try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
                 String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(httpsUrl)).getEntity().getContent());
-                assertEquals(responseBody, "Did not receive expected response from mock server", "Response over HTTPS");
+                assertEquals("Response over HTTPS", responseBody, "Did not receive expected response from mock server");
             }
 
             Thread.sleep(500);
@@ -692,7 +692,7 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals(capturedUrl, "URL captured in HAR did not match expected HTTP CONNECT URL", "https://www.doesnotexist.address");
+        assertEquals("https://www.doesnotexist.address", capturedUrl, "URL captured in HAR did not match expected HTTP CONNECT URL");
 
         HarResponse harResponse = har.getLog().getEntries().get(0).getResponse();
         assertNotNull(harResponse, "No HAR response found");
@@ -787,7 +787,7 @@ public class NewHarTest extends MockServerTest {
 
         // make sure request data is still captured despite the failure
         String capturedUrl = har.getLog().getEntries().get(0).getRequest().getUrl();
-        assertEquals(capturedUrl, "URL captured in HAR did not match request URL", "https://localhost:2");
+        assertEquals("https://localhost:2", capturedUrl, "URL captured in HAR did not match request URL");
 
         assertEquals(har.getLog().getEntries().get(0).getServerIPAddress(), "Expected IP address to be populated", "127.0.0.1");
 

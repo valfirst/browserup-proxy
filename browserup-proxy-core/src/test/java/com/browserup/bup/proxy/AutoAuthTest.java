@@ -50,7 +50,7 @@ public class AutoAuthTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/basicAuthHttp"))
                     .getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
@@ -72,7 +72,7 @@ public class AutoAuthTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet(
                     "https://localhost:" + mockServerHttpsPort + "/basicAuthHttp")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
@@ -96,7 +96,7 @@ public class AutoAuthTest extends MockServerTest {
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/basicAuthHttp"))
                     .getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));

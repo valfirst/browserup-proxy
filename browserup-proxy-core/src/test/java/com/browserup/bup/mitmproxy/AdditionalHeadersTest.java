@@ -44,7 +44,7 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
@@ -74,7 +74,7 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
@@ -150,7 +150,7 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         proxy.removeHeader(headers.entrySet().iterator().next().getKey());
@@ -200,7 +200,7 @@ public class AdditionalHeadersTest extends MockServerTest {
 
         try (CloseableHttpClient client = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(client.execute(new HttpGet("http://localhost:" + mockServerPort + stubUrl)).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         assertEquals(0, proxy.getAllHeaders().size(), "Expected to get no headers left after removing");

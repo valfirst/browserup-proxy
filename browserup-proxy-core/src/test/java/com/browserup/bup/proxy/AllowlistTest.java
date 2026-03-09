@@ -112,7 +112,7 @@ public class AllowlistTest extends MockServerTest {
             assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive expected response from mock server for allowlisted url");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response body from mock server for allowlisted url", "allowlisted");
+            assertEquals("allowlisted", responseBody, "Did not receive expected response body from mock server for allowlisted url");
         }
     }
 
@@ -133,7 +133,7 @@ public class AllowlistTest extends MockServerTest {
             assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive expected response from mock server for allowlisted url");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response body from mock server for allowlisted url", "allowlisted");
+            assertEquals("allowlisted", responseBody, "Did not receive expected response body from mock server for allowlisted url");
         }
     }
 
@@ -166,7 +166,7 @@ public class AllowlistTest extends MockServerTest {
 
             String allowlistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     allowlistedResponse.getEntity().getContent());
-            assertEquals(allowlistedResponseBody, "Did not receive expected response body from mock server for allowlisted url", "allowlisted");
+            assertEquals("allowlisted", allowlistedResponseBody, "Did not receive expected response body from mock server for allowlisted url");
         }
     }
 
@@ -200,7 +200,7 @@ public class AllowlistTest extends MockServerTest {
 
             String allowlistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     allowlistedResponse.getEntity().getContent());
-            assertEquals(allowlistedResponseBody, "Did not receive expected response body from mock server for allowlisted url", "allowlisted");
+            assertEquals("allowlisted", allowlistedResponseBody, "Did not receive expected response body from mock server for allowlisted url");
         }
     }
 }

@@ -2,10 +2,11 @@ package com.browserup.bup.proxy.mitmproxy;
 
 import com.browserup.bup.MitmProxyServer;
 import com.browserup.bup.proxy.bricks.ProxyResource;
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.sitebricks.headless.Request;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -29,15 +30,22 @@ public abstract class ProxyResourceTest extends ProxyManagerTest {
     protected int mockServerPort;
     protected int mockServerHttpsPort;
 
-    @RegisterExtension
-    WireMockExtension wireMockRule = WireMockExtension.newInstance()
-            .options(options().port(0).httpsPort(0))
-            .build();
+    protected WireMockServer wireMockRule;
 
     @BeforeEach
     public void setUpMockServer() {
-        mockServerPort = wireMockRule.getPort();
-        mockServerHttpsPort = wireMockRule.getHttpsPort();
+        wireMockRule = new WireMockServer(options().port(0).httpsPort(0));
+        wireMockRule.start();
+        WireMock.configureFor("localhost", wireMockRule.port());
+        mockServerPort = wireMockRule.port();
+        mockServerHttpsPort = wireMockRule.httpsPort();
+    }
+
+    @AfterEach
+    public void tearDownMockServer() {
+        if (wireMockRule != null && wireMockRule.isRunning()) {
+            wireMockRule.stop();
+        }
     }
 
     @BeforeEach

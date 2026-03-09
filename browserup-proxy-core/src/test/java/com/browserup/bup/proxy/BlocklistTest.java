@@ -113,7 +113,7 @@ public class BlocklistTest extends MockServerTest {
 
             String nonBlocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     nonBlocklistedResourceResponse.getEntity().getContent());
-            assertEquals(nonBlocklistedResponseBody, "Did not receive expected response from mock server", "not blocklisted");
+            assertEquals("not blocklisted", nonBlocklistedResponseBody, "Did not receive expected response from mock server");
 
             CloseableHttpResponse blocklistedResourceResponse = httpClient.execute(new HttpGet("http://localhost:" + String.valueOf(mockServerPort) + "/blocklistedresource"));
             assertEquals(405, blocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
@@ -145,7 +145,7 @@ public class BlocklistTest extends MockServerTest {
 
             String nonBlocklistedResponseBody = NewProxyServerTestUtil.toStringAndClose(
                     nonBlocklistedResourceResponse.getEntity().getContent());
-            assertEquals(nonBlocklistedResponseBody, "Did not receive expected response from mock server", "not blocklisted");
+            assertEquals("not blocklisted", nonBlocklistedResponseBody, "Did not receive expected response from mock server");
 
             CloseableHttpResponse blocklistedResourceResponse = httpClient.execute(new HttpGet("https://localhost:" + String.valueOf(mockServerHttpsPort) + "/blocklistedresource"));
             assertEquals(405, blocklistedResourceResponse.getStatusLine().getStatusCode(), "Did not receive blocklisted status code in response");
@@ -196,7 +196,7 @@ public class BlocklistTest extends MockServerTest {
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected to receive response from mock server after successful CONNECT");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals(responseBody, "Expected to receive HTTP 200 and success message from server", "success");
+            assertEquals("success", responseBody, "Expected to receive HTTP 200 and success message from server");
         }
     }
 }

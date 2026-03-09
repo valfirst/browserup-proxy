@@ -50,7 +50,7 @@ public class RemapHostsTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxyPort)) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("http://www.someaddress.notreal:" + mockServerPort + "/remapHttpHost")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));
@@ -73,7 +73,7 @@ public class RemapHostsTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxyPort)) {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(httpClient.execute(new HttpGet("https://www.someaddress.notreal:" + mockServerHttpsPort + "/remapHttpsHost")).getEntity().getContent());
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlMatching(stubUrl)));

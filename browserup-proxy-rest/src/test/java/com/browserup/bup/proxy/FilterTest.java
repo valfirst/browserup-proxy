@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -65,7 +64,7 @@ public class FilterTest extends ProxyResourceTest {
 
         HttpURLConnection conn = getHttpConnection("/modifyuseragent");
         String body = readBody(conn);
-        assertEquals(body, "Javascript interceptor did not modify the user agent string", "success");
+        assertEquals("success", body, "Javascript interceptor did not modify the user agent string");
         conn.disconnect();
     }
 
@@ -93,7 +92,7 @@ public class FilterTest extends ProxyResourceTest {
         conn.setDoOutput(true);
         conn.getOutputStream().write("original request text".getBytes(StandardCharsets.UTF_8));
         String body = readBody(conn);
-        assertEquals(body, "Javascript interceptor did not modify request body", "success");
+        assertEquals("success", body, "Javascript interceptor did not modify request body");
         conn.disconnect();
     }
 
@@ -117,7 +116,7 @@ public class FilterTest extends ProxyResourceTest {
 
         HttpURLConnection conn = getHttpConnection("/modifyresponse");
         String body = readBody(conn);
-        assertEquals(body, "Javascript interceptor did not modify response text", "modified response text");
+        assertEquals("modified response text", body, "Javascript interceptor did not modify response text");
         conn.disconnect();
     }
 
@@ -217,7 +216,7 @@ public class FilterTest extends ProxyResourceTest {
         int status = conn.getResponseCode();
         String body = readBody(conn);
         assertEquals(402, status, "Expected short-circuit response to return an HTTP 402 Payment Required");
-        assertEquals(body, "Expected short-circuit response to contain body text set in Javascript", "You have to pay the troll toll to get into this Proxy's soul");
+        assertEquals("You have to pay the troll toll to get into this Proxy's soul", body, "Expected short-circuit response to contain body text set in Javascript");
         conn.disconnect();
     }
 

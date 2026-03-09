@@ -115,7 +115,7 @@ public class InterceptorTest extends MockServerTest {
             assertFalse(shortCircuitFired.get(), "Did not expected short circuit interceptor code to execute");
 
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
 
             verify(1, getRequestedFor(urlEqualTo(url1)));
         }
@@ -183,7 +183,7 @@ public class InterceptorTest extends MockServerTest {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
 
             verify(1, getRequestedFor(urlEqualTo(url)));
         }
@@ -219,7 +219,7 @@ public class InterceptorTest extends MockServerTest {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
 
             verify(1, putRequestedFor(urlEqualTo(url)));
         }
@@ -256,7 +256,7 @@ public class InterceptorTest extends MockServerTest {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
 
             verify(1, putRequestedFor(urlEqualTo(url)));
         }
@@ -610,7 +610,7 @@ public class InterceptorTest extends MockServerTest {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
@@ -624,7 +624,7 @@ public class InterceptorTest extends MockServerTest {
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
 
             assertEquals(200, response.getStatusLine().getStatusCode(), "Expected server to return a 200");
-            assertEquals(responseBody, "Did not receive expected response from mock server", "success");
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         Thread.sleep(500);
