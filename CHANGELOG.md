@@ -1,6 +1,18 @@
 # Changelog
 
-# [Unreleased - 3.2.3-SNAPSHOT]
+# [3.2.3]
+## Changed
+- Migrate unit tests from Groovy to Java (https://github.com/valfirst/browserup-proxy/pull/596)
+- Use JUnit BOM for centralized JUnit version management (https://github.com/valfirst/browserup-proxy/pull/609)
+- Migrate unit tests from JUnit 4 to JUnit 5 (https://github.com/valfirst/browserup-proxy/pull/610)
+
+### Dependencies
+- Bump LittleProxy from `2.4.5` to `2.6.0` (https://github.com/valfirst/browserup-proxy/pull/570, https://github.com/valfirst/browserup-proxy/pull/583, https://github.com/valfirst/browserup-proxy/pull/585, https://github.com/valfirst/browserup-proxy/pull/586)
+- Bump Netty from `4.2.7.Final` to `4.2.12.Final` (https://github.com/valfirst/browserup-proxy/pull/580, https://github.com/valfirst/browserup-proxy/pull/584, https://github.com/valfirst/browserup-proxy/pull/592, https://github.com/valfirst/browserup-proxy/pull/618)
+- Bump Bouncy Castle from `1.82` to `1.83` (https://github.com/valfirst/browserup-proxy/pull/577)
+- Bump Log4J from `2.25.2` to `2.25.4` (https://github.com/valfirst/browserup-proxy/pull/582, https://github.com/valfirst/browserup-proxy/pull/619)
+- Bump Jackson from `2.20.0` to `2.21.2` (https://github.com/valfirst/browserup-proxy/pull/569, https://github.com/valfirst/browserup-proxy/pull/588, https://github.com/valfirst/browserup-proxy/pull/594, https://github.com/valfirst/browserup-proxy/pull/615)
+- Bump Apache Commons Lang from `3.19.0` to `3.20.0` (https://github.com/valfirst/browserup-proxy/pull/572)
 
 # [3.2.2]
 ## Fixed
