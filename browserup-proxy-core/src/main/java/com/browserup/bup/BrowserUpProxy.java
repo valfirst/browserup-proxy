@@ -9,7 +9,7 @@ import com.browserup.bup.proxy.CaptureType;
 import com.browserup.bup.proxy.auth.AuthType;
 import com.browserup.bup.proxy.dns.AdvancedHostResolver;
 import com.browserup.bup.util.HttpStatusClass;
-
+import com.browserup.bup.websocket.WebSocketListener;
 import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarEntry;
 import de.sstoehr.harreader.model.HarPageTiming;
@@ -103,7 +103,7 @@ public interface BrowserUpProxy {
     int getPort();
 
     /**
-     * Returns the address address of the network interface the proxy will use to initiate upstream connections. If no server bind address
+     * Returns the address of the network interface the proxy will use to initiate upstream connections. If no server bind address
      * has been set, this method returns null, even if the proxy has been started.
      *
      * @return server bind address if one has been set, otherwise null
@@ -334,7 +334,8 @@ public interface BrowserUpProxy {
     void stopAutoAuthorization(String domain);
 
     /**
-     * Enables chained proxy authorization using the Proxy-Authorization header described in RFC 7235, section 4.4 (https://tools.ietf.org/html/rfc7235#section-4.4).
+     * Enables chained proxy authorization using the Proxy-Authorization header described in
+     * <a href="https://tools.ietf.org/html/rfc7235#section-4.4">RFC 7235, section 4.4</a>.
      * Currently, only {@link AuthType#BASIC} authentication is supported.
      *
      * @param username the username to use to authenticate with the chained proxy
@@ -1006,4 +1007,30 @@ public interface BrowserUpProxy {
      * @return Assertion result
      */
     AssertionResult assertMostRecentResponseStatusCode(Pattern url, HttpStatusClass clazz);
+
+    /**
+     * Registers a listener that will be called for every WebSocket frame (text, binary, or control)
+     * intercepted by the proxy, in both directions.
+     * <p>
+     * Listeners are invoked on Netty IO threads — implementations must be non-blocking.
+     *
+     * @param listener the listener to add
+     * @since 3.3.0
+     */
+    void addWebSocketListener(WebSocketListener listener);
+
+    /**
+     * Removes a previously registered WebSocket listener.
+     *
+     * @param listener the listener to remove
+     * @since 3.3.0
+     */
+    void removeWebSocketListener(WebSocketListener listener);
+
+    /**
+     * Removes all previously registered WebSocket listeners.
+     *
+     * @since 3.3.0
+     */
+    void removeAllWebSocketListeners();
 }

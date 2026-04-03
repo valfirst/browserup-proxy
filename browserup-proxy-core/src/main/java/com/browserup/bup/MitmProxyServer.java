@@ -28,6 +28,7 @@ import com.browserup.bup.proxy.auth.AuthType;
 import com.browserup.bup.proxy.dns.AdvancedHostResolver;
 import com.browserup.bup.util.BrowserUpHttpUtil;
 import com.browserup.bup.util.HttpStatusClass;
+import com.browserup.bup.websocket.WebSocketListener;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.littleshoot.proxy.HttpFiltersSource;
@@ -765,5 +766,24 @@ public class MitmProxyServer implements BrowserUpProxy {
             .setMessage(resultMessage)
             .setPassed(failedCount.get() == 0)
             .create();
+  }
+
+  @Override
+  public void addWebSocketListener(WebSocketListener listener) {
+    reportWebsocketsNotSupported();
+  }
+
+  @Override
+  public void removeWebSocketListener(WebSocketListener listener) {
+    reportWebsocketsNotSupported();
+  }
+
+  @Override
+  public void removeAllWebSocketListeners() {
+    reportWebsocketsNotSupported();
+  }
+
+  private void reportWebsocketsNotSupported() {
+    throw new UnsupportedOperationException("WebSocket capture is not supported by MitmProxyServer");
   }
 }

@@ -41,6 +41,7 @@ import com.browserup.bup.filters.ResponseFilterAdapter;
 import com.browserup.bup.filters.RewriteUrlFilter;
 import com.browserup.bup.filters.UnregisterRequestFilter;
 import com.browserup.bup.filters.AllowlistFilter;
+import com.browserup.bup.filters.WebSocketCaptureFilter;
 import com.browserup.bup.mitm.KeyStoreFileCertificateSource;
 import com.browserup.bup.mitm.TrustSource;
 import com.browserup.bup.mitm.keys.ECKeyGenerator;
@@ -57,6 +58,7 @@ import com.browserup.bup.proxy.dns.DelegatingHostResolver;
 import com.browserup.bup.util.BrowserUpHttpUtil;
 import com.browserup.bup.util.BrowserUpProxyUtil;
 import com.browserup.bup.util.HttpStatusClass;
+import com.browserup.bup.websocket.WebSocketListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
@@ -172,6 +174,11 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
      * The list of filterFactories that will generate the filters that implement BrowserUp-proxy behavior.
      */
     private final List<HttpFiltersSource> filterFactories = new CopyOnWriteArrayList<>();
+
+    /**
+     * Listeners that will be notified of every intercepted WebSocket frame
+     */
+    private final List<WebSocketListener> webSocketListeners = new CopyOnWriteArrayList<>();
 
     /**
      * The default maximum buffer size when aggregating requests for filtering.
@@ -1561,6 +1568,16 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
                 return new UnregisterRequestFilter(originalRequest, ctx, activityMonitor);
             }
         });
+
+        addHttpFilterFactory(new HttpFiltersSourceAdapter() {
+            @Override
+            public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
+                if (ProxyUtils.isCONNECT(originalRequest)) {
+                    return null;
+                }
+                return new WebSocketCaptureFilter(originalRequest, ctx, webSocketListeners);
+            }
+        });
     }
 
     private int getMaximumRequestBufferSize() {
@@ -1672,5 +1689,20 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
         return getHar().getLog().getPages().stream()
                 .filter(p -> p.getTitle().equals(DEFAULT_PAGE_REF))
                 .findFirst();
+    }
+
+    @Override
+    public void addWebSocketListener(WebSocketListener listener) {
+        webSocketListeners.add(listener);
+    }
+
+    @Override
+    public void removeWebSocketListener(WebSocketListener listener) {
+        webSocketListeners.remove(listener);
+    }
+
+    @Override
+    public void removeAllWebSocketListeners() {
+        webSocketListeners.clear();
     }
 }
