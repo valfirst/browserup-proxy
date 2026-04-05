@@ -3,6 +3,7 @@ package com.browserup.bup;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.filters.RequestFilter;
 import com.browserup.bup.filters.ResponseFilter;
+import com.browserup.bup.filters.WebSocketListener;
 import com.browserup.bup.mitm.TrustSource;
 import com.browserup.bup.proxy.BlocklistEntry;
 import com.browserup.bup.proxy.CaptureType;
@@ -644,6 +645,26 @@ public interface BrowserUpProxy {
      * @param filter (previously added) filter instance
      */
     void removeRequestFilter(RequestFilter filter);
+
+    /**
+     * Adds a listener that is notified whenever a WebSocket frame passes through the proxy,
+     * in either direction. The listener is read-only and cannot modify or suppress frames.
+     *
+     * @param listener listener instance
+     */
+    void addWebSocketListener(WebSocketListener listener);
+
+    /**
+     * Removes a previously added WebSocketListener.
+     *
+     * @param listener (previously added) listener instance
+     */
+    void removeWebSocketListener(WebSocketListener listener);
+
+    /**
+     * Removes all previously added WebSocketListeners.
+     */
+    void removeAllWebSocketListeners();
 
     /**
      * Completely disables MITM for this proxy server. The proxy will no longer intercept HTTPS requests, but they will
