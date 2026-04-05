@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * The filter "driver" that delegates to all chained filters specified by the proxy server.
@@ -277,6 +278,17 @@ public class BrowserUpHttpFilterChain extends HttpFiltersAdapter {
         }
 
         return processedHttpObject;
+    }
+
+    @Override
+    public void webSocketFrameReceived(Supplier<byte[]> frameBytes, boolean fromClient) {
+        filters.forEach(filter -> {
+            try {
+                filter.webSocketFrameReceived(frameBytes, fromClient);
+            } catch (RuntimeException e) {
+                log.warn("Filter in filter chain threw exception. Filter method may have been aborted.", e);
+            }
+        });
     }
 
     @Override

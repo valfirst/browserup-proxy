@@ -40,6 +40,8 @@ import com.browserup.bup.filters.ResponseFilter;
 import com.browserup.bup.filters.ResponseFilterAdapter;
 import com.browserup.bup.filters.RewriteUrlFilter;
 import com.browserup.bup.filters.UnregisterRequestFilter;
+import com.browserup.bup.filters.WebSocketHandshakeFilter;
+import com.browserup.bup.filters.WebSocketListener;
 import com.browserup.bup.filters.AllowlistFilter;
 import com.browserup.bup.mitm.KeyStoreFileCertificateSource;
 import com.browserup.bup.mitm.TrustSource;
@@ -172,6 +174,11 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
      * The list of filterFactories that will generate the filters that implement BrowserUp-proxy behavior.
      */
     private final List<HttpFiltersSource> filterFactories = new CopyOnWriteArrayList<>();
+
+    /**
+     * Listeners that are notified when WebSocket frames pass through the proxy.
+     */
+    private final List<WebSocketListener> webSocketListeners = new CopyOnWriteArrayList<>();
 
     /**
      * The default maximum buffer size when aggregating requests for filtering.
@@ -1149,6 +1156,21 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
     }
 
     @Override
+    public void addWebSocketListener(WebSocketListener listener) {
+        webSocketListeners.add(listener);
+    }
+
+    @Override
+    public void removeWebSocketListener(WebSocketListener listener) {
+        webSocketListeners.remove(listener);
+    }
+
+    @Override
+    public void removeAllWebSocketListeners() {
+        webSocketListeners.clear();
+    }
+
+    @Override
     public Map<String, String> getRewriteRules() {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         rewriteRules.forEach(rewriteRule -> builder.put(rewriteRule.getPattern().pattern(), rewriteRule.getReplace()));
@@ -1499,6 +1521,13 @@ public class BrowserUpProxyServer implements BrowserUpProxy {
      * Adds the basic BrowserUp-proxy filters, except for the relatively-expensive HAR capture filter.
      */
     protected void addBrowserUpFilters() {
+        addHttpFilterFactory(new HttpFiltersSourceAdapter() {
+            @Override
+            public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
+                return new WebSocketHandshakeFilter(originalRequest, ctx, webSocketListeners);
+            }
+        });
+
         addHttpFilterFactory(new HttpFiltersSourceAdapter() {
             @Override
             public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
