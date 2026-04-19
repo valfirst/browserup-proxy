@@ -14,7 +14,7 @@ subprojects {
     apply plugin: 'org.jreleaser'
 
     group = 'com.github.valfirst.browserup-proxy'
-    version = '3.3.0'
+    version = '3.3.1-SNAPSHOT'
 
     sourceCompatibility=11
 

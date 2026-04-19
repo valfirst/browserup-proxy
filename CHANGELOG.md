@@ -1,5 +1,7 @@
 # Changelog
 
+ [Unreleased - 3.3.1-SNAPSHOT]
+
 # [3.3.0]
 ## Added
 - Add WebSockets support (https://github.com/valfirst/browserup-proxy/pull/623) \
