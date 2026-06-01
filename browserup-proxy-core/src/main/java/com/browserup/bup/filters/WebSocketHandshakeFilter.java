@@ -33,11 +33,27 @@ public class WebSocketHandshakeFilter extends HttpsAwareFiltersAdapter {
     private final boolean isWebSocketUpgrade;
     private final List<WebSocketListener> listeners;
 
+    // Persistent per-direction decoder channels so that WebSocket frames split
+    // across multiple TCP callbacks are reassembled correctly.
+    private EmbeddedChannel clientDecoderChannel;
+    private EmbeddedChannel serverDecoderChannel;
+
     public WebSocketHandshakeFilter(HttpRequest originalRequest, ChannelHandlerContext ctx,
                                     List<WebSocketListener> listeners) {
         super(originalRequest, ctx);
         this.isWebSocketUpgrade = isWebSocketUpgradeRequest(originalRequest);
         this.listeners = listeners;
+        if (isWebSocketUpgrade) {
+            // Client-to-server frames are masked per RFC 6455; server-to-client frames are not.
+            clientDecoderChannel = newDecoderChannel(true);
+            serverDecoderChannel = newDecoderChannel(false);
+            ctx.channel().closeFuture().addListener(f -> closeDecoderChannels());
+        }
+    }
+
+    private static EmbeddedChannel newDecoderChannel(boolean expectMaskedFrames) {
+        return new EmbeddedChannel(
+                new WebSocket13FrameDecoder(expectMaskedFrames, false, Integer.MAX_VALUE));
     }
 
     @Override
@@ -56,12 +72,10 @@ public class WebSocketHandshakeFilter extends HttpsAwareFiltersAdapter {
             return;
         }
         byte[] frameBytes = frameBytesSource.get();
-
-        // Client-to-server frames are masked per RFC 6455; server-to-client frames are not.
-        // WebSocket13FrameDecoder handles masking/unmasking when expectMaskedFrames matches.
-        boolean expectMaskedFrames = fromClient;
-        EmbeddedChannel decoderChannel = new EmbeddedChannel(
-                new WebSocket13FrameDecoder(expectMaskedFrames, false, Integer.MAX_VALUE));
+        EmbeddedChannel decoderChannel = fromClient ? clientDecoderChannel : serverDecoderChannel;
+        if (decoderChannel == null) {
+            return;
+        }
         try {
             decoderChannel.writeInbound(Unpooled.wrappedBuffer(frameBytes));
             io.netty.handler.codec.http.websocketx.WebSocketFrame nettyFrame;
@@ -73,8 +87,15 @@ public class WebSocketHandshakeFilter extends HttpsAwareFiltersAdapter {
                     nettyFrame.release();
                 }
             }
-        } finally {
-            decoderChannel.finish();
+        } catch (Exception e) {
+            log.warn("Error decoding WebSocket {} frame; resetting decoder",
+                    fromClient ? "client" : "server", e);
+            EmbeddedChannel replacement = newDecoderChannel(fromClient);
+            if (fromClient) {
+                clientDecoderChannel = replacement;
+            } else {
+                serverDecoderChannel = replacement;
+            }
         }
     }
 
@@ -87,6 +108,15 @@ public class WebSocketHandshakeFilter extends HttpsAwareFiltersAdapter {
             } catch (RuntimeException e) {
                 log.warn("WebSocketListener threw exception", e);
             }
+        }
+    }
+
+    private void closeDecoderChannels() {
+        if (clientDecoderChannel != null) {
+            try { clientDecoderChannel.finish(); } catch (Exception ignored) {}
+        }
+        if (serverDecoderChannel != null) {
+            try { serverDecoderChannel.finish(); } catch (Exception ignored) {}
         }
     }
 
