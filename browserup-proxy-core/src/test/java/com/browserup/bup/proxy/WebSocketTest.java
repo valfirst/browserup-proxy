@@ -62,6 +62,7 @@ class WebSocketTest {
         int proxyPort = proxy.getPort();
 
         try (Socket socket = new Socket("localhost", proxyPort)) {
+            socket.setSoTimeout(5000);
             OutputStream out = socket.getOutputStream();
             InputStream in = socket.getInputStream();
 
@@ -130,6 +131,7 @@ class WebSocketTest {
 
             // Echo back the first WebSocket frame (client frames are masked)
             echoWebSocketFrame(in, out);
+            Thread.sleep(50);
         } catch (Exception e) {
             // server closed or test ended
         }
@@ -179,34 +181,66 @@ class WebSocketTest {
      * Reads a masked WebSocket text frame, unmasks it, and returns the text.
      */
     private static String readWebSocketTextFrame(InputStream in) throws IOException {
-        int b0 = in.read(); // FIN + opcode
-        int b1 = in.read(); // MASK + length
-        boolean masked = (b1 & 0x80) != 0;
-        int length = b1 & 0x7F;
+        while (true) {
+            int b0 = in.read();
+            int b1 = in.read();
+            if (b0 == -1 || b1 == -1) {
+                throw new IOException("Stream closed before receiving a text WebSocket frame");
+            }
 
-        byte[] maskKey = null;
-        if (masked) {
-            maskKey = new byte[4];
-            for (int i = 0; i < 4; i++) {
-                maskKey[i] = (byte) in.read();
+            int opcode = b0 & 0x0F;
+            boolean masked = (b1 & 0x80) != 0;
+            int length = b1 & 0x7F;
+            if (length == 126) {
+                length = (readUnsignedByte(in) << 8) | readUnsignedByte(in);
+            } else if (length == 127) {
+                long longLength = 0;
+                for (int i = 0; i < 8; i++) {
+                    longLength = (longLength << 8) | readUnsignedByte(in);
+                }
+                if (longLength > Integer.MAX_VALUE) {
+                    throw new IOException("WebSocket frame too large");
+                }
+                length = (int) longLength;
+            }
+
+            byte[] maskKey = null;
+            if (masked) {
+                maskKey = readFully(in, 4);
+            }
+
+            byte[] payload = readFully(in, length);
+            if (masked && maskKey != null) {
+                for (int i = 0; i < payload.length; i++) {
+                    payload[i] ^= maskKey[i % 4];
+                }
+            }
+
+            if (opcode == 0x1) {
+                return new String(payload, StandardCharsets.UTF_8);
             }
         }
+    }
 
-        byte[] payload = new byte[length];
+    private static int readUnsignedByte(InputStream in) throws IOException {
+        int value = in.read();
+        if (value == -1) {
+            throw new IOException("Unexpected end of stream");
+        }
+        return value;
+    }
+
+    private static byte[] readFully(InputStream in, int length) throws IOException {
+        byte[] data = new byte[length];
         int offset = 0;
         while (offset < length) {
-            int read = in.read(payload, offset, length - offset);
-            if (read == -1) break;
+            int read = in.read(data, offset, length - offset);
+            if (read == -1) {
+                throw new IOException("Unexpected end of stream");
+            }
             offset += read;
         }
-
-        if (masked && maskKey != null) {
-            for (int i = 0; i < payload.length; i++) {
-                payload[i] ^= maskKey[i % 4];
-            }
-        }
-
-        return new String(payload, StandardCharsets.UTF_8);
+        return data;
     }
 
     /**
