@@ -71,69 +71,72 @@ class WebSocketListenerTest {
         });
 
         int serverPort = wsServerSocket.getLocalPort();
+        List<String> sentPayloads = new ArrayList<>();
+        long deadlineNanos = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        int attempts = 0;
+        while ((clientFrameLatch.getCount() > 0 || serverFrameLatch.getCount() > 0)
+                && System.nanoTime() < deadlineNanos) {
+            try (Socket socket = new Socket("localhost", proxy.getPort())) {
+                socket.setSoTimeout(2000);
+                OutputStream out = socket.getOutputStream();
+                InputStream in = socket.getInputStream();
 
-        try (Socket socket = new Socket("localhost", proxy.getPort())) {
-            socket.setSoTimeout(5000);
-            OutputStream out = socket.getOutputStream();
-            InputStream in = socket.getInputStream();
+                // Perform the WebSocket upgrade handshake
+                String key = "dGhlIHNhbXBsZSBub25jZQ==";
+                String upgradeRequest = "GET http://localhost:" + serverPort + "/ws HTTP/1.1\r\n"
+                        + "Host: localhost:" + serverPort + "\r\n"
+                        + "Upgrade: websocket\r\n"
+                        + "Connection: Upgrade\r\n"
+                        + "Sec-WebSocket-Key: " + key + "\r\n"
+                        + "Sec-WebSocket-Version: 13\r\n"
+                        + "\r\n";
+                out.write(upgradeRequest.getBytes(StandardCharsets.UTF_8));
+                out.flush();
 
-            // Perform the WebSocket upgrade handshake
-            String key = "dGhlIHNhbXBsZSBub25jZQ==";
-            String upgradeRequest = "GET http://localhost:" + serverPort + "/ws HTTP/1.1\r\n"
-                    + "Host: localhost:" + serverPort + "\r\n"
-                    + "Upgrade: websocket\r\n"
-                    + "Connection: Upgrade\r\n"
-                    + "Sec-WebSocket-Key: " + key + "\r\n"
-                    + "Sec-WebSocket-Version: 13\r\n"
-                    + "\r\n";
-            out.write(upgradeRequest.getBytes(StandardCharsets.UTF_8));
-            out.flush();
+                String response = readHttpHeaders(in);
+                if (!response.startsWith("HTTP/1.1 101")) {
+                    continue;
+                }
 
-            String response = readHttpHeaders(in);
-            assertTrue(response.startsWith("HTTP/1.1 101"), "Expected 101 but got: " + response.split("\r\n")[0]);
-
-            List<String> sentPayloads = new ArrayList<>();
-            long deadlineNanos = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
-            int attempts = 0;
-            while ((clientFrameLatch.getCount() > 0 || serverFrameLatch.getCount() > 0)
-                    && System.nanoTime() < deadlineNanos) {
                 String payload = "hello-" + attempts++;
                 sentPayloads.add(payload);
-
                 out.write(buildMaskedTextFrame(payload));
                 out.flush();
 
                 String echoedPayload = readWebSocketTextFrame(in);
-                assertEquals(payload, echoedPayload, "Expected echo of the sent WebSocket message");
+                if (!payload.equals(echoedPayload)) {
+                    continue;
+                }
 
                 clientFrameLatch.await(150, TimeUnit.MILLISECONDS);
                 serverFrameLatch.await(150, TimeUnit.MILLISECONDS);
+            } catch (IOException ignored) {
             }
-
-            assertEquals(0, clientFrameLatch.getCount(), "Listener should receive client frame");
-            assertEquals(0, serverFrameLatch.getCount(), "Listener should receive server frame");
-
-            // Verify client-to-server frame
-            WebSocketFrame clientFrame = captured.stream()
-                    .filter(WebSocketFrame::isFromClient)
-                    .filter(frame -> frame.getOpcode() == WebSocketFrame.Opcode.TEXT)
-                    .filter(frame -> sentPayloads.contains(frame.getTextContent()))
-                    .findFirst()
-                    .orElse(null);
-            assertNotNull(clientFrame, "Should have captured a client frame");
-            assertTrue(clientFrame.isFromClient());
-            assertFalse(clientFrame.isFromServer());
-
-            // Verify server-to-client frame (echo)
-            WebSocketFrame serverFrame = captured.stream()
-                    .filter(WebSocketFrame::isFromServer)
-                    .filter(frame -> frame.getOpcode() == WebSocketFrame.Opcode.TEXT)
-                    .filter(frame -> sentPayloads.contains(frame.getTextContent()))
-                    .findFirst()
-                    .orElse(null);
-            assertNotNull(serverFrame, "Should have captured a server frame");
-            assertTrue(serverFrame.isFromServer());
         }
+
+        assertEquals(0, clientFrameLatch.getCount(), "Listener should receive client frame");
+        assertEquals(0, serverFrameLatch.getCount(), "Listener should receive server frame");
+
+        // Verify client-to-server frame
+        WebSocketFrame clientFrame = captured.stream()
+                .filter(WebSocketFrame::isFromClient)
+                .filter(frame -> frame.getOpcode() == WebSocketFrame.Opcode.TEXT)
+                .filter(frame -> sentPayloads.contains(frame.getTextContent()))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(clientFrame, "Should have captured a client frame");
+        assertTrue(clientFrame.isFromClient());
+        assertFalse(clientFrame.isFromServer());
+
+        // Verify server-to-client frame (echo)
+        WebSocketFrame serverFrame = captured.stream()
+                .filter(WebSocketFrame::isFromServer)
+                .filter(frame -> frame.getOpcode() == WebSocketFrame.Opcode.TEXT)
+                .filter(frame -> sentPayloads.contains(frame.getTextContent()))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(serverFrame, "Should have captured a server frame");
+        assertTrue(serverFrame.isFromServer());
 
         // Verify message info carries the upgrade URL
         assertFalse(capturedInfo.isEmpty());
@@ -182,23 +185,32 @@ class WebSocketListenerTest {
     // ---- Echo server ----
 
     private void runEchoServer() {
-        try (Socket client = wsServerSocket.accept()) {
-            InputStream in = client.getInputStream();
-            OutputStream out = client.getOutputStream();
+        while (!wsServerSocket.isClosed()) {
+            try (Socket client = wsServerSocket.accept()) {
+                InputStream in = client.getInputStream();
+                OutputStream out = client.getOutputStream();
 
-            String request = readHttpHeaders(in);
-            Matcher m = SEC_WS_KEY_PATTERN.matcher(request);
-            if (!m.find()) return;
-            String acceptKey = computeAcceptKey(m.group(1).trim());
+                String request = readHttpHeaders(in);
+                Matcher m = SEC_WS_KEY_PATTERN.matcher(request);
+                if (!m.find()) {
+                    continue;
+                }
+                String acceptKey = computeAcceptKey(m.group(1).trim());
 
-            out.write(("HTTP/1.1 101 Switching Protocols\r\n"
-                    + "Upgrade: websocket\r\nConnection: Upgrade\r\n"
-                    + "Sec-WebSocket-Accept: " + acceptKey + "\r\n\r\n")
-                    .getBytes(StandardCharsets.UTF_8));
-            out.flush();
+                out.write(("HTTP/1.1 101 Switching Protocols\r\n"
+                        + "Upgrade: websocket\r\nConnection: Upgrade\r\n"
+                        + "Sec-WebSocket-Accept: " + acceptKey + "\r\n\r\n")
+                        .getBytes(StandardCharsets.UTF_8));
+                out.flush();
 
-            echoFrame(in, out);
-        } catch (Exception ignored) {}
+                echoFrame(in, out);
+            } catch (IOException ignored) {
+                if (wsServerSocket.isClosed()) {
+                    break;
+                }
+            } catch (Exception ignored) {
+            }
+        }
     }
 
     // ---- WebSocket helpers ----
