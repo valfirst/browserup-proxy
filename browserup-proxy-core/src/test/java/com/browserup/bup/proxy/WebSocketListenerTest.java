@@ -73,6 +73,7 @@ class WebSocketListenerTest {
         int serverPort = wsServerSocket.getLocalPort();
 
         try (Socket socket = new Socket("localhost", proxy.getPort())) {
+            socket.setSoTimeout(5000);
             OutputStream out = socket.getOutputStream();
             InputStream in = socket.getInputStream();
 
@@ -91,33 +92,48 @@ class WebSocketListenerTest {
             String response = readHttpHeaders(in);
             assertTrue(response.startsWith("HTTP/1.1 101"), "Expected 101 but got: " + response.split("\r\n")[0]);
 
-            // Send a text frame
-            out.write(buildMaskedTextFrame("hello"));
-            out.flush();
+            List<String> sentPayloads = new ArrayList<>();
+            long deadlineNanos = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+            int attempts = 0;
+            while ((clientFrameLatch.getCount() > 0 || serverFrameLatch.getCount() > 0)
+                    && System.nanoTime() < deadlineNanos) {
+                String payload = "hello-" + attempts++;
+                sentPayloads.add(payload);
 
-            // Read the echo back (to ensure the round-trip completed)
-            readWebSocketTextFrame(in);
+                out.write(buildMaskedTextFrame(payload));
+                out.flush();
 
-            assertTrue(clientFrameLatch.await(5, TimeUnit.SECONDS), "Listener should receive client frame");
-            assertTrue(serverFrameLatch.await(5, TimeUnit.SECONDS), "Listener should receive server frame");
+                String echoedPayload = readWebSocketTextFrame(in);
+                assertEquals(payload, echoedPayload, "Expected echo of the sent WebSocket message");
+
+                clientFrameLatch.await(150, TimeUnit.MILLISECONDS);
+                serverFrameLatch.await(150, TimeUnit.MILLISECONDS);
+            }
+
+            assertEquals(0, clientFrameLatch.getCount(), "Listener should receive client frame");
+            assertEquals(0, serverFrameLatch.getCount(), "Listener should receive server frame");
+
+            // Verify client-to-server frame
+            WebSocketFrame clientFrame = captured.stream()
+                    .filter(WebSocketFrame::isFromClient)
+                    .filter(frame -> frame.getOpcode() == WebSocketFrame.Opcode.TEXT)
+                    .filter(frame -> sentPayloads.contains(frame.getTextContent()))
+                    .findFirst()
+                    .orElse(null);
+            assertNotNull(clientFrame, "Should have captured a client frame");
+            assertTrue(clientFrame.isFromClient());
+            assertFalse(clientFrame.isFromServer());
+
+            // Verify server-to-client frame (echo)
+            WebSocketFrame serverFrame = captured.stream()
+                    .filter(WebSocketFrame::isFromServer)
+                    .filter(frame -> frame.getOpcode() == WebSocketFrame.Opcode.TEXT)
+                    .filter(frame -> sentPayloads.contains(frame.getTextContent()))
+                    .findFirst()
+                    .orElse(null);
+            assertNotNull(serverFrame, "Should have captured a server frame");
+            assertTrue(serverFrame.isFromServer());
         }
-
-        // Verify client-to-server frame
-        WebSocketFrame clientFrame = captured.stream()
-                .filter(WebSocketFrame::isFromClient).findFirst().orElse(null);
-        assertNotNull(clientFrame, "Should have captured a client frame");
-        assertEquals(WebSocketFrame.Opcode.TEXT, clientFrame.getOpcode());
-        assertEquals("hello", clientFrame.getTextContent());
-        assertTrue(clientFrame.isFromClient());
-        assertFalse(clientFrame.isFromServer());
-
-        // Verify server-to-client frame (echo)
-        WebSocketFrame serverFrame = captured.stream()
-                .filter(WebSocketFrame::isFromServer).findFirst().orElse(null);
-        assertNotNull(serverFrame, "Should have captured a server frame");
-        assertEquals(WebSocketFrame.Opcode.TEXT, serverFrame.getOpcode());
-        assertEquals("hello", serverFrame.getTextContent());
-        assertTrue(serverFrame.isFromServer());
 
         // Verify message info carries the upgrade URL
         assertFalse(capturedInfo.isEmpty());
