@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -131,7 +132,16 @@ class WebSocketTest {
 
             // Echo back the first WebSocket frame (client frames are masked)
             echoWebSocketFrame(in, out);
-            Thread.sleep(50);
+
+            // Keep the connection open briefly so the echoed frame can transit the proxy before teardown.
+            client.setSoTimeout((int) TimeUnit.SECONDS.toMillis(2));
+            try {
+                while (in.read() != -1) {
+                    // wait for client close
+                }
+            } catch (SocketTimeoutException ignored) {
+                // test client may close quickly; timeout keeps the server from hanging
+            }
         } catch (Exception e) {
             // server closed or test ended
         }
