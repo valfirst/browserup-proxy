@@ -28,7 +28,7 @@ subprojects {
         littleProxyVersion = '2.9.1'
         slf4jVersion = '2.0.19'
         swaggerVersion = '2.2.55'
-        guavaVersion = '33.7.1-jre'
+        guavaVersion = '33.7.2-jre'
         seleniumVersion = '4.33.0'
         hamcrestVersion = '3.0'
         junitVersion = '5.14.3'
