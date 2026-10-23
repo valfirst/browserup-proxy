@@ -99,6 +99,7 @@ clients.each { client ->
     def postProcessor = client.postProcessor
 
     task "openApiGenerate${lang}Client"(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+        dependsOn resolve
         def language = lang.toLowerCase()
         generatorName = language
         inputSpec = "$buildDir/openapi/openapi.yaml".toString()
