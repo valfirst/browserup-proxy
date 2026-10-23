@@ -69,8 +69,13 @@ class PythonClientPostProcessor {
                 processInitFile(it)
             }
         }
-        new File("${clientDir}/openapi_client/${Constants.apiPackage}/model/__init__.py") <<
-                new File("${clientDir}/openapi_client/${Constants.modelPackage}/__init__.py").text
+        def apiModelInit = new File("${clientDir}/openapi_client/${Constants.apiPackage}/model/__init__.py")
+        def modelInit = new File("${clientDir}/openapi_client/${Constants.modelPackage}/__init__.py")
+        if (modelInit.isFile() && modelInit != apiModelInit) {
+            apiModelInit << modelInit.text
+        } else if (!apiModelInit.isFile()) {
+            throw new FileNotFoundException("Generated Python model package initializer not found: ${apiModelInit}")
+        }
     }
 
     private static void processInitFile(File initFile) {
