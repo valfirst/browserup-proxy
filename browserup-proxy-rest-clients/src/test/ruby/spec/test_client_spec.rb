@@ -12,7 +12,9 @@ describe OpenapiClient do
     p "PROXY_PORT = #{proxy_port}"
 
     api_instance = OpenapiClient::DefaultApi.new
+    api_instance.api_client.config.scheme = 'http'
     api_instance.api_client.config.host = "#{proxy_rest_host}:#{proxy_rest_port}"
+    api_instance.api_client.config.server_index = nil
     port = proxy_port
     url_pattern = '^.*$'
 
