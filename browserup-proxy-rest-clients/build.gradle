@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id "io.swagger.core.v3.swagger-gradle-plugin" version "${swaggerVersion}"
-    id 'org.openapi.generator' version '4.3.1'
+    id 'org.openapi.generator' version '5.4.0'
 }
 
 archivesBaseName = 'browserup-proxy-rest-clients'
@@ -69,8 +69,13 @@ class PythonClientPostProcessor {
                 processInitFile(it)
             }
         }
-        new File("${clientDir}/openapi_client/${Constants.apiPackage}/model/__init__.py") <<
-                new File("${clientDir}/openapi_client/${Constants.modelPackage}/__init__.py").text
+        def apiModelInit = new File("${clientDir}/openapi_client/${Constants.apiPackage}/model/__init__.py")
+        def modelInit = new File("${clientDir}/openapi_client/${Constants.modelPackage}/__init__.py")
+        if (modelInit.isFile() && modelInit != apiModelInit) {
+            apiModelInit << modelInit.text
+        } else if (!apiModelInit.isFile()) {
+            throw new FileNotFoundException("Generated Python model package initializer not found: ${apiModelInit}")
+        }
     }
 
     private static void processInitFile(File initFile) {
@@ -99,14 +104,15 @@ clients.each { client ->
     def postProcessor = client.postProcessor
 
     task "openApiGenerate${lang}Client"(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+        dependsOn resolve
         def language = lang.toLowerCase()
-        generatorName = language
+        generatorName = language == 'python' ? 'python-legacy' : language
         inputSpec = "$buildDir/openapi/openapi.yaml".toString()
         outputDir = "$buildDir/openapi-clients/$language/".toString()
         apiPackage = Constants.apiPackage
         modelPackage = Constants.modelPackage
         invokerPackage = "browserup.invoker"
-        systemProperties = [
+        globalProperties = [
                 modelDocs: 'false'
         ]
         skipValidateSpec = true
