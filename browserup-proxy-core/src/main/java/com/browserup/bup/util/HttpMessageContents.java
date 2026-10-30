@@ -2,7 +2,6 @@ package com.browserup.bup.util;
 
 import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.HttpHeaderNames;
-import com.browserup.bup.exception.UnsupportedCharsetException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,11 +118,9 @@ public class HttpMessageContents {
         Charset charset;
         try {
             charset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(contentTypeHeader);
-        } catch (UnsupportedCharsetException e) {
-            java.nio.charset.UnsupportedCharsetException cause = e.getUnsupportedCharsetExceptionCause();
-            log.error("Character set specified in Content-Type header is not supported on this platform. Content-Type header: {}", contentTypeHeader, cause);
-
-            throw cause;
+        } catch (java.nio.charset.UnsupportedCharsetException e) {
+            log.error("Character set specified in Content-Type header is not supported on this platform. Content-Type header: {}", contentTypeHeader, e);
+            throw e;
         }
 
         if (charset == null) {

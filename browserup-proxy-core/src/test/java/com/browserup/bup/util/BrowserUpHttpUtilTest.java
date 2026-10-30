@@ -1,17 +1,16 @@
 package com.browserup.bup.util;
 
-import com.browserup.bup.exception.UnsupportedCharsetException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BrowserUpHttpUtilTest {
 
@@ -59,7 +58,7 @@ class BrowserUpHttpUtilTest {
     }
 
     @Test
-    void testReadCharsetInContentTypeHeader() throws UnsupportedCharsetException {
+    void testReadCharsetInContentTypeHeader() {
         Map<String, Charset> contentTypeHeaderAndCharset = new LinkedHashMap<String, Charset>(10);
         contentTypeHeaderAndCharset.put("text/html; charset=UTF-8", StandardCharsets.UTF_8);
         contentTypeHeaderAndCharset.put("text/html; charset=US-ASCII", StandardCharsets.US_ASCII);
@@ -82,15 +81,8 @@ class BrowserUpHttpUtilTest {
         Charset derivedCharset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(null);
         Assertions.assertNull(derivedCharset, "Expected null Content-Type header to return a null charset");
 
-        boolean threwException = false;
-        try {
-            BrowserUpHttpUtil.readCharsetInContentTypeHeader("text/html; charset=FUTURE_CHARSET");
-        } catch (Exception ignored) {
-            threwException = true;
-        }
-
-
-        assertTrue(threwException, "Expected an UnsupportedCharsetException to occur when parsing the content type header text/html; charset=FUTURE_CHARSET");
+        Assertions.assertThrows(UnsupportedCharsetException.class,
+                () -> BrowserUpHttpUtil.readCharsetInContentTypeHeader("text/html; charset=FUTURE_CHARSET"));
     }
 
     @Test
