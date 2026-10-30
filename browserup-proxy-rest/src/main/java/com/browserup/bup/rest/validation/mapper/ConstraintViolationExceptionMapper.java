@@ -3,11 +3,11 @@ package com.browserup.bup.rest.validation.mapper;
 import com.browserup.bup.rest.validation.mapper.model.ConstraintsErrors;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
 
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
     private static final String PARAMETER_NAME_ATTRIBUTE = "paramName";

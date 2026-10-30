@@ -7,7 +7,6 @@ import com.browserup.bup.filters.ResponseFilter;
 import com.browserup.bup.proxy.bricks.ProxyResource;
 import com.browserup.bup.proxy.test.util.ProxyResourceTest;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.google.sitebricks.headless.Request;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -52,8 +51,7 @@ class FilterTest extends ProxyResourceTest {
                 "request.headers().remove('User-Agent');\n" +
                 "request.headers().add('User-Agent', 'My-Custom-User-Agent-String 1.0');\n";
 
-        Request mockRestRequest = createMockRestRequestWithEntity(requestFilterJavaScript);
-        proxyResource.addRequestFilter(proxyPort, mockRestRequest);
+        proxyResource.addRequestFilter(proxyPort, requestFilterJavaScript);
 
         String stubUrl = "/modifyuseragent";
         stubFor(get(urlEqualTo(stubUrl))
@@ -77,8 +75,7 @@ class FilterTest extends ProxyResourceTest {
                 "    }\n" +
                 "}\n";
 
-        Request mockRestRequest = createMockRestRequestWithEntity(requestFilterJavaScript);
-        proxyResource.addRequestFilter(proxyPort, mockRestRequest);
+        proxyResource.addRequestFilter(proxyPort, requestFilterJavaScript);
 
         String stubUrl = "/modifyrequest";
         stubFor(put(urlEqualTo(stubUrl))
@@ -105,8 +102,7 @@ class FilterTest extends ProxyResourceTest {
                 "    }\n" +
                 "}\n";
 
-        Request mockRestRequest = createMockRestRequestWithEntity(responseFilterJavaScript);
-        proxyResource.addResponseFilter(proxyPort, mockRestRequest);
+        proxyResource.addResponseFilter(proxyPort, responseFilterJavaScript);
 
         String stubUrl = "/modifyresponse";
         stubFor(get(urlEqualTo(stubUrl))
@@ -127,13 +123,11 @@ class FilterTest extends ProxyResourceTest {
                 "    request.setUri(request.getUri().replaceAll('originalrequest', 'modifiedrequest'));\n" +
                 "}\n";
 
-        Request mockRestAddReqFilterRequest = createMockRestRequestWithEntity(requestFilterJavaScript);
-        proxyResource.addRequestFilter(proxyPort, mockRestAddReqFilterRequest);
+        proxyResource.addRequestFilter(proxyPort, requestFilterJavaScript);
 
         final String responseFilterJavaScript =
                 "contents.setTextContents(messageInfo.getOriginalRequest().getUri());\n";
-        Request mockRestAddRespFilterRequest = createMockRestRequestWithEntity(responseFilterJavaScript);
-        proxyResource.addResponseFilter(proxyPort, mockRestAddRespFilterRequest);
+        proxyResource.addResponseFilter(proxyPort, responseFilterJavaScript);
 
         String stubUrl = "/modifiedrequest";
         stubFor(get(urlEqualTo(stubUrl))
@@ -151,8 +145,6 @@ class FilterTest extends ProxyResourceTest {
     void testRequestFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
         final String requestFilterJavaScript = "this javascript won\'t compile!";
 
-        Request mockRestAddReqFilterRequest = createMockRestRequestWithEntity(requestFilterJavaScript);
-
         MitmProxyServer mockProxy = mock(MitmProxyServer.class);
 
         MitmProxyManager mockProxyManager = mock(MitmProxyManager.class);
@@ -162,7 +154,7 @@ class FilterTest extends ProxyResourceTest {
 
         boolean javascriptExceptionOccurred = false;
         try {
-            proxyResource.addRequestFilter(proxyPort, mockRestAddReqFilterRequest);
+            proxyResource.addRequestFilter(proxyPort, requestFilterJavaScript);
         } catch (Exception ignored) {
             javascriptExceptionOccurred = true;
         }
@@ -175,8 +167,6 @@ class FilterTest extends ProxyResourceTest {
     void testResponseFilterNotAddedIfJavascriptDoesNotCompile() throws Exception {
         final String responseFilterJavaScript = "this javascript won\'t compile!";
 
-        Request mockRestAddRespFilterRequest = createMockRestRequestWithEntity(responseFilterJavaScript);
-
         MitmProxyServer mockProxy = mock(MitmProxyServer.class);
 
         MitmProxyManager mockProxyManager = mock(MitmProxyManager.class);
@@ -186,7 +176,7 @@ class FilterTest extends ProxyResourceTest {
 
         boolean javascriptExceptionOccurred = false;
         try {
-            proxyResource.addResponseFilter(proxyPort, mockRestAddRespFilterRequest);
+            proxyResource.addResponseFilter(proxyPort, responseFilterJavaScript);
         } catch (Exception ignored) {
             javascriptExceptionOccurred = true;
         }
@@ -209,8 +199,7 @@ class FilterTest extends ProxyResourceTest {
                 "HttpObjectUtil.replaceTextHttpEntityBody(shortCircuitRequest, responseBody);\n" +
                 "shortCircuitRequest;\n";
 
-        Request mockRestRequest = createMockRestRequestWithEntity(requestFilterJavaScript);
-        proxyResource.addRequestFilter(proxyPort, mockRestRequest);
+        proxyResource.addRequestFilter(proxyPort, requestFilterJavaScript);
 
         HttpURLConnection conn = getHttpConnection("/testShortCircuit");
         int status = conn.getResponseCode();
