@@ -18,6 +18,7 @@ import java.util.Base64;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +37,8 @@ class WebSocketTest {
     private ServerSocket wsServerSocket;
     private Thread wsServerThread;
     private final AtomicBoolean serverReceivedUpgrade = new AtomicBoolean(false);
+    private final AtomicBoolean serverEchoedFrame = new AtomicBoolean(false);
+    private final AtomicReference<Exception> serverError = new AtomicReference<>();
     private final CountDownLatch serverHandshakeDone = new CountDownLatch(1);
 
     @BeforeEach
@@ -96,7 +99,13 @@ class WebSocketTest {
             out.write(frame);
             out.flush();
 
-            String echo = readWebSocketTextFrame(in);
+            String echo;
+            try {
+                echo = readWebSocketTextFrame(in);
+            } catch (IOException e) {
+                throw new IOException("WebSocket server echo completed: " + serverEchoedFrame.get()
+                        + ", server error: " + serverError.get(), e);
+            }
             assertEquals("hello", echo, "Expected echo of the sent WebSocket message");
         }
     }
@@ -132,6 +141,7 @@ class WebSocketTest {
 
             // Echo back the first WebSocket frame (client frames are masked)
             echoWebSocketFrame(in, out);
+            serverEchoedFrame.set(true);
 
             // Keep the connection open briefly so the echoed frame can transit the proxy before teardown.
             client.setSoTimeout((int) TimeUnit.SECONDS.toMillis(2));
@@ -143,6 +153,7 @@ class WebSocketTest {
                 // test client may close quickly; timeout keeps the server from hanging
             }
         } catch (Exception e) {
+            serverError.set(e);
             // server closed or test ended
         }
     }
