@@ -91,6 +91,9 @@ class WebSocketTest {
             assertTrue(serverHandshakeDone.await(5, TimeUnit.SECONDS),
                     "Server should have completed the WebSocket handshake");
 
+            // LittleProxy switches the client pipeline after writing the 101 response.
+            Thread.sleep(100);
+
             // Send a WebSocket text frame ("hello") and read the echo back
             byte[] frame = buildTextFrame("hello");
             out.write(frame);
