@@ -37,29 +37,27 @@ class ExpiringProxyTest {
 
     @Test
     void testZeroTtlProxyDoesNotExpire() throws InterruptedException {
-        int minPort = new Random().nextInt(50000) + 10000;
-
         ProxyManager proxyManager = new ProxyManager(
-            minPort,
-            minPort + 100,
+            0,
+            0,
             0);
 
-        BrowserUpProxyServer proxy = proxyManager.create();
+        BrowserUpProxyServer proxy = proxyManager.create(0);
         int port = proxy.getPort();
 
-        BrowserUpProxyServer retrievedProxy = proxyManager.get(port);
+        try {
+            BrowserUpProxyServer retrievedProxy = proxyManager.get(port);
 
-        assertEquals(proxy, retrievedProxy, "ProxyManager did not return the expected proxy instance");
+            assertEquals(proxy, retrievedProxy, "ProxyManager did not return the expected proxy instance");
 
-        Thread.sleep(2500);
+            Thread.sleep(2500);
 
-        // explicitly create a new proxy to cause a write to the cache. cleanups happen on "every" write and "occasional" reads, so force a cleanup by writing.
-        int newPort = proxyManager.create().getPort();
-        proxyManager.delete(newPort);
+            BrowserUpProxyServer nonExpiredProxy = proxyManager.get(port);
 
-        BrowserUpProxyServer nonExpiredProxy = proxyManager.get(port);
-
-        assertEquals(proxy, nonExpiredProxy, "ProxyManager did not return the expected proxy instance");
+            assertEquals(proxy, nonExpiredProxy, "ProxyManager did not return the expected proxy instance");
+        } finally {
+            proxyManager.delete(port);
+        }
     }
 
 }
