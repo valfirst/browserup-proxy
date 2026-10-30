@@ -1,6 +1,17 @@
 # Changelog
 
-# [Unreleased - 3.3.2-SNAPSHOT]
+# [Unreleased - 4.0.0-SNAPSHOT]
+## Changed
+### Dependencies
+- Bump Jetty from `9.4.58.v20250814` to `11.0.26` (https://github.com/valfirst/browserup-proxy/pull/604)
+- Bump Guice from `6.0.0` to `7.0.0` (https://github.com/valfirst/browserup-proxy/pull/604)
+- Bump Jersey from `2.46` to `3.1.3` (https://github.com/valfirst/browserup-proxy/pull/604)
+- Switch Swagger artifacts to Jakarta variants (https://github.com/valfirst/browserup-proxy/pull/604)
+- Replace `com.github.tomakehurst:wiremock-jre8:2.35.0` with `org.wiremock:wiremock:3.3.1` (https://github.com/valfirst/browserup-proxy/pull/604)
+
+## Removed
+- Remove Sitebricks dependency (no Jakarta support) (https://github.com/valfirst/browserup-proxy/pull/604)
+- Remove `guice-servlet` dependency (https://github.com/valfirst/browserup-proxy/pull/604)
 
 # [3.3.1]
 ## Fixed
@@ -40,18 +51,6 @@
 - Bump Jackson from `2.20.0` to `2.21.2` (https://github.com/valfirst/browserup-proxy/pull/569, https://github.com/valfirst/browserup-proxy/pull/588, https://github.com/valfirst/browserup-proxy/pull/594, https://github.com/valfirst/browserup-proxy/pull/615)
 - Bump Apache Commons Lang from `3.19.0` to `3.20.0` (https://github.com/valfirst/browserup-proxy/pull/572)
 - Bump Swagger from `2.2.26` to `2.2.46` (https://github.com/valfirst/browserup-proxy/pull/593, https://github.com/valfirst/browserup-proxy/pull/607, https://github.com/valfirst/browserup-proxy/pull/612, https://github.com/valfirst/browserup-proxy/pull/622)
-
-## Changed
-### Dependencies
-- Bump Jetty from `9.4.58.v20250814` to `11.0.26` (https://github.com/valfirst/browserup-proxy/pull/604)
-- Bump Guice from `6.0.0` to `7.0.0` (https://github.com/valfirst/browserup-proxy/pull/604)
-- Bump Jersey from `2.46` to `3.1.3` (https://github.com/valfirst/browserup-proxy/pull/604)
-- Switch Swagger artifacts to Jakarta variants (https://github.com/valfirst/browserup-proxy/pull/604)
-- Replace `com.github.tomakehurst:wiremock-jre8:2.35.0` with `org.wiremock:wiremock:3.3.1` (https://github.com/valfirst/browserup-proxy/pull/604)
-
-## Removed
-- Remove Sitebricks dependency (no Jakarta support) (https://github.com/valfirst/browserup-proxy/pull/604)
-- Remove `guice-servlet` dependency (https://github.com/valfirst/browserup-proxy/pull/604)
 
 # [3.2.2]
 ## Fixed
