@@ -18,7 +18,6 @@ import java.util.Base64;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,8 +36,6 @@ class WebSocketTest {
     private ServerSocket wsServerSocket;
     private Thread wsServerThread;
     private final AtomicBoolean serverReceivedUpgrade = new AtomicBoolean(false);
-    private final AtomicBoolean serverEchoedFrame = new AtomicBoolean(false);
-    private final AtomicReference<Exception> serverError = new AtomicReference<>();
     private final CountDownLatch serverHandshakeDone = new CountDownLatch(1);
 
     @BeforeEach
@@ -94,18 +91,15 @@ class WebSocketTest {
             assertTrue(serverHandshakeDone.await(5, TimeUnit.SECONDS),
                     "Server should have completed the WebSocket handshake");
 
+            // LittleProxy switches the client pipeline after writing the 101 response.
+            Thread.sleep(100);
+
             // Send a WebSocket text frame ("hello") and read the echo back
             byte[] frame = buildTextFrame("hello");
             out.write(frame);
             out.flush();
 
-            String echo;
-            try {
-                echo = readWebSocketTextFrame(in);
-            } catch (IOException e) {
-                throw new IOException("WebSocket server echo completed: " + serverEchoedFrame.get()
-                        + ", server error: " + serverError.get(), e);
-            }
+            String echo = readWebSocketTextFrame(in);
             assertEquals("hello", echo, "Expected echo of the sent WebSocket message");
         }
     }
@@ -141,7 +135,6 @@ class WebSocketTest {
 
             // Echo back the first WebSocket frame (client frames are masked)
             echoWebSocketFrame(in, out);
-            serverEchoedFrame.set(true);
 
             // Keep the connection open briefly so the echoed frame can transit the proxy before teardown.
             client.setSoTimeout((int) TimeUnit.SECONDS.toMillis(2));
@@ -153,7 +146,6 @@ class WebSocketTest {
                 // test client may close quickly; timeout keeps the server from hanging
             }
         } catch (Exception e) {
-            serverError.set(e);
             // server closed or test ended
         }
     }
