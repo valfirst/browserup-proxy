@@ -18,13 +18,12 @@ from enum import Enum, auto
 import falcon
 import time
 
-from mitmproxy import connections
 from mitmproxy.utils import strutils
 from mitmproxy.net.http import cookies
 
 # A list of server seen till now is maintained so we can avoid
 # using 'connect' time for entries that use an existing connection.
-SERVERS_SEEN: typing.Set[connections.ServerConnection] = set()
+SERVERS_SEEN = set()
 
 DEFAULT_PAGE_REF = "Default"
 DEFAULT_PAGE_TITLE = "Default"
