@@ -26,7 +26,6 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
-import com.browserup.bup.exception.UnsupportedCharsetException;
 import com.browserup.bup.filters.support.HttpConnectTiming;
 import com.browserup.bup.filters.util.HarCaptureUtil;
 import com.browserup.bup.proxy.CaptureType;
@@ -444,7 +443,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
         Charset charset;
         try {
              charset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(contentType);
-        } catch (UnsupportedCharsetException e) {
+        } catch (java.nio.charset.UnsupportedCharsetException e) {
             log.warn("Found unsupported character set in Content-Type header '{}' in HTTP request to {}. Content will not be captured in HAR.", contentType, httpRequest.uri(), e);
             return;
         }
@@ -498,7 +497,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
         Charset charset;
         try {
             charset = BrowserUpHttpUtil.readCharsetInContentTypeHeader(contentType);
-        } catch (UnsupportedCharsetException e) {
+        } catch (java.nio.charset.UnsupportedCharsetException e) {
             log.warn("Found unsupported character set in Content-Type header '{}' in HTTP response from {}. Content will not be captured in HAR.", contentType, originalRequest.uri(), e);
             return;
         }

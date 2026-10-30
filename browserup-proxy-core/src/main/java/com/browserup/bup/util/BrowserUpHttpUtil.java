@@ -8,7 +8,6 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import com.browserup.bup.exception.DecompressionException;
-import com.browserup.bup.exception.UnsupportedCharsetException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -211,9 +210,9 @@ public class BrowserUpHttpUtil {
      *
      * @param contentTypeHeader the Content-Type header string; can be null or empty
      * @return the character set indicated in the contentTypeHeader, or null if the charset is not present or is not parsable
-     * @throws UnsupportedCharsetException if there is a charset specified in the content-type header, but it is not supported on this platform
+     * @throws java.nio.charset.UnsupportedCharsetException if there is a charset specified in the content-type header, but it is not supported on this platform
      */
-    public static Charset readCharsetInContentTypeHeader(String contentTypeHeader) throws UnsupportedCharsetException {
+    public static Charset readCharsetInContentTypeHeader(String contentTypeHeader) {
         if (contentTypeHeader == null || contentTypeHeader.isEmpty()) {
             return null;
         }
@@ -226,11 +225,7 @@ public class BrowserUpHttpUtil {
             return null;
         }
 
-        try {
-            return mediaType.charset().orNull();
-        } catch (java.nio.charset.UnsupportedCharsetException e) {
-            throw new UnsupportedCharsetException(e);
-        }
+        return mediaType.charset().orNull();
     }
 
     /**
