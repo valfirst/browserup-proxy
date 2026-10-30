@@ -15,6 +15,7 @@ import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.assertion.supplier.*;
 import com.browserup.bup.filters.RequestFilter;
 import com.browserup.bup.filters.ResponseFilter;
+import com.browserup.bup.filters.WebSocketListener;
 import com.browserup.bup.mitm.TrustSource;
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager;
 import com.browserup.bup.mitmproxy.MitmProxyProcessManager.MitmProxyLoggingLevel;
@@ -469,7 +470,18 @@ public class MitmProxyServer implements BrowserUpProxy {
 
   @Override
   public void removeRequestFilter(RequestFilter filter) {
+  }
 
+  @Override
+  public void addWebSocketListener(WebSocketListener listener) {
+  }
+
+  @Override
+  public void removeWebSocketListener(WebSocketListener listener) {
+  }
+
+  @Override
+  public void removeAllWebSocketListeners() {
   }
 
   @Override

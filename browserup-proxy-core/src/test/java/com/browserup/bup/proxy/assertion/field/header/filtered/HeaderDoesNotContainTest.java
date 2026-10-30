@@ -6,16 +6,16 @@ import java.util.List;
 import com.browserup.bup.assertion.model.AssertionEntryResult;
 import com.browserup.bup.assertion.model.AssertionResult;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 
-public class HeaderDoesNotContainTest extends FilteredHeaderBaseTest {
+class HeaderDoesNotContainTest extends FilteredHeaderBaseTest {
 
     @Test
-    public void filterMatchesBothRequestsAndFilteredHeadersDoNotContainValuePasses() throws IOException {
+    void filterMatchesBothRequestsAndFilteredHeadersDoNotContainValuePasses() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderDoesNotContain(URL_PATTERN_TO_MATCH_BOTH,
@@ -25,7 +25,7 @@ public class HeaderDoesNotContainTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void filterMatchesFirstRequestAndFilteredHeaderDoesNotContainValuePasses() throws IOException {
+    void filterMatchesFirstRequestAndFilteredHeaderDoesNotContainValuePasses() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderDoesNotContain(URL_PATTERN_TO_MATCH_FIRST,
@@ -35,7 +35,7 @@ public class HeaderDoesNotContainTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void filterMatchesFirstRequestAndFilteredHeaderContainValueFails() throws IOException {
+    void filterMatchesFirstRequestAndFilteredHeaderContainValueFails() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderDoesNotContain(URL_PATTERN_TO_MATCH_FIRST,
@@ -45,7 +45,7 @@ public class HeaderDoesNotContainTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void filterMatchesNoRequestsPasses() throws IOException {
+    void filterMatchesNoRequestsPasses() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderDoesNotContain(URL_PATTERN_TO_MATCH_NOTHING,
@@ -56,7 +56,7 @@ public class HeaderDoesNotContainTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndFilteredHeadersContainValueFails() throws IOException {
+    void filterMatchesBothRequestsAndFilteredHeadersContainValueFails() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderDoesNotContain(URL_PATTERN_TO_MATCH_BOTH,
@@ -70,7 +70,7 @@ public class HeaderDoesNotContainTest extends FilteredHeaderBaseTest {
     }
 
     @Test
-    public void filterMatchesBothRequestsAndSomeHeadersContainValueFails() throws IOException {
+    void filterMatchesBothRequestsAndSomeHeadersContainValueFails() throws IOException {
         mockAndSendRequestsToMockedServer(FIRST_HEADER, SECOND_HEADER);
 
         AssertionResult result = proxy.assertAnyUrlResponseHeaderDoesNotContain(URL_PATTERN_TO_MATCH_BOTH,

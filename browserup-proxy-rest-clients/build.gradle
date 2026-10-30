@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id "io.swagger.core.v3.swagger-gradle-plugin" version "${swaggerVersion}"
-    id 'org.openapi.generator' version '4.3.1'
+    id 'org.openapi.generator' version '5.4.0'
 }
 
 archivesBaseName = 'browserup-proxy-rest-clients'
@@ -19,21 +19,19 @@ dependencies {
 
     testImplementation "com.google.inject:guice:$guiceVersion"
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
-    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.12.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     testImplementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}"
 
     testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
-    testImplementation 'org.mockito:mockito-core:5.22.0'
+    testImplementation 'org.mockito:mockito-core:5.24.0'
     testImplementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
     testImplementation 'org.awaitility:awaitility:4.3.0'
     testImplementation "io.github.littleproxy:littleproxy:${littleProxyVersion}"
     testImplementation 'org.wiremock:wiremock:3.3.1'
-    testImplementation 'org.testcontainers:testcontainers:2.0.3'
+    testImplementation 'org.testcontainers:testcontainers:2.0.5'
 }
 
 resolve {
@@ -66,8 +64,13 @@ class PythonClientPostProcessor {
                 processInitFile(it)
             }
         }
-        new File("${clientDir}/openapi_client/${Constants.apiPackage}/model/__init__.py") <<
-                new File("${clientDir}/openapi_client/${Constants.modelPackage}/__init__.py").text
+        def apiModelInit = new File("${clientDir}/openapi_client/${Constants.apiPackage}/model/__init__.py")
+        def modelInit = new File("${clientDir}/openapi_client/${Constants.modelPackage}/__init__.py")
+        if (modelInit.isFile() && modelInit != apiModelInit) {
+            apiModelInit << modelInit.text
+        } else if (!apiModelInit.isFile()) {
+            throw new FileNotFoundException("Generated Python model package initializer not found: ${apiModelInit}")
+        }
     }
 
     private static void processInitFile(File initFile) {
@@ -96,14 +99,15 @@ clients.each { client ->
     def postProcessor = client.postProcessor
 
     task "openApiGenerate${lang}Client"(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+        dependsOn resolve
         def language = lang.toLowerCase()
-        generatorName = language
+        generatorName = language == 'python' ? 'python-legacy' : language
         inputSpec = "$buildDir/openapi/openapi.yaml".toString()
         outputDir = "$buildDir/openapi-clients/$language/".toString()
         apiPackage = Constants.apiPackage
         modelPackage = Constants.modelPackage
         invokerPackage = "browserup.invoker"
-        systemProperties = [
+        globalProperties = [
                 modelDocs: 'false'
         ]
         skipValidateSpec = true

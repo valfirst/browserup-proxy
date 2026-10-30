@@ -3,7 +3,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath(group: 'org.jreleaser', name: 'org.jreleaser.gradle.plugin', version: '1.23.0')
+        classpath(group: 'org.jreleaser', name: 'org.jreleaser.gradle.plugin', version: '1.26.0')
     }
 }
 
@@ -14,23 +14,24 @@ subprojects {
     apply plugin: 'org.jreleaser'
 
     group = 'com.github.valfirst.browserup-proxy'
-    version = '3.2.3-SNAPSHOT'
+    version = '3.3.1'
 
     sourceCompatibility=11
 
     ext {
-        bcpVersion = '1.83'
+        bcpVersion = '1.86'
         guiceVersion = '7.0.0'
         jerseyVersion = '3.1.3'
         jettyVersion = '11.0.26'
-        log4jVersion = '2.25.3'
-        nettyVersion = '4.2.10.Final'
-        littleProxyVersion = '2.6.0'
-        slf4jVersion = '2.0.17'
-        swaggerVersion = '2.2.43'
-        guavaVersion = '33.5.0-jre'
+        log4jVersion = '2.26.1'
+        nettyVersion = '4.2.19.Final'
+        littleProxyVersion = '2.9.1'
+        slf4jVersion = '2.0.20'
+        swaggerVersion = '2.2.55'
+        guavaVersion = '33.7.2-jre'
         seleniumVersion = '4.33.0'
         hamcrestVersion = '3.0'
+        junitVersion = '5.14.3'
     }
 
     dependencies {
@@ -39,9 +40,11 @@ subprojects {
                 replacedBy('org.slf4j:jcl-over-slf4j', 'Redirect commons-logging logs to SLF4J')
             }
         }
+        testImplementation platform("org.junit:junit-bom:${junitVersion}")
     }
 
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 

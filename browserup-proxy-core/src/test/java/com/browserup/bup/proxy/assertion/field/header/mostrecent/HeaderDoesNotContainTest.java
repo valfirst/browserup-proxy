@@ -6,14 +6,14 @@ import java.util.regex.Pattern;
 import com.browserup.bup.assertion.model.AssertionResult;
 import com.browserup.bup.proxy.assertion.field.header.HeaderBaseTest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class HeaderDoesNotContainTest extends HeaderBaseTest {
+class HeaderDoesNotContainTest extends HeaderBaseTest {
 
     private static final Pattern URL_PATTERN = Pattern.compile(".*" + URL_PATH + ".*");
 
     @Test
-    public void anyNameAndNotMatchingValue() throws IOException {
+    void anyNameAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderDoesNotContain(URL_PATTERN,
@@ -23,7 +23,7 @@ public class HeaderDoesNotContainTest extends HeaderBaseTest {
     }
 
     @Test
-    public void nameNotProvidedAndNotMatchingValue() throws IOException {
+    void nameNotProvidedAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderDoesNotContain(URL_PATTERN, null,
@@ -37,7 +37,7 @@ public class HeaderDoesNotContainTest extends HeaderBaseTest {
     }
 
     @Test
-    public void nameNotProvidedAndMatchingValue() throws IOException {
+    void nameNotProvidedAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderDoesNotContain(URL_PATTERN, null, HEADER_VALUE);
@@ -50,7 +50,7 @@ public class HeaderDoesNotContainTest extends HeaderBaseTest {
     }
 
     @Test
-    public void anyNameAndMatchingValue() throws IOException {
+    void anyNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderDoesNotContain(URL_PATTERN, HEADER_VALUE);
@@ -59,7 +59,7 @@ public class HeaderDoesNotContainTest extends HeaderBaseTest {
     }
 
     @Test
-    public void matchingNameAndNotMatchingValue() throws IOException {
+    void matchingNameAndNotMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderDoesNotContain(URL_PATTERN, HEADER_NAME,
@@ -69,7 +69,7 @@ public class HeaderDoesNotContainTest extends HeaderBaseTest {
     }
 
     @Test
-    public void notMatchingNameAndMatchingValue() throws IOException {
+    void notMatchingNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderDoesNotContain(URL_PATTERN,
@@ -79,7 +79,7 @@ public class HeaderDoesNotContainTest extends HeaderBaseTest {
     }
 
     @Test
-    public void matchingNameAndMatchingValue() throws IOException {
+    void matchingNameAndMatchingValue() throws IOException {
         requestToMockedServer(URL_PATH);
 
         AssertionResult result = proxy.assertMostRecentResponseHeaderDoesNotContain(URL_PATTERN, HEADER_NAME,

@@ -5,8 +5,8 @@ import com.browserup.bup.proxy.MitmProxyManager;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.browserup.bup.proxy.guice.ConfigModule;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public abstract class ProxyManagerTest {
     protected MitmProxyManager proxyManager;
@@ -15,14 +15,14 @@ public abstract class ProxyManagerTest {
         return new String[] {};
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    protected void setUp() throws Exception {
         Injector injector = Guice.createInjector(new ConfigModule(getArgs()));
         proxyManager = injector.getInstance(MitmProxyManager.class);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    protected void tearDown() throws Exception {
         for(MitmProxyServer p : proxyManager.get()){
             try{
                 proxyManager.delete(p.getPort());

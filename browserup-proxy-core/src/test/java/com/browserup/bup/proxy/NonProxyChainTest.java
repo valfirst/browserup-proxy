@@ -16,9 +16,9 @@ import io.netty.handler.codec.http.HttpVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSource;
@@ -40,17 +40,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Ignore
-public class NonProxyChainTest extends MockServerTest {
+@Disabled
+class NonProxyChainTest extends MockServerTest {
 
     private BrowserUpProxy proxy;
 
     public HttpProxyServer upstreamProxy;
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    protected void tearDown() {
         if (proxy != null && proxy.isStarted()) {
             proxy.abort();
         }
@@ -67,7 +67,7 @@ public class NonProxyChainTest extends MockServerTest {
      * This will end up in a 502, because the request is processed to the upstream proxy, which will deny the request.
      */
     @Test
-    public void testUpStreamProxyWithoutNonProxy() throws Exception {
+    void testUpStreamProxyWithoutNonProxy() throws Exception {
 
         upstreamProxy = DefaultHttpProxyServer.bootstrap()
                 .withFiltersSource(getFiltersSource())
@@ -84,7 +84,7 @@ public class NonProxyChainTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/"));
-            assertEquals("Did not receive HTTP 502 from mock server", 502, response.getStatusLine().getStatusCode());
+            assertEquals(502, response.getStatusLine().getStatusCode(), "Did not receive HTTP 502 from mock server");
         }
 
         verify(0, getRequestedFor(urlEqualTo("/")));
@@ -97,7 +97,7 @@ public class NonProxyChainTest extends MockServerTest {
      * This will end up in a 200, because the request is NOT processed to the upstream proxy due the nonProxySetting
      */
     @Test
-    public void testUpStreamProxyWithNonProxy() throws Exception {
+    void testUpStreamProxyWithNonProxy() throws Exception {
 
         List<String> objects = new ArrayList<>();
         objects.add("localhost");
@@ -118,10 +118,10 @@ public class NonProxyChainTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/"));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlEqualTo("/")));
@@ -134,7 +134,7 @@ public class NonProxyChainTest extends MockServerTest {
      * This will end up in a 200, because the request is NOT processed to the upstream proxy due the nonProxySetting
      */
     @Test
-    public void testUpStreamProxyWithNonProxyWildcard() throws Exception {
+    void testUpStreamProxyWithNonProxyWildcard() throws Exception {
 
         List<String> objects = new ArrayList<>();
         objects.add("*");
@@ -155,10 +155,10 @@ public class NonProxyChainTest extends MockServerTest {
 
         try (CloseableHttpClient httpClient = NewProxyServerTestUtil.getNewHttpClient(proxy.getPort())) {
             CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost:" + mockServerPort + "/"));
-            assertEquals("Did not receive HTTP 200 from mock server", 200, response.getStatusLine().getStatusCode());
+            assertEquals(200, response.getStatusLine().getStatusCode(), "Did not receive HTTP 200 from mock server");
 
             String responseBody = NewProxyServerTestUtil.toStringAndClose(response.getEntity().getContent());
-            assertEquals("Did not receive expected response from mock server", "success", responseBody);
+            assertEquals("success", responseBody, "Did not receive expected response from mock server");
         }
 
         verify(1, getRequestedFor(urlEqualTo("/")));

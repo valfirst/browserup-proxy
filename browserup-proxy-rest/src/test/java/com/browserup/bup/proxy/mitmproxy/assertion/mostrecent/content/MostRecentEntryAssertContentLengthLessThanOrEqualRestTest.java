@@ -6,13 +6,15 @@ import com.browserup.bup.proxy.mitmproxy.BaseRestTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends BaseRestTest {
+class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends BaseRestTest {
     private String urlOfMostRecentRequest = "url-most-recent";
     private String urlOfOldRequest = "url-old";
     private String urlPatternToMatchUrl = ".*url-.*";
@@ -25,32 +27,32 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
     protected String getUrlPath() { return "har/mostRecentEntry/assertContentLengthLessThanOrEqual"; }
 
     @Test
-    public void getBadRequestIfLengthNotProvided() throws Exception {
+    void getBadRequestIfLengthNotProvided() throws Exception {
         proxyManager.get().iterator().next().newHar();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
+        assertEquals(conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 
     @Test
-    public void getBadRequestIfUrlPatternNotProvided() throws Exception {
+    protected void getBadRequestIfUrlPatternNotProvided() throws Exception {
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath());
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
+        assertEquals(conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 
     @Test
-    public void getBadRequestIfLengthNotValid() throws Exception {
+    void getBadRequestIfLengthNotValid() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "length", "invalidlength"));
-        assertEquals("Expected to get bad request", conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST);
+        assertEquals(conn.getResponseCode(), HttpURLConnection.HTTP_BAD_REQUEST, "Expected to get bad request");
         conn.disconnect();
     }
 
     @Test
-    public void contentLengthLessThanOrEqualPasses() throws Exception {
+    void contentLengthLessThanOrEqualPasses() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "length", lengthToMatch));
@@ -58,12 +60,12 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
         assertAssertionNotNull(r);
         assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1));
         assertAssertionPassed(r);
-        assertFalse("Expected assertion entry result to have \"false\" failed flag", r.getRequests().get(0).getFailed());
+        assertFalse(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"false\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void contentLengthLessThanOrEqualFails() throws Exception {
+    void contentLengthLessThanOrEqualFails() throws Exception {
         sendRequestsToTargetServer();
         String urlPattern = ".*" + urlPatternToMatchUrl;
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPattern, "length", lengthNotToMatch));
@@ -71,12 +73,12 @@ public class MostRecentEntryAssertContentLengthLessThanOrEqualRestTest extends B
         assertAssertionNotNull(r);
         assertThat("Expected to get one assertion result", r.getRequests(), Matchers.hasSize(1));
         assertAssertionFailed(r);
-        assertTrue("Expected assertion entry result to have \"true\" failed flag", r.getRequests().get(0).getFailed());
+        assertTrue(r.getRequests().get(0).getFailed(), "Expected assertion entry result to have \"true\" failed flag");
         conn.disconnect();
     }
 
     @Test
-    public void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
+    void getEmptyResultIfNoEntryFoundByUrlPattern() throws Exception {
         sendRequestsToTargetServer();
         HttpURLConnection conn = sendGetToProxyServer(getFullUrlPath(), toStringMap("urlPattern", urlPatternNotToMatchUrl, "length", lengthNotToMatch));
         AssertionResult r = new ObjectMapper().readValue(readResponseBody(conn), AssertionResult.class);

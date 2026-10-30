@@ -5,15 +5,15 @@ import com.browserup.bup.proxy.guice.ConfigModule;
 import com.browserup.bup.proxy.guice.JettyModule;
 import com.browserup.bup.util.BrowserUpProxyUtil;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.awaitility.Awaitility;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class WithRunningProxyRestTest {
     private static final Logger LOG = LoggerFactory.getLogger(MitmProxyManager.class);
@@ -52,11 +52,14 @@ public abstract class WithRunningProxyRestTest {
     protected int mockServerPort;
     protected int mockServerHttpsPort;
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(options().port(0).httpsPort(0));
+    protected WireMockServer wireMockRule;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    protected void setUp() throws Exception {
+        wireMockRule = new WireMockServer(options().port(0).httpsPort(0));
+        wireMockRule.start();
+        WireMock.configureFor("localhost", wireMockRule.port());
+
         Injector injector = Guice.createInjector(new ConfigModule(getArgs()), new JettyModule());
 
         proxyManager = injector.getInstance(MitmProxyManager.class);
@@ -134,8 +137,8 @@ public abstract class WithRunningProxyRestTest {
         }
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    protected void tearDown() throws Exception {
         LOG.debug("Stopping proxy servers");
         for (MitmProxyServer proxyServer : proxyManager.get()) {
             try {
@@ -152,6 +155,10 @@ public abstract class WithRunningProxyRestTest {
             } catch (Exception ex) {
                 LOG.error("Error while stopping rest proxy server", ex);
             }
+        }
+
+        if (wireMockRule != null && wireMockRule.isRunning()) {
+            wireMockRule.stop();
         }
     }
 

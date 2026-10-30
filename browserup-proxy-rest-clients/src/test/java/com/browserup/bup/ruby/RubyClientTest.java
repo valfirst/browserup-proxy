@@ -3,9 +3,9 @@ package com.browserup.bup.ruby;
 import com.browserup.bup.WithRunningProxyRestTest;
 import org.awaitility.Awaitility;
 import org.eclipse.jetty.server.ServerConnector;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.Testcontainers;
@@ -16,7 +16,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
-public class RubyClientTest extends WithRunningProxyRestTest {
+class RubyClientTest extends WithRunningProxyRestTest {
     private static final Logger LOG = LoggerFactory.getLogger(RubyClientTest.class);
 
     private GenericContainer<?> container;
@@ -26,15 +26,15 @@ public class RubyClientTest extends WithRunningProxyRestTest {
         return "har/entries";
     }
 
-    @After
-    public void shutDown() {
+    @AfterEach
+    void shutDown() {
         if (container != null) {
             container.stop();
         }
     }
 
     @Test
-    public void connectToProxy() throws Exception {
+    void connectToProxy() throws Exception {
         String urlToCatch = "test";
         String urlNotToCatch = "missing";
         String responseBody = "success";
@@ -66,12 +66,11 @@ public class RubyClientTest extends WithRunningProxyRestTest {
 
         LOG.info("Docker log: " + container.getLogs());
 
-        Assert.assertEquals("Expected ruby-client container exit code to be 0", 0,
-                (int) container.getCurrentContainerInfo().getState().getExitCode());
+        Assertions.assertEquals(0, (int) container.getCurrentContainerInfo().getState().getExitCode(), "Expected ruby-client container exit code to be 0");
     }
 
     @Test
-    public void failsToConnectToProxy() throws Exception {
+    void failsToConnectToProxy() throws Exception {
         String urlToCatch = "test";
         String urlNotToCatch = "missing";
         String responseBody = "success";
@@ -103,7 +102,6 @@ public class RubyClientTest extends WithRunningProxyRestTest {
 
         LOG.info("Docker log: " + container.getLogs());
 
-        Assert.assertEquals("Expected ruby-client container exit code to be 1", 1,
-                (int) container.getCurrentContainerInfo().getState().getExitCode());
+        Assertions.assertEquals(1, (int) container.getCurrentContainerInfo().getState().getExitCode(), "Expected ruby-client container exit code to be 1");
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import de.sstoehr.harreader.model.HarEntry;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
@@ -13,9 +13,10 @@ import java.util.Comparator;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class FindMostRecentEntryRestTest extends BaseRestTest {
+class FindMostRecentEntryRestTest extends BaseRestTest {
     private static final int MILLISECONDS_BETWEEN_REQUESTS = 100;
 
     private String urlOfMostRecentRequest = "url-most-recent";
@@ -30,7 +31,7 @@ public class FindMostRecentEntryRestTest extends BaseRestTest {
     }
 
     @Test
-    public void findMostRecentHarEntryByUrlPattern() throws Exception {
+    void findMostRecentHarEntryByUrlPattern() throws Exception {
         mockTargetServerResponse(urlOfMostRecentRequest, responseBody);
         mockTargetServerResponse(urlOfOldRequest, responseBody);
 
@@ -58,7 +59,7 @@ public class FindMostRecentEntryRestTest extends BaseRestTest {
         HarEntry actualEntry = new ObjectMapper().readValue(body2, HarEntry.class);
         HarEntry expectedMostRecentEntry = Arrays.stream(allCapturedEntries)
                 .max(Comparator.comparing(HarEntry::getStartedDateTime)).orElse(null);
-        assertNotNull("Expected to find an entry", actualEntry);
+        assertNotNull(actualEntry, "Expected to find an entry");
         assertThat("Expected to find most recent entry containing url from url filter pattern",
                 actualEntry.getRequest().getUrl(), Matchers.containsString(urlOfMostRecentRequest));
         assertThat("Expected that found entry has maximum started date time",
@@ -70,7 +71,7 @@ public class FindMostRecentEntryRestTest extends BaseRestTest {
     }
 
     @Test
-    public void getEmptyEntryIfNoEntryFoundByUrlPattern() throws Exception {
+    void getEmptyEntryIfNoEntryFoundByUrlPattern() throws Exception {
         mockTargetServerResponse(urlOfMostRecentRequest, responseBody);
         mockTargetServerResponse(urlOfOldRequest, responseBody);
 

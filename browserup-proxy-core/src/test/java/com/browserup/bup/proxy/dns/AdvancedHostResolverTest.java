@@ -1,10 +1,9 @@
 package com.browserup.bup.proxy.dns;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -12,175 +11,177 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-@RunWith(Parameterized.class)
-@org.junit.Ignore
-public class AdvancedHostResolverTest {
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                {NativeResolver.class}, {NativeCacheManipulatingResolver.class}, {ChainedHostResolver.class}
-        });
+@Disabled
+class AdvancedHostResolverTest {
+
+    static Stream<AdvancedHostResolver> resolvers() {
+        return Stream.of(
+                new NativeResolver(),
+                new NativeCacheManipulatingResolver(),
+                new ChainedHostResolver(ImmutableList.of(new NativeResolver(), new NativeCacheManipulatingResolver()))
+        );
     }
 
-    private AdvancedHostResolver resolver;
-
-    public AdvancedHostResolverTest(Class<AdvancedHostResolver> resolverClass) throws IllegalAccessException, InstantiationException {
-        // this is a hacky way to allow us to test the ChainedHostResolver, even though it doesn't have a no-arg constructor
-        if (resolverClass.equals(ChainedHostResolver.class)) {
-            this.resolver = new ChainedHostResolver(ImmutableList.of(new NativeResolver(), new NativeCacheManipulatingResolver()));
-        } else {
-            this.resolver = resolverClass.newInstance();
-        }
-    }
-
-    private boolean ipv6Enabled = false;
-
-    @Before
-    public void testForIPv6() throws UnknownHostException {
-        InetAddress[] addresses = InetAddress.getAllByName("::1");
-        if (addresses != null) {
-            if (Arrays.stream(addresses).anyMatch(addr -> addr.getClass() == Inet6Address.class)) {
-                ipv6Enabled = true;
+    private boolean checkIpv6Enabled() {
+        try {
+            InetAddress[] addresses = InetAddress.getAllByName("::1");
+            if (addresses != null) {
+                return Arrays.stream(addresses).anyMatch(addr -> addr.getClass() == Inet6Address.class);
             }
+        } catch (UnknownHostException e) {
+            // IPv6 not available
         }
+        return false;
     }
 
-    @Test
-    public void testResolveAddress() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testResolveAddress(AdvancedHostResolver resolver) {
         Collection<InetAddress> yahooAddresses = resolver.resolve("www.yahoo.com");
 
-        assertNotNull("Collection of resolved addresses should never be null", yahooAddresses);
+        assertNotNull(yahooAddresses, "Collection of resolved addresses should never be null");
 
-        assertNotEquals("Expected to find at least one address for www.yahoo.com", 0, yahooAddresses.size());
+        assertNotEquals(0, yahooAddresses.size(), "Expected to find at least one address for www.yahoo.com");
     }
 
-    @Test
-    public void testCannotResolveAddress() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testCannotResolveAddress(AdvancedHostResolver resolver) {
         Collection<InetAddress> noAddresses = resolver.resolve("www.notarealaddress.grenyarnia");
 
-        assertNotNull("Collection of resolved addresses should never be null", noAddresses);
+        assertNotNull(noAddresses, "Collection of resolved addresses should never be null");
 
-        assertEquals("Expected to find no address for www.notarealaddress.grenyarnia", 0, noAddresses.size());
+        assertEquals(0, noAddresses.size(), "Expected to find no address for www.notarealaddress.grenyarnia");
     }
 
-    @Test
-    public void testResolveIPv4AndIPv6Addresses() {
-        assumeTrue("Skipping test because IPv6 is not enabled", ipv6Enabled);
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testResolveIPv4AndIPv6Addresses(AdvancedHostResolver resolver) {
+        assumeTrue(checkIpv6Enabled(), "Skipping test because IPv6 is not enabled");
 
         Collection<InetAddress> addresses = resolver.resolve("www.google.com");
         boolean foundIPv4 = addresses.stream().anyMatch(address -> address.getClass() == Inet4Address.class);
 
-        assertTrue("Expected to find at least one IPv4 address for www.google.com", foundIPv4);
+        assertTrue(foundIPv4, "Expected to find at least one IPv4 address for www.google.com");
 
         // disabling this assert to prevent test failures on systems without ipv6 access, or when the DNS server does not return IPv6 addresses
-        //assertTrue("Expected to find at least one IPv6 address for www.google.com", foundIPv6);
+        //assertTrue(foundIPv6, "Expected to find at least one IPv6 address for www.google.com");
 
     }
 
-    @Test
-    public void testResolveLocalhost() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testResolveLocalhost(AdvancedHostResolver resolver) {
         Collection<InetAddress> addresses = resolver.resolve("localhost");
 
-        assertNotNull("Collection of resolved addresses should never be null", addresses);
-        assertNotEquals("Expected to find at least one address for localhost", 0, addresses.size());
+        assertNotNull(addresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, addresses.size(), "Expected to find at least one address for localhost");
     }
 
-    @Test
-    public void testResolveIPv4Address() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testResolveIPv4Address(AdvancedHostResolver resolver) {
         Collection<InetAddress> addresses = resolver.resolve("127.0.0.1");
 
-        assertNotNull("Collection of resolved addresses should never be null", addresses);
-        assertNotEquals("Expected to find at least one address for 127.0.0.1", 0, addresses.size());
+        assertNotNull(addresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, addresses.size(), "Expected to find at least one address for 127.0.0.1");
     }
 
-    @Test
-    public void testResolveIPv6Address() {
-        assumeTrue("Skipping test because IPv6 is not enabled", ipv6Enabled);
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testResolveIPv6Address(AdvancedHostResolver resolver) {
+        assumeTrue(checkIpv6Enabled(), "Skipping test because IPv6 is not enabled");
 
         Collection<InetAddress> addresses = resolver.resolve("::1");
 
-        assertNotNull("Collection of resolved addresses should never be null", addresses);
-        assertNotEquals("Expected to find at least one address for ::1", 0, addresses.size());
+        assertNotNull(addresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, addresses.size(), "Expected to find at least one address for ::1");
     }
 
-    @Test
-    public void testResolveRemappedHost() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testResolveRemappedHost(AdvancedHostResolver resolver) {
         Collection<InetAddress> originalAddresses = resolver.resolve("www.google.com");
 
-        assertNotNull("Collection of resolved addresses should never be null", originalAddresses);
-        assertNotEquals("Expected to find at least one address for www.google.com", 0, originalAddresses.size());
+        assertNotNull(originalAddresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, originalAddresses.size(), "Expected to find at least one address for www.google.com");
 
         resolver.remapHost("www.google.com", "www.bing.com");
 
         Collection<InetAddress> remappedAddresses = resolver.resolve("www.google.com");
-        assertNotNull("Collection of resolved addresses should never be null", remappedAddresses);
-        assertNotEquals("Expected to find at least one address for www.google.com remapped to www.bing.com", 0, remappedAddresses.size());
+        assertNotNull(remappedAddresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, remappedAddresses.size(), "Expected to find at least one address for www.google.com remapped to www.bing.com");
 
         InetAddress firstRemappedAddr = remappedAddresses.iterator().next();
 
         //TODO: verify this is correct -- should remapping return the remapped hostname, or the original hostname but with an IP address corresponding to the remapped hostname?
-        assertEquals("Expected hostname for returned address to reflect the remapped address.", "www.bing.com", firstRemappedAddr.getHostName());
+        assertEquals("www.bing.com", firstRemappedAddr.getHostName(), "Expected hostname for returned address to reflect the remapped address.");
     }
 
-    @Test
-    public void testReplaceRemappedHostWithNewRemapping() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testReplaceRemappedHostWithNewRemapping(AdvancedHostResolver resolver) {
         // remap the hostname twice. the second remapping should supercede the first.
         resolver.remapHost("www.google.com", "www.yahoo.com");
         resolver.remapHost("www.google.com", "www.bing.com");
 
         Collection<InetAddress> remappedAddresses = resolver.resolve("www.google.com");
-        assertNotNull("Collection of resolved addresses should never be null", remappedAddresses);
-        assertNotEquals("Expected to find at least one address for www.google.com remapped to www.bing.com", 0, remappedAddresses.size());
+        assertNotNull(remappedAddresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, remappedAddresses.size(), "Expected to find at least one address for www.google.com remapped to www.bing.com");
 
         InetAddress firstRemappedAddr = remappedAddresses.iterator().next();
 
         //TODO: verify this is correct -- should remapping return the remapped hostname, or the original hostname but with an IP address corresponding to the remapped hostname?
-        assertEquals("Expected hostname for returned address to reflect the remapped address.", "www.bing.com", firstRemappedAddr.getHostName());
+        assertEquals("www.bing.com", firstRemappedAddr.getHostName(), "Expected hostname for returned address to reflect the remapped address.");
     }
 
-    @Test
-    public void testRetrieveOriginalHostByRemappedHost() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testRetrieveOriginalHostByRemappedHost(AdvancedHostResolver resolver) {
         resolver.remapHost("www.google.com", "www.bing.com");
 
         Collection<String> originalHostnames = resolver.getOriginalHostnames("www.bing.com");
-        assertEquals("Expected to find one original hostname after remapping", 1, originalHostnames.size());
+        assertEquals(1, originalHostnames.size(), "Expected to find one original hostname after remapping");
 
         String original = originalHostnames.iterator().next();
-        assertEquals("Expected to find original hostname of www.google.com after remapping to www.bing.com", "www.google.com", original);
+        assertEquals("www.google.com", original, "Expected to find original hostname of www.google.com after remapping to www.bing.com");
     }
 
-    @Test
-    public void testRemoveHostRemapping() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testRemoveHostRemapping(AdvancedHostResolver resolver) {
         resolver.remapHost("www.google.com", "www.notarealaddress");
 
         Collection<InetAddress> remappedAddresses = resolver.resolve("www.google.com");
-        assertEquals("Expected to find no address for remapped www.google.com", 0, remappedAddresses.size());
+        assertEquals(0, remappedAddresses.size(), "Expected to find no address for remapped www.google.com");
 
         resolver.removeHostRemapping("www.google.com");
 
         Collection<InetAddress> regularAddress = resolver.resolve("www.google.com");
-        assertNotNull("Collection of resolved addresses should never be null", remappedAddresses);
-        assertNotEquals("Expected to find at least one address for www.google.com after removing remapping", 0, regularAddress.size());
+        assertNotNull(remappedAddresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, regularAddress.size(), "Expected to find at least one address for www.google.com after removing remapping");
     }
 
-    @Test
-    public void testClearHostRemappings() {
+    @ParameterizedTest
+    @MethodSource("resolvers")
+    public void testClearHostRemappings(AdvancedHostResolver resolver) {
         resolver.remapHost("www.google.com", "www.notarealaddress");
 
         Collection<InetAddress> remappedAddresses = resolver.resolve("www.google.com");
-        assertEquals("Expected to find no address for remapped www.google.com", 0, remappedAddresses.size());
+        assertEquals(0, remappedAddresses.size(), "Expected to find no address for remapped www.google.com");
 
         resolver.clearHostRemappings();
 
         Collection<InetAddress> regularAddress = resolver.resolve("www.google.com");
-        assertNotNull("Collection of resolved addresses should never be null", remappedAddresses);
-        assertNotEquals("Expected to find at least one address for www.google.com after removing remapping", 0, regularAddress.size());
+        assertNotNull(remappedAddresses, "Collection of resolved addresses should never be null");
+        assertNotEquals(0, regularAddress.size(), "Expected to find at least one address for www.google.com after removing remapping");
     }
 }

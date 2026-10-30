@@ -1,6 +1,45 @@
 # Changelog
 
-# [Unreleased - 3.2.3-SNAPSHOT]
+# [Unreleased - 3.3.2-SNAPSHOT]
+
+# [3.3.1]
+## Fixed
+- Fix WebSocket frame decoding to maintain independent decoder state for each direction (https://github.com/valfirst/browserup-proxy/pull/642)
+
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.7.0` to `2.9.1` (https://github.com/valfirst/browserup-proxy/pull/660, https://github.com/valfirst/browserup-proxy/pull/686)
+- Bump Netty from `4.2.12.Final` to `4.2.19.Final` (https://github.com/valfirst/browserup-proxy/pull/634, https://github.com/valfirst/browserup-proxy/pull/641, https://github.com/valfirst/browserup-proxy/pull/644, https://github.com/valfirst/browserup-proxy/pull/667, https://github.com/valfirst/browserup-proxy/pull/689, https://github.com/valfirst/browserup-proxy/pull/700)
+- Bump Bouncy Castle from `1.83` to `1.86` (https://github.com/valfirst/browserup-proxy/pull/628, https://github.com/valfirst/browserup-proxy/pull/664, https://github.com/valfirst/browserup-proxy/pull/690)
+- Bump Log4J from `2.25.4` to `2.26.1` (https://github.com/valfirst/browserup-proxy/pull/635, https://github.com/valfirst/browserup-proxy/pull/661)
+- Bump Jackson from `2.21.2` to `2.22.4` (https://github.com/valfirst/browserup-proxy/pull/631, https://github.com/valfirst/browserup-proxy/pull/643, https://github.com/valfirst/browserup-proxy/pull/663, https://github.com/valfirst/browserup-proxy/pull/680, https://github.com/valfirst/browserup-proxy/pull/694, https://github.com/valfirst/browserup-proxy/pull/702)
+- Bump Apache Commons Lang from `3.20.0` to `3.21.0` (https://github.com/valfirst/browserup-proxy/pull/697)
+- Bump Swagger from `2.2.46` to `2.2.55` (https://github.com/valfirst/browserup-proxy/pull/624, https://github.com/valfirst/browserup-proxy/pull/626, https://github.com/valfirst/browserup-proxy/pull/630, https://github.com/valfirst/browserup-proxy/pull/636, https://github.com/valfirst/browserup-proxy/pull/658, https://github.com/valfirst/browserup-proxy/pull/673, https://github.com/valfirst/browserup-proxy/pull/685)
+- Bump SLF4J from `2.0.17` to `2.0.20` (https://github.com/valfirst/browserup-proxy/pull/637, https://github.com/valfirst/browserup-proxy/pull/683, https://github.com/valfirst/browserup-proxy/pull/692)
+- Bump Guava from `33.5.0-jre` to `33.7.2-jre` (https://github.com/valfirst/browserup-proxy/pull/627, https://github.com/valfirst/browserup-proxy/pull/679, https://github.com/valfirst/browserup-proxy/pull/696)
+
+# [3.3.0]
+## Added
+- Add WebSockets support (https://github.com/valfirst/browserup-proxy/pull/623) \
+  Usage:
+
+  ```java
+    proxy.addWebSocketListener((frame, messageInfo) -> {
+        System.out.println(frame.getOpcode() + ": " + frame.getTextContent());
+        System.out.println("From client: " + frame.isFromClient());
+        System.out.println("URL: " + messageInfo.getUrl());
+    });
+  ```
+
+## Changed
+### Dependencies
+- Bump LittleProxy from `2.4.5` to `2.6.0` (https://github.com/valfirst/browserup-proxy/pull/570, https://github.com/valfirst/browserup-proxy/pull/583, https://github.com/valfirst/browserup-proxy/pull/585, https://github.com/valfirst/browserup-proxy/pull/586)
+- Bump Netty from `4.2.7.Final` to `4.2.12.Final` (https://github.com/valfirst/browserup-proxy/pull/580, https://github.com/valfirst/browserup-proxy/pull/584, https://github.com/valfirst/browserup-proxy/pull/592, https://github.com/valfirst/browserup-proxy/pull/618)
+- Bump Bouncy Castle from `1.82` to `1.83` (https://github.com/valfirst/browserup-proxy/pull/577)
+- Bump Log4J from `2.25.2` to `2.25.4` (https://github.com/valfirst/browserup-proxy/pull/582, https://github.com/valfirst/browserup-proxy/pull/619)
+- Bump Jackson from `2.20.0` to `2.21.2` (https://github.com/valfirst/browserup-proxy/pull/569, https://github.com/valfirst/browserup-proxy/pull/588, https://github.com/valfirst/browserup-proxy/pull/594, https://github.com/valfirst/browserup-proxy/pull/615)
+- Bump Apache Commons Lang from `3.19.0` to `3.20.0` (https://github.com/valfirst/browserup-proxy/pull/572)
+- Bump Swagger from `2.2.26` to `2.2.46` (https://github.com/valfirst/browserup-proxy/pull/593, https://github.com/valfirst/browserup-proxy/pull/607, https://github.com/valfirst/browserup-proxy/pull/612, https://github.com/valfirst/browserup-proxy/pull/622)
 
 ## Changed
 ### Dependencies

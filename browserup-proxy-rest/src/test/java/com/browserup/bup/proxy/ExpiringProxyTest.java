@@ -1,15 +1,15 @@
 package com.browserup.bup.proxy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Random;
 import com.browserup.bup.BrowserUpProxyServer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ExpiringProxyTest {
+class ExpiringProxyTest {
     @Test
-    public void testExpiredProxyStops() throws InterruptedException {
+    void testExpiredProxyStops() throws InterruptedException {
         int minPort = new Random().nextInt(50000) + 10000;
 
         ProxyManager proxyManager = new ProxyManager(
@@ -22,7 +22,7 @@ public class ExpiringProxyTest {
 
         BrowserUpProxyServer retrievedProxy = proxyManager.get(port);
 
-        assertEquals("ProxyManager did not return the expected proxy instance", proxy, retrievedProxy);
+        assertEquals(proxy, retrievedProxy, "ProxyManager did not return the expected proxy instance");
 
         Thread.sleep(2500);
 
@@ -32,11 +32,11 @@ public class ExpiringProxyTest {
 
         BrowserUpProxyServer expiredProxy = proxyManager.get(port);
 
-        assertNull("ProxyManager did not expire proxy as expected", expiredProxy);
+        assertNull(expiredProxy, "ProxyManager did not expire proxy as expected");
     }
 
     @Test
-    public void testZeroTtlProxyDoesNotExpire() throws InterruptedException {
+    void testZeroTtlProxyDoesNotExpire() throws InterruptedException {
         int minPort = new Random().nextInt(50000) + 10000;
 
         ProxyManager proxyManager = new ProxyManager(
@@ -49,7 +49,7 @@ public class ExpiringProxyTest {
 
         BrowserUpProxyServer retrievedProxy = proxyManager.get(port);
 
-        assertEquals("ProxyManager did not return the expected proxy instance", proxy, retrievedProxy);
+        assertEquals(proxy, retrievedProxy, "ProxyManager did not return the expected proxy instance");
 
         Thread.sleep(2500);
 
@@ -59,7 +59,7 @@ public class ExpiringProxyTest {
 
         BrowserUpProxyServer nonExpiredProxy = proxyManager.get(port);
 
-        assertEquals("ProxyManager did not return the expected proxy instance", proxy, nonExpiredProxy);
+        assertEquals(proxy, nonExpiredProxy, "ProxyManager did not return the expected proxy instance");
     }
 
 }
