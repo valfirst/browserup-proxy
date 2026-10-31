@@ -8,6 +8,7 @@
 - Bump Jersey from `2.46` to `3.1.3` (https://github.com/valfirst/browserup-proxy/pull/604)
 - Switch Swagger artifacts to Jakarta variants (https://github.com/valfirst/browserup-proxy/pull/604)
 - Replace `com.github.tomakehurst:wiremock-jre8:2.35.0` with `org.wiremock:wiremock:3.3.1` (https://github.com/valfirst/browserup-proxy/pull/604)
+- Bump mitmproxy from `6` to `7.0.4` and adapt bundled Python add-ons to the mitmproxy 7 API: drop removed `connections` module and `TcpTimeout`, use `http.Response`, `connected` property and `None`-safe connection timings, register options via `load()` and pass upstream proxy credentials via the `upstream_auth` option (https://github.com/valfirst/browserup-proxy/pull/707)
 
 ## Removed
 - Remove Sitebricks dependency (no Jakarta support) (https://github.com/valfirst/browserup-proxy/pull/604)

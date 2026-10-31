@@ -22,7 +22,6 @@ import falcon
 
 from mitmproxy import ctx
 
-from mitmproxy import connections
 from mitmproxy import version
 from mitmproxy.utils import strutils
 from mitmproxy.net.http import cookies
@@ -108,7 +107,7 @@ class AllowListAddOn:
                 break
 
         if not is_allowlisted:
-            flow.response = http.HTTPResponse.make(
+            flow.response = http.Response.make(
                 int(self.allow_list['status_code']),
                 b"",
                 {"Content-Type": "text/html"}

@@ -2,11 +2,7 @@ import time
 import json
 import asyncio
 
-import typing
-
 from mitmproxy import ctx
-from mitmproxy import connections
-from mitmproxy.exceptions import TcpTimeout
 
 RESOLUTION_FAILED_ERROR_MESSAGE = "Unable to resolve host: "
 CONNECTION_FAILED_ERROR_MESSAGE = "Unable to connect to host"
@@ -14,7 +10,7 @@ RESPONSE_TIMED_OUT_ERROR_MESSAGE = "Response timed out"
 
 # A list of server seen till now is maintained so we can avoid
 # using 'connect' time for entries that use an existing connection.
-SERVERS_SEEN: typing.Set[connections.ServerConnection] = set()
+SERVERS_SEEN = set()
 
 class HttpConnectCaptureResource:
 
@@ -138,12 +134,18 @@ class HttpConnectCaptureAddOn:
         if flow.request.port != 80:
             req_host_port = req_host_port + ':' + str(flow.request.port)
         original_error = HttpConnectCaptureAddOn.get_original_exception(flow.error)
+        error_message = str(original_error)
+        normalized_error_message = error_message.lower()
 
         self.har_dump_addon.populate_har_entry_with_default_response(flow)
         ctx.log.info("Error hook called: " + str(original_error))
-        if self.is_dns_resolution_error(str(original_error)):
+        if self.is_dns_resolution_error(error_message):
             self.proxy_to_server_resolution_failed(flow, req_host_port, original_error)
-        elif isinstance(original_error, TcpTimeout):
+        elif (
+            isinstance(original_error, TimeoutError)
+            or 'timed out' in normalized_error_message
+            or 'timeout' in normalized_error_message
+        ):
             self.server_to_proxy_response_timed_out(flow, req_host_port, original_error)
         else:
             self.proxy_to_server_connection_failed(flow, original_error)
@@ -177,7 +179,12 @@ class HttpConnectCaptureAddOn:
         ssl_time = -1
         connect_time = -1
 
-        if flow.server_conn and flow.server_conn not in SERVERS_SEEN:
+        if (
+            flow.server_conn
+            and flow.server_conn not in SERVERS_SEEN
+            and flow.server_conn.timestamp_start is not None
+            and flow.server_conn.timestamp_tcp_setup is not None
+        ):
             connect_time = (flow.server_conn.timestamp_tcp_setup -
                             flow.server_conn.timestamp_start)
             connect_time = self.timestamp_to_nanos(connect_time)

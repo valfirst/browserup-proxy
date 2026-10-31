@@ -18,13 +18,12 @@ from enum import Enum, auto
 import falcon
 import time
 
-from mitmproxy import connections
 from mitmproxy.utils import strutils
 from mitmproxy.net.http import cookies
 
 # A list of server seen till now is maintained so we can avoid
 # using 'connect' time for entries that use an existing connection.
-SERVERS_SEEN: typing.Set[connections.ServerConnection] = set()
+SERVERS_SEEN = set()
 
 DEFAULT_PAGE_REF = "Default"
 DEFAULT_PAGE_TITLE = "Default"
@@ -654,7 +653,12 @@ class HarDumpAddOn:
         ssl_time = -1
         connect_time = -1
 
-        if flow.server_conn and flow.server_conn not in SERVERS_SEEN:
+        if (
+            flow.server_conn
+            and flow.server_conn not in SERVERS_SEEN
+            and flow.server_conn.timestamp_start is not None
+            and flow.server_conn.timestamp_tcp_setup is not None
+        ):
             connect_time = (flow.server_conn.timestamp_tcp_setup -
                             flow.server_conn.timestamp_start)
 
@@ -716,7 +720,7 @@ class HarDumpAddOn:
 
         har_entry['timings'] = timings
 
-        if flow.server_conn.connected():
+        if flow.server_conn.connected:
             har_entry["serverIPAddress"] = str(
                 flow.server_conn.ip_address[0])
 
