@@ -6,7 +6,7 @@ COPY client/ /python-client/
 
 # Build python client, install locally
 WORKDIR /python-client/
-RUN python setup.py install --user
+RUN pip install .
 RUN pip install -r requirements.txt
 RUN pip install -r test-requirements.txt
 
