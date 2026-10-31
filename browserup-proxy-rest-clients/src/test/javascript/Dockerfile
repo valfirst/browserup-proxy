@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:18-alpine
 
 USER root
 
@@ -11,7 +11,7 @@ WORKDIR /client/
 RUN rm -rf node_modules/
 RUN npm install
 RUN npm link
-RUN npm link /client
+RUN npm link browser_up_proxy_api
 RUN npm run build
 
 COPY . /javascript/
