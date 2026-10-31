@@ -85,9 +85,10 @@ class ProxyManagerResource:
     def on_set_upstream_proxy_authorization(self, req, resp):
         credentials = req.get_param('credentials')
         if credentials is not None:
-            if "upstream_proxy_credentials" not in ctx.options:
-                ctx.options.add_option("upstream_proxy_credentials", Optional[str], None, "upstream_proxy_credentials")
             ctx.options.upstream_proxy_credentials = credentials
+            ctx.options.upstream_auth = (
+                base64.b64decode(credentials).decode("utf-8") if credentials else None
+            )
 
     def on_set_chained_proxy_non_proxy_hosts(self, req, resp):
         non_proxy_hosts = req.get_param('nonProxyHosts')
@@ -106,17 +107,6 @@ class ProxyManagerAddOn:
 
     def get_resource(self):
         return ProxyManagerResource(self)
-
-    def http_connect(self, f):
-        if ctx.options.upstream_proxy_credentials and ctx.options.mode.startswith("upstream:"):
-            f.request.headers["Proxy-Authorization"] = "Basic " + ctx.options.upstream_proxy_credentials
-
-    def requestheaders(self, f):
-        if self.are_upstream_proxy_credentials_available():
-            if ctx.options.mode.startswith("upstream:"):
-                f.request.headers["Proxy-Authorization"] = "Basic " + ctx.options.upstream_proxy_credentials
-            elif ctx.options.mode.startswith("reverse"):
-                f.request.headers["Proxy-Authorization"] = "Basic " + ctx.options.upstream_proxy_credentials
 
     def response_from_upstream_proxy(self, f):
         if self.are_upstream_proxy_credentials_available() and f.response is not None and f.response.status_code == 407:
