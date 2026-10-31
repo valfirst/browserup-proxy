@@ -653,7 +653,12 @@ class HarDumpAddOn:
         ssl_time = -1
         connect_time = -1
 
-        if flow.server_conn and flow.server_conn not in SERVERS_SEEN:
+        if (
+            flow.server_conn
+            and flow.server_conn not in SERVERS_SEEN
+            and flow.server_conn.timestamp_start is not None
+            and flow.server_conn.timestamp_tcp_setup is not None
+        ):
             connect_time = (flow.server_conn.timestamp_tcp_setup -
                             flow.server_conn.timestamp_start)
 
@@ -715,7 +720,7 @@ class HarDumpAddOn:
 
         har_entry['timings'] = timings
 
-        if flow.server_conn.connected():
+        if flow.server_conn.connected:
             har_entry["serverIPAddress"] = str(
                 flow.server_conn.ip_address[0])
 

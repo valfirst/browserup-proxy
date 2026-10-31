@@ -107,7 +107,7 @@ class AllowListAddOn:
                 break
 
         if not is_allowlisted:
-            flow.response = http.HTTPResponse.make(
+            flow.response = http.Response.make(
                 int(self.allow_list['status_code']),
                 b"",
                 {"Content-Type": "text/html"}

@@ -179,7 +179,12 @@ class HttpConnectCaptureAddOn:
         ssl_time = -1
         connect_time = -1
 
-        if flow.server_conn and flow.server_conn not in SERVERS_SEEN:
+        if (
+            flow.server_conn
+            and flow.server_conn not in SERVERS_SEEN
+            and flow.server_conn.timestamp_start is not None
+            and flow.server_conn.timestamp_tcp_setup is not None
+        ):
             connect_time = (flow.server_conn.timestamp_tcp_setup -
                             flow.server_conn.timestamp_start)
             connect_time = self.timestamp_to_nanos(connect_time)

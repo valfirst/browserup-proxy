@@ -25,6 +25,21 @@ from mitmproxy import version
 from mitmproxy.utils import strutils
 from mitmproxy.net.http import cookies
 
+def load(l):
+    l.add_option(
+        "upstream_proxy_credentials",
+        Optional[str],
+        None,
+        "Credentials for an upstream proxy.",
+    )
+    l.add_option(
+        "upstream_proxy_exception_hosts",
+        typing.Sequence[str],
+        [],
+        "Hosts excluded from the upstream proxy.",
+    )
+
+
 class ProxyManagerResource:
 
     def addon_path(self):
@@ -93,12 +108,12 @@ class ProxyManagerAddOn:
         return ProxyManagerResource(self)
 
     def http_connect(self, f):
-        if ctx.options.upstream_proxy_credentials and f.mode == "upstream":
+        if ctx.options.upstream_proxy_credentials and ctx.options.mode.startswith("upstream:"):
             f.request.headers["Proxy-Authorization"] = "Basic " + ctx.options.upstream_proxy_credentials
 
     def requestheaders(self, f):
         if self.are_upstream_proxy_credentials_available():
-            if f.mode == "upstream" and not f.server_conn.via:
+            if ctx.options.mode.startswith("upstream:"):
                 f.request.headers["Proxy-Authorization"] = "Basic " + ctx.options.upstream_proxy_credentials
             elif ctx.options.mode.startswith("reverse"):
                 f.request.headers["Proxy-Authorization"] = "Basic " + ctx.options.upstream_proxy_credentials

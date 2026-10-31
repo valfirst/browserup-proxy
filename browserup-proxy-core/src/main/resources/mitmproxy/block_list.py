@@ -133,7 +133,7 @@ class BlockListAddOn:
                 break
 
         if is_blocklisted:
-            flow.response = http.HTTPResponse.make(
+            flow.response = http.Response.make(
                 int(status_code),
                 b"",
                 {"Content-Type": "text/html"}
@@ -165,7 +165,7 @@ class BlockListAddOn:
                 break
 
         if is_blocklisted:
-            flow.response = http.HTTPResponse.make(
+            flow.response = http.Response.make(
                 int(status_code),
                 b"",
                 {"Content-Type": "text/html"}
