@@ -101,9 +101,9 @@ clients.each { client ->
     task "openApiGenerate${lang}Client"(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
         dependsOn resolve
         def language = lang.toLowerCase()
-        generatorName = language == 'python' ? 'python-legacy' : language
-        inputSpec = "$buildDir/openapi/openapi.yaml".toString()
-        outputDir = "$buildDir/openapi-clients/$language/".toString()
+        generatorName = language
+        inputSpec = layout.buildDirectory.file("openapi/openapi.yaml").get()
+        outputDir = layout.buildDirectory.dir("openapi-clients/$language").get()
         apiPackage = Constants.apiPackage
         modelPackage = Constants.modelPackage
         invokerPackage = "browserup.invoker"
