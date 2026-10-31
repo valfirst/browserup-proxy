@@ -1,4 +1,5 @@
 mitmproxy==7.0.4
-markupsafe==2.0.1
+markupsafe==3.0.4
+werkzeug<3
 python-dateutil
 falcon >= 3
