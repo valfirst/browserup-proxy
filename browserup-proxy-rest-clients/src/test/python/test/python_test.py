@@ -11,7 +11,7 @@ api_client = openapi_client.ApiClient()
 api_client.configuration.host = 'http://' + os.environ['PROXY_REST_HOST'] + ':' + os.environ['PROXY_REST_PORT']
 
 api_instance = openapi_client.DefaultApi(api_client)
-port = os.environ['PROXY_PORT']
+port = int(os.environ['PROXY_PORT'])
 url_pattern = '.*'
 
 try:
