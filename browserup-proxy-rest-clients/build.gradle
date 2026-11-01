@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id "io.swagger.core.v3.swagger-gradle-plugin" version "${swaggerVersion}"
-    id 'org.openapi.generator' version '6.6.0'
+    id 'org.openapi.generator' version '7.26.0'
 }
 
 archivesBaseName = 'browserup-proxy-rest-clients'
@@ -77,6 +77,9 @@ class PythonClientPostProcessor {
         initFile.text = initFile.text.replaceAll(
                 ~/(from ${Constants.apiPackage}.default_api import)/,
                 "from openapi_client.${Constants.apiPackage}.default_api import"
+        ).replaceAll(
+                ~/from openapi_client.models\./,
+                "from openapi_client.${Constants.modelPackage}."
         )
     }
 }
@@ -101,9 +104,9 @@ clients.each { client ->
     task "openApiGenerate${lang}Client"(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
         dependsOn resolve
         def language = lang.toLowerCase()
-        generatorName = language == 'python' ? 'python-legacy' : language
-        inputSpec = "$buildDir/openapi/openapi.yaml".toString()
-        outputDir = "$buildDir/openapi-clients/$language/".toString()
+        generatorName = language
+        inputSpec = layout.buildDirectory.file("openapi/openapi.yaml").get()
+        outputDir = layout.buildDirectory.dir("openapi-clients/$language").get()
         apiPackage = Constants.apiPackage
         modelPackage = Constants.modelPackage
         invokerPackage = "browserup.invoker"
