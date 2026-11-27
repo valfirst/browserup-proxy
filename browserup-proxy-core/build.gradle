@@ -51,7 +51,7 @@ dependencies {
     api platform("io.netty:netty-bom:${nettyVersion}")
     api 'io.netty:netty-codec-http'
     api "io.github.littleproxy:littleproxy:${littleProxyVersion}"
-    api 'de.sstoehr:har-reader:2.5.0'
+    api 'de.sstoehr:har-reader:4.0.5'
 
     implementation project(':browserup-proxy-mitm')
 
