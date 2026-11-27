@@ -52,7 +52,7 @@ dependencies {
 
     implementation "com.google.guava:guava:${guavaVersion}"
     implementation "com.google.inject:guice:${guiceVersion}"
-    implementation "io.netty:netty-all:${nettyVersion}"
+    implementation "io.netty:netty-codec-http:${nettyVersion}"
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
     implementation "org.eclipse.jetty:jetty-servlet:${jettyVersion}"

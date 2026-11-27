@@ -53,11 +53,11 @@ dependencies {
     implementation "org.bouncycastle:bcpkix-jdk18on:${bcpVersion}"
     implementation "org.bouncycastle:bcprov-jdk18on:${bcpVersion}"
 
-    implementation "io.netty:netty-all:${nettyVersion}"
+    implementation platform("io.netty:netty-bom:${nettyVersion}")
+    implementation 'io.netty:netty-codec-http'
+    implementation 'io.netty:netty-handler'
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
-    implementation("io.github.littleproxy:littleproxy:${littleProxyVersion}") {
-        exclude(group: 'io.netty', module: 'netty-all')
-    }
+    implementation "io.github.littleproxy:littleproxy:${littleProxyVersion}"
 
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
