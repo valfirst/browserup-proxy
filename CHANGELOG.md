@@ -3,6 +3,7 @@
 # [Unreleased - 4.0.0-SNAPSHOT]
 ## Changed
 ### Dependencies
+- Replace `netty-all` with the Netty modules required by the proxy and LittleProxy. Optional Netty modules and native transports are no longer bundled; applications using them must add the appropriate dependencies.
 - Bump Jetty from `9.4.58.v20250814` to `11.0.26` (https://github.com/valfirst/browserup-proxy/pull/604)
 - Bump Guice from `6.0.0` to `7.0.0` (https://github.com/valfirst/browserup-proxy/pull/604)
 - Bump Jersey from `2.46` to `3.1.3` (https://github.com/valfirst/browserup-proxy/pull/604)
